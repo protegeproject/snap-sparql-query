@@ -5,7 +5,6 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.api.PrimitiveType;
 import org.semanticweb.owlapi.sparql.apiex.*;
-import org.semanticweb.owlapi.sparql.apiex.function.FunctionRegistry;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -50,8 +49,6 @@ public class SPARQLParserImpl {
 
     private SolutionModifier solutionModifier = new SolutionModifier();
 
-
-    private FunctionRegistry functionRegistry = FunctionRegistry.getRegistry();
 
     public SPARQLParserImpl(SPARQLTokenizer tokenizer, OWLDataFactory df) {
         this.tokenizer = tokenizer;
@@ -315,59 +312,6 @@ public class SPARQLParserImpl {
         System.out.println(expression);
         return expression;
     }
-
-    private List<BuiltInCallArgument> parseBuiltInCallArgs(BuiltInCall call) {
-        if (!functionRegistry.isRegistered(call.name())) {
-            tokenizer.raiseError();
-        }
-        List<List<Class<?>>> types = functionRegistry.getArgTypes(call.name());
-        if (types.isEmpty()) {
-            return Collections.emptyList();
-        }
-        List<Class<?>> firstType = types.get(0);
-        int argCount = firstType.size();
-        for (int i = 0; i < firstType.size(); i++) {
-            Class<?> argType = firstType.get(i);
-            try {
-                Method m = argType.getMethod("getTokenTypes");
-                List<TokenType> tokenTypes = (List<TokenType>) m.invoke(argType);
-                SPARQLToken token = tokenizer.consume(tokenTypes.toArray(new TokenType[0]));
-                if (i < argCount - 1) {
-                    tokenizer.consume(SPARQLTerminal.COMMA);
-                }
-            }
-            catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-            catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-//
-//        List<OperandList> operandLists = new ArrayList<OperandList>(call.getOperandLists());
-//        OperandList operandList = operandLists.get(0);
-//        int numberOfOperands = operandList.getOperandList().size();
-        List<BuiltInCallArgument> args = new ArrayList<BuiltInCallArgument>();
-//        for(int i = 0; i < numberOfOperands; i++) {
-//
-//
-//            Operand op = operandList.getOperandList().get(i);
-//            SPARQLToken argToken = tokenizer.consume(op.getOperandType().getTokenTypeList().<TokenType>toArray(new TokenType[0]));
-//
-//            BuiltInCallArgument callArg = new BuiltInCallArgument(call, operandList, i, argToken);
-//            args.add(callArg);
-//            if(i < numberOfOperands - 1) {
-//                tokenizer.consume(SPARQLTerminal.COMMA);
-//            }
-//        }
-        return args;
-    }
-
 
     private void parseBind(SPARQLGraphPattern currentPattern) {
         tokenizer.consume(SPARQLTerminal.BIND);
