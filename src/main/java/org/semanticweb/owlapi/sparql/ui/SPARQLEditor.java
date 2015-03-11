@@ -199,7 +199,7 @@ public class SPARQLEditor extends JTextPane {
             StringReader reader = new StringReader(getText());
             OWLDataFactory df = rootOntology.getOWLOntologyManager().getOWLDataFactory();
             SPARQLTokenizer tokenizer = new SPARQLTokenizerJavaCCImpl(rootOntology, reader);
-            SPARQLParserImpl parser = new SPARQLParserImpl(tokenizer, df);
+            SPARQLParserImpl parser = new SPARQLParserImpl(tokenizer);
             parser.parseQuery();
             repaint();
             validQuery = true;

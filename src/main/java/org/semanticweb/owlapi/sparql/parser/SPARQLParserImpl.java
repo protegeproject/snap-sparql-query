@@ -13,6 +13,7 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.semanticweb.owlapi.vocab.OWLRDFVocabulary.*;
 
 /**
@@ -39,8 +40,8 @@ public class SPARQLParserImpl {
 
     private List<OrderCondition> orderConditions = new ArrayList<>();
 
-    public SPARQLParserImpl(SPARQLTokenizer tokenizer, OWLDataFactory df) {
-        this.tokenizer = tokenizer;
+    public SPARQLParserImpl(SPARQLTokenizer tokenizer) {
+        this.tokenizer = checkNotNull(tokenizer);
     }
 
     public SPARQLQuery parseQuery() {

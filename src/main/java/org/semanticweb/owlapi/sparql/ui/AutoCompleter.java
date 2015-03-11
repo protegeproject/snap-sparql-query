@@ -267,7 +267,7 @@ public class AutoCompleter {
             expression += "±";
             OWLOntology ontology = ontologyProvider.getOntology();
             SPARQLTokenizerJavaCCImpl tokenizer = new SPARQLTokenizerJavaCCImpl(ontology, new StringReader(expression));
-            SPARQLParserImpl sparqlParser = new SPARQLParserImpl(tokenizer, ontology.getOWLOntologyManager().getOWLDataFactory());
+            SPARQLParserImpl sparqlParser = new SPARQLParserImpl(tokenizer);
             try {
                 sparqlParser.parseQuery();
             }

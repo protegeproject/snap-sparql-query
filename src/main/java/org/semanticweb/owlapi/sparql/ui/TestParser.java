@@ -121,7 +121,7 @@ public class TestParser {
 
     private static void parse(OWLOntology ontology, String s) {
         SPARQLTokenizer tokenizer = new SPARQLTokenizerJavaCCImpl(ontology, new StringReader(s));
-        SPARQLParserImpl parser = new SPARQLParserImpl(tokenizer, ontology.getOWLOntologyManager().getOWLDataFactory());
+        SPARQLParserImpl parser = new SPARQLParserImpl(tokenizer);
         SPARQLQuery query = parser.parseQuery();
         VariableManager decMan = tokenizer.getVariableManager();
         decMan.dump();
