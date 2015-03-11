@@ -23,36 +23,24 @@ import static org.semanticweb.owlapi.vocab.OWLRDFVocabulary.*;
  */
 public class SPARQLParserImpl {
 
-    public static final String LITERAL_VARIABLE_TYPE_IRI_STRING = "http://owlapi.sourceforge.net/literalvariable";
-
     private SPARQLTokenizer tokenizer;
 
-    private OWLDataFactory df;
+    private List<String> mustBindVariables = new ArrayList<>();
 
-    private List<String> mustBindVariables = new ArrayList<String>();
+    private Set<SPARQLGraphPattern> parsedBGPs = new HashSet<>();
 
-
-    private Set<SPARQLGraphPattern> parsedBGPs = new HashSet<SPARQLGraphPattern>();
-
-    private Set<SPARQLGraphPattern> minusBGPs = new HashSet<SPARQLGraphPattern>();
+    private Set<SPARQLGraphPattern> minusBGPs = new HashSet<>();
 
     private SPARQLQueryType queryType = SPARQLQueryType.SELECT;
 
-    private Set<SPARQLToken> selectVariableTokens = new HashSet<SPARQLToken>();
-
-    private List<SelectAs> selectAsList = new ArrayList<SelectAs>();
+    private List<SelectAs> selectAsList = new ArrayList<>();
 
     private boolean selectAll = false;
 
-    private List<OrderCondition> orderConditions = new ArrayList<OrderCondition>();
-
-
-    private SolutionModifier solutionModifier = new SolutionModifier();
-
+    private List<OrderCondition> orderConditions = new ArrayList<>();
 
     public SPARQLParserImpl(SPARQLTokenizer tokenizer, OWLDataFactory df) {
         this.tokenizer = tokenizer;
-        this.df = df;
     }
 
     public SPARQLQuery parseQuery() {
@@ -62,7 +50,7 @@ public class SPARQLParserImpl {
     }
 
     private SPARQLQuery createQueryObject() {
-        List<Variable> mustBindVariable = new ArrayList<Variable>();
+        List<Variable> mustBindVariable = new ArrayList<>();
         for (String varName : mustBindVariables) {
             Collection<VariableTokenType> types = tokenizer.getVariableManager().getTypes(varName);
             TokenType tokenType = types.iterator().next();
@@ -77,8 +65,8 @@ public class SPARQLParserImpl {
         if (selectAll) {
             mustBindVariable.addAll(tokenizer.getVariableManager().getVariables());
         }
-        List<SPARQLGraphPattern> graphPatterns = new ArrayList<SPARQLGraphPattern>();
-        List<Variable> allVariables = new ArrayList<Variable>();
+        List<SPARQLGraphPattern> graphPatterns = new ArrayList<>();
+        List<Variable> allVariables = new ArrayList<>();
         allVariables.addAll(tokenizer.getVariableManager().getVariables());
 
         for (SPARQLGraphPattern bgp : parsedBGPs) {
@@ -89,9 +77,8 @@ public class SPARQLParserImpl {
         for (SelectAs selectAs : selectAsList) {
             mustBindVariable.addAll(selectAs.getExpression().getVariables());
         }
-        solutionModifier = new SolutionModifier(orderConditions);
-
-        return new SPARQLQuery(tokenizer.getPrefixManager(), queryType, mustBindVariable, allVariables, selectAsList, graphPatterns, new ArrayList<SPARQLGraphPattern>(minusBGPs), solutionModifier);
+        SolutionModifier solutionModifier = new SolutionModifier(orderConditions);
+        return new SPARQLQuery(tokenizer.getPrefixManager(), queryType, mustBindVariable, allVariables, selectAsList, graphPatterns, new ArrayList<>(minusBGPs), solutionModifier);
     }
 
 
@@ -142,7 +129,6 @@ public class SPARQLParserImpl {
                 else {
                     SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
                     mustBindVariables.add(token.getImage());
-                    selectVariableTokens.add(token);
                     tokenizer.getVariableManager().addVariableName(token.getImage());
                     if (tokenizer.peek(SPARQLTerminal.WHERE) != null) {
                         break;
@@ -954,7 +940,7 @@ public class SPARQLParserImpl {
 
     private AtomicProperty parseTypedProperty(EntityType<?>... types) {
         AtomicProperty property = null;
-        List<EntityType<?>> possibleTypes = Arrays.<EntityType<?>>asList(types);
+        List<EntityType<?>> possibleTypes = Arrays.asList(types);
         if (possibleTypes.contains(EntityType.OBJECT_PROPERTY) && tokenizer.peek(ObjectPropertyIRITokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY)) != null) {
             SPARQLToken token = tokenizer.consume();
             property = getObjectPropertyFromToken(token);
@@ -997,7 +983,7 @@ public class SPARQLParserImpl {
     }
 
     private List<AtomicClass> parseClassNodeObjectList() {
-        List<AtomicClass> result = new ArrayList<AtomicClass>();
+        List<AtomicClass> result = new ArrayList<>();
         while (true) {
             AtomicClass cls = parseClassNode();
             result.add(cls);
@@ -1147,7 +1133,7 @@ public class SPARQLParserImpl {
     }
 
     private List<AtomicIndividual> parseIndividualNodeObjectList() {
-        List<AtomicIndividual> result = new ArrayList<AtomicIndividual>();
+        List<AtomicIndividual> result = new ArrayList<>();
         while (true) {
             AtomicIndividual individual = parseIndividualNode();
             result.add(individual);
@@ -1183,7 +1169,7 @@ public class SPARQLParserImpl {
     }
 
     private List<AnnotationValue> parseAnnotationValueObjectList() {
-        List<AnnotationValue> result = new ArrayList<AnnotationValue>();
+        List<AnnotationValue> result = new ArrayList<>();
         while (true) {
             AnnotationValue value = parseAnnotationValueNode();
             result.add(value);
@@ -1236,21 +1222,8 @@ public class SPARQLParserImpl {
         return tokenizer.peek(ClassIRITokenType.get(), ObjectPropertyIRITokenType.get(), DataPropertyIRITokenType.get(), IndividualIRITokenType.get(), AnnotationPropertyIRITokenType.get(), DatatypeIRITokenType.get());
     }
 
-    private SPARQLToken peekIRI() {
-        SPARQLToken peek = tokenizer.peek(UntypedIRITokenType.get());
-        if (peek != null) {
-            return peek;
-        }
-        return peekEntityIRI();
-    }
-
-//    private SPARQLToken peekLiteral() {
-//        return tokenizer.peek(BooleanTokenType.get(), DoubleTokenType.get(), IntegerTokenType.get(), StringTokenType.get());
-//    }
-
-
     private List<AtomicObjectProperty> parseObjectPropertyNodeObjectList() {
-        List<AtomicObjectProperty> result = new ArrayList<AtomicObjectProperty>();
+        List<AtomicObjectProperty> result = new ArrayList<>();
         while (true) {
             AtomicObjectProperty property = parseObjectPropertyNode();
             result.add(property);
@@ -1286,7 +1259,7 @@ public class SPARQLParserImpl {
     }
 
     private List<AtomicDataProperty> parseDataPropertyNodeObjectList() {
-        List<AtomicDataProperty> result = new ArrayList<AtomicDataProperty>();
+        List<AtomicDataProperty> result = new ArrayList<>();
         while (true) {
             AtomicDataProperty property = parseDataPropertyNode();
             result.add(property);
@@ -1321,7 +1294,7 @@ public class SPARQLParserImpl {
     }
 
     private List<AtomicLiteral> parseLiteralNodeObjectList() {
-        List<AtomicLiteral> result = new ArrayList<AtomicLiteral>();
+        List<AtomicLiteral> result = new ArrayList<>();
         while (true) {
             AtomicLiteral lit = parseLiteralNode();
             result.add(lit);
@@ -1389,7 +1362,7 @@ public class SPARQLParserImpl {
     }
 
     private List<AtomicDatatype> parseDataTypeNodeObjectList() {
-        List<AtomicDatatype> result = new ArrayList<AtomicDatatype>();
+        List<AtomicDatatype> result = new ArrayList<>();
         while (true) {
             AtomicDatatype dt = parseDataTypeNode();
             result.add(dt);
@@ -1675,7 +1648,7 @@ public class SPARQLParserImpl {
         tokenizer.consume(SPARQLTerminal.OPEN_PAR);
         String callName = token.getImage().toUpperCase();
         BuiltInCall builtInCall = BuiltInCall.valueOf(callName);
-        List<Integer> argListsSizes = new ArrayList<Integer>();
+        List<Integer> argListsSizes = new ArrayList<>();
         VarArg varArg = VarArg.FIXED;
         for (OperandList operandList : builtInCall.getOperandLists()) {
             argListsSizes.add(operandList.getOperandList().size());
@@ -1685,7 +1658,7 @@ public class SPARQLParserImpl {
         }
         Collections.sort(argListsSizes);
         int maxSize = argListsSizes.get(argListsSizes.size() - 1);
-        List<Expression> args = new ArrayList<Expression>();
+        List<Expression> args = new ArrayList<>();
         for (int i = 0; ; i++) {
             Expression arg = parseExpression();
             args.add(arg);
