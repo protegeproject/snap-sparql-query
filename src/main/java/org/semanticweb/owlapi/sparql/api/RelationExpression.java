@@ -1,0 +1,91 @@
+package org.semanticweb.owlapi.sparql.api;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Author: Matthew Horridge<br>
+ * Stanford University<br>
+ * Bio-Medical Informatics Research Group<br>
+ * Date: 27/07/2012
+ */
+public class RelationExpression implements Expression {
+
+    private Expression left;
+
+    private Expression right;
+
+    private Relation relation;
+
+    public RelationExpression(Expression left, Expression right, Relation relation) {
+        this.left = left;
+        this.right = right;
+        this.relation = relation;
+    }
+
+    public Set<Variable> getVariables() {
+        Set<Variable> result = new HashSet<Variable>();
+        result.addAll(left.getVariables());
+        result.addAll(right.getVariables());
+        return result;
+    }
+
+    public EvaluationResult evaluate(SolutionMapping sm) {
+        return evaluateAsEffectiveBooleanValue(sm);
+    }
+
+    public boolean canEvaluateAsBoolean(SolutionMapping sm) {
+        return true;
+    }
+
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
+        return relation.evaluate(left, right, sm);
+    }
+
+    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
+        return false;
+    }
+
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
+        return EvaluationResult.getError();
+    }
+
+    public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
+        return false;
+    }
+
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+        return EvaluationResult.getError();
+    }
+
+    public boolean canEvaluateAsNumeric(SolutionMapping sm) {
+        return false;
+    }
+
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
+        return EvaluationResult.getError();
+    }
+
+    public boolean canEvaluateAsDateTime(SolutionMapping sm) {
+        return false;
+    }
+
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
+        return EvaluationResult.getError();
+    }
+
+    public boolean canEvaluateAsIRI(SolutionMapping sm) {
+        return false;
+    }
+
+    @Override
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
+        return EvaluationResult.getError();
+    }
+
+
+    @Override
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
+        return EvaluationResult.getError();
+    }
+}
