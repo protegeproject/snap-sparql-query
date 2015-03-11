@@ -39,25 +39,27 @@
 
 package org.semanticweb.owlapi.sparql.builtin;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
  * Bio-Medical Informatics Research Group<br>
  * Date: 17/04/2012
  */
-public class Operand {
+public class Arg {
 
-    private SparqlType sparqlType;
+    private final SparqlType sparqlType;
     
-    private String name;
+    private final String name;
 
-    public Operand(SparqlType sparqlType, String name) {
-        this.sparqlType = sparqlType;
-        this.name = name;
+    public Arg(SparqlType sparqlType, String name) {
+        this.sparqlType = checkNotNull(sparqlType);
+        this.name = checkNotNull(name);
     }
 
-    public Operand(SparqlType sparqlType) {
-        this(sparqlType, sparqlType.name().toLowerCase());
+    public Arg(SparqlType sparqlType) {
+        this(checkNotNull(sparqlType), sparqlType.name().toLowerCase());
     }
 
     public SparqlType getSparqlType() {

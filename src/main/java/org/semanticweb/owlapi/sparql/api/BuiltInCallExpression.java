@@ -63,7 +63,7 @@ public class BuiltInCallExpression implements Expression {
     }
 
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
-        if(!builtInCall.getResultType().isBoolean()) {
+        if(!builtInCall.getReturnType().isBoolean()) {
             return EvaluationResult.getError();
         }
         else {
@@ -73,11 +73,11 @@ public class BuiltInCallExpression implements Expression {
 
 
     public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
-        return builtInCall.getResultType().isSimpleLiteral();
+        return builtInCall.getReturnType().isSimpleLiteral();
     }
 
     public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
-        if(!builtInCall.getResultType().isSimpleLiteral()) {
+        if(!builtInCall.getReturnType().isSimpleLiteral()) {
             return EvaluationResult.getError();
         }
         else {
@@ -86,7 +86,7 @@ public class BuiltInCallExpression implements Expression {
     }
 
     public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
-        return builtInCall.getResultType().isStringLiteral();
+        return builtInCall.getReturnType().isStringLiteral();
     }
 
     public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
@@ -99,11 +99,11 @@ public class BuiltInCallExpression implements Expression {
     }
 
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {
-        return builtInCall.getResultType().isNumeric();
+        return builtInCall.getReturnType().isNumeric();
     }
 
     public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
-        if(!builtInCall.getResultType().isNumeric()) {
+        if(!builtInCall.getReturnType().isNumeric()) {
             return EvaluationResult.getError();
         }
         else {
@@ -125,7 +125,7 @@ public class BuiltInCallExpression implements Expression {
 
     @Override
     public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
-        if(!builtInCall.getResultType().isLiteral()) {
+        if(!builtInCall.getReturnType().isLiteral()) {
             return EvaluationResult.getError();
         }
         return builtInCall.getEvaluator().evaluate(args, sm);
@@ -134,7 +134,7 @@ public class BuiltInCallExpression implements Expression {
 
     @Override
     public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
-        if(!builtInCall.getResultType().isIRI()) {
+        if(!builtInCall.getReturnType().isIRI()) {
             return EvaluationResult.getError();
         }
         return builtInCall.getEvaluator().evaluate(args, sm);

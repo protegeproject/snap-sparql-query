@@ -49,27 +49,27 @@ import java.util.List;
  * Bio-Medical Informatics Research Group<br>
  * Date: 17/04/2012
  */
-public class OperandList {
+public class ArgList {
 
-    private List<Operand> operandList = new ArrayList<Operand>();
+    private List<Arg> argList = new ArrayList<Arg>();
 
     private VarArg varArg = VarArg.FIXED;
 
-    public OperandList() {
+    public ArgList() {
     }
 
-    public OperandList(Operand... operands) {
-        this.operandList.addAll(Arrays.asList(operands));
+    public ArgList(Arg... args) {
+        this.argList.addAll(Arrays.asList(args));
     }
 
-    public OperandList(SparqlType... sparqlTypes) {
+    public ArgList(SparqlType... sparqlTypes) {
         for(SparqlType type : sparqlTypes) {
-            operandList.add(new Operand(type));
+            argList.add(new Arg(type));
         }
     }
     
-    public OperandList(SparqlType type, VarArg varArg) {
-        operandList.add(new Operand(type));
+    public ArgList(SparqlType type, VarArg varArg) {
+        argList.add(new Arg(type));
         this.varArg = varArg;
     }
 
@@ -77,13 +77,13 @@ public class OperandList {
         return varArg == VarArg.VARIABLE;
     }
 
-    public List<Operand> getOperandList() {
-        return new ArrayList<Operand>(operandList);
+    public List<Arg> getArgList() {
+        return new ArrayList<Arg>(argList);
     }
 
     @Override
     public int hashCode() {
-        return operandList.hashCode() + varArg.hashCode();
+        return argList.hashCode() + varArg.hashCode();
     }
 
     @Override
@@ -91,10 +91,10 @@ public class OperandList {
         if(obj == this) {
             return true;
         }
-        if(!(obj instanceof OperandList)) {
+        if(!(obj instanceof ArgList)) {
             return false;
         }
-        OperandList other = (OperandList) obj;
-        return other.operandList.equals(this.operandList) && other.varArg.equals(this.varArg);
+        ArgList other = (ArgList) obj;
+        return other.argList.equals(this.argList) && other.varArg.equals(this.varArg);
     }
 }

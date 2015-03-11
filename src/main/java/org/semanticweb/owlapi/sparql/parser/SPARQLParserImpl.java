@@ -5,7 +5,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.api.PrimitiveType;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
-import org.semanticweb.owlapi.sparql.builtin.OperandList;
+import org.semanticweb.owlapi.sparql.builtin.ArgList;
 import org.semanticweb.owlapi.sparql.builtin.VarArg;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
@@ -1651,9 +1651,9 @@ public class SPARQLParserImpl {
         BuiltInCall builtInCall = BuiltInCall.valueOf(callName);
         List<Integer> argListsSizes = new ArrayList<>();
         VarArg varArg = VarArg.FIXED;
-        for (OperandList operandList : builtInCall.getOperandLists()) {
-            argListsSizes.add(operandList.getOperandList().size());
-            if(operandList.isVarArg()) {
+        for (ArgList argList : builtInCall.getArgLists()) {
+            argListsSizes.add(argList.getArgList().size());
+            if(argList.isVarArg()) {
                 varArg = VarArg.VARIABLE;
             }
         }

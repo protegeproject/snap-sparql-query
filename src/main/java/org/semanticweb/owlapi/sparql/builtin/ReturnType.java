@@ -5,11 +5,11 @@ package org.semanticweb.owlapi.sparql.builtin;
  * Stanford Center for Biomedical Informatics Research
  * 10/03/15
  */
-public class ResultType {
+public class ReturnType {
 
     private SparqlType sparqlType;
 
-    public ResultType(SparqlType sparqlType) {
+    public ReturnType(SparqlType sparqlType) {
         this.sparqlType = sparqlType;
     }
 
