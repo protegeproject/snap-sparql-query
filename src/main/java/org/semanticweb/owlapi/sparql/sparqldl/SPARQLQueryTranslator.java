@@ -59,11 +59,11 @@ import java.util.*;
 /**
  * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 27/03/2012
  */
-public class SPARQLDLTranslator {
+public class SPARQLQueryTranslator {
 
     private SPARQLQuery query;
 
-    public SPARQLDLTranslator(SPARQLQuery query) {
+    public SPARQLQueryTranslator(SPARQLQuery query) {
         this.query = query;
     }
 
