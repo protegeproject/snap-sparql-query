@@ -4,12 +4,12 @@ import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.api.PrimitiveType;
-import org.semanticweb.owlapi.sparql.apiex.*;
+import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
+import org.semanticweb.owlapi.sparql.builtin.OperandList;
+import org.semanticweb.owlapi.sparql.builtin.VarArg;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
 

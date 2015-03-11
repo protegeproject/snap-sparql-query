@@ -39,7 +39,7 @@
 
 package org.semanticweb.owlapi.sparql.parser;
 
-import org.semanticweb.owlapi.sparql.apiex.OperandType;
+import org.semanticweb.owlapi.sparql.builtin.OperandType;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
 
 /**

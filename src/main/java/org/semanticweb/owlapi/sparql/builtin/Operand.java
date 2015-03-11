@@ -37,13 +37,7 @@
  * limitations under the License.
  */
 
-package org.semanticweb.owlapi.sparql.parser;
-
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.sparql.builtin.OperandType;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenType;
+package org.semanticweb.owlapi.sparql.builtin;
 
 /**
  * Author: Matthew Horridge<br>
@@ -51,18 +45,26 @@ import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenType;
  * Bio-Medical Informatics Research Group<br>
  * Date: 17/04/2012
  */
-public class NumericLiteralOperandParser extends LiteralOperandParser  {
+public class Operand {
 
-    private TokenType tokenType;
+    private OperandType operandType;
+    
+    private String name;
 
-    public NumericLiteralOperandParser(OperandType operandType, IRI ... literalTypes) {
-        super(operandType, literalTypes);
-        this.tokenType = tokenType;
+    public Operand(OperandType operandType, String name) {
+        this.operandType = operandType;
+        this.name = name;
     }
 
-    @Override
-    public OWLLiteral parseOperand(SPARQLTokenizer tokenizer) {
-//        if(tokenizer.peek(IntegerTokenType.get()))
-        return null;
+    public Operand(OperandType operandType) {
+        this(operandType, operandType.name().toLowerCase());
+    }
+
+    public OperandType getOperandType() {
+        return operandType;
+    }
+
+    public String getName() {
+        return name;
     }
 }

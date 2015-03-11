@@ -41,7 +41,7 @@ package org.semanticweb.owlapi.sparql.parser;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.sparql.apiex.OperandType;
+import org.semanticweb.owlapi.sparql.builtin.OperandType;
 
 import java.util.ArrayList;
 import java.util.Arrays;

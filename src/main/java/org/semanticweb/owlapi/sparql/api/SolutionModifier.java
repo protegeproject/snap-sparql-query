@@ -37,32 +37,31 @@
  * limitations under the License.
  */
 
-package org.semanticweb.owlapi.sparql.parser;
+package org.semanticweb.owlapi.sparql.api;
 
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.sparql.builtin.OperandType;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
  * Bio-Medical Informatics Research Group<br>
- * Date: 17/04/2012
+ * Date: 01/04/2012
  */
-public class NumericLiteralOperandParser extends LiteralOperandParser  {
+public class SolutionModifier {
 
-    private TokenType tokenType;
-
-    public NumericLiteralOperandParser(OperandType operandType, IRI ... literalTypes) {
-        super(operandType, literalTypes);
-        this.tokenType = tokenType;
+    private List<OrderCondition> orderConditions = new ArrayList<OrderCondition>();
+    
+    public SolutionModifier() {
     }
 
-    @Override
-    public OWLLiteral parseOperand(SPARQLTokenizer tokenizer) {
-//        if(tokenizer.peek(IntegerTokenType.get()))
-        return null;
+    public SolutionModifier(List<OrderCondition> orderConditions) {
+        this.orderConditions.addAll(orderConditions);
     }
+
+    public List<OrderCondition> getOrderConditions() {
+        return Collections.unmodifiableList(orderConditions);
+    }
+
 }

@@ -42,7 +42,7 @@ package org.semanticweb.owlapi.sparql.ui;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.apiex.BuiltInCall;
+import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTerminal;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;

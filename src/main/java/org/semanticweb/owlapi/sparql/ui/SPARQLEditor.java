@@ -41,7 +41,6 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.sparql.apiex.SPARQLQuery;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTerminal;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;

@@ -45,7 +45,6 @@ import de.derivo.sparqldlapi.QueryResult;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.apiex.*;
 
 import java.util.*;
 

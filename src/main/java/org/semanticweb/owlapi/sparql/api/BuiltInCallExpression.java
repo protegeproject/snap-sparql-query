@@ -1,10 +1,9 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.collect.ImmutableList;
-import org.semanticweb.owlapi.sparql.apiex.BuiltInCall;
+import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * Author: Matthew Horridge<br>

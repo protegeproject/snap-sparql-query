@@ -37,32 +37,44 @@
  * limitations under the License.
  */
 
-package org.semanticweb.owlapi.sparql.parser;
+package org.semanticweb.owlapi.sparql.api;
 
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.sparql.builtin.OperandType;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenType;
+import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
+import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
  * Bio-Medical Informatics Research Group<br>
- * Date: 17/04/2012
+ * Date: 28/03/2012
  */
-public class NumericLiteralOperandParser extends LiteralOperandParser  {
+public class SPARQLQueryResult {
 
-    private TokenType tokenType;
+    private SPARQLQuery query;
 
-    public NumericLiteralOperandParser(OperandType operandType, IRI ... literalTypes) {
-        super(operandType, literalTypes);
-        this.tokenType = tokenType;
+    private List<SolutionMapping> results = new ArrayList<SolutionMapping>();
+
+
+    public SPARQLQueryResult(SPARQLQuery query, List<SolutionMapping> bindings) {
+        this.query = query;
+        this.results.addAll(bindings);
     }
 
-    @Override
-    public OWLLiteral parseOperand(SPARQLTokenizer tokenizer) {
-//        if(tokenizer.peek(IntegerTokenType.get()))
-        return null;
+    public SPARQLQuery getQuery() {
+        return query;
     }
+
+    public int getSize() {
+        return results.size();
+    }
+
+    public SolutionMapping getBindingAt(int index) {
+        return results.get(index);
+    }
+
+
+    
 }

@@ -42,9 +42,9 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Term;
 import org.semanticweb.owlapi.sparql.api.TermComparator;
-import org.semanticweb.owlapi.sparql.apiex.OrderByModifier;
-import org.semanticweb.owlapi.sparql.apiex.OrderCondition;
-import org.semanticweb.owlapi.sparql.apiex.SolutionModifier;
+import org.semanticweb.owlapi.sparql.api.OrderByModifier;
+import org.semanticweb.owlapi.sparql.api.OrderCondition;
+import org.semanticweb.owlapi.sparql.api.SolutionModifier;
 
 import java.util.Comparator;
 

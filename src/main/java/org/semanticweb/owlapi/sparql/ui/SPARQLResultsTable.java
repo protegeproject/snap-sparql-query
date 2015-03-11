@@ -40,7 +40,7 @@
 package org.semanticweb.owlapi.sparql.ui;
 
 import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.sparql.apiex.SPARQLQueryResult;
+import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;

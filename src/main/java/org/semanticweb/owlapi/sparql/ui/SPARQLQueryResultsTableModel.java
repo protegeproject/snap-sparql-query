@@ -42,7 +42,7 @@ package org.semanticweb.owlapi.sparql.ui;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.apiex.SPARQLQueryResult;
+import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.HashMap;

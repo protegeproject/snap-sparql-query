@@ -50,10 +50,9 @@ import de.derivo.sparqldlapi.types.QueryArgumentType;
 import de.derivo.sparqldlapi.types.QueryAtomType;
 import de.derivo.sparqldlapi.types.QueryType;
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.apiex.SPARQLGraphPattern;
-import org.semanticweb.owlapi.sparql.apiex.SPARQLQuery;
-import org.semanticweb.owlapi.sparql.apiex.SPARQLQueryType;
-import uk.ac.manchester.cs.owl.owlapi.OWLLiteralImpl;
+import org.semanticweb.owlapi.sparql.api.SPARQLGraphPattern;
+import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
+import org.semanticweb.owlapi.sparql.api.SPARQLQueryType;
 
 import java.util.*;
 

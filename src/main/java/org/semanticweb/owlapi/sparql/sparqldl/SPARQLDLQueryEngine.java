@@ -46,8 +46,8 @@ import de.derivo.sparqldlapi.exceptions.QueryEngineException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.sparql.apiex.SPARQLQuery;
-import org.semanticweb.owlapi.sparql.apiex.SPARQLQueryResult;
+import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
+import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 
 /**
  * Author: Matthew Horridge<br>

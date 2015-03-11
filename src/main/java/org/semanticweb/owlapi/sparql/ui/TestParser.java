@@ -46,15 +46,13 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.sparql.apiex.*;
+import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
+import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.VariableManager;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.JavaCCSPARQLTokenizerTokenManager;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.JavaCharStream;
 import org.semanticweb.owlapi.sparql.sparqldl.SPARQLDLQueryEngine;
-import org.semanticweb.owlapi.util.AutoIRIMapper;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -62,7 +60,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.StringReader;
 import java.util.prefs.Preferences;
 
