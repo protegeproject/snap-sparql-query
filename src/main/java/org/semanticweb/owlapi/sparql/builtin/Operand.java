@@ -47,21 +47,21 @@ package org.semanticweb.owlapi.sparql.builtin;
  */
 public class Operand {
 
-    private OperandType operandType;
+    private SparqlType sparqlType;
     
     private String name;
 
-    public Operand(OperandType operandType, String name) {
-        this.operandType = operandType;
+    public Operand(SparqlType sparqlType, String name) {
+        this.sparqlType = sparqlType;
         this.name = name;
     }
 
-    public Operand(OperandType operandType) {
-        this(operandType, operandType.name().toLowerCase());
+    public Operand(SparqlType sparqlType) {
+        this(sparqlType, sparqlType.name().toLowerCase());
     }
 
-    public OperandType getOperandType() {
-        return operandType;
+    public SparqlType getSparqlType() {
+        return sparqlType;
     }
 
     public String getName() {

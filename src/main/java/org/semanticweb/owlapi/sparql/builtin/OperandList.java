@@ -62,13 +62,13 @@ public class OperandList {
         this.operandList.addAll(Arrays.asList(operands));
     }
 
-    public OperandList(OperandType ... operandTypes) {
-        for(OperandType type : operandTypes) {
+    public OperandList(SparqlType... sparqlTypes) {
+        for(SparqlType type : sparqlTypes) {
             operandList.add(new Operand(type));
         }
     }
     
-    public OperandList(OperandType type, VarArg varArg) {
+    public OperandList(SparqlType type, VarArg varArg) {
         operandList.add(new Operand(type));
         this.varArg = varArg;
     }

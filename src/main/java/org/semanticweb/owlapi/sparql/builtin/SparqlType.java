@@ -52,7 +52,7 @@ import java.util.List;
  * Bio-Medical Informatics Research Group<br>
  * Date: 17/04/2012
  */
-public enum OperandType {
+public enum SparqlType {
 
     BOOLEAN(),
 
@@ -99,7 +99,7 @@ public enum OperandType {
 
     private List<TokenType> tokenTypeList = new ArrayList<TokenType>();
 
-    private OperandType(TokenType... tokenTypes) {
+    private SparqlType(TokenType... tokenTypes) {
         tokenTypeList.addAll(Arrays.asList(tokenTypes));
     }
 

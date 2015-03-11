@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.semanticweb.owlapi.sparql.builtin.OperandType.*;
+import static org.semanticweb.owlapi.sparql.builtin.SparqlType.*;
 
 /**
  * Author: Matthew Horridge<br>
@@ -57,7 +57,7 @@ public enum BuiltInCall {
 
     STR(new STR_Evaluator(),
             SimpleLiteral(), operandList(LITERAL),
-            operandList(OperandType.IRI)),
+            operandList(SparqlType.IRI)),
 
     LANG(new LANG_Evaluator(), SimpleLiteral(), operandList(LITERAL)),
 
@@ -69,14 +69,14 @@ public enum BuiltInCall {
 
     IRI(new NullBuiltInCallEvaluator(), IRI(), operandList(SIMPLE_LITERAL),
             operandList(XSD_STRING),
-            operandList(OperandType.IRI)),
+            operandList(SparqlType.IRI)),
 
 
     URI(new NullBuiltInCallEvaluator(), IRI(), operandList(SIMPLE_LITERAL),
             operandList(XSD_STRING),
-            operandList(OperandType.IRI)),
+            operandList(SparqlType.IRI)),
 
-    BNODE(new NullBuiltInCallEvaluator(), new ResultType(OperandType.BLANK_NODE), operandList(),
+    BNODE(new NullBuiltInCallEvaluator(), new ResultType(SparqlType.BLANK_NODE), operandList(),
             operandList(SIMPLE_LITERAL),
             operandList(XSD_STRING)),
 
@@ -155,7 +155,7 @@ public enum BuiltInCall {
 
     STRLANG(new NullBuiltInCallEvaluator(), Literal(), operandList(SIMPLE_LITERAL, SIMPLE_LITERAL)),
 
-    STRDT(new NullBuiltInCallEvaluator(), Literal(), operandList(SIMPLE_LITERAL, OperandType.IRI)),
+    STRDT(new NullBuiltInCallEvaluator(), Literal(), operandList(SIMPLE_LITERAL, SparqlType.IRI)),
 
     SAMETERM(new SAMETERM_Evaluator(), Boolean(), operandList(RDF_TERM, RDF_TERM)),
 
@@ -176,7 +176,7 @@ public enum BuiltInCall {
         return new OperandList();
     }
 
-    private static OperandList operandList(OperandType ... operands) {
+    private static OperandList operandList(SparqlType... operands) {
         return new OperandList(operands);
     }
 
@@ -184,8 +184,8 @@ public enum BuiltInCall {
         return new OperandList(operands);
     }
 
-    private static OperandList operandList(OperandType operandType, VarArg varArg) {
-        return new OperandList(operandType, varArg);
+    private static OperandList operandList(SparqlType sparqlType, VarArg varArg) {
+        return new OperandList(sparqlType, varArg);
     }
 
     private static ResultType Integer() {
@@ -197,7 +197,7 @@ public enum BuiltInCall {
     }
 
     private static ResultType IRI() {
-        return new ResultType(OperandType.IRI);
+        return new ResultType(SparqlType.IRI);
     }
 
     private static ResultType SimpleLiteral() {

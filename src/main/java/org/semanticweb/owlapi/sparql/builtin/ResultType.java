@@ -1,7 +1,5 @@
 package org.semanticweb.owlapi.sparql.builtin;
 
-import org.semanticweb.owlapi.sparql.builtin.OperandType;
-
 /**
  * Matthew Horridge
  * Stanford Center for Biomedical Informatics Research
@@ -9,39 +7,39 @@ import org.semanticweb.owlapi.sparql.builtin.OperandType;
  */
 public class ResultType {
 
-    private OperandType operandType;
+    private SparqlType sparqlType;
 
-    public ResultType(OperandType operandType) {
-        this.operandType = operandType;
+    public ResultType(SparqlType sparqlType) {
+        this.sparqlType = sparqlType;
     }
 
-    public OperandType getOperandType() {
-        return operandType;
+    public SparqlType getSparqlType() {
+        return sparqlType;
     }
 
     public boolean isSimpleLiteral() {
-        return operandType == OperandType.SIMPLE_LITERAL;
+        return sparqlType == SparqlType.SIMPLE_LITERAL;
     }
 
     public boolean isBoolean() {
-        return operandType == OperandType.BOOLEAN;
+        return sparqlType == SparqlType.BOOLEAN;
     }
 
     public boolean isStringLiteral() {
-        return operandType == OperandType.STRING_LITERAL;
+        return sparqlType == SparqlType.STRING_LITERAL;
     }
 
     public boolean isNumeric() {
-        return operandType == OperandType.NUMERIC || operandType == OperandType.XSD_DOUBLE || operandType == OperandType.XSD_STRING;
+        return sparqlType == SparqlType.NUMERIC || sparqlType == SparqlType.XSD_DOUBLE || sparqlType == SparqlType.XSD_STRING;
     }
 
     public boolean isLiteral() {
-        return operandType == OperandType.LITERAL
-                || operandType == OperandType.SIMPLE_LITERAL
-                || operandType == OperandType.STRING_LITERAL;
+        return sparqlType == SparqlType.LITERAL
+                || sparqlType == SparqlType.SIMPLE_LITERAL
+                || sparqlType == SparqlType.STRING_LITERAL;
     }
 
     public boolean isIRI() {
-        return operandType == OperandType.IRI;
+        return sparqlType == SparqlType.IRI;
     }
 }

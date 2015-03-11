@@ -70,7 +70,7 @@ public class SPARQLDLQueryEngine {
             OWLOntologyManager man = rootOntology.getOWLOntologyManager();
 
             QueryEngine posQE = QueryEngine.create(man, reasoner);
-            SPARQLDLTranslator translator = new SPARQLDLTranslator(query);
+            SPARQLQueryTranslator translator = new SPARQLQueryTranslator(query);
 
             Query translate = translator.translate();
             QueryResult queryResult = posQE.execute(translate);
