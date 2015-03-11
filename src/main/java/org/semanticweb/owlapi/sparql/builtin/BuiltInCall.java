@@ -55,122 +55,270 @@ import static org.semanticweb.owlapi.sparql.builtin.SparqlType.*;
  */
 public enum BuiltInCall {
 
-    STR(new STR_Evaluator(),
+    // @formatter:off
+
+    STR(
+            new STR_Evaluator(),
             SimpleLiteral(), operandList(LITERAL),
             operandList(SparqlType.IRI)),
 
-    LANG(new LANG_Evaluator(), SimpleLiteral(), operandList(LITERAL)),
+    LANG(
+            new LANG_Evaluator(),
+            SimpleLiteral(),
+            operandList(LITERAL)),
 
-    LANGMATCHES(new LANGMATCHES_Evaluator(), Boolean(), new Operand(SIMPLE_LITERAL, "language-tag"), new Operand(SIMPLE_LITERAL, "language-range")),
+    LANGMATCHES(
+            new LANGMATCHES_Evaluator(),
+            Boolean(),
+            new Operand(SIMPLE_LITERAL, "language-tag"), new Operand(SIMPLE_LITERAL, "language-range")),
 
-    DATATYPE(new NullBuiltInCallEvaluator(), IRI(), new Operand(LITERAL)),
+    DATATYPE(
+            new NullBuiltInCallEvaluator(),
+            IRI(),
+            operandList(LITERAL)),
 
-    BOUND(new NullBuiltInCallEvaluator(), Boolean(), new Operand(VARIABLE)),
+    BOUND(
+            new NullBuiltInCallEvaluator(),
+            Boolean(),
+            operandList(VARIABLE)),
 
-    IRI(new NullBuiltInCallEvaluator(), IRI(), operandList(SIMPLE_LITERAL),
+    IRI(
+            new NullBuiltInCallEvaluator(), IRI(), operandList(SIMPLE_LITERAL),
             operandList(XSD_STRING),
             operandList(SparqlType.IRI)),
 
 
-    URI(new NullBuiltInCallEvaluator(), IRI(), operandList(SIMPLE_LITERAL),
+    URI(
+            new NullBuiltInCallEvaluator(), IRI(),
+            operandList(SIMPLE_LITERAL),
             operandList(XSD_STRING),
             operandList(SparqlType.IRI)),
 
-    BNODE(new NullBuiltInCallEvaluator(), new ResultType(SparqlType.BLANK_NODE), operandList(),
+    BNODE(
+            new NullBuiltInCallEvaluator(),
+            new ResultType(SparqlType.BLANK_NODE), operandList(),
             operandList(SIMPLE_LITERAL),
             operandList(XSD_STRING)),
 
-    RAND(new NullBuiltInCallEvaluator(), Double(), operandList()),
+    RAND(
+            new NullBuiltInCallEvaluator(),
+            Double(),
+            operandList()),
 
-    ABS(new NullBuiltInCallEvaluator(), Numeric(), operandList(NUMERIC)),
+    ABS(
+            new NullBuiltInCallEvaluator(),
+            Numeric(),
+            operandList(NUMERIC)),
 
-    CEIL(new NullBuiltInCallEvaluator(), Numeric(), operandList(NUMERIC)),
+    CEIL(
+            new NullBuiltInCallEvaluator(),
+            Numeric(),
+            operandList(NUMERIC)),
 
-    FLOOR(new NullBuiltInCallEvaluator(), Numeric(), operandList(NUMERIC)),
+    FLOOR(
+            new NullBuiltInCallEvaluator(),
+            Numeric(),
+            operandList(NUMERIC)),
 
-    ROUND(new NullBuiltInCallEvaluator(), Numeric(), operandList(NUMERIC)),
+    ROUND(
+            new NullBuiltInCallEvaluator(),
+            Numeric(),
+            operandList(NUMERIC)),
 
-    CONCAT(new CONCAT_Evaluator(), StringLiteral(), operandList(STRING_LITERAL, VarArg.VARIABLE)),
+    CONCAT(
+            new CONCAT_Evaluator(),
+            StringLiteral(),
+            operandList(STRING_LITERAL, VarArg.VARIABLE)),
 
-    SUBSTR(new NullBuiltInCallEvaluator(), StringLiteral(), operandList(new Operand(STRING_LITERAL), new Operand(XSD_INTEGER, "startingLoc")),
+    SUBSTR(
+            new NullBuiltInCallEvaluator(),
+            StringLiteral(),
+            operandList(new Operand(STRING_LITERAL), new Operand(XSD_INTEGER, "startingLoc")),
             operandList(new Operand(STRING_LITERAL), new Operand(XSD_INTEGER, "startingLoc"), new Operand(XSD_INTEGER, "length"))),
 
-    STRLEN(new STRLEN_Evaluator(), Numeric(), new Operand(STRING_LITERAL)),
+    STRLEN(
+            new STRLEN_Evaluator(),
+            Numeric(),
+            operandList(STRING_LITERAL)),
 
-    REPLACE(new NullBuiltInCallEvaluator(), StringLiteral(), operandList(new Operand(STRING_LITERAL, "arg"), new Operand(SIMPLE_LITERAL, "pattern"), new Operand(SIMPLE_LITERAL, "replacement")),
+    REPLACE(
+            new NullBuiltInCallEvaluator(),
+            StringLiteral(),
+            operandList(new Operand(STRING_LITERAL, "arg"), new Operand(SIMPLE_LITERAL, "pattern"), new Operand(SIMPLE_LITERAL, "replacement")),
             operandList(new Operand(STRING_LITERAL, "arg"), new Operand(SIMPLE_LITERAL, "pattern"), new Operand(SIMPLE_LITERAL, "replacement"), new Operand(SIMPLE_LITERAL, "flags"))),
 
-    UCASE(new UCASE_Evaluator(), StringLiteral(), operandList(SIMPLE_LITERAL)),
+    UCASE(
+            new UCASE_Evaluator(),
+            StringLiteral(),
+            operandList(SIMPLE_LITERAL)),
 
-    LCASE(new NullBuiltInCallEvaluator(), StringLiteral(), operandList(SIMPLE_LITERAL)),
+    LCASE(
+            new NullBuiltInCallEvaluator(),
+            StringLiteral(),
+            operandList(SIMPLE_LITERAL)),
 
-    ENCODE_FOR_URI(new NullBuiltInCallEvaluator(), SimpleLiteral(), operandList(STRING_LITERAL)),
+    ENCODE_FOR_URI(
+            new NullBuiltInCallEvaluator(),
+            SimpleLiteral(),
+            operandList(STRING_LITERAL)),
 
-    CONTAINS(new CONTAINS_Evaluator(), Boolean(), operandList(STRING_LITERAL, STRING_LITERAL)),
+    CONTAINS(
+            new CONTAINS_Evaluator(),
+            Boolean(),
+            operandList(STRING_LITERAL, STRING_LITERAL)),
 
-    STRSTARTS(new STRSTARTS_Evaluator(), Boolean(), operandList(STRING_LITERAL, STRING_LITERAL)),
+    STRSTARTS(
+            new STRSTARTS_Evaluator(),
+            Boolean(),
+            operandList(STRING_LITERAL, STRING_LITERAL)),
 
-    STRENDS(new NullBuiltInCallEvaluator(), Boolean(), operandList(STRING_LITERAL, STRING_LITERAL)),
+    STRENDS(
+            new NullBuiltInCallEvaluator(),
+            Boolean(),
+            operandList(STRING_LITERAL, STRING_LITERAL)),
 
-    STRBEFORE(new NullBuiltInCallEvaluator(), Literal(), operandList(STRING_LITERAL, STRING_LITERAL)),
+    STRBEFORE(
+            new NullBuiltInCallEvaluator(),
+            Literal(),
+            operandList(STRING_LITERAL, STRING_LITERAL)),
 
-    STRAFTER(new NullBuiltInCallEvaluator(), Literal(), operandList(STRING_LITERAL, STRING_LITERAL)),
+    STRAFTER(
+            new NullBuiltInCallEvaluator(),
+            Literal(),
+            operandList(STRING_LITERAL, STRING_LITERAL)),
 
-    YEAR(new NullBuiltInCallEvaluator(), Integer(), operandList(XSD_DATE_TIME)),
+    YEAR(
+            new NullBuiltInCallEvaluator(),
+            Integer(),
+            operandList(XSD_DATE_TIME)),
 
-    MONTH(new NullBuiltInCallEvaluator(), Integer(), operandList(XSD_DATE_TIME)),
+    MONTH(
+            new NullBuiltInCallEvaluator(),
+            Integer(),
+            operandList(XSD_DATE_TIME)),
 
-    DAY(new NullBuiltInCallEvaluator(), Integer(), operandList(XSD_DATE_TIME)),
+    DAY(
+            new NullBuiltInCallEvaluator(),
+            Integer(),
+            operandList(XSD_DATE_TIME)),
 
-    HOURS(new NullBuiltInCallEvaluator(), Integer(), operandList(XSD_DATE_TIME)),
+    HOURS(
+            new NullBuiltInCallEvaluator(),
+            Integer(),
+            operandList(XSD_DATE_TIME)),
 
-    MINUTES(new NullBuiltInCallEvaluator(), Integer(), operandList(XSD_DATE_TIME)),
+    MINUTES(
+            new NullBuiltInCallEvaluator(),
+            Integer(),
+            operandList(XSD_DATE_TIME)),
 
-    SECONDS(new NullBuiltInCallEvaluator(), Integer(), operandList(XSD_DATE_TIME)),
+    SECONDS(
+            new NullBuiltInCallEvaluator(),
+            Integer(),
+            operandList(XSD_DATE_TIME)),
 
-    TIMEZONE(new NullBuiltInCallEvaluator(), new ResultType(XSD_DATE_TIME), operandList(XSD_DATE_TIME)),
+    TIMEZONE(
+            new NullBuiltInCallEvaluator(),
+            new ResultType(XSD_DATE_TIME),
+            operandList(XSD_DATE_TIME)),
 
-    TZ(new NullBuiltInCallEvaluator(), SimpleLiteral(), operandList(XSD_DATE_TIME)),
+    TZ(
+            new NullBuiltInCallEvaluator(),
+            SimpleLiteral(),
+            operandList(XSD_DATE_TIME)),
 
-    NOW(new NullBuiltInCallEvaluator(), new ResultType(XSD_DATE_TIME), operandList()),
+    NOW(
+            new NullBuiltInCallEvaluator(),
+            new ResultType(XSD_DATE_TIME),
+            operandList()),
 
-    MD5(new NullBuiltInCallEvaluator(), SimpleLiteral(), operandList(STRING_LITERAL),
+    MD5(
+            new NullBuiltInCallEvaluator(),
+            SimpleLiteral(),
+            operandList(STRING_LITERAL),
             operandList(XSD_STRING)),
 
-    SHA1(new NullBuiltInCallEvaluator(), SimpleLiteral(), operandList(STRING_LITERAL),
+    SHA1(
+            new NullBuiltInCallEvaluator(),
+            SimpleLiteral(),
+            operandList(STRING_LITERAL),
             operandList(XSD_STRING)),
 
-    SHA256(new NullBuiltInCallEvaluator(), SimpleLiteral(), operandList(STRING_LITERAL),
+    SHA256(
+            new NullBuiltInCallEvaluator(),
+            SimpleLiteral(),
+            operandList(STRING_LITERAL),
             operandList(XSD_STRING)),
 
-    SHA384(new NullBuiltInCallEvaluator(), SimpleLiteral(), operandList(STRING_LITERAL),
+    SHA384(
+            new NullBuiltInCallEvaluator(),
+            SimpleLiteral(),
+            operandList(STRING_LITERAL),
             operandList(XSD_STRING)),
 
-    SHA512(new NullBuiltInCallEvaluator(), SimpleLiteral(), operandList(STRING_LITERAL),
+    SHA512(
+            new NullBuiltInCallEvaluator(),
+            SimpleLiteral(),
+            operandList(STRING_LITERAL),
             operandList(XSD_STRING)),
 
-    COALESCE(new NullBuiltInCallEvaluator(), SimpleLiteral(), operandList(EXPRESSION, VarArg.VARIABLE)),
+    COALESCE(
+            new NullBuiltInCallEvaluator(),
+            SimpleLiteral(),
+            operandList(EXPRESSION, VarArg.VARIABLE)),
 
-    IF(new NullBuiltInCallEvaluator(), Boolean(), operandList(EXPRESSION, EXPRESSION, EXPRESSION)),
+    IF(
+            new NullBuiltInCallEvaluator(),
+            Boolean(),
+            operandList(EXPRESSION, EXPRESSION, EXPRESSION)),
 
-    STRLANG(new NullBuiltInCallEvaluator(), Literal(), operandList(SIMPLE_LITERAL, SIMPLE_LITERAL)),
+    STRLANG(
+            new NullBuiltInCallEvaluator(),
+            Literal(),
+            operandList(SIMPLE_LITERAL, SIMPLE_LITERAL)),
 
-    STRDT(new NullBuiltInCallEvaluator(), Literal(), operandList(SIMPLE_LITERAL, SparqlType.IRI)),
+    STRDT(
+            new NullBuiltInCallEvaluator(),
+            Literal(),
+            operandList(SIMPLE_LITERAL, SparqlType.IRI)),
 
-    SAMETERM(new SAMETERM_Evaluator(), Boolean(), operandList(RDF_TERM, RDF_TERM)),
+    SAMETERM(
+            new SAMETERM_Evaluator(),
+            Boolean(),
+            operandList(RDF_TERM, RDF_TERM)),
 
-    ISIRI(new NullBuiltInCallEvaluator(), Boolean(), operandList(RDF_TERM)),
+    ISIRI(
+            new NullBuiltInCallEvaluator(),
+            Boolean(),
+            operandList(RDF_TERM)),
 
-    ISURI(new NullBuiltInCallEvaluator(), Boolean(), operandList(RDF_TERM)),
+    ISURI(
+            new NullBuiltInCallEvaluator(),
+            Boolean(),
+            operandList(RDF_TERM)),
 
-    ISBLANK(new NullBuiltInCallEvaluator(), Boolean(), operandList(RDF_TERM)),
+    ISBLANK(
+            new NullBuiltInCallEvaluator(),
+            Boolean(),
+            operandList(RDF_TERM)),
 
-    ISLITERAL(new NullBuiltInCallEvaluator(), Boolean(), operandList(RDF_TERM)),
+    ISLITERAL(
+            new NullBuiltInCallEvaluator(),
+            Boolean(),
+            operandList(RDF_TERM)),
 
-    ISNUMERIC(new NullBuiltInCallEvaluator(), Boolean(), operandList(RDF_TERM)),
+    ISNUMERIC(
+            new NullBuiltInCallEvaluator(),
+            Boolean(),
+            operandList(RDF_TERM)),
 
-    REGEX(new REGEX_Evaluator(), Boolean(), operandList(new Operand(SIMPLE_LITERAL, "text"), new Operand(SIMPLE_LITERAL, "pattern")),
+    REGEX(
+            new REGEX_Evaluator(),
+            Boolean(),
+            operandList(new Operand(SIMPLE_LITERAL, "text"), new Operand(SIMPLE_LITERAL, "pattern")),
             operandList(new Operand(SIMPLE_LITERAL, "text"), new Operand(SIMPLE_LITERAL, "pattern"), new Operand(SIMPLE_LITERAL, "flags")));
+
+    // @formatter:on
 
     private static OperandList operandList() {
         return new OperandList();
