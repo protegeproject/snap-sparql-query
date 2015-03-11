@@ -42,8 +42,10 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 import de.derivo.sparqldlapi.QueryArgument;
 import de.derivo.sparqldlapi.QueryBinding;
 import de.derivo.sparqldlapi.QueryResult;
+import de.derivo.sparqldlapi.impl.LiteralTranslator;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.sparql.api.*;
 
 import java.util.*;
@@ -65,7 +67,8 @@ public class SPARQLQueryResultsTranslator {
     private SPARQLQuery query;
     
     private Map<String, Variable> nameVariableMap = new HashMap<String, Variable>();
-    private final LiteralPatternTranslator translator;
+
+    private final LiteralTranslator translator;
 
     public SPARQLQueryResultsTranslator(SPARQLQuery query, QueryResult result, OWLDataFactory dataFactory) {
         this.query = query;
@@ -78,7 +81,7 @@ public class SPARQLQueryResultsTranslator {
             Variable variable = selectAs.getVariable();
             nameVariableMap.put(variable.getName(), variable);
         }
-        translator = new LiteralPatternTranslator();
+        translator = new LiteralTranslator(dataFactory);
     }
     
     public SPARQLQueryResult translate() {
@@ -101,7 +104,8 @@ public class SPARQLQueryResultsTranslator {
                     case BNODE:
                         break;
                     case LITERAL:
-                        term = translator.translateLiteralPattern(value.getValue());
+                        OWLLiteral literal = translator.toOWLLiteral(value);
+                        term = new Literal(Datatype.get(literal.getDatatype().getIRI()), literal.getLiteral(), literal.getLang());
                         break;
                 }
                 if(term != null) {

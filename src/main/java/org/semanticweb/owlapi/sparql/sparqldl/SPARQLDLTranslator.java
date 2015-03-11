@@ -57,10 +57,7 @@ import org.semanticweb.owlapi.sparql.api.SPARQLQueryType;
 import java.util.*;
 
 /**
- * Author: Matthew Horridge<br>
- * Stanford University<br>
- * Bio-Medical Informatics Research Group<br>
- * Date: 27/03/2012
+ * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 27/03/2012
  */
 public class SPARQLDLTranslator {
 
@@ -78,14 +75,14 @@ public class SPARQLDLTranslator {
     private Query translateInternal(List<SPARQLGraphPattern> graphPatterns) {
         QueryType select = (query.getQueryType() == SPARQLQueryType.SELECT_DISTINCT) ? QueryType.SELECT_DISTINCT : QueryType.SELECT;
         QueryImpl query = new QueryImpl(select);
-        for(Variable v : this.query.getGraphPatternVariables()) {
+        for (Variable v : this.query.getGraphPatternVariables()) {
             System.out.println("GraphPatternVar: " + v);
             query.addResultVar(new QueryArgument(QueryArgumentType.VAR, v.getName()));
         }
         AxiomTemplateVisitor axiomTemplateVisitor = new AxiomTemplateVisitor();
         for (SPARQLGraphPattern gp : graphPatterns) {
             QueryAtomGroupImpl queryAtomGroup = new QueryAtomGroupImpl();
-            for(Axiom ax : gp.getAxioms()) {
+            for (Axiom ax : gp.getAxioms()) {
                 QueryAtom atom = ax.accept(axiomTemplateVisitor);
                 queryAtomGroup.addAtom(atom);
             }
@@ -97,30 +94,26 @@ public class SPARQLDLTranslator {
     public Query translateMinus() {
         return translateInternal(query.getMinusPatterns());
     }
-    
-    private QueryAtom getAtom(QueryAtomType type, Visitable ... args) {
+
+    private QueryAtom getAtom(QueryAtomType type, Visitable... args) {
         return getAtom(type, Arrays.asList(args));
     }
 
     private QueryAtom getAtom(QueryAtomType type, Collection<? extends Visitable> args) {
         ArgumentVisitor argumentVisitor = new ArgumentVisitor();
         List<QueryArgument> queryArguments = new ArrayList<QueryArgument>();
-        for(Visitable arg : args) {
+        for (Visitable arg : args) {
             QueryArgument queryArgument = arg.accept(argumentVisitor);
             if (queryArgument != null) {
                 queryArguments.add(queryArgument);
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException("Cannot translate: " + arg + " into a query atom argument");
             }
         }
         return new QueryAtom(type, queryArguments);
     }
-    
-    
-    
-    
-    
+
+
     private class AxiomTemplateVisitor implements AxiomVisitor<QueryAtom, RuntimeException> {
 
         public QueryAtom visit(SubClassOf axiom) {
@@ -314,9 +307,9 @@ public class SPARQLDLTranslator {
         public QueryAtom visit(AnnotationPropertyRange axiom) {
             return null;
         }
-        
+
     }
-    
+
     private class ArgumentVisitor extends VisitorAdapter<QueryArgument, RuntimeException> {
 
 
@@ -382,24 +375,8 @@ public class SPARQLDLTranslator {
 
         public QueryArgument visit(Literal node) throws RuntimeException {
             return LiteralTranslator.toQueryArgument(node.getLexicalForm(), node.getLang(), node.getDatatype().getIRI());
-//                StringBuilder sb = new StringBuilder();
-//                sb.append("\"");
-//                sb.append(node.getLexicalForm());
-//                sb.append("\"");
-//                if(node.isRDFPlainLiteral()) {
-//                    if(!node.getLang().isEmpty()) {
-//                        sb.append("@");
-//                        sb.append(node.getLang());
-//                    }
-//                }
-//                else {
-//                    sb.append("^^<");
-//                    sb.append(node.getDatatype().getIRI());
-//                    sb.append(">");
-//                }
-//                return new QueryArgument(QueryArgumentType.LITERAL, sb.toString());
-            }
         }
-
     }
+
+}
 
