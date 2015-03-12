@@ -63,9 +63,6 @@ public class SPARQLParserImpl {
                 mustBindVariable.add(new UntypedVariable(varName));
             }
         }
-        if (selectAll) {
-            mustBindVariable.addAll(tokenizer.getVariableManager().getVariables());
-        }
         List<SPARQLGraphPattern> graphPatterns = new ArrayList<>();
         List<Variable> allVariables = new ArrayList<>();
         allVariables.addAll(tokenizer.getVariableManager().getVariables());
@@ -73,6 +70,9 @@ public class SPARQLParserImpl {
         for (SPARQLGraphPattern bgp : parsedBGPs) {
             allVariables.addAll(bgp.getTriplePatternVariablesVariables());
             graphPatterns.add(bgp);
+            if (selectAll) {
+                mustBindVariable.addAll(bgp.getTriplePatternVariablesVariables());
+            }
         }
 
         for (SelectAs selectAs : selectAsList) {
@@ -918,15 +918,23 @@ public class SPARQLParserImpl {
     private void parseAnnotationAssertions(SPARQLToken subjectToken, SPARQLGraphPattern currentPattern) {
         SPARQLToken predicateToken = tokenizer.consume();
         AnnotationSubject subject;
-        if(subjectToken.hasTokenType(
-                DeclaredVariableTokenType.get(PrimitiveType.CLASS),
-                DeclaredVariableTokenType.get(PrimitiveType.DATATYPE),
-                DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY),
-                DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY),
-                DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY),
-                DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL),
-                UntypedIRITokenType.get())) {
-            subject = new UntypedVariable(subjectToken.getImage());
+        if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.CLASS))) {
+            subject = new ClassVariable(subjectToken.getImage());
+        }
+        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.DATATYPE))) {
+            subject = new DatatypeVariable(subjectToken.getImage());
+        }
+        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY))) {
+            subject = new ObjectPropertyVariable(subjectToken.getImage());
+        }
+        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY))) {
+            subject = new DataPropertyVariable(subjectToken.getImage());
+        }
+        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY))) {
+            subject = new AnnotationPropertyVariable(subjectToken.getImage());
+        }
+        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL))) {
+            subject = new IndividualVariable(subjectToken.getImage());
         }
         else {
             subject = new AtomicIRI(getIRIFromToken(subjectToken));
