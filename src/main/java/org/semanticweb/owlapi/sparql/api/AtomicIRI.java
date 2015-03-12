@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.Collection;
@@ -130,5 +131,13 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     @Override
     public void collectVariables(Collection<Variable> variables) {
 
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("AtomicIRI")
+                .addValue(iri)
+                .toString();
     }
 }
