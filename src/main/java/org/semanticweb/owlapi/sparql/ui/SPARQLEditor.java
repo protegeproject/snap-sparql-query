@@ -41,6 +41,8 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
+import org.semanticweb.owlapi.sparql.builtin.eval.NullBuiltInCallEvaluator;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTerminal;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
@@ -254,7 +256,10 @@ public class SPARQLEditor extends JTextPane {
 
             }
             else if(type instanceof BuiltInCallTokenType) {
-                return builtInStyle;
+                BuiltInCall call = BuiltInCall.valueOf(token.getImage());
+                if (call.isSupported()) {
+                    return builtInStyle;
+                }
             }
             else if(type instanceof OWLRDFVocabularyTokenType) {
                 return rdfVocabularyStyle;

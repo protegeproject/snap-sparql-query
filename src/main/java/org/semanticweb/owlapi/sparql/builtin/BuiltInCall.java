@@ -341,6 +341,10 @@ public enum BuiltInCall {
         argLists = ImmutableList.of(new ArgList(args));
     }
 
+    public boolean isSupported() {
+        return !(evaluator instanceof NullBuiltInCallEvaluator);
+    }
+
     private static ArgList argList() {
         return new ArgList();
     }

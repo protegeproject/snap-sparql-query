@@ -371,7 +371,9 @@ public class AutoCompleter {
         
         if(e.getExpectedTokenTypes().contains(BuiltInCallTokenType.get())) {
             for(BuiltInCall builtInCall : BuiltInCall.values()) {
-                matches.add(builtInCall.name());
+                if (builtInCall.isSupported()) {
+                    matches.add(builtInCall.name());
+                }
             }
         }
 
