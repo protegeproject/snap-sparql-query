@@ -39,10 +39,10 @@
 
 package org.semanticweb.owlapi.sparql.builtin;
 
+import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.builtin.eval.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.semanticweb.owlapi.sparql.builtin.SparqlType.*;
@@ -319,20 +319,26 @@ public enum BuiltInCall {
 
     // @formatter:on
 
-    private final List<ArgList> argLists = new ArrayList<>();
+    private final ImmutableList<ArgList> argLists;
+
     private final ReturnType returnType;
+
     private final BuiltInCallEvaluator evaluator;
 
     private BuiltInCall(BuiltInCallEvaluator evaluator, ReturnType returnType, ArgList... argLists) {
         this.evaluator = evaluator;
         this.returnType = returnType;
-        this.argLists.addAll(Arrays.asList(argLists));
+        ImmutableList.Builder<ArgList> builder = ImmutableList.builder();
+        for(ArgList argList : argLists) {
+            builder.add(argList);
+        }
+        this.argLists = builder.build();
     }
 
     private BuiltInCall(BuiltInCallEvaluator evaluator, ReturnType returnType, Arg... args) {
         this.evaluator = evaluator;
         this.returnType = returnType;
-        argLists.add(new ArgList(args));
+        argLists = ImmutableList.of(new ArgList(args));
     }
 
     private static ArgList argList() {
