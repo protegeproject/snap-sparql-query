@@ -10,14 +10,7 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class DataProperty extends AbstractEntity implements DataPropertyExpression, AtomicDataProperty {
 
-    private DataProperty() {
-    }
-
     public DataProperty(IRI iri) {
-        super(iri);
-    }
-
-    public DataProperty(String iri) {
         super(iri);
     }
 

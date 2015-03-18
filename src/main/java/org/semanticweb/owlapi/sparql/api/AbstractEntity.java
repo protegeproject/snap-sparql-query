@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -16,35 +18,27 @@ import java.util.Set;
  */
 public abstract class AbstractEntity implements HasIRI, Term, Entity {
 
-    private String iri;
+    private IRI iri;
 
-    protected AbstractEntity() {
-    }
-    
     public AbstractEntity(IRI iri) {
-        this(iri.toString());
-    }
-
-
-    public AbstractEntity(String iri) {
-        this.iri = iri;
+        this.iri = checkNotNull(iri);
     }
 
     public Set<Variable> getVariables() {
         return Collections.emptySet();
     }
 
-    public String getIRI() {
+    public IRI getIRI() {
         return iri;
     }
 
     public String getQName(PrefixManager pm) {
-        return pm.getPrefixIRI(IRI.create(iri));
+        return pm.getPrefixIRI(iri);
     }
 
 
     public String getIdentifier() {
-        return iri;
+        return iri.toString();
     }
 
     public boolean isLiteral() {

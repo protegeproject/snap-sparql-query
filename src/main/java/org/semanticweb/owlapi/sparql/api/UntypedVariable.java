@@ -26,7 +26,7 @@ public class UntypedVariable extends AbstractVariable implements AnnotationValue
     }
 
     public Term getBound(IRI iri) {
-        return new AtomicIRI(iri.toString());
+        return new AtomicIRI(iri);
     }
 
     @Override

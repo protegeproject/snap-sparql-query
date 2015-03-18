@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 
+import org.semanticweb.owlapi.model.IRI;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -9,5 +11,5 @@ package org.semanticweb.owlapi.sparql.api;
  */
 public interface HasIRI extends HasIdentifier {
 
-    String getIRI();
+    IRI getIRI();
 }

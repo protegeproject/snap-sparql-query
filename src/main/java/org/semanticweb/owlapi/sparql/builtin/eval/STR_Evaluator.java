@@ -21,7 +21,7 @@ public class STR_Evaluator implements BuiltInCallEvaluator {
         }
         EvaluationResult iriEval = args.get(0).evaluateAsIRI(sm);
         if(!iriEval.isError()) {
-            EvaluationResult.getResult(new Literal(iriEval.asIRI().getIRI(), ""));
+            EvaluationResult.getResult(new Literal(iriEval.asIRI().getIRI().toString(), ""));
         }
         EvaluationResult literalEval = args.get(0).evaluateAsLiteral(sm);
         if(literalEval.isError()) {

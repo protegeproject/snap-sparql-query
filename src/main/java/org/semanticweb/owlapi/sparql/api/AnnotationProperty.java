@@ -46,7 +46,7 @@ public class AnnotationProperty extends AbstractEntity implements AtomicAnnotati
     }
 
     @Override
-    public String getIRI() {
+    public IRI getIRI() {
         return super.getIRI();
     }
 }

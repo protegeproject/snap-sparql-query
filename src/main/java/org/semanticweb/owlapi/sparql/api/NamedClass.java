@@ -11,14 +11,7 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class NamedClass extends AbstractEntity implements Entity, AtomicClass {
 
-    private NamedClass() {
-    }
-
     public NamedClass(IRI iri) {
-        super(iri);
-    }
-
-    public NamedClass(String iri) {
         super(iri);
     }
 

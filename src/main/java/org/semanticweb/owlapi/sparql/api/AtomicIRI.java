@@ -16,30 +16,26 @@ import java.util.Set;
  */
 public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationValue {
 
-    private String iri;
+    private final IRI iri;
 
     public AtomicIRI(IRI iri) {
-        this.iri = iri.toString();
+        this.iri = iri;
     }
 
     public <R, E extends Throwable> R accept(Visitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 
-    public AtomicIRI(String iri) {
-        this.iri = iri;
-    }
-
     public Set<Variable> getVariables() {
         return Collections.emptySet();
     }
 
-    public String getIRI() {
+    public IRI getIRI() {
         return iri;
     }
 
     public String getIdentifier() {
-        return iri;
+        return iri.toString();
     }
 
     public EvaluationResult evaluate(SolutionMapping sm) {

@@ -621,7 +621,7 @@ public class SPARQLParserImpl {
         }
         else {
             IRI clsIRI = getIRIFromToken(token);
-            return new NamedClass(clsIRI.toString());
+            return new NamedClass(clsIRI);
         }
     }
 
@@ -1605,7 +1605,7 @@ public class SPARQLParserImpl {
             expression = new NamedIndividual(getIRIFromToken(tokenizer.consume(IndividualIRITokenType.get())));
         }
         else if (tokenizer.peek(UntypedIRITokenType.get()) != null) {
-            expression = new AtomicIRI(getIRIFromToken(tokenizer.consume(UntypedIRITokenType.get())).toString());
+            expression = new AtomicIRI(getIRIFromToken(tokenizer.consume(UntypedIRITokenType.get())));
         }
         else if (tokenizer.peek(IntegerTokenType.get()) != null) {
             expression = parseLiteralNode();

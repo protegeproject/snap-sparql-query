@@ -10,14 +10,7 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class NamedIndividual extends AbstractEntity implements Entity, AtomicIndividual {
 
-    private NamedIndividual() {
-    }
-
     public NamedIndividual(IRI iri) {
-        super(iri);
-    }
-
-    public NamedIndividual(String iri) {
         super(iri);
     }
 

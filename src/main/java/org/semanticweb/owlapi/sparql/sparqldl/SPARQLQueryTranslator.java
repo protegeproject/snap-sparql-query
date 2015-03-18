@@ -318,27 +318,27 @@ public class SPARQLQueryTranslator {
         }
 
         public QueryArgument visit(NamedClass node) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, node.getIRI());
+            return new QueryArgument(QueryArgumentType.URI, node.getIRI().toString());
         }
 
         public QueryArgument visit(AtomicIRI iri) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, iri.getIRI());
+            return new QueryArgument(QueryArgumentType.URI, iri.getIRI().toString());
         }
 
         public QueryArgument visit(DataProperty property) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, property.getIRI());
+            return new QueryArgument(QueryArgumentType.URI, property.getIRI().toString());
         }
 
         public QueryArgument visit(NamedIndividual individual) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, individual.getIRI());
+            return new QueryArgument(QueryArgumentType.URI, individual.getIRI().toString());
         }
 
         public QueryArgument visit(AnnotationProperty property) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, property.getIRI());
+            return new QueryArgument(QueryArgumentType.URI, property.getIRI().toString());
         }
 
         public QueryArgument visit(ObjectProperty property) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, property.getIRI());
+            return new QueryArgument(QueryArgumentType.URI, property.getIRI().toString());
         }
 
         public QueryArgument visit(ClassVariable variable) throws RuntimeException {
@@ -374,7 +374,7 @@ public class SPARQLQueryTranslator {
         }
 
         public QueryArgument visit(Literal node) throws RuntimeException {
-            return LiteralTranslator.toQueryArgument(node.getLexicalForm(), node.getLang(), node.getDatatype().getIRI());
+            return LiteralTranslator.toQueryArgument(node.getLexicalForm(), node.getLang(), node.getDatatype().getIRI().toString());
         }
     }
 
