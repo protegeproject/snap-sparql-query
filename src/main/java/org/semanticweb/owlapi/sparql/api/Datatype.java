@@ -109,19 +109,17 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
 
     private final Optional<OWL2Datatype> owl2Datatype;
 
-    public Datatype(OWL2Datatype datatype) {
-        super(datatype.getIRI());
-        this.owl2Datatype = Optional.of(datatype);
-    }
 
-    private Datatype(IRI iri) {
+    public Datatype(IRI iri) {
         super(iri);
         owl2Datatype = Optional.absent();
     }
 
-//    public Datatype(String iri) {
-//        super(iri);
-//    }
+    private Datatype(OWL2Datatype datatype) {
+        super(datatype.getIRI());
+        this.owl2Datatype = Optional.of(datatype);
+    }
+
 
     public static Datatype get(IRI iri) {
         Datatype result = iri2Datatype.get(iri);
@@ -130,7 +128,6 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
         }
         return new Datatype(iri);
     }
-
 
     public boolean isInLexicalSpace(String lexicalValue) {
         return !owl2Datatype.isPresent() || owl2Datatype.get().getPattern().matcher(lexicalValue).matches();
