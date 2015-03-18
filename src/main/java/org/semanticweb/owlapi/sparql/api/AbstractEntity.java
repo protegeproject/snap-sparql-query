@@ -62,11 +62,11 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
     }
 
     public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
-        return EvaluationResult.getError();
+        return EvaluationResult.getSimpleLiteral(getIRI().toString());
     }
 
     public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
-        return EvaluationResult.getError();
+        return EvaluationResult.getSimpleLiteral(getIRI().toString());
     }
 
     public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
@@ -79,7 +79,7 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
 
     @Override
     public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
-        return EvaluationResult.getError();
+        return EvaluationResult.getSimpleLiteral(getIRI().toString());
     }
 
     @Override

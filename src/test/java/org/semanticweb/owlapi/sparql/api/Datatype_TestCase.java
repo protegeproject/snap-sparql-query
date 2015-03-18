@@ -12,6 +12,10 @@ import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import javax.xml.crypto.Data;
 
+import java.util.Collections;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -224,6 +228,71 @@ public class Datatype_TestCase {
     @Test
     public void shouldReturn_isXSDDateTime_isFalse() {
         MatcherAssert.assertThat(datatype.isXSDDateTime(), Matchers.is(false));
+    }
+
+    @Test
+    public void should_getVariables() {
+        assertThat(datatype.getVariables(), is(Collections.<Variable>emptySet()));
+    }
+
+    @Test
+    public void should_getIRI() {
+        assertThat(datatype.getIRI(), is(iri));
+    }
+
+    @Test
+    public void should_getIdentifier() {
+        assertThat(datatype.getIdentifier(), is(iri.toString()));
+    }
+
+    @Test
+    public void shouldReturn_False_For_isLiteral_isFalse() {
+        assertThat(datatype.isLiteral(), is(false));
+    }
+
+    @Test
+    public void shouldReturn_True_For_isEntityIRI() {
+        assertThat(datatype.isEntityIRI(), is(true));
+    }
+
+    @Test
+    public void shouldReturn_False_For_isUntypedIRI_isFalse() {
+        assertThat(datatype.isUntypedIRI(), is(false));
+    }
+
+    @Test
+    public void should_evaluateAsEffectiveBooleanValue() {
+        assertThat(datatype.evaluateAsEffectiveBooleanValue(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+    }
+
+    @Test
+    public void should_evaluateAsSimpleLiteral() {
+        assertThat(datatype.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(datatype.getIRI().toString(), ""))));
+    }
+
+    @Test
+    public void should_evaluateAsStringLiteral() {
+        assertThat(datatype.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(datatype.getIRI().toString(), ""))));
+    }
+
+    @Test
+    public void shouldReturn_Error_When_evaluateAsNumeric() {
+        assertThat(datatype.evaluateAsNumeric(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+    }
+
+    @Test
+    public void shouldReturn_Error_When_evaluateAsDateTime() {
+        assertThat(datatype.evaluateAsDateTime(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+    }
+
+    @Test
+    public void should_evaluateAsLiteral() {
+        assertThat(datatype.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(iri.toString(), ""))));
+    }
+
+    @Test
+    public void should_evaluateAsIRI() {
+        assertThat(datatype.evaluateAsIRI(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new AtomicIRI(datatype.getIRI()))));
     }
 
 }
