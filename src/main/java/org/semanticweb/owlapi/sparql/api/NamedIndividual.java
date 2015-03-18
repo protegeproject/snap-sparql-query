@@ -43,4 +43,19 @@ public class NamedIndividual extends AbstractEntity implements Entity, AtomicInd
         NamedIndividual other = (NamedIndividual) obj;
         return this.getIRI().equals(other.getIRI());
     }
+
+    @Override
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+        return EvaluationResult.getSimpleLiteral(getIRI().toString());
+    }
+
+    @Override
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
+        return EvaluationResult.getSimpleLiteral(getIRI().toString());
+    }
+
+    @Override
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
+        return EvaluationResult.getSimpleLiteral(getIRI().toString());
+    }
 }

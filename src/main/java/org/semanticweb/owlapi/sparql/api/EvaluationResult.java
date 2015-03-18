@@ -56,6 +56,10 @@ public class EvaluationResult {
         }
     }
 
+    public static EvaluationResult getSimpleLiteral(String literal) {
+        return EvaluationResult.getResult(new Literal(literal, ""));
+    }
+
     public static EvaluationResult getDouble(double value) {
         return getResult(Literal.createDouble(value));
     }
