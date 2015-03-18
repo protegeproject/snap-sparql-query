@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 
+import com.google.common.base.Objects;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
@@ -11,14 +12,7 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class AnnotationProperty extends AbstractEntity implements AtomicAnnotationProperty, Entity {
 
-    private AnnotationProperty() {
-    }
-
     public AnnotationProperty(IRI iri) {
-        super(iri);
-    }
-
-    public AnnotationProperty(String iri) {
         super(iri);
     }
 
@@ -44,4 +38,15 @@ public class AnnotationProperty extends AbstractEntity implements AtomicAnnotati
     }
 
 
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("AnnotationProperty")
+                .addValue(getIRI())
+                .toString();
+    }
+
+    @Override
+    public String getIRI() {
+        return super.getIRI();
+    }
 }
