@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
@@ -32,5 +33,18 @@ public class DataProperty extends AbstractEntity implements DataPropertyExpressi
         }
         DataProperty other = (DataProperty) obj;
         return this.getIRI().equals(other.getIRI());
+    }
+
+    @Override
+    public IRI getIRI() {
+        return super.getIRI();
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("DataProperty")
+                .addValue(getIRI())
+                .toString();
     }
 }
