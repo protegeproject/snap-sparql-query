@@ -10,6 +10,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.semanticweb.owlapi.model.IRI;
 
+import java.util.Collections;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.mock;
+
 @RunWith(org.mockito.runners.MockitoJUnitRunner.class)
 public class AnnotationProperty_TestCase {
 
@@ -64,4 +70,68 @@ public class AnnotationProperty_TestCase {
         MatcherAssert.assertThat(annotationProperty.toString(), Matchers.startsWith("AnnotationProperty"));
     }
 
+    @Test
+    public void should_getVariables() {
+        assertThat(annotationProperty.getVariables(), is(Collections.<Variable>emptySet()));
+    }
+
+    @Test
+    public void should_getIRI() {
+        assertThat(annotationProperty.getIRI(), is(iri));
+    }
+
+    @Test
+    public void should_getIdentifier() {
+        assertThat(annotationProperty.getIdentifier(), is(iri.toString()));
+    }
+
+    @Test
+    public void shouldReturn_False_For_isLiteral_isFalse() {
+        assertThat(annotationProperty.isLiteral(), is(false));
+    }
+
+    @Test
+    public void shouldReturn_True_For_isEntityIRI() {
+        assertThat(annotationProperty.isEntityIRI(), is(true));
+    }
+
+    @Test
+    public void shouldReturn_False_For_isUntypedIRI_isFalse() {
+        assertThat(annotationProperty.isUntypedIRI(), is(false));
+    }
+
+    @Test
+    public void should_evaluateAsEffectiveBooleanValue() {
+        assertThat(annotationProperty.evaluateAsEffectiveBooleanValue(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+    }
+
+    @Test
+    public void should_evaluateAsSimpleLiteral() {
+        assertThat(annotationProperty.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(annotationProperty.getIRI().toString(), ""))));
+    }
+
+    @Test
+    public void should_evaluateAsStringLiteral() {
+        assertThat(annotationProperty.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(annotationProperty.getIRI().toString(), ""))));
+    }
+
+    @Test
+    public void shouldReturn_Error_When_evaluateAsNumeric() {
+        assertThat(annotationProperty.evaluateAsNumeric(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+    }
+
+    @Test
+    public void shouldReturn_Error_When_evaluateAsDateTime() {
+        assertThat(annotationProperty.evaluateAsDateTime(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+    }
+
+    @Test
+    public void should_evaluateAsLiteral() {
+        assertThat(annotationProperty.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(iri.toString(), ""))));
+    }
+
+    @Test
+    public void should_evaluateAsIRI() {
+        assertThat(annotationProperty.evaluateAsIRI(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new AtomicIRI(annotationProperty.getIRI()))));
+    }
 }
