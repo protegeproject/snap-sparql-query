@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 import java.util.Collection;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -21,9 +23,9 @@ public abstract class AbstractAssertion<S extends Visitable & HasCollectVariable
     }
 
     public AbstractAssertion(P property, S subject, O object) {
-        this.subject = subject;
-        this.property = property;
-        this.object = object;
+        this.subject = checkNotNull(subject);
+        this.property = checkNotNull(property);
+        this.object = checkNotNull(object);
     }
 
     public S getSubject() {
