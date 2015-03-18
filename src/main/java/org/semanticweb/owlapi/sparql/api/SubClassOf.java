@@ -1,9 +1,13 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: Matthew Horridge<br>
@@ -18,8 +22,8 @@ public class SubClassOf implements ClassAxiom {
     private ClassExpression superClass;
 
     public SubClassOf(ClassExpression subClass, ClassExpression superClass) {
-        this.subClass = subClass;
-        this.superClass = superClass;
+        this.subClass = checkNotNull(subClass);
+        this.superClass = checkNotNull(superClass);
     }
 
     public <R, E extends Throwable> R accept(AxiomVisitor<R, E> visitor) throws E {
@@ -39,7 +43,7 @@ public class SubClassOf implements ClassAxiom {
     }
 
     public Set<ClassExpression> getClassExpressions() {
-        return new HashSet<ClassExpression>(Arrays.asList(subClass, superClass));
+        return new HashSet<>(Arrays.asList(subClass, superClass));
     }
 
     @Override
@@ -63,5 +67,14 @@ public class SubClassOf implements ClassAxiom {
     public void collectVariables(Collection<Variable> variables) {
         subClass.collectVariables(variables);
         superClass.collectVariables(variables);
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("SubClassOf")
+                .add("subclass", subClass)
+                .add("superClass", superClass)
+                .toString();
     }
 }

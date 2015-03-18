@@ -104,7 +104,7 @@ public class TestParser {
                 }
             }), BorderLayout.SOUTH);
             f.pack();
-            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             f.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
