@@ -18,10 +18,6 @@ public class NamedIndividual extends AbstractEntity implements Entity, AtomicInd
         return visitor.visit(this);
     }
 
-    public AnnotationSubject toAnnotationSubject() {
-        return new AtomicIRI(getIRI());
-    }
-
     @Override
     public String toString() {
         return "NamedIndividual(<" + getIRI() + ">)";

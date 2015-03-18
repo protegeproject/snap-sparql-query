@@ -89,4 +89,10 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
 
     @Override
     public void collectVariables(Collection<Variable> variables) {}
+
+
+    @Override
+    public final AnnotationSubject toAnnotationSubject() {
+        return new AtomicIRI(getIRI());
+    }
 }
