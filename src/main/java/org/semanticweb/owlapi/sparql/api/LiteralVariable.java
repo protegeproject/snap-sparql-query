@@ -28,7 +28,7 @@ public class LiteralVariable extends AbstractVariable implements AtomicLiteral {
 
     @Override
     public Term getBound(IRI iri) {
-        return new Literal(Datatype.getXSDString(), iri.toString());
+        return Literal.createString(iri.toString());
     }
 
     @Override

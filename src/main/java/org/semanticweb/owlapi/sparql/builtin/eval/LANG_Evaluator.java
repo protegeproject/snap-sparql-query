@@ -12,6 +12,6 @@ public class LANG_Evaluator extends AbstractUnaryStringLiteralBuiltInCallEvaluat
     @Override
     protected EvaluationResult evaluate(Literal literal, SolutionMapping sm) {
         String lang = literal.getLang();
-        return EvaluationResult.getResult(new Literal(Datatype.getXSDString(), lang));
+        return EvaluationResult.getResult(Literal.createString(lang));
     }
 }

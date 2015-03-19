@@ -18,9 +18,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Literal implements AtomicLiteral {
 
-    private static final Literal FALSE = new Literal(Datatype.getXSDBoolean(), "false");
+    private static final Literal FALSE = new Literal(Datatype.getXSDBoolean(), "false", "");
 
-    private static final Literal TRUE = new Literal(Datatype.getXSDBoolean(), "true");
+    private static final Literal TRUE = new Literal(Datatype.getXSDBoolean(), "true", "");
+    public static final String EMPTY_LANG_TAG = "";
 
 
     private final Datatype datatype;
@@ -31,17 +32,17 @@ public class Literal implements AtomicLiteral {
 
 
     
-    public Literal(Datatype datatype, String lexicalForm) {
-        this.datatype = checkNotNull(datatype);
-        this.lexicalForm = checkNotNull(lexicalForm);
-        this.langTag = "";
-    }
-
-    public Literal(String lexicalForm, String langTag) {
-        this.datatype = Datatype.getRDFPlainLiteral();
-        this.lexicalForm = checkNotNull(lexicalForm);
-        this.langTag = langTag;
-    }
+//    public Literal(Datatype datatype, String lexicalForm) {
+//        this.datatype = checkNotNull(datatype);
+//        this.lexicalForm = checkNotNull(lexicalForm);
+//        this.langTag = "";
+//    }
+//
+//    public Literal(String lexicalForm, String langTag) {
+//        this.datatype = Datatype.getRDFPlainLiteral();
+//        this.lexicalForm = checkNotNull(lexicalForm);
+//        this.langTag = langTag;
+//    }
 
     public Literal(Datatype datatype, String lexicalForm, String langTag) {
         this.datatype = checkNotNull(datatype);
@@ -126,7 +127,7 @@ public class Literal implements AtomicLiteral {
     }
 
     public static Literal createString(String value) {
-        return new Literal(Datatype.getXSDString(), value);
+        return new Literal(Datatype.getXSDString(), value, EMPTY_LANG_TAG);
     }
 
     public static Literal createBoolean(boolean value) {
@@ -147,19 +148,27 @@ public class Literal implements AtomicLiteral {
     }
 
     public static Literal createInteger(int value) {
-        return new Literal(Datatype.getXSDInteger(), Integer.toString(value));
+        return new Literal(Datatype.getXSDInteger(), Integer.toString(value), EMPTY_LANG_TAG);
     }
     
     public static Literal createDouble(double  value) {
-        return new Literal(Datatype.getXSDDouble(), Double.toString(value));
+        return new Literal(Datatype.getXSDDouble(), Double.toString(value), EMPTY_LANG_TAG);
     }
     
     public static Literal createFloat(float value) {
-        return new Literal(Datatype.getXSDFloat(), Float.toString(value));
+        return new Literal(Datatype.getXSDFloat(), Float.toString(value), EMPTY_LANG_TAG);
     }
 
     public static Literal createDecimal(BigDecimal decimal) {
-        return new Literal(Datatype.getXSDDecimal(), decimal.toPlainString());
+        return new Literal(Datatype.getXSDDecimal(), decimal.toPlainString(), EMPTY_LANG_TAG);
+    }
+
+    public static Literal createRDFPlainLiteral(String lexicalForm, String langTag) {
+        return new Literal(Datatype.getRDFPlainLiteral(), lexicalForm, langTag);
+    }
+
+    public static Literal createRDFPlainLiteralNoLang(String lexicalForm) {
+        return new Literal(Datatype.getRDFPlainLiteral(), lexicalForm, EMPTY_LANG_TAG);
     }
 
     private boolean isInBooleanLexicalSpace() {

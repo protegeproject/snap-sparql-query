@@ -14,6 +14,6 @@ public class LCASE_Evaluator extends AbstractUnaryStringLiteralBuiltInCallEvalua
     @Override
     protected EvaluationResult evaluate(Literal literal, SolutionMapping sm) {
         String lit = literal.getLexicalForm();
-        return EvaluationResult.getResult(new Literal(lit.toLowerCase(), literal.getLang()));
+        return EvaluationResult.getResult(Literal.createRDFPlainLiteral(lit.toLowerCase(), literal.getLang()));
     }
 }

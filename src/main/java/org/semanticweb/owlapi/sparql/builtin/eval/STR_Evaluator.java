@@ -21,12 +21,12 @@ public class STR_Evaluator implements BuiltInCallEvaluator {
         }
         EvaluationResult iriEval = args.get(0).evaluateAsIRI(sm);
         if(!iriEval.isError()) {
-            EvaluationResult.getResult(new Literal(iriEval.asIRI().getIRI().toString(), ""));
+            EvaluationResult.getResult(Literal.createRDFPlainLiteral(iriEval.asIRI().getIRI().toString(), ""));
         }
         EvaluationResult literalEval = args.get(0).evaluateAsLiteral(sm);
         if(literalEval.isError()) {
             return literalEval;
         }
-        return EvaluationResult.getResult(new Literal(literalEval.asLiteral().getLexicalForm(), ""));
+        return EvaluationResult.getResult(Literal.createRDFPlainLiteral(literalEval.asLiteral().getLexicalForm(), ""));
     }
 }

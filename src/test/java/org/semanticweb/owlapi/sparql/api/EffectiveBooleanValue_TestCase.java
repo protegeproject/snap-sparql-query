@@ -211,7 +211,7 @@ public class EffectiveBooleanValue_TestCase {
         when(datatype.isNumeric()).thenReturn(false);
         when(datatype.isXSDString()).thenReturn(false);
         when(datatype.isRDFPlainLiteral()).thenReturn(false);
-        literal = new Literal(datatype, "Some Lexical Form");
+        literal = new Literal(datatype, "Some Lexical Form", "");
         assertThat(literal.evaluateAsEffectiveBooleanValue(sm), isError());
     }
 

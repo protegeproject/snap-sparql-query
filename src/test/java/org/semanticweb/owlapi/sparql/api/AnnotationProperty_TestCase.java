@@ -107,12 +107,12 @@ public class AnnotationProperty_TestCase {
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(annotationProperty.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(annotationProperty.getIRI().toString(), ""))));
+        assertThat(annotationProperty.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(annotationProperty.getIRI().toString()))));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        assertThat(annotationProperty.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(annotationProperty.getIRI().toString(), ""))));
+        assertThat(annotationProperty.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(annotationProperty.getIRI().toString()))));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class AnnotationProperty_TestCase {
 
     @Test
     public void should_evaluateAsLiteral() {
-        assertThat(annotationProperty.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(iri.toString(), ""))));
+        assertThat(annotationProperty.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }
 
     @Test

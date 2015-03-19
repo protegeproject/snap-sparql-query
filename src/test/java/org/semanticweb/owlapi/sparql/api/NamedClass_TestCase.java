@@ -93,12 +93,12 @@ public class NamedClass_TestCase {
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(namedClass.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(namedClass.getIRI().toString(), ""))));
+        assertThat(namedClass.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(namedClass.getIRI().toString()))));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        assertThat(namedClass.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(namedClass.getIRI().toString(), ""))));
+        assertThat(namedClass.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(namedClass.getIRI().toString()))));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class NamedClass_TestCase {
 
     @Test
     public void should_evaluateAsLiteral() {
-        assertThat(namedClass.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(iri.toString(), ""))));
+        assertThat(namedClass.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }
 
     @Test

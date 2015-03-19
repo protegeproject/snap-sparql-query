@@ -96,12 +96,12 @@ public class ObjectProperty_TestCase {
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(objectProperty.evaluateAsSimpleLiteral(sm), is(EvaluationResult.getResult(new Literal(objectProperty.getIRI().toString(), ""))));
+        assertThat(objectProperty.evaluateAsSimpleLiteral(sm), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(objectProperty.getIRI().toString()))));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        assertThat(objectProperty.evaluateAsStringLiteral(sm), is(EvaluationResult.getResult(new Literal(objectProperty.getIRI().toString(), ""))));
+        assertThat(objectProperty.evaluateAsStringLiteral(sm), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(objectProperty.getIRI().toString()))));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class ObjectProperty_TestCase {
 
     @Test
     public void should_evaluateAsLiteral() {
-        assertThat(objectProperty.evaluateAsLiteral(sm), is(EvaluationResult.getResult(new Literal(iri.toString(), ""))));
+        assertThat(objectProperty.evaluateAsLiteral(sm), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }
 
     @Test

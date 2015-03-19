@@ -1325,7 +1325,7 @@ public class SPARQLParserImpl {
             if (tokenizer.peek(SPARQLTerminal.DOUBLE_CARET) != null) {
                 tokenizer.consume();
                 SPARQLToken token = tokenizer.consume(DatatypeIRITokenType.get());
-                result = new Literal( Datatype.get(getIRIFromToken(token)), lexicalValue);
+                result = new Literal( Datatype.get(getIRIFromToken(token)), lexicalValue, "");
             }
             else {
                 result = Literal.createString(lexicalValue);

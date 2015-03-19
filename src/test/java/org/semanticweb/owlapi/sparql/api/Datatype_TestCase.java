@@ -267,12 +267,12 @@ public class Datatype_TestCase {
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(datatype.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(datatype.getIRI().toString(), ""))));
+        assertThat(datatype.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(datatype.getIRI().toString()))));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        assertThat(datatype.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(datatype.getIRI().toString(), ""))));
+        assertThat(datatype.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(datatype.getIRI().toString()))));
     }
 
     @Test
@@ -287,7 +287,7 @@ public class Datatype_TestCase {
 
     @Test
     public void should_evaluateAsLiteral() {
-        assertThat(datatype.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(iri.toString(), ""))));
+        assertThat(datatype.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }
 
     @Test

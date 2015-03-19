@@ -107,12 +107,12 @@ public class DataProperty_TestCase {
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(dataProperty.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(dataProperty.getIRI().toString(), ""))));
+        assertThat(dataProperty.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(dataProperty.getIRI().toString()))));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        assertThat(dataProperty.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(dataProperty.getIRI().toString(), ""))));
+        assertThat(dataProperty.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(dataProperty.getIRI().toString()))));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class DataProperty_TestCase {
 
     @Test
     public void should_evaluateAsLiteral() {
-        assertThat(dataProperty.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new Literal(iri.toString(), ""))));
+        assertThat(dataProperty.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }
 
     @Test
