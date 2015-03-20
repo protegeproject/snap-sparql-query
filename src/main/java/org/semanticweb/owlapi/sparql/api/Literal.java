@@ -322,7 +322,7 @@ public class Literal implements AtomicLiteral {
 
     @Override
     public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
-        return EvaluationResult.getError();
+        return EvaluationResult.getResult(new AtomicIRI(IRI.create(lexicalForm)));
     }
 
     @Override

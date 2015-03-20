@@ -1,18 +1,25 @@
 
 package org.semanticweb.owlapi.sparql.api;
 
+import jpaul.Constraints.Var;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(org.mockito.runners.MockitoJUnitRunner.class)
@@ -176,45 +183,64 @@ public class Literal_TestCase {
         assertThat(eval.isError(), is(false));
         assertThat(eval.getResult(), Matchers.<Term>is(literal));
     }
-//
-//    @Test
-//    public void should_evaluateAsEffectiveBooleanValue() {
-//        MatcherAssert.assertThat(literal.evaluateAsEffectiveBooleanValue(), Matchers.is("X"));
-//    }
-//
-//    @Test
-//    public void should_evaluateAsStringLiteral() {
-//        MatcherAssert.assertThat(literal.evaluateAsStringLiteral(), Matchers.is("X"));
-//    }
-//
-//    @Test
-//    public void should_evaluateAsSimpleLiteral() {
-//        MatcherAssert.assertThat(literal.evaluateAsSimpleLiteral(), Matchers.is("X"));
-//    }
-//
-//    @Test
-//    public void should_evaluateAsNumeric() {
-//        MatcherAssert.assertThat(literal.evaluateAsNumeric(), Matchers.is("X"));
-//    }
-//
-//    @Test
-//    public void should_evaluateAsDateTime() {
-//        MatcherAssert.assertThat(literal.evaluateAsDateTime(), Matchers.is("X"));
-//    }
-//
-//    @Test
-//    public void should_evaluateAsIRI() {
-//        MatcherAssert.assertThat(literal.evaluateAsIRI(), Matchers.is("X"));
-//    }
-//
-//    @Test
-//    public void should_evaluateAsLiteral() {
-//        MatcherAssert.assertThat(literal.evaluateAsLiteral(), Matchers.is("X"));
-//    }
-//
-//    @Test
-//    public void should_collectVariables() {
-//        MatcherAssert.assertThat(literal.collectVariables(), Matchers.is("X"));
-//    }
+
+    @Test
+    public void should_evaluateAsStringLiteral() {
+        EvaluationResult eval = literal.evaluateAsStringLiteral(sm);
+        assertThat(eval.isError(), is(false));
+        assertThat(eval.getResult(), is(instanceOf(Literal.class)));
+        Literal evalLiteral = (Literal) eval.getResult();
+        assertThat(evalLiteral.getLexicalForm(), is(lexicalForm));
+        assertThat(evalLiteral.getLang(), is(""));
+        assertThat(evalLiteral.getDatatype().getIRI(), is(XSDVocabulary.STRING.getIRI()));
+    }
+
+    @Test
+    public void should_evaluateAsSimpleLiteral() {
+        EvaluationResult eval = literal.evaluateAsSimpleLiteral(sm);
+        assertThat(eval.isError(), is(false));
+        assertThat(eval.getResult(), is(instanceOf(Literal.class)));
+        Literal evalLiteral = (Literal) eval.getResult();
+        assertThat(evalLiteral.getLexicalForm(), is(lexicalForm));
+        assertThat(evalLiteral.getLang(), is(langTag));
+        assertThat(evalLiteral.getDatatype().getIRI(), is(OWLRDFVocabulary.RDF_PLAIN_LITERAL.getIRI()));
+    }
+
+    @Test
+    public void should_evaluateAsNumeric() {
+        assertThat(literal.evaluateAsNumeric(sm).isError(), is(true));
+    }
+
+    @Test
+    public void should_evaluateAsDateTime() {
+        MatcherAssert.assertThat(literal.evaluateAsDateTime(sm).isError(), is(true));
+    }
+
+    @Test
+    public void should_evaluateAsIRI() {
+        EvaluationResult eval = literal.evaluateAsIRI(sm);
+        assertThat(eval.isError(), is(false));
+        assertThat(eval.getResult(), is(instanceOf(AtomicIRI.class)));
+        AtomicIRI evalIRI = (AtomicIRI) eval.getResult();
+        assertThat(evalIRI.getIRI().toString(), is(lexicalForm));
+    }
+
+    @Test
+    public void should_evaluateAsLiteral() {
+        EvaluationResult eval = literal.evaluateAsLiteral(sm);
+        assertThat(eval.isError(), is(false));
+        assertThat(eval.getResult(), is(instanceOf(Literal.class)));
+        Literal evalLiteral = (Literal) eval.getResult();
+        assertThat(evalLiteral.getLexicalForm(), is(lexicalForm));
+        assertThat(evalLiteral.getDatatype(), is(datatype));
+        assertThat(evalLiteral.getLang(), is(langTag));
+    }
+
+    @Test
+    public void should_collectVariables() {
+        Set<Variable> variables = new HashSet<>();
+        literal.collectVariables(variables);
+        assertThat(variables, is(empty()));
+    }
 
 }
