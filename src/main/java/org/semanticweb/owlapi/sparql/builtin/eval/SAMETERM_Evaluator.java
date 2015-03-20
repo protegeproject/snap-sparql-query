@@ -19,16 +19,15 @@ public class SAMETERM_Evaluator implements BuiltInCallEvaluator {
             return EvaluationResult.getError();
         }
         else {
-//            EvaluationResult result1 = args.get(0).evaluate(sm);
-//            if(result1.isError()) {
-//                return result1;
-//            }
-//            EvaluationResult result2 = args.get(1).evaluate(sm);
-//            if(result2.isError()) {
-//                return result2;
-//            }
-//            return EvaluationResult.getBoolean(result1.getResult().equals(result2.getResult()));
-            throw new RuntimeException("TODO");
+            EvaluationResult result1 = args.get(0).evaluate(sm);
+            if(result1.isError()) {
+                return EvaluationResult.getError();
+            }
+            EvaluationResult result2 = args.get(1).evaluate(sm);
+            if(result2.isError()) {
+                return EvaluationResult.getError();
+            }
+            return EvaluationResult.getBoolean(result1.getResult().equals(result2.getResult()));
         }
     }
 }
