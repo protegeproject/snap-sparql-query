@@ -43,6 +43,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.sparql.api.HasQName;
+import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import javax.swing.*;
@@ -76,6 +77,20 @@ public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer imp
         }
         else if(value instanceof IRI) {
             label.setText(pm.getPrefixIRI((IRI) value));
+        }
+        else if(value instanceof Literal) {
+            Literal literal = (Literal) value;
+            if(literal.isDatatypeNumeric()) {
+                label.setText(literal.getLexicalForm());
+            }
+            else {
+                if(literal.isRDFPlainLiteral()) {
+                    label.setText(String.format("\"%s\"@%s", literal.getLexicalForm(), literal.getLang()));
+                }
+                else {
+                    label.setText(String.format("\"%s\"^^%s", literal.getLexicalForm(), pm.getPrefixIRI(literal.getDatatype().getIRI())));
+                }
+            }
         }
         return label;
     
