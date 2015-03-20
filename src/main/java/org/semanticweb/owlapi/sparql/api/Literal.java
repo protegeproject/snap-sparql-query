@@ -2,6 +2,7 @@ package org.semanticweb.owlapi.sparql.api;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
+import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -163,6 +164,12 @@ public class Literal implements AtomicLiteral {
         return new Literal(Datatype.getXSDDecimal(), decimal.toPlainString(), EMPTY_LANG_TAG);
     }
 
+    public static Literal createDecimal(double decimal) {
+        return new Literal(Datatype.getXSDDecimal(), Double.toString(decimal), EMPTY_LANG_TAG);
+    }
+
+
+
     public static Literal createRDFPlainLiteral(String lexicalForm, String langTag) {
         return new Literal(Datatype.getRDFPlainLiteral(), lexicalForm, langTag);
     }
@@ -259,26 +266,36 @@ public class Literal implements AtomicLiteral {
     }
 
     public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
-        if(isStringLiteral()) {
-            return EvaluationResult.getResult(this);
-        }
-        else {
-            return EvaluationResult.getError();
-        }
+        return EvaluationResult.getResult(Literal.createString(lexicalForm));
+//        if(isStringLiteral()) {
+//            return EvaluationResult.getResult(this);
+//        }
+//        else {
+//            return EvaluationResult.getError();
+//        }
     }
 
     public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
-        if(isSimpleLiteral()) {
-            return EvaluationResult.getResult(this);
-        }
-        else {
-            return EvaluationResult.getError();
-        }
+        return EvaluationResult.getResult(Literal.createRDFPlainLiteral(lexicalForm, langTag));
+//        if(isSimpleLiteral()) {
+//            return EvaluationResult.getResult(this);
+//        }
+//        else {
+//            return EvaluationResult.getError();
+//        }
     }
 
     public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
-        if(isDatatypeNumeric()  && isInNumericLexicalSpace()) {
-            return EvaluationResult.getResult(this);
+        if(isDatatypeNumeric()) {
+            if (isInNumericLexicalSpace()) {
+                return EvaluationResult.getResult(this);
+            }
+            else {
+                return EvaluationResult.getError();
+            }
+        }
+        else if(OWL2Datatype.XSD_DECIMAL.getPattern().matcher(lexicalForm).matches()) {
+            return EvaluationResult.getResult(new Literal(Datatype.getXSDDecimal(), lexicalForm, ""));
         }
         else {
             return EvaluationResult.getError();
