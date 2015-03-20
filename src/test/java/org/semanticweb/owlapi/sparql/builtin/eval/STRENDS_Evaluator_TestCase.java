@@ -41,17 +41,18 @@ public class STRENDS_Evaluator_TestCase {
     }
 
     @Test
-    public void should_evaluateAsFalse_If_ArgsLengthIsNot2() {
+    public void should_evaluateAsError_If_ArgsLengthIsNot2() {
         setUpArgs("The string");
         assertThatResultIsError();
     }
 
 
     @Test
-    public void should_evaluateAsFalse_If_ArgsIsEmpty() {
+    public void should_evaluateAsError_If_ArgsIsEmpty() {
         setUpArgs();
         assertThatResultIsError();
     }
+
 
     @Test
     public void should_evaluateAsTrue() {
