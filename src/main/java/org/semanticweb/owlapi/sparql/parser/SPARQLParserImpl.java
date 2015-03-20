@@ -172,9 +172,14 @@ public class SPARQLParserImpl {
 
     private SPARQLGraphPattern parseGroupGraphPattern() {
         tokenizer.consume(SPARQLTerminal.OPEN_BRACE);
-        SPARQLGraphPattern result = parseTriples();
+        SPARQLGraphPattern currentPattern = new SPARQLGraphPattern();
+        parseTriplesBlock(currentPattern);
+        boolean parsedGraphPatternNotTriples = true;
+        while (parsedGraphPatternNotTriples) {
+            parsedGraphPatternNotTriples = parseGraphPatternNotTriples(currentPattern);
+        }
         tokenizer.consume(SPARQLTerminal.CLOSE_BRACE);
-        return result;
+        return currentPattern;
     }
 
     public void parseSolutionModifier() {
@@ -228,37 +233,33 @@ public class SPARQLParserImpl {
         return tokenizer.peek(UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL));
     }
 
-    public SPARQLGraphPattern parseTriples() {
-        SPARQLGraphPattern currentPattern = new SPARQLGraphPattern();
+    public boolean parseTriplesBlock(SPARQLGraphPattern currentPattern) {
+        int parsed = 0;
         while (true) {
             if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
                 SPARQLToken varNameToken = tokenizer.consume();
                 parseUndeclaredVariablePropertyList(varNameToken, currentPattern);
+                parsed++;
             }
             else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.CLASS)) != null || tokenizer.peek(ClassIRITokenType.get()) != null) {
                 SPARQLToken subjectToken = tokenizer.consume();
                 parseClassNodePropertyList(subjectToken, currentPattern);
+                parsed++;
             }
             else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY)) != null || tokenizer.peek(ObjectPropertyIRITokenType.get()) != null) {
                 SPARQLToken subjectToken = tokenizer.consume();
                 parseObjectPropertyNodePropertyList(subjectToken, currentPattern);
+                parsed++;
             }
             else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY)) != null || tokenizer.peek(DataPropertyIRITokenType.get()) != null) {
                 SPARQLToken subjectToken = tokenizer.consume();
                 parseDataPropertyNodePropertyList(subjectToken, currentPattern);
+                parsed++;
             }
             else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL)) != null || tokenizer.peek(IndividualIRITokenType.get()) != null) {
                 SPARQLToken subjectToken = tokenizer.consume();
                 parseIndividualNodePropertyList(subjectToken, currentPattern);
-            }
-            else if (tokenizer.peek(SPARQLTerminal.FILTER) != null) {
-                parseFilterCondition(currentPattern);
-            }
-            else if (tokenizer.peek(SPARQLTerminal.BIND) != null) {
-                parseBind(currentPattern);
-            }
-            else if (tokenizer.peek(SPARQLTerminal.MINUS_KW) != null) {
-                parseMinusGraphPattern();
+                parsed++;
             }
 
             // Carry on if we see a dot because we expect further triples
@@ -269,7 +270,30 @@ public class SPARQLParserImpl {
                 break;
             }
         }
-        return currentPattern;
+        return parsed > 0;
+    }
+
+    public boolean parseGraphPatternNotTriples(SPARQLGraphPattern currentPattern) {
+        boolean parsed = false;
+        if (tokenizer.peek(SPARQLTerminal.FILTER) != null) {
+            parseFilterCondition(currentPattern);
+            parsed = true;
+        }
+        else if (tokenizer.peek(SPARQLTerminal.BIND) != null) {
+            parseBind(currentPattern);
+            parsed = true;
+        }
+        else if (tokenizer.peek(SPARQLTerminal.MINUS_KW) != null) {
+            parseMinusGraphPattern();
+            parsed = true;
+        }
+        else {
+            parsed = parseTriplesBlock(currentPattern);
+        }
+        if(tokenizer.peek(SPARQLTerminal.DOT) != null) {
+            tokenizer.consume(SPARQLTerminal.DOT);
+        }
+        return parsed;
     }
 
     private void parseMinusGraphPattern() {
