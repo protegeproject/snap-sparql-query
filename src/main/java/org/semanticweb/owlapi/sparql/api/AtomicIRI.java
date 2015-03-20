@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -19,7 +21,7 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     private final IRI iri;
 
     public AtomicIRI(IRI iri) {
-        this.iri = iri;
+        this.iri = checkNotNull(iri);
     }
 
     public <R, E extends Throwable> R accept(Visitor<R, E> visitor) throws E {
@@ -42,44 +44,20 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
         return EvaluationResult.getResult(this);
     }
 
-    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
-        return false;
-    }
-
     public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
-        return EvaluationResult.getError();
-    }
-
-    public boolean canEvaluateAsBoolean(SolutionMapping sm) {
-        return false;
+        return EvaluationResult.getResult(Literal.createString(iri.toString()));
     }
 
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
         return EvaluationResult.getError();
     }
 
-    public boolean canEvaluateAsNumeric(SolutionMapping sm) {
-        return false;
-    }
-
     public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
         return EvaluationResult.getError();
     }
 
-    public boolean canEvaluateAsDateTime(SolutionMapping sm) {
-        return false;
-    }
-
     public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
         return EvaluationResult.getError();
-    }
-
-    public boolean canEvaluateAsIRI(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
-        return false;
     }
 
     public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
