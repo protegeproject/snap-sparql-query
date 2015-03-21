@@ -74,10 +74,10 @@ public class SPARQLDLQueryEngine {
 
             Query translate = translator.translate();
             QueryResult queryResult = posQE.execute(translate);
-//            QueryResult queryResultMinus = posQE.execute(translator.translateMinus());
+            QueryResult queryResultMinus = posQE.execute(translator.translateMinus());
 
+            SPARQLQueryResultsTranslator t = new SPARQLQueryResultsTranslator(query, queryResult, queryResultMinus, man.getOWLDataFactory());
 
-            SPARQLQueryResultsTranslator t = new SPARQLQueryResultsTranslator(query, queryResult, man.getOWLDataFactory());
             return t.translate();
 
         }

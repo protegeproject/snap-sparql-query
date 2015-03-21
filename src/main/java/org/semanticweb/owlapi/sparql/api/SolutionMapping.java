@@ -1,8 +1,11 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.common.base.Objects;
+import jpaul.Constraints.Var;
 
+import java.util.*;
+
+import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -63,6 +66,46 @@ public class SolutionMapping {
         }
         return null;
     }
-    
-    
+
+    public Collection<Variable> getVariables() {
+        return new ArrayList<>(map.keySet());
+    }
+
+    public boolean containsAll(SolutionMapping solutionMapping) {
+        for(Variable otherVariable : solutionMapping.getVariables()) {
+            Term t = getTermForVariableName(otherVariable.getName());
+            if(t == null) {
+                return false;
+            }
+            if(!t.equals(solutionMapping.getTermForVariable(otherVariable))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(map);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof SolutionMapping)) {
+            return false;
+        }
+        SolutionMapping other = (SolutionMapping) obj;
+        return this.map.equals(other.map);
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper("SolutionMapping")
+                .addValue(map)
+                .toString();
+    }
 }
