@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -21,8 +23,8 @@ public class EvaluationResult {
     private boolean error;
 
 
-    private EvaluationResult(Term result) {
-        this.result = result;
+    public EvaluationResult(Term result) {
+        this.result = checkNotNull(result);
         this.error = false;
     }
 
