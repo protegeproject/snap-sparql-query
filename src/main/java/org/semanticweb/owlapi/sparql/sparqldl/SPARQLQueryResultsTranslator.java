@@ -68,7 +68,7 @@ public class SPARQLQueryResultsTranslator {
     
     private Map<String, Variable> nameVariableMap = new HashMap<String, Variable>();
 
-    private final LiteralTranslator translator;
+    private SolutionMappingTranslator solutionMappingTranslator;
 
     public SPARQLQueryResultsTranslator(SPARQLQuery query, QueryResult result, QueryResult minusResult, OWLDataFactory dataFactory) {
         this.query = query;
@@ -82,55 +82,33 @@ public class SPARQLQueryResultsTranslator {
             Variable variable = selectAs.getVariable();
             nameVariableMap.put(variable.getName(), variable);
         }
-        translator = new LiteralTranslator(dataFactory);
+        LiteralTranslator translator = new LiteralTranslator(dataFactory);
+        solutionMappingTranslator = new SolutionMappingTranslator(translator);
     }
     
     public SPARQLQueryResult translate() {
-        List<SolutionMapping> solutionMappings = translateResult(result);
-        List<SolutionMapping> minusSolutionMappings = translateResult(minusResult);
-        for(Iterator<SolutionMapping> it = solutionMappings.iterator(); it.hasNext();) {
+        List<SolutionMapping> solutionSequence = translateResult(result);
+        List<SolutionMapping> minusSolutionSequence = translateResult(minusResult);
+
+        for(Iterator<SolutionMapping> it = solutionSequence.iterator(); it.hasNext();) {
             SolutionMapping solutionMapping = it.next();
-            for(SolutionMapping minusSolutionMapping : minusSolutionMappings) {
+            for(SolutionMapping minusSolutionMapping : minusSolutionSequence) {
                 if(solutionMapping.containsAll(minusSolutionMapping)) {
                     it.remove();
                     break;
                 }
             }
         }
-        Collections.sort(solutionMappings, new OrderByComparator(query.getSolutionModifier()));
-        return new SPARQLQueryResult(query, solutionMappings);
+
+        Collections.sort(solutionSequence, new OrderByComparator(query.getSolutionModifier()));
+        return new SPARQLQueryResult(query, solutionSequence);
     }
 
     private List<SolutionMapping> translateResult(QueryResult result) {
-        List<SolutionMapping> resultBindings = new ArrayList<>();
+        List<SolutionMapping> solutionSequence = new ArrayList<>();
         for(int i = 0; i < result.size(); i++) {
             QueryBinding binding = result.get(i);
-            Set<QueryArgument> boundArgs = binding.getBoundArgs();
-            Map<Variable, Term> bindings = new HashMap<>(boundArgs.size());
-            for(QueryArgument arg : boundArgs) {
-                Variable var = nameVariableMap.get(arg.getValue());
-                QueryArgument value = binding.get(arg);
-                Term term = null;
-                switch (value.getType()) {
-                    case VAR:
-                        break;
-                    case URI:
-                        IRI iri = IRI.create(value.getValue());
-                        term = var.getBound(iri);
-                        break;
-                    case BNODE:
-                        break;
-                    case LITERAL:
-                        OWLLiteral literal = translator.toOWLLiteral(value);
-                        term = new Literal(Datatype.get(literal.getDatatype().getIRI()), literal.getLiteral(), literal.getLang());
-                        break;
-                }
-                if(term != null) {
-                    bindings.put(var, term);
-                }
-
-            }
-            SolutionMapping currentSolution = new SolutionMapping(bindings);
+            SolutionMapping currentSolution = solutionMappingTranslator.translate(binding, nameVariableMap);
             for(SelectAs selectAs : query.getSelectAs()) {
                 EvaluationResult eval = selectAs.getExpression().evaluate(currentSolution);
                 currentSolution.bind(selectAs.getVariable(), eval.getResult());
@@ -142,16 +120,16 @@ public class SPARQLQueryResultsTranslator {
             List<Expression> filterConditions = query.getGraphPatterns().get(0).getFilters();
             SolutionMapping solutionMapping = new SolutionMapping(currentSolution.asMap());
             if(filterConditions.isEmpty()) {
-                resultBindings.add(solutionMapping);
+                solutionSequence.add(solutionMapping);
             }
             else {
                 if(matches(filterConditions, solutionMapping)) {
-                    resultBindings.add(solutionMapping);
+                    solutionSequence.add(solutionMapping);
                 }
             }
 
         }
-        return resultBindings;
+        return solutionSequence;
     }
 
     private boolean matches(List<Expression> filterConditions, SolutionMapping solutionMapping) {
