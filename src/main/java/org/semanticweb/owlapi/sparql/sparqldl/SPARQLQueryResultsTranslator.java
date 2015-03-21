@@ -108,28 +108,41 @@ public class SPARQLQueryResultsTranslator {
         List<SolutionMapping> solutionSequence = new ArrayList<>();
         for(int i = 0; i < result.size(); i++) {
             QueryBinding binding = result.get(i);
-            SolutionMapping currentSolution = solutionMappingTranslator.translate(binding, nameVariableMap);
+            SolutionMapping sm = solutionMappingTranslator.translate(binding, nameVariableMap);
+            solutionSequence.add(sm);
+        }
+        return extendAndFilterSolutionSequence(solutionSequence);
+    }
+
+    private List<SolutionMapping> extendAndFilterSolutionSequence(List<SolutionMapping> solutionSequence) {
+        SPARQLGraphPattern graphPattern = query.getGraphPatterns().get(0);
+        if(query.getSelectAs().isEmpty() && graphPattern.getFilters().isEmpty() && graphPattern.getBinds().isEmpty()) {
+            return solutionSequence;
+        }
+        List<SolutionMapping> filteredSolutionMapping = new ArrayList<>();
+        for (SolutionMapping solutionMapping : solutionSequence) {
+            // Extend
             for(SelectAs selectAs : query.getSelectAs()) {
-                EvaluationResult eval = selectAs.getExpression().evaluate(currentSolution);
-                currentSolution.bind(selectAs.getVariable(), eval.getResult());
+                EvaluationResult eval = selectAs.getExpression().evaluate(solutionMapping);
+                solutionMapping.bind(selectAs.getVariable(), eval.getResult());
             }
-            List<Bind> binds = query.getGraphPatterns().get(0).getBinds();
+            List<Bind> binds = graphPattern.getBinds();
             for(Bind bind : binds) {
-                bind.evaluate(currentSolution);
+                bind.evaluate(solutionMapping);
             }
-            List<Expression> filterConditions = query.getGraphPatterns().get(0).getFilters();
-            SolutionMapping solutionMapping = new SolutionMapping(currentSolution.asMap());
+
+            List<Expression> filterConditions = graphPattern.getFilters();
+            // Filter
             if(filterConditions.isEmpty()) {
-                solutionSequence.add(solutionMapping);
+                filteredSolutionMapping.add(solutionMapping);
             }
             else {
                 if(matches(filterConditions, solutionMapping)) {
-                    solutionSequence.add(solutionMapping);
+                    filteredSolutionMapping.add(solutionMapping);
                 }
             }
-
         }
-        return solutionSequence;
+        return filteredSolutionMapping;
     }
 
     private boolean matches(List<Expression> filterConditions, SolutionMapping solutionMapping) {

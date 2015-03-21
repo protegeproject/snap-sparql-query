@@ -1628,7 +1628,7 @@ public class SPARQLParserImpl {
         else if (tokenizer.peek(UntypedIRITokenType.get()) != null) {
             expression = new AtomicIRI(getIRIFromToken(tokenizer.consume(UntypedIRITokenType.get())));
         }
-        else if (tokenizer.peek(IntegerTokenType.get()) != null) {
+        else if (tokenizer.peek(IntegerTokenType.get(), DoubleTokenType.get(), DecimalTokenType.get(), StringTokenType.get(), BooleanTokenType.get()) != null) {
             expression = parseLiteralNode();
         }
         else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.CLASS)) != null) {
