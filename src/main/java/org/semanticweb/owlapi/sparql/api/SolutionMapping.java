@@ -1,8 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import jpaul.Constraints.Var;
 
+import com.google.common.base.Optional;
 import java.util.*;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -49,22 +49,21 @@ public class SolutionMapping {
         return new HashMap<Variable, Term>(map);
     }
 
-    public Term getTermForVariable(Variable variable) {
+    public Optional<Term> getTermForVariable(Variable variable) {
         return getTermForVariableName(variable.getName());
-//        return map.get(variable);
     }
     
-    public Term getTermForVariableName(String variableName) {
+    public Optional<Term> getTermForVariableName(String variableName) {
         String searchString = variableName;
         if(variableName.startsWith("?") || variableName.startsWith("$")) {
             searchString = variableName.substring(1);
         }
         for(Variable var : map.keySet()) {
             if(var.getName().equals(searchString)) {
-                return map.get(var);
+                return Optional.fromNullable(map.get(var));
             }
         }
-        return null;
+        return Optional.absent();
     }
 
     public Collection<Variable> getVariables() {
@@ -73,8 +72,8 @@ public class SolutionMapping {
 
     public boolean containsAll(SolutionMapping solutionMapping) {
         for(Variable otherVariable : solutionMapping.getVariables()) {
-            Term t = getTermForVariableName(otherVariable.getName());
-            if(t == null) {
+            Optional<Term> t = getTermForVariableName(otherVariable.getName());
+            if(!t.isPresent()) {
                 return false;
             }
             if(!t.equals(solutionMapping.getTermForVariable(otherVariable))) {

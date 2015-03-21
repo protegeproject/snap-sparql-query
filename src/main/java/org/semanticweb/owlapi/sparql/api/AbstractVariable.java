@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collections;
 import java.util.Set;
 
@@ -63,10 +65,11 @@ public abstract class AbstractVariable extends Variable {
 
 
     public EvaluationResult evaluate(SolutionMapping sm) {
-        if(!sm.isMapped(this)) {
+        Optional<Term> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return sm.getTermForVariable(this).evaluate(sm);
+        return term.get().evaluate(sm);
     }
 
 //    public boolean canEvaluateAsBoolean(SolutionMapping sm) {
@@ -74,10 +77,11 @@ public abstract class AbstractVariable extends Variable {
 //    }
 
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
-        if(!sm.isMapped(this)) {
+        Optional<Term> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return sm.getTermForVariable(this).evaluateAsEffectiveBooleanValue(sm);
+        return term.get().evaluateAsEffectiveBooleanValue(sm);
     }
 
 //    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
@@ -85,67 +89,52 @@ public abstract class AbstractVariable extends Variable {
 //    }
 
     public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
-        if(!sm.isMapped(this)) {
+        Optional<Term> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return sm.getTermForVariable(this).evaluateAsStringLiteral(sm);
+        return term.get().evaluateAsStringLiteral(sm);
     }
-
-//    public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
-//        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsSimpleLiteral(sm);
-//    }
 
     public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
-        if(!sm.isMapped(this)) {
+        Optional<Term> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return sm.getTermForVariable(this).evaluateAsSimpleLiteral(sm);
+        return term.get().evaluateAsSimpleLiteral(sm);
     }
-
-//    public boolean canEvaluateAsNumeric(SolutionMapping sm) {
-//        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsNumeric(sm);
-//    }
 
     public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
-        if(!sm.isMapped(this)) {
+        Optional<Term> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return sm.getTermForVariable(this).evaluateAsNumeric(sm);
+        return term.get().evaluateAsNumeric(sm);
     }
-
-//    public boolean canEvaluateAsDateTime(SolutionMapping sm) {
-//        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsDateTime(sm);
-//    }
 
     public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
-        if(!sm.isMapped(this)) {
+        Optional<Term> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return sm.getTermForVariable(this).evaluateAsDateTime(sm);
+        return term.get().evaluateAsDateTime(sm);
     }
-
-//    public boolean canEvaluateAsIRI(SolutionMapping sm) {
-//        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsIRI(sm);
-//    }
-
-//    @Override
-//    public boolean canEvaluateAsLiteral(SolutionMapping sm) {
-//        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsLiteral(sm);
-//    }
 
     @Override
     public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
-        if(!sm.isMapped(this)) {
+        Optional<Term> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return sm.getTermForVariable(this).evaluateAsLiteral(sm);
+        return term.get().evaluateAsLiteral(sm);
     }
 
     @Override
     public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
-        if(!sm.isMapped(this)) {
+        Optional<Term> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return sm.getTermForVariable(this).evaluateAsIRI(sm);
+        return term.get().evaluateAsIRI(sm);
     }
 }

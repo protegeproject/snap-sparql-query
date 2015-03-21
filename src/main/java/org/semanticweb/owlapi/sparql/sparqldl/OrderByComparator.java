@@ -39,6 +39,7 @@
 
 package org.semanticweb.owlapi.sparql.sparqldl;
 
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Term;
 import org.semanticweb.owlapi.sparql.api.TermComparator;
@@ -67,12 +68,28 @@ public class OrderByComparator implements Comparator<SolutionMapping> {
 
     public int compare(SolutionMapping o1, SolutionMapping o2) {
         for(OrderCondition orderCondition : solutionModifier.getOrderConditions()) {
-            Term binding1 = o1.getTermForVariableName(orderCondition.getVariable());
-            Term binding2 = o2.getTermForVariableName(orderCondition.getVariable());
-            int diff = termComparator.compare(binding1, binding2);
-            if(diff != 0) {
-                return orderCondition.getOrderByModifier() == OrderByModifier.ASC ? diff : -diff;
+            Optional<Term> binding1 = o1.getTermForVariableName(orderCondition.getVariable());
+            Optional<Term> binding2 = o2.getTermForVariableName(orderCondition.getVariable());
+            if(binding1.isPresent()) {
+                if(binding2.isPresent()) {
+                    int diff = termComparator.compare(binding1.get(), binding2.get());
+                    if(diff != 0) {
+                        return orderCondition.getOrderByModifier() == OrderByModifier.ASC ? diff : -diff;
+                    }
+                }
+                else {
+                    return -1;
+                }
             }
+            else {
+                if(binding2.isPresent()) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+
 //            int diff = 0;
 //            if(binding1 instanceof OWLLiteral && binding2 instanceof OWLLiteral) {
 //                OWLLiteral lit1 = ((OWLLiteral) binding1);

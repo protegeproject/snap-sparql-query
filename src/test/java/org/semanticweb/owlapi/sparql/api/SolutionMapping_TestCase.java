@@ -4,6 +4,7 @@ package org.semanticweb.owlapi.sparql.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import jpaul.Constraints.Var;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -91,7 +92,7 @@ public class SolutionMapping_TestCase {
         when(otherVariable.getName()).thenReturn("y");
         Term otherTerm = mock(Term.class);
         solutionMapping.bind(otherVariable, otherTerm);
-        assertThat(solutionMapping.getTermForVariable(otherVariable), is(otherTerm));
+        assertThat(solutionMapping.getTermForVariable(otherVariable), is(Optional.of(otherTerm)));
     }
 
     @Test
@@ -101,12 +102,12 @@ public class SolutionMapping_TestCase {
 
     @Test
     public void should_getTermForVariable() {
-        MatcherAssert.assertThat(solutionMapping.getTermForVariable(variable), Matchers.is(term));
+        assertThat(solutionMapping.getTermForVariable(variable), is(Optional.of(term)));
     }
 
     @Test
     public void should_getTermForVariableName() {
-        MatcherAssert.assertThat(solutionMapping.getTermForVariableName("?x"), Matchers.is(term));
+        assertThat(solutionMapping.getTermForVariableName("?x"), is(Optional.of(term)));
     }
 
 }
