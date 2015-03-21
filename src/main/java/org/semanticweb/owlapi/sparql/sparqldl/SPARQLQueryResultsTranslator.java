@@ -133,7 +133,7 @@ public class SPARQLQueryResultsTranslator {
             SolutionMapping currentSolution = new SolutionMapping(bindings);
             for(SelectAs selectAs : query.getSelectAs()) {
                 EvaluationResult eval = selectAs.getExpression().evaluate(currentSolution);
-                bindings.put(selectAs.getVariable(), eval.getResult());
+                currentSolution.bind(selectAs.getVariable(), eval.getResult());
             }
             List<Bind> binds = query.getGraphPatterns().get(0).getBinds();
             for(Bind bind : binds) {

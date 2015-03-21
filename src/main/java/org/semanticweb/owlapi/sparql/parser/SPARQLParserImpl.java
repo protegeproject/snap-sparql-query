@@ -51,16 +51,16 @@ public class SPARQLParserImpl {
     }
 
     private SPARQLQuery createQueryObject() {
-        List<Variable> mustBindVariable = new ArrayList<>();
+        List<Variable> selectVariables = new ArrayList<>();
         for (String varName : mustBindVariables) {
             Collection<VariableTokenType> types = tokenizer.getVariableManager().getTypes(varName);
             TokenType tokenType = types.iterator().next();
             if (tokenType instanceof DeclaredVariableTokenType) {
                 DeclaredVariableTokenType declaredVariableTokenType = (DeclaredVariableTokenType) tokenType;
-                mustBindVariable.add(Variable.create(varName, declaredVariableTokenType.getPrimitiveType()));
+                selectVariables.add(Variable.create(varName, declaredVariableTokenType.getPrimitiveType()));
             }
             else {
-                mustBindVariable.add(new UntypedVariable(varName));
+                selectVariables.add(new UntypedVariable(varName));
             }
         }
         List<SPARQLGraphPattern> graphPatterns = new ArrayList<>();
@@ -71,15 +71,12 @@ public class SPARQLParserImpl {
             allVariables.addAll(bgp.getTriplePatternVariablesVariables());
             graphPatterns.add(bgp);
             if (selectAll) {
-                mustBindVariable.addAll(bgp.getTriplePatternVariablesVariables());
+                selectVariables.addAll(bgp.getTriplePatternVariablesVariables());
             }
         }
 
-        for (SelectAs selectAs : selectAsList) {
-            mustBindVariable.addAll(selectAs.getExpression().getVariables());
-        }
         SolutionModifier solutionModifier = new SolutionModifier(orderConditions);
-        return new SPARQLQuery(tokenizer.getPrefixManager(), queryType, mustBindVariable, allVariables, selectAsList, graphPatterns, new ArrayList<>(minusBGPs), solutionModifier);
+        return new SPARQLQuery(tokenizer.getPrefixManager(), queryType, selectVariables, allVariables, selectAsList, graphPatterns, new ArrayList<>(minusBGPs), solutionModifier);
     }
 
 
