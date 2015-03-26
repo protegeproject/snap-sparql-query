@@ -124,7 +124,9 @@ public class SPARQLQueryResultsTranslator {
             // Extend
             for(SelectAs selectAs : query.getSelectAs()) {
                 EvaluationResult eval = selectAs.getExpression().evaluate(solutionMapping);
-                solutionMapping.bind(selectAs.getVariable(), eval.getResult());
+                if (!eval.isError()) {
+                    solutionMapping.bind(selectAs.getVariable(), eval.getResult());
+                }
             }
             List<Bind> binds = graphPattern.getBinds();
             for(Bind bind : binds) {
