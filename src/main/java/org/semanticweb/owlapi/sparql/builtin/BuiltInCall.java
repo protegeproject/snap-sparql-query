@@ -81,7 +81,8 @@ public enum BuiltInCall {
             argList(VARIABLE)),
 
     IRI(
-            notImplemented(), IRI(), argList(SIMPLE_LITERAL),
+            new IRI_Evaluator(),
+            IRI(), argList(SIMPLE_LITERAL),
             argList(XSD_STRING),
             argList(SparqlType.IRI)),
 
