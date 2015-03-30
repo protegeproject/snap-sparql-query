@@ -98,6 +98,13 @@ public class SPARQLParserImpl {
     }
 
     public void parseSelectQuery() {
+        parseSelectClause();
+        parseWhereClause();
+        parseSolutionModifier();
+        tokenizer.consume(EOFTokenType.get());
+    }
+
+    public void parseSelectClause() {
         tokenizer.consume(SPARQLTerminal.SELECT);
         if (tokenizer.peek(SPARQLTerminal.DISTINCT) != null) {
             tokenizer.consume(SPARQLTerminal.DISTINCT);
@@ -109,43 +116,43 @@ public class SPARQLParserImpl {
         }
         else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null || tokenizer.peek(SPARQLTerminal.OPEN_PAR) != null) {
             while (true) {
-                if (tokenizer.peek(SPARQLTerminal.OPEN_PAR) != null) {
-                    tokenizer.consume(SPARQLTerminal.OPEN_PAR);
-                    Expression expression = parseExpression();
-                    tokenizer.consume(SPARQLTerminal.AS);
-                    SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
-                    tokenizer.getVariableManager().addVariableName(token.getImage());
-                    selectAsList.add(new SelectAs(expression, new UntypedVariable(token.getImage())));
-                    tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
-                    if (tokenizer.peek(SPARQLTerminal.WHERE) != null) {
-                        break;
-                    }
-                    if (tokenizer.peek(UndeclaredVariableTokenType.get()) == null && tokenizer.peek(SPARQLTerminal.OPEN_PAR) == null) {
-                        break;
-                    }
+                parseSelectVariableOrExpressionAsVariable();
+                if (tokenizer.peek(SPARQLTerminal.WHERE) != null) {
+                    break;
                 }
-                else {
-                    SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
-                    mustBindVariables.add(token.getImage());
-                    tokenizer.getVariableManager().addVariableName(token.getImage());
-                    if (tokenizer.peek(SPARQLTerminal.WHERE) != null) {
-                        break;
-                    }
-                    if (tokenizer.peek(UndeclaredVariableTokenType.get()) == null && tokenizer.peek(SPARQLTerminal.OPEN_PAR) == null) {
-                        break;
-                    }
+                if (tokenizer.peek(UndeclaredVariableTokenType.get()) == null && tokenizer.peek(SPARQLTerminal.OPEN_PAR) == null) {
+                    break;
                 }
-
             }
         }
         else {
             tokenizer.raiseError();
         }
+    }
 
+    public void parseSelectVariableOrExpressionAsVariable() {
+        if (tokenizer.peek(SPARQLTerminal.OPEN_PAR) != null) {
+            parseSelectExpressionAsVariable();
+        }
+        else {
+            parseSelectVariable();
+        }
+    }
 
-        parseWhereClause();
-        parseSolutionModifier();
-        tokenizer.consume(EOFTokenType.get());
+    public void parseSelectVariable() {
+        SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        mustBindVariables.add(token.getImage());
+        tokenizer.getVariableManager().addVariableName(token.getImage());
+    }
+
+    public void parseSelectExpressionAsVariable() {
+        tokenizer.consume(SPARQLTerminal.OPEN_PAR);
+        Expression expression = parseExpression();
+        tokenizer.consume(SPARQLTerminal.AS);
+        SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        tokenizer.getVariableManager().addVariableName(token.getImage());
+        selectAsList.add(new SelectAs(expression, new UntypedVariable(token.getImage())));
+        tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
     }
 
 
