@@ -228,7 +228,7 @@ public enum BuiltInCall {
             argList(XSD_DATE_TIME)),
 
     NOW(
-            notImplemented(),
+            new NOW_Evaluator(),
             new ReturnType(XSD_DATE_TIME),
             argList()),
 

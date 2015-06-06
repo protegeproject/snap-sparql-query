@@ -1687,7 +1687,11 @@ public class SPARQLParserImpl {
         BuiltInCall builtInCall = BuiltInCall.valueOf(callName);
         List<Integer> argListsSizes = new ArrayList<>();
         VarArg varArg = VarArg.FIXED;
+        boolean hasEmptyArgList = false;
         for (ArgList argList : builtInCall.getArgLists()) {
+            if(argList.getArgList().isEmpty()) {
+                hasEmptyArgList = true;
+            }
             argListsSizes.add(argList.getArgList().size());
             if(argList.isVarArg()) {
                 varArg = VarArg.VARIABLE;
@@ -1696,15 +1700,32 @@ public class SPARQLParserImpl {
         Collections.sort(argListsSizes);
         int maxSize = argListsSizes.get(argListsSizes.size() - 1);
         List<Expression> args = new ArrayList<>();
-        for (int i = 0; ; i++) {
-            Expression arg = parseExpression();
-            args.add(arg);
-            int numberOfParsedArgs = i + 1;
-            if (varArg == VarArg.FIXED) {
-                if (numberOfParsedArgs == maxSize) {
-                    break;
+
+        if(hasEmptyArgList && tokenizer.peek(SPARQLTerminal.CLOSE_PAR) != null) {
+            tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
+        }
+        else {
+            for (int i = 0; ; i++) {
+                Expression arg = parseExpression();
+                args.add(arg);
+                int numberOfParsedArgs = i + 1;
+                if (varArg == VarArg.FIXED) {
+                    if (numberOfParsedArgs == maxSize) {
+                        break;
+                    }
+                    else if (argListsSizes.indexOf(numberOfParsedArgs) != -1) {
+                        if (tokenizer.peek(SPARQLTerminal.COMMA) != null) {
+                            tokenizer.consume(SPARQLTerminal.COMMA);
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                    else {
+                        tokenizer.consume(SPARQLTerminal.COMMA);
+                    }
                 }
-                else if (argListsSizes.indexOf(numberOfParsedArgs) != -1) {
+                else {
                     if (tokenizer.peek(SPARQLTerminal.COMMA) != null) {
                         tokenizer.consume(SPARQLTerminal.COMMA);
                     }
@@ -1712,20 +1733,12 @@ public class SPARQLParserImpl {
                         break;
                     }
                 }
-                else {
-                    tokenizer.consume(SPARQLTerminal.COMMA);
-                }
             }
-            else {
-                if (tokenizer.peek(SPARQLTerminal.COMMA) != null) {
-                    tokenizer.consume(SPARQLTerminal.COMMA);
-                }
-                else {
-                    break;
-                }
-            }
+            tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
         }
-        tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
+
+
+
         return new BuiltInCallExpression(builtInCall, ImmutableList.copyOf(args));
     }
 

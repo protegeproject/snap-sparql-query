@@ -436,8 +436,8 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
                 return wrap(SPARQLTerminal.MINUS_KW);
             case NAMED:
                 return wrap(SPARQLTerminal.NAMED);
-            case NIL:
-                break;
+//            case NIL:
+//                break;
             case NOT:
                 return wrap(SPARQLTerminal.NOT);
             case NOT_EQUAL:

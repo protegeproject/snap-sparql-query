@@ -20,19 +20,26 @@ public class SolutionMapping {
 
     private Map<Variable, Term> map = new HashMap<Variable, Term>();
 
-
-
     public static SolutionMapping emptyMapping() {
         return emptyMapping;
     }
 
+    private final long time;
+
     public SolutionMapping() {
+        this.time = System.currentTimeMillis();
     }
 
     public SolutionMapping(Map<Variable, Term> map) {
         for(Variable variable : map.keySet()) {
             this.map.put(checkNotNull(variable), checkNotNull(map.get(variable)));
         }
+        this.time = System.currentTimeMillis();
+    }
+
+
+    public long getTime() {
+        return time;
     }
 
     public boolean isMapped(Variable variable) {
