@@ -74,6 +74,14 @@ public class EvaluationResult {
         return getResult(Literal.createInteger(value));
     }
 
+    public static EvaluationResult getLong(long value) {
+        return getResult(Literal.createLong(value));
+    }
+
+    public static EvaluationResult getFloat(float value) {
+        return getResult(Literal.createFloat(value));
+    }
+
 
     public static EvaluationResult getError() {
         return ERROR_RESULT;

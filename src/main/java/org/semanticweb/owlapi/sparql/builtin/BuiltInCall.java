@@ -121,7 +121,7 @@ public enum BuiltInCall {
             argList(NUMERIC)),
 
     ROUND(
-            notImplemented(),
+            new ROUND_Evaluator(),
             Numeric(),
             argList(NUMERIC)),
 

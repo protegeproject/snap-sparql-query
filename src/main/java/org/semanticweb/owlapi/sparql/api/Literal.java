@@ -168,7 +168,9 @@ public class Literal implements AtomicLiteral {
         return new Literal(Datatype.getXSDDecimal(), Double.toString(decimal), EMPTY_LANG_TAG);
     }
 
-
+    public static Literal createLong(long decimal) {
+        return new Literal(Datatype.getXSDLong(), Double.toString(decimal), EMPTY_LANG_TAG);
+    }
 
     public static Literal createRDFPlainLiteral(String lexicalForm, String langTag) {
         return new Literal(Datatype.getRDFPlainLiteral(), lexicalForm, langTag);

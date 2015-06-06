@@ -182,6 +182,10 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
         return XSD_DECIMAL;
     }
 
+    public static Datatype getXSDLong() {
+        return XSD_LONG;
+    }
+
     public static Datatype getXSDDateTime() {
         return XSD_DATETIME;
     }
