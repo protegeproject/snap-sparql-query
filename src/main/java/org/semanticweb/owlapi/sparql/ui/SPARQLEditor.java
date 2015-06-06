@@ -39,8 +39,11 @@
 
 package org.semanticweb.owlapi.sparql.ui;
 
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
+import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.builtin.eval.NullBuiltInCallEvaluator;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTerminal;
@@ -77,6 +80,8 @@ public class SPARQLEditor extends JTextPane {
 
     private Style variableStyle;
 
+    private Style resultVariableStyle;
+
     private Style defaultStyle;
 
     private Style stringStyle;
@@ -98,6 +103,7 @@ public class SPARQLEditor extends JTextPane {
     private OWLOntologyProvider ontologyProvider;
 
     private ErrorMessageProvider errorMessageProvider = new DefaultErrorMessageProvider();
+
 
     public SPARQLEditor(OWLOntologyProvider ontologyProvider) {
         this.ontologyProvider = ontologyProvider;
@@ -146,9 +152,11 @@ public class SPARQLEditor extends JTextPane {
 //        StyleConstants.setBold(rdfVocabularyStyle, true);
 
         variableStyle = styledDocument.addStyle("vs", null);
-//        StyleConstants.setForeground(variableStyle, new Color(106, 129, 149));
         StyleConstants.setForeground(variableStyle, new Color(28, 0, 207));
-//        StyleConstants.setBold(variableStyle, true);
+
+        resultVariableStyle = styledDocument.addStyle("rvs", null);
+        StyleConstants.setForeground(resultVariableStyle, new Color(28, 0, 207));
+        StyleConstants.setBold(resultVariableStyle, true);
 
         stringStyle = styledDocument.addStyle("string", null);
         StyleConstants.setForeground(stringStyle, new Color(196, 26, 22));
@@ -220,35 +228,41 @@ public class SPARQLEditor extends JTextPane {
     }
 
     private void performHighlightingInSeparateThread() {
-        Thread t = new Thread(new Runnable() {
+        final Thread t = new Thread(new Runnable() {
             public void run() {
-                OWLOntology rootOntology = ontologyProvider.getOntology();
-                OWLDataFactory df = rootOntology.getOWLOntologyManager().getOWLDataFactory();
-                SPARQLTokenizer tokenizer = new SPARQLTokenizerJavaCCImpl(rootOntology, new StringReader(getText()));
+                final SPARQLParserImpl sparqlParser = new SPARQLParserImpl(createTokenizer());
+                Optional<SPARQLQuery> query;
+                try {
+                    sparqlParser.parsePrologue();
+                    sparqlParser.parseSelectClause();
+                } catch (Throwable e) {
+                    query = Optional.absent();
+                }
+                SPARQLTokenizer tokenizer = createTokenizer();
+                performHighlighting(tokenizer, new HashSet<>(sparqlParser.getVariables()));
+            }
+
+            private void performHighlighting(SPARQLTokenizer tokenizer, Set<String> selectVariableNames) {
                 while(tokenizer.hasMoreTokens()) {
                     SPARQLToken token = tokenizer.consume();
-                    Style tokenStyle = getTokenStyle(token);
-//                    System.out.println(token.getImage());
-//                    System.out.println("        Token: " + token);
-//                    System.out.println("        Style: " + tokenStyle);
-//                    System.out.println("        Pos: " + token.getTokenPosition());
+                    Style tokenStyle = getTokenStyle(token, selectVariableNames);
                     TokenPosition tokenPosition = token.getTokenPosition();
                     int start = tokenPosition.getStart();
                     int end = tokenPosition.getEnd();
-//                    System.out.println("        START: " + start + "   END: " + end);
-//                    System.out.println("        TEXT: " + getText().substring(start, end));
                     getStyledDocument().setCharacterAttributes(start, end - start, tokenStyle, true);
-//                    System.out.println();
-//                    System.out.println();
-//                    System.out.println();
                 }
             }
         });
         t.start();
     }
 
+    private SPARQLTokenizerJavaCCImpl createTokenizer() {
+        OWLOntology rootOntology = ontologyProvider.getOntology();
+        return new SPARQLTokenizerJavaCCImpl(rootOntology, new StringReader(getText()));
+    }
 
-    private Style getTokenStyle(SPARQLToken token) {
+
+    private Style getTokenStyle(SPARQLToken token, Set<String> selectVariableNames) {
         for(TokenType type : token.getTokenTypes()) {
             if(type instanceof SPARQLTerminalTokenType) {
                 if(sparqlKeywords.contains(token.getImage())) {
@@ -266,7 +280,13 @@ public class SPARQLEditor extends JTextPane {
                 return rdfVocabularyStyle;
             }
             else if(type instanceof VariableTokenType) {
+                if(!selectVariableNames.isEmpty()) {
+                    if(selectVariableNames.contains(token.getImage())) {
+                        return resultVariableStyle;
+                    }
+                }
                 return variableStyle;
+
             }
             else if(type instanceof StringTokenType) {
                 return stringStyle;

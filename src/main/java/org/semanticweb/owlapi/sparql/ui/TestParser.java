@@ -53,6 +53,7 @@ import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.VariableManager;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
 import org.semanticweb.owlapi.sparql.sparqldl.SPARQLDLQueryEngine;
+import org.semanticweb.owlapi.util.AutoIRIMapper;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -60,7 +61,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.StringReader;
+import java.net.URI;
 import java.util.prefs.Preferences;
 
 /**
@@ -77,6 +80,7 @@ public class TestParser {
     public static void main(String[] args) throws Exception {
         try {
             OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+            manager.addIRIMapper(new AutoIRIMapper(new File(new URI(args[0])).getParentFile(), false));
             final OWLOntology rootOntology = manager.loadOntologyFromOntologyDocument(IRI.create(args[0]));
             System.out.println("Loaded ontology: " + rootOntology);
             System.out.println("Creating reasoner...");

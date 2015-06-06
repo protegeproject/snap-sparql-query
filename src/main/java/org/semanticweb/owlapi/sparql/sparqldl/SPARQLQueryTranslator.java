@@ -76,7 +76,6 @@ public class SPARQLQueryTranslator {
         QueryType select = (query.getQueryType() == SPARQLQueryType.SELECT_DISTINCT) ? QueryType.SELECT_DISTINCT : QueryType.SELECT;
         QueryImpl query = new QueryImpl(select);
         for (Variable v : this.query.getGraphPatternVariables()) {
-            System.out.println("GraphPatternVar: " + v);
             query.addResultVar(new QueryArgument(QueryArgumentType.VAR, v.getName()));
         }
         AxiomTemplateVisitor axiomTemplateVisitor = new AxiomTemplateVisitor();
@@ -121,11 +120,11 @@ public class SPARQLQueryTranslator {
         }
 
         public QueryAtom visit(AsymmetricObjectProperty axiom) {
-            return null;
+            throw new UnsupportedOperationException("Asymmetric object property queries are not supported");
         }
 
         public QueryAtom visit(ReflexiveObjectProperty axiom) {
-            return null;
+            throw new UnsupportedOperationException("Reflexive object property queries are not supported");
         }
 
         public QueryAtom visit(DisjointClasses axiom) {
@@ -133,11 +132,11 @@ public class SPARQLQueryTranslator {
         }
 
         public QueryAtom visit(DataPropertyDomain axiom) {
-            return null;
+            return getAtom(QueryAtomType.DOMAIN, axiom.getProperty(), axiom.getDomain());
         }
 
         public QueryAtom visit(ObjectPropertyDomain axiom) {
-            return null;
+            return getAtom(QueryAtomType.DOMAIN, axiom.getProperty(), axiom.getDomain());
         }
 
         public QueryAtom visit(EquivalentObjectProperties axiom) {
@@ -157,7 +156,7 @@ public class SPARQLQueryTranslator {
         }
 
         public QueryAtom visit(ObjectPropertyRange axiom) {
-            return null;
+            return getAtom(QueryAtomType.RANGE, axiom.getProperty(), axiom.getRange());
         }
 
         public QueryAtom visit(ObjectPropertyAssertion axiom) {
@@ -191,7 +190,7 @@ public class SPARQLQueryTranslator {
                 }
 
                 public QueryAtom visit(Datatype datatype) {
-                    return null;
+                    throw new UnsupportedOperationException("Datatype queries are not supported");
                 }
 
                 public QueryAtom visit(AnnotationProperty property) {
@@ -205,7 +204,7 @@ public class SPARQLQueryTranslator {
 
                 @Override
                 public QueryAtom visit(DatatypeVariable variable) throws RuntimeException {
-                    throw new RuntimeException("Not supported");
+                    throw new RuntimeException("Datatype queries are not supported");
                 }
 
                 @Override
@@ -230,12 +229,12 @@ public class SPARQLQueryTranslator {
 
                 @Override
                 public QueryAtom visit(LiteralVariable variable) throws RuntimeException {
-                    return super.visit(variable);
+                    return getAtom(QueryAtomType.UKNOWN, variable);
                 }
 
                 @Override
                 public QueryAtom visit(UntypedVariable variable) throws RuntimeException {
-                    return super.visit(variable);
+                    return getAtom(QueryAtomType.UKNOWN, variable);
                 }
             });
         }
@@ -249,7 +248,7 @@ public class SPARQLQueryTranslator {
         }
 
         public QueryAtom visit(DataPropertyRange axiom) {
-            return null;
+            return getAtom(QueryAtomType.RANGE, axiom.getProperty());
         }
 
         public QueryAtom visit(FunctionalDataProperty axiom) {
@@ -301,11 +300,11 @@ public class SPARQLQueryTranslator {
         }
 
         public QueryAtom visit(AnnotationPropertyDomain axiom) {
-            return null;
+            return getAtom(QueryAtomType.DOMAIN, axiom.getProperty(), axiom.getDomain());
         }
 
         public QueryAtom visit(AnnotationPropertyRange axiom) {
-            return null;
+            return getAtom(QueryAtomType.RANGE, axiom.getProperty(), axiom.getRange());
         }
 
     }

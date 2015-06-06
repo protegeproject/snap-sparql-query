@@ -27,6 +27,14 @@ public class AnnotationPropertyRange implements Axiom {
         return visitor.visit(this);
     }
 
+    public AtomicAnnotationProperty getProperty() {
+        return property;
+    }
+
+    public AtomicIRI getRange() {
+        return range;
+    }
+
     @Override
     public int hashCode() {
         return AnnotationPropertyRange.class.getSimpleName().hashCode() + property.hashCode() + range.hashCode();

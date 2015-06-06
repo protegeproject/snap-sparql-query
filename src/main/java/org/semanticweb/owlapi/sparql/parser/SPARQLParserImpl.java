@@ -142,7 +142,7 @@ public class SPARQLParserImpl {
     public void parseSelectVariable() {
         SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
         mustBindVariables.add(token.getImage());
-        tokenizer.getVariableManager().addVariableName(token.getImage());
+
     }
 
     public void parseSelectExpressionAsVariable() {
