@@ -106,7 +106,7 @@ public enum BuiltInCall {
             argList()),
 
     ABS(
-            notImplemented(),
+            new ABS_Evaluator(),
             Numeric(),
             argList(NUMERIC)),
 
