@@ -316,7 +316,20 @@ public enum BuiltInCall {
             new REGEX_Evaluator(),
             Boolean(),
             argList(namedArg(SIMPLE_LITERAL, "text"), namedArg(SIMPLE_LITERAL, "pattern")),
-            argList(namedArg(SIMPLE_LITERAL, "text"), namedArg(SIMPLE_LITERAL, "pattern"), namedArg(SIMPLE_LITERAL, "flags")));
+            argList(namedArg(SIMPLE_LITERAL, "text"), namedArg(SIMPLE_LITERAL, "pattern"), namedArg(SIMPLE_LITERAL, "flags"))),
+
+
+    UUID(
+            new UUID_Evaluator(),
+            IRI(),
+            argList()
+    ),
+
+    STRUUID(
+            new STRUUID_Evaluator(),
+            SimpleLiteral(),
+            argList()
+    );
 
     // @formatter:on
 
