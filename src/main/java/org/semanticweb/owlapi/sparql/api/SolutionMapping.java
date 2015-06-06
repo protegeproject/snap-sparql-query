@@ -3,6 +3,8 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Objects;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.sparql.builtin.Timestamp;
+
 import java.util.*;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -24,22 +26,22 @@ public class SolutionMapping {
         return emptyMapping;
     }
 
-    private final long time;
+    private final Timestamp timestamp;
 
     public SolutionMapping() {
-        this.time = System.currentTimeMillis();
+        this.timestamp = new Timestamp(System.currentTimeMillis());
     }
 
     public SolutionMapping(Map<Variable, Term> map) {
         for(Variable variable : map.keySet()) {
             this.map.put(checkNotNull(variable), checkNotNull(map.get(variable)));
         }
-        this.time = System.currentTimeMillis();
+        this.timestamp = new Timestamp(System.currentTimeMillis());
     }
 
 
-    public long getTime() {
-        return time;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
     public boolean isMapped(Variable variable) {
