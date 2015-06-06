@@ -101,7 +101,7 @@ public enum BuiltInCall {
             argList(XSD_STRING)),
 
     RAND(
-            notImplemented(),
+            new RAND_Evaluator(),
             Double(),
             argList()),
 
