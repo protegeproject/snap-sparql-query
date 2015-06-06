@@ -268,7 +268,7 @@ public enum BuiltInCall {
             argList(EXPRESSION, VarArg.VARIABLE)),
 
     IF(
-            notImplemented(),
+            new IF_Evaluator(),
             Boolean(),
             argList(EXPRESSION, EXPRESSION, EXPRESSION)),
 
