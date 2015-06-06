@@ -12,21 +12,18 @@ import java.util.List;
  * Stanford Center for Biomedical Informatics Research
  * 10/03/15
  */
-public class STR_Evaluator implements BuiltInCallEvaluator {
-
+public class STR_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
-        if(args.size() != 1) {
-            return EvaluationResult.getError();
-        }
-        EvaluationResult iriEval = args.get(0).evaluateAsIRI(sm);
-        if(!iriEval.isError()) {
-            EvaluationResult.getResult(Literal.createRDFPlainLiteral(iriEval.asIRI().getIRI().toString(), ""));
-        }
-        EvaluationResult literalEval = args.get(0).evaluateAsLiteral(sm);
+    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm) {
+        EvaluationResult literalEval = arg.evaluateAsLiteral(sm);
         if(literalEval.isError()) {
             return literalEval;
         }
+        EvaluationResult iriEval = arg.evaluateAsIRI(sm);
+        if(!iriEval.isError()) {
+            EvaluationResult.getResult(Literal.createRDFPlainLiteral(iriEval.asIRI().getIRI().toString(), ""));
+        }
         return EvaluationResult.getResult(Literal.createRDFPlainLiteral(literalEval.asLiteral().getLexicalForm(), ""));
     }
+
 }
