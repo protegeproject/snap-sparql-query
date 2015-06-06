@@ -188,32 +188,32 @@ public enum BuiltInCall {
             argList(STRING_LITERAL, STRING_LITERAL)),
 
     YEAR(
-            notImplemented(),
+            new YEAR_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     MONTH(
-            notImplemented(),
+            new MONTH_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     DAY(
-            notImplemented(),
+            new DAY_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     HOURS(
-            notImplemented(),
+            new HOURS_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     MINUTES(
-            notImplemented(),
+            new MINUTES_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     SECONDS(
-            notImplemented(),
+            new SECONDS_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 

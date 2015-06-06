@@ -66,6 +66,10 @@ public class EvaluationResult {
         return getResult(Literal.createDouble(value));
     }
 
+    public static EvaluationResult getDecimal(double value) {
+        return getResult(Literal.createDecimal(value));
+    }
+
     public static EvaluationResult getInteger(int value) {
         return getResult(Literal.createInteger(value));
     }

@@ -46,20 +46,40 @@ public class Timestamp {
     }
 
     public int getYear() {
-        Calendar instance = Calendar.getInstance();
-        instance.setTime(date);
+        Calendar instance = getCalendar();
         return instance.get(Calendar.YEAR);
     }
 
-    public int getMonth() {
+    private Calendar getCalendar() {
         Calendar instance = Calendar.getInstance();
         instance.setTime(date);
-        return instance.get(Calendar.MONTH);
+        return instance;
+    }
+
+    public int getMonth() {
+        Calendar instance = getCalendar();
+        return instance.get(Calendar.MONTH) + 1;
     }
 
     public int getDay() {
-        Calendar instance = Calendar.getInstance();
-        instance.setTime(date);
+        Calendar instance = getCalendar();
         return instance.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public int getHours() {
+        return getCalendar().get(Calendar.HOUR);
+    }
+
+    public int getMinutes() {
+        return getCalendar().get(Calendar.MINUTE);
+    }
+
+    public int getSeconds() {
+        return getCalendar().get(Calendar.SECOND);
+    }
+
+
+    public int getTimeZone() {
+        return getCalendar().get(Calendar.ZONE_OFFSET);
     }
 }
