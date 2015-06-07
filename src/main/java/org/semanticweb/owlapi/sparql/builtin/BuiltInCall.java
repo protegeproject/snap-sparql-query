@@ -131,7 +131,7 @@ public enum BuiltInCall {
             argList(STRING_LITERAL, VarArg.VARIABLE)),
 
     SUBSTR(
-            notImplemented(),
+            new SUBSTR_Evaluator(),
             StringLiteral(),
             argList(new Arg(STRING_LITERAL), namedArg(XSD_INTEGER, "startingLoc")),
             argList(new Arg(STRING_LITERAL), namedArg(XSD_INTEGER, "startingLoc"), namedArg(XSD_INTEGER, "length"))),
@@ -142,7 +142,7 @@ public enum BuiltInCall {
             argList(STRING_LITERAL)),
 
     REPLACE(
-            notImplemented(),
+            new REPLACE_Evaluator(),
             StringLiteral(),
             argList(namedArg(STRING_LITERAL, "arg"), namedArg(SIMPLE_LITERAL, "pattern"), namedArg(SIMPLE_LITERAL, "replacement")),
             argList(namedArg(STRING_LITERAL, "arg"), namedArg(SIMPLE_LITERAL, "pattern"), namedArg(SIMPLE_LITERAL, "replacement"), namedArg(SIMPLE_LITERAL, "flags"))),
