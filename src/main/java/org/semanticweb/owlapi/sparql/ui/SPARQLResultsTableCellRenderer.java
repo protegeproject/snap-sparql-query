@@ -85,10 +85,19 @@ public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer imp
             }
             else {
                 if(literal.isRDFPlainLiteral()) {
-                    label.setText(String.format("\"%s\"@%s", literal.getLexicalForm(), literal.getLang()));
+                    if (!literal.getLang().isEmpty()) {
+                        label.setText(String.format("\"%s\"@%s", literal.getLexicalForm(), literal.getLang()));
+                    }
+                    else {
+                        label.setText(String.format("\"%s\"", literal.getLexicalForm()));
+                    }
                 }
                 else {
-                    label.setText(String.format("\"%s\"^^%s", literal.getLexicalForm(), pm.getPrefixIRI(literal.getDatatype().getIRI())));
+                    String prefixIRI = pm.getPrefixIRI(literal.getDatatype().getIRI());
+                    if(prefixIRI == null) {
+                        prefixIRI = literal.getDatatype().getIRI().toQuotedString();
+                    }
+                    label.setText(String.format("\"%s\"^^%s", literal.getLexicalForm(), prefixIRI));
                 }
             }
         }

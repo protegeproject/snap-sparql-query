@@ -278,7 +278,7 @@ public enum BuiltInCall {
             argList(SIMPLE_LITERAL, SIMPLE_LITERAL)),
 
     STRDT(
-            notImplemented(),
+            new STRDT_Evaluator(),
             Literal(),
             argList(SIMPLE_LITERAL, SparqlType.IRI)),
 
