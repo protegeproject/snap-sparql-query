@@ -273,7 +273,7 @@ public enum BuiltInCall {
             argList(EXPRESSION, EXPRESSION, EXPRESSION)),
 
     STRLANG(
-            notImplemented(),
+            new STRLANG_Evaluator(),
             Literal(),
             argList(SIMPLE_LITERAL, SIMPLE_LITERAL)),
 
