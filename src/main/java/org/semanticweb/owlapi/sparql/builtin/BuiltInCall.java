@@ -178,7 +178,7 @@ public enum BuiltInCall {
             argList(STRING_LITERAL, STRING_LITERAL)),
 
     STRBEFORE(
-            notImplemented(),
+            new STRBEFORE_Evaluator(),
             Literal(),
             argList(STRING_LITERAL, STRING_LITERAL)),
 
