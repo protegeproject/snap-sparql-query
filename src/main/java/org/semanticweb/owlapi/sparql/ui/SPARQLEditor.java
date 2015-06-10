@@ -43,6 +43,7 @@ import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
+import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.builtin.eval.NullBuiltInCallEvaluator;
@@ -50,6 +51,7 @@ import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTerminal;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
+import org.semanticweb.owlapi.sparql.syntax.SelectClause;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -63,6 +65,7 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -200,7 +203,6 @@ public class SPARQLEditor extends JTextPane {
     }
 
     private void performHighlighting() {
-        fireChange();
         validQuery = false;
         performHighlightingInSeparateThread();
         try {
@@ -231,16 +233,9 @@ public class SPARQLEditor extends JTextPane {
     private void performHighlightingInSeparateThread() {
         final Thread t = new Thread(new Runnable() {
             public void run() {
-                final SPARQLParserImpl sparqlParser = new SPARQLParserImpl(createTokenizer());
-                Optional<SPARQLQuery> query;
-                try {
-                    sparqlParser.parsePrologue();
-                    sparqlParser.parseSelectClause();
-                } catch (Throwable e) {
-                    query = Optional.absent();
-                }
+                Set<String> variables = getProjectedVariableNames();
                 SPARQLTokenizer tokenizer = createTokenizer();
-                performHighlighting(tokenizer, new HashSet<>(sparqlParser.getVariables()));
+                performHighlighting(tokenizer, variables);
             }
 
             private void performHighlighting(SPARQLTokenizer tokenizer, Set<String> selectVariableNames) {
@@ -255,6 +250,26 @@ public class SPARQLEditor extends JTextPane {
             }
         });
         t.start();
+    }
+
+    private Set<String> getProjectedVariableNames() {
+        final SPARQLParserImpl sparqlParser = new SPARQLParserImpl(createTokenizer());
+        Optional<SelectClause> selectClause;
+        try {
+            selectClause = Optional.of(sparqlParser.parsePrologueAndSelectClause());
+        } catch (Throwable e) {
+            selectClause = Optional.absent();
+        }
+        Set<String> variables;
+        if(selectClause.isPresent()) {
+            variables = new HashSet<>();
+            for(UntypedVariable variable : selectClause.get().getVariables()) {
+                variables.add("?" + variable.getName());
+            }
+        }
+        else {
+            variables = Collections.emptySet();
+        } return variables;
     }
 
     private SPARQLTokenizerJavaCCImpl createTokenizer() {

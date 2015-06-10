@@ -118,6 +118,11 @@ public class SPARQLParserImpl {
         return new SelectQuery(tokenizer.getPrefixManager(),selectClause, groupPattern, solutionModifier);
     }
 
+    public SelectClause parsePrologueAndSelectClause() {
+        parsePrologue();
+        return parseSelectClause();
+    }
+
     public SelectClause parseSelectClause() {
         ImmutableList.Builder<SelectItem> selectFormBuilder = ImmutableList.builder();
         tokenizer.consume(SPARQLTerminal.SELECT);

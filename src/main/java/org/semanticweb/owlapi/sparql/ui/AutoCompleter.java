@@ -499,6 +499,7 @@ public class AutoCompleter {
             textComponent.getDocument().insertString(index, word, null);
         }
         catch (BadLocationException e) {
+            e.printStackTrace();
         }
     }
 
