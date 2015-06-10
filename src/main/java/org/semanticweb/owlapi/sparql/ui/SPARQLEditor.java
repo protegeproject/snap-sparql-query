@@ -42,11 +42,8 @@ package org.semanticweb.owlapi.sparql.ui;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
-import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
-import org.semanticweb.owlapi.sparql.builtin.eval.NullBuiltInCallEvaluator;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTerminal;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
@@ -83,7 +80,7 @@ public class SPARQLEditor extends JTextPane {
 
     private Style variableStyle;
 
-    private Style resultVariableStyle;
+    private Style projectedVariableStyle;
 
     private Style defaultStyle;
 
@@ -158,9 +155,9 @@ public class SPARQLEditor extends JTextPane {
         variableStyle = styledDocument.addStyle("vs", null);
         StyleConstants.setForeground(variableStyle, new Color(28, 0, 207));
 
-        resultVariableStyle = styledDocument.addStyle("rvs", null);
-        StyleConstants.setForeground(resultVariableStyle, new Color(28, 0, 207));
-        StyleConstants.setBold(resultVariableStyle, true);
+        projectedVariableStyle = styledDocument.addStyle("rvs", null);
+        StyleConstants.setForeground(projectedVariableStyle, new Color(28, 0, 207));
+        StyleConstants.setBold(projectedVariableStyle, true);
 
         stringStyle = styledDocument.addStyle("string", null);
         StyleConstants.setForeground(stringStyle, new Color(196, 26, 22));
@@ -303,8 +300,11 @@ public class SPARQLEditor extends JTextPane {
             else if(type instanceof VariableTokenType) {
                 if(!selectVariableNames.isEmpty()) {
                     if(selectVariableNames.contains(token.getImage())) {
-                        return resultVariableStyle;
+                        return projectedVariableStyle;
                     }
+                }
+                else {
+                    return projectedVariableStyle;
                 }
                 return variableStyle;
 

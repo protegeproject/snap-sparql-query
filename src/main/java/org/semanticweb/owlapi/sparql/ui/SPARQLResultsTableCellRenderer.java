@@ -103,8 +103,8 @@ public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer imp
                 }
             }
         }
-        else {
-            label.setText(value.getClass().getSimpleName() + ": " + value.toString());
+        else if(value != null) {
+            label.setText(value.toString());
         }
         return label;
     
