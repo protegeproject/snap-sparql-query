@@ -102,21 +102,21 @@ public class Literal implements AtomicLiteral {
     }
 
     /**
-     * Determines if this literal is a string literal.  A string literal is a literal that either has a datatype
-     * of rdf:PlainLiteral or xsd:string.
+     * Determines if this literal is a string literal.  A string literal is a literal that has a datatype
+     * of xsd:string.
      * @return {@code true} if this literal is a string literal, otherwise {@code false}.
      */
     public boolean isStringLiteral() {
-        return datatype.isRDFPlainLiteral() || datatype.isXSDString();
+        return datatype.isXSDString();
     }
 
     /**
-     * Determines if this literal is a simple literal.  A simple literal is a string literal that does not have
+     * Determines if this literal is a simple literal.  A simple literal is a plain literal that does not have
      * a lang tag.
      * @return {@code true} if this literal is a simple literal, otherwise {@code false}.
      */
     public boolean isSimpleLiteral() {
-        return isStringLiteral() && "".equals(langTag);
+        return isRDFPlainLiteral() && "".equals(langTag);
     }
 
     public boolean isRDFPlainLiteral() {
@@ -255,7 +255,7 @@ public class Literal implements AtomicLiteral {
                 return EvaluationResult.getFalse();
             }
         }
-        else if(isStringLiteral()) {
+        else if(isRDFPlainLiteral() || isStringLiteral()) {
             // If the argument is a plain literal or a typed
             // literal with a datatype of xsd:string, the EBV is false if the operand
             // value has zero length; otherwise the EBV is true.

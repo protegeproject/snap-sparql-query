@@ -74,20 +74,20 @@ public class LiteralCompatibilityChecker_TestCase {
     public void shouldReturnFalseFor_PlainLiteralWithLang_StringLiteralWithLang_DifferentLang() {
         Literal arg0 = Literal.createRDFPlainLiteral("abc", "fr");
         Literal arg1 = Literal.createRDFPlainLiteral("b", "ja");
-        assertThat(checker.isCompatibleWith(arg0, arg1), is(true));
+        assertThat(checker.isCompatibleWith(arg0, arg1), is(false));
     }
 
     @Test
     public void shouldReturnFalseFor_PlainLiteral_StringLiteralWithLang() {
         Literal arg0 = Literal.createRDFPlainLiteralNoLang("abc");
         Literal arg1 = Literal.createRDFPlainLiteral("b", "ja");
-        assertThat(checker.isCompatibleWith(arg0, arg1), is(true));
+        assertThat(checker.isCompatibleWith(arg0, arg1), is(false));
     }
 
     @Test
     public void shouldReturnFalseFor_StringLiteral_StringLiteralWithLang() {
         Literal arg0 = Literal.createString("abc");
-        Literal arg1 = Literal.createRDFPlainLiteral("b", "ja");
-        assertThat(checker.isCompatibleWith(arg0, arg1), is(true));
+        Literal arg1 = Literal.createRDFPlainLiteral("b", "en");
+        assertThat(checker.isCompatibleWith(arg0, arg1), is(false));
     }
 }

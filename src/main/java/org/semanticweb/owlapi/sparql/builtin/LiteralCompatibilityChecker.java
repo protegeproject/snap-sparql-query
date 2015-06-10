@@ -8,9 +8,17 @@ import org.semanticweb.owlapi.sparql.api.Literal;
 public class LiteralCompatibilityChecker {
 
     /**
-     * The arguments are simple literals or literals typed as xsd:string
-     * The arguments are plain literals with identical language tags
-     * The first argument is a plain literal with language tag and the second argument is a simple literal or literal typed as xsd:string
+     * The SPARQL spec says this:
+     *
+     * Compatibility of two arguments is defined as:
+     *
+     *      - The arguments are simple literals or literals typed as xsd:string
+     *      - The arguments are plain literals with identical language tags
+     *      - The first argument is a plain literal with language tag and the second argument is a simple
+     *          literal or literal typed as xsd:string
+     *
+     *  The first point is ambiguous, but it means any combination of simple or string literals.
+     *
      * @param left The left literal.
      * @param right The right literal
      * @return true of the literals are argument compatible, otherwise false.
@@ -19,9 +27,12 @@ public class LiteralCompatibilityChecker {
         if((left.isSimpleLiteral() || left.isStringLiteral()) && (right.isSimpleLiteral() || right.isStringLiteral())) {
             return true;
         }
-        if(left.isRDFPlainLiteral() && right.isRDFPlainLiteral()) {
-            return left.getLang().equals(right.getLang());
+        if(left.isRDFPlainLiteral() && right.isRDFPlainLiteral() && left.getLang().equals(right.getLang())) {
+            return true;
         }
-        return left.isRDFPlainLiteral() && (right.isSimpleLiteral() || right.isStringLiteral());
+        if(left.isRDFPlainLiteral() && (right.isSimpleLiteral() || right.isStringLiteral())) {
+            return true;
+        }
+        return false;
     }
 }
