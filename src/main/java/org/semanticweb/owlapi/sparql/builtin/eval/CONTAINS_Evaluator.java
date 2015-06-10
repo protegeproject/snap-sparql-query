@@ -15,7 +15,7 @@ import java.util.List;
 public class CONTAINS_Evaluator extends AbstractBinaryStringLiteralBuiltCallEvaluator {
 
     @Override
-    protected EvaluationResult evaluate(Literal left, Literal right, SolutionMapping sm) {
+    protected EvaluationResult evaluateCompatibleLiterals(Literal left, Literal right, SolutionMapping sm) {
         boolean contains = left.getLexicalForm().contains(left.getLexicalForm());
         return EvaluationResult.getBoolean(contains);
     }

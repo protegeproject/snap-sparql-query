@@ -30,11 +30,15 @@ public abstract class AbstractBinaryStringLiteralBuiltCallEvaluator implements B
         }
         Literal left = evalLeft.asLiteral();
         Literal right = evalRight.asLiteral();
-        if(!compatibilityChecker.isCompatibleWith(left, right)) {
-            return EvaluationResult.getError();
-        }
         return evaluate(left, right, sm);
     }
 
-    protected abstract EvaluationResult evaluate(Literal left, Literal right, SolutionMapping sm);
+    final protected EvaluationResult evaluate(Literal left, Literal right, SolutionMapping sm) {
+        if(!compatibilityChecker.isCompatibleWith(left, right)) {
+            return EvaluationResult.getError();
+        }
+        return evaluateCompatibleLiterals(left, right, sm);
+    }
+
+    protected abstract EvaluationResult evaluateCompatibleLiterals(Literal left, Literal right, SolutionMapping sm);
 }

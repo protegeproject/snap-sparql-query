@@ -183,7 +183,7 @@ public enum BuiltInCall {
             argList(STRING_LITERAL, STRING_LITERAL)),
 
     STRAFTER(
-            notImplemented(),
+            new STRAFTER_Evaluator(),
             Literal(),
             argList(STRING_LITERAL, STRING_LITERAL)),
 
