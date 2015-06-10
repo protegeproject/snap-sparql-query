@@ -76,7 +76,7 @@ public enum BuiltInCall {
             argList(LITERAL)),
 
     BOUND(
-            notImplemented(),
+            new BOUND_Evaluator(),
             Boolean(),
             argList(VARIABLE)),
 

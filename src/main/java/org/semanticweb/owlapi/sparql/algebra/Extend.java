@@ -46,7 +46,9 @@ public class Extend extends GraphPatternAlgebraExpression {
                 SolutionMapping extendedMapping = new SolutionMapping(variableTermMap);
                 extendedSequence.add(extendedMapping);
             }
-
+            else {
+                extendedSequence.add(sm);
+            }
         }
         List<Variable> extendedVariableList = new ArrayList<>(sequence.getVariableList());
         extendedVariableList.add(variable);
@@ -71,12 +73,11 @@ public class Extend extends GraphPatternAlgebraExpression {
     protected void prettyPrint(PrintWriter writer, int level, String indentation) {
         writer.print(indentation);
         writer.println("(Extend ");
-        writer.print(indentation);
-        writer.print(variable.getVariableNamePrefix());
+        writer.print(indentation + "    ");
+        writer.print(variable.getVariableNamePrefix().getPrefix());
         writer.print(variable.getName());
-        writer.print(" ");
         writer.println();
-        writer.print(indentation);
+        writer.print(indentation + "    ");
         writer.print(expression);
         writer.print(indentation);
         writer.print(")");
