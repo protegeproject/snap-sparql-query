@@ -1,9 +1,12 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.Collection;
+
+import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Author: Matthew Horridge<br>
@@ -51,5 +54,14 @@ public class ClassVariable extends AbstractVariable implements AtomicClass {
     @Override
     public void collectVariables(Collection<Variable> variables) {
         variables.add(this);
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper("ClassVariable")
+                .addValue(getVariableNamePrefix().getPrefix())
+                .addValue(getName())
+                .toString();
     }
 }

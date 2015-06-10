@@ -5,6 +5,9 @@ import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 
 import java.util.*;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -22,20 +25,30 @@ public class BuiltInCallExpression implements Expression {
         this.args = args;
     }
 
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Expression(BUILTIN ");
-        sb.append(builtInCall.name().toUpperCase());
-        sb.append(" ");
-        for(Expression expression : args) {
-            sb.append("Arg(");
-            sb.append(expression);
-            sb.append(") ");
-        }
-        sb.append(")");
-        return sb.toString();
+        return toStringHelper("BuiltIn")
+                .addValue(builtInCall.name())
+                .addValue(args)
+                .toString();
     }
+
+//
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Expression(BUILTIN ");
+//        sb.append(builtInCall.name().toUpperCase());
+//        sb.append(" ");
+//        for(Expression expression : args) {
+//            sb.append("Arg(");
+//            sb.append(expression);
+//            sb.append(") ");
+//        }
+//        sb.append(")");
+//        return sb.toString();
+//    }
 
     public BuiltInCall getBuiltInCall() {
         return builtInCall;

@@ -39,6 +39,9 @@
 
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+import org.semanticweb.owlapi.sparql.syntax.OrderClause;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,17 +54,27 @@ import java.util.List;
  */
 public class SolutionModifier {
 
-    private List<OrderCondition> orderConditions = new ArrayList<OrderCondition>();
-    
-    public SolutionModifier() {
+    private Optional<OrderClause> orderClause;
+
+    public SolutionModifier(Optional<OrderClause> orderClause) {
+        this.orderClause = orderClause;
     }
 
-    public SolutionModifier(List<OrderCondition> orderConditions) {
-        this.orderConditions.addAll(orderConditions);
+    public Optional<OrderClause> getOrderClause() {
+        return orderClause;
     }
 
-    public List<OrderCondition> getOrderConditions() {
-        return Collections.unmodifiableList(orderConditions);
-    }
+    //    private List<OrderCondition> orderConditions = new ArrayList<OrderCondition>();
+//
+//    public SolutionModifier() {
+//    }
+//
+//    public SolutionModifier(List<OrderCondition> orderConditions) {
+//        this.orderConditions.addAll(orderConditions);
+//    }
+//
+//    public List<OrderCondition> getOrderConditions() {
+//        return Collections.unmodifiableList(orderConditions);
+//    }
 
 }

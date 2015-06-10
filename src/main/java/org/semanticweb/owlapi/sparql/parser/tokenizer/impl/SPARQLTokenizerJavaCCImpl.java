@@ -519,6 +519,8 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
                 break;
             case WHERE:
                 return wrap(SPARQLTerminal.WHERE);
+            case OPTIONAL_KW:
+                return wrap(SPARQLTerminal.OPTIONAL_KW);
             case WS:
                 // Sub-token
                 break;

@@ -6,6 +6,6 @@ package org.semanticweb.owlapi.sparql.api;
  * Bio-Medical Informatics Research Group<br>
  * Date: 26/07/2012
  */
-public interface Entity extends HasIRI, HasQName, HasCollectVariables, HasAnnotationSubject {
+public interface Entity extends HasIRI, HasPrefixedName, HasCollectVariables, HasAnnotationSubject {
 
 }

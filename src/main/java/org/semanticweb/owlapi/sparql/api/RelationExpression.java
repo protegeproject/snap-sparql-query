@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -87,5 +89,15 @@ public class RelationExpression implements Expression {
     @Override
     public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
         return EvaluationResult.getError();
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("RelationExpression")
+                .addValue(relation)
+                .addValue(left)
+                .addValue(right)
+                .toString();
     }
 }

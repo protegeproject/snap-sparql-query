@@ -39,15 +39,13 @@
 
 package org.semanticweb.owlapi.sparql.sparqldl;
 
-import de.derivo.sparqldlapi.Query;
-import de.derivo.sparqldlapi.QueryEngine;
-import de.derivo.sparqldlapi.QueryResult;
-import de.derivo.sparqldlapi.exceptions.QueryEngineException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraExpression;
+import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
+import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 
 /**
  * Author: Matthew Horridge<br>
@@ -63,27 +61,39 @@ public class SPARQLDLQueryEngine {
         this.reasoner = reasoner;
     }
 
-    public SPARQLQueryResult ask(SPARQLQuery query) {
+    public SPARQLQueryResult ask(SelectQuery query) {
 
-        try {
+//        try {
             OWLOntology rootOntology = reasoner.getRootOntology();
             OWLOntologyManager man = rootOntology.getOWLOntologyManager();
 
-            QueryEngine posQE = QueryEngine.create(man, reasoner);
-            SPARQLQueryTranslator translator = new SPARQLQueryTranslator(query);
+            AlgebraExpression algebraExpression = query.translate();
+            SolutionSequence solutionSequence = algebraExpression.evaluate(reasoner);
 
-            Query translate = translator.translate();
-            QueryResult queryResult = posQE.execute(translate);
-            QueryResult queryResultMinus = posQE.execute(translator.translateMinus());
+            return new SPARQLQueryResult(query, solutionSequence);
 
-            SPARQLQueryResultsTranslator t = new SPARQLQueryResultsTranslator(query, queryResult, queryResultMinus, man.getOWLDataFactory());
+//            QueryEngine posQE = QueryEngine.create(man, reasoner);
+//
+//
+//            SPARQLQueryTranslator translator = new SPARQLQueryTranslator(query);
+//            Query translatedQuery = translator.translate();
+//            QueryResult queryResult = posQE.execute(translate);
+////            QueryResult queryResultMinus = posQE.execute(translator.translateMinus());
+////            QueryResult queryResultOptional = posQE.execute(translator.translateOptional());
+//
+//            SPARQLQueryResultsTranslator t = new SPARQLQueryResultsTranslator(
+//                    query,
+//                    queryResult,
+////                    queryResultMinus,
+////                    queryResultOptional,
+//                    man.getOWLDataFactory());
+//
+//            return t.translate();
 
-            return t.translate();
-
-        }
-        catch (QueryEngineException e) {
-            throw new RuntimeException(e);
-        }
+//        }
+//        catch (QueryEngineException e) {
+//            throw new RuntimeException(e);
+//        }
 
     }
 

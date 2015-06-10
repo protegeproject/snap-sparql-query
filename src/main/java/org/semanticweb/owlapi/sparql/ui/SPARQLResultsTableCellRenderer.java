@@ -42,7 +42,7 @@ package org.semanticweb.owlapi.sparql.ui;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.sparql.api.HasQName;
+import org.semanticweb.owlapi.sparql.api.HasPrefixedName;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
@@ -68,15 +68,17 @@ public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer imp
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        if(value instanceof HasQName) {
-            label.setText(((HasQName) value).getQName(pm));
+        if(value instanceof HasPrefixedName) {
+            label.setText(((HasPrefixedName) value).getPrefixedName(pm));
         }
         else if(value instanceof OWLEntity) {
             OWLEntity entity = (OWLEntity) value;
-            label.setText(pm.getPrefixIRI(entity.getIRI()));
+            String prefixIRI = pm.getPrefixIRI(entity.getIRI());
+            label.setText(prefixIRI == null ? entity.getIRI().toQuotedString() : prefixIRI);
         }
         else if(value instanceof IRI) {
-            label.setText(pm.getPrefixIRI((IRI) value));
+            String prefixIRI = pm.getPrefixIRI((IRI) value);
+            label.setText(prefixIRI == null ? ((IRI) value).toQuotedString() : prefixIRI);
         }
         else if(value instanceof Literal) {
             Literal literal = (Literal) value;
@@ -100,6 +102,9 @@ public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer imp
                     label.setText(String.format("\"%s\"^^%s", literal.getLexicalForm(), prefixIRI));
                 }
             }
+        }
+        else {
+            label.setText(value.getClass().getSimpleName() + ": " + value.toString());
         }
         return label;
     

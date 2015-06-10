@@ -39,8 +39,8 @@
 
 package org.semanticweb.owlapi.sparql.api;
 
-import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
-import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
+import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,27 +53,36 @@ import java.util.List;
  */
 public class SPARQLQueryResult {
 
-    private SPARQLQuery query;
+    private SelectQuery query;
 
-    private List<SolutionMapping> results = new ArrayList<SolutionMapping>();
+    private SolutionSequence solutionSequence;
 
 
-    public SPARQLQueryResult(SPARQLQuery query, List<SolutionMapping> bindings) {
+    public SPARQLQueryResult(SelectQuery query, SolutionSequence solutionSequence) {
         this.query = query;
-        this.results.addAll(bindings);
+        this.solutionSequence = solutionSequence;
     }
 
-    public SPARQLQuery getQuery() {
-        return query;
+//    public SelectQuery getQuery() {
+//        return query;
+//    }
+
+    public List<Variable> getVariables() {
+        return solutionSequence.getVariableList();
+    }
+
+    public SolutionSequence getSolutionSequence() {
+        return solutionSequence;
     }
 
     public int getSize() {
-        return results.size();
+        return solutionSequence.size();
     }
 
     public SolutionMapping getBindingAt(int index) {
-        return results.get(index);
+        return solutionSequence.get(index);
     }
+
 
 
     

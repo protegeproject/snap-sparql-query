@@ -199,6 +199,11 @@ TOKEN: {
 
 
 TOKEN: {
+    <OPTIONAL_KW: "OPTIONAL">
+}
+
+
+TOKEN: {
     <DIVIDE: "/">
 }
 

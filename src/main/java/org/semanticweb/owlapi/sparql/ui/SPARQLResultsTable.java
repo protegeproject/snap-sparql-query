@@ -71,7 +71,6 @@ public class SPARQLResultsTable extends JTable {
 
 
     public void setPrefixManager(PrefixManager pm) {
-        ((SPARQLQueryResultsTableModel) getModel()).setPm(pm);
         renderer.setPrefixManager(pm);
     }
 

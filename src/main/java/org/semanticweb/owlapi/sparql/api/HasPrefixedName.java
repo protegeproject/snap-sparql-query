@@ -8,7 +8,7 @@ import org.semanticweb.owlapi.model.PrefixManager;
  * Bio-Medical Informatics Research Group<br>
  * Date: 02/08/2012
  */
-public interface HasQName {
+public interface HasPrefixedName {
 
-    String getQName(PrefixManager pm);
+    String getPrefixedName(PrefixManager pm);
 }

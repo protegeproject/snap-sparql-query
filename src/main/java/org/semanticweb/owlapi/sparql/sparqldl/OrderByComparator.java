@@ -39,15 +39,21 @@
 
 package org.semanticweb.owlapi.sparql.sparqldl;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Term;
 import org.semanticweb.owlapi.sparql.api.TermComparator;
 import org.semanticweb.owlapi.sparql.api.OrderByModifier;
 import org.semanticweb.owlapi.sparql.api.OrderCondition;
 import org.semanticweb.owlapi.sparql.api.SolutionModifier;
+import org.semanticweb.owlapi.sparql.syntax.OrderClause;
 
 import java.util.Comparator;
+import java.util.List;
+
+import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Author: Matthew Horridge<br>
@@ -57,17 +63,17 @@ import java.util.Comparator;
  */
 public class OrderByComparator implements Comparator<SolutionMapping> {
 
-    private SolutionModifier solutionModifier;
+    private List<OrderCondition> orderConditions;
 
     private final TermComparator termComparator;
 
-    public OrderByComparator(SolutionModifier solutionModifier) {
-        this.solutionModifier = solutionModifier;
+    public OrderByComparator(ImmutableList<OrderCondition> orderConditions) {
+        this.orderConditions = orderConditions;
         termComparator = new TermComparator();
     }
 
     public int compare(SolutionMapping o1, SolutionMapping o2) {
-        for(OrderCondition orderCondition : solutionModifier.getOrderConditions()) {
+        for(OrderCondition orderCondition : orderConditions) {
             Optional<Term> binding1 = o1.getTermForVariableName(orderCondition.getVariable());
             Optional<Term> binding2 = o2.getTermForVariableName(orderCondition.getVariable());
             if(binding1.isPresent()) {
@@ -112,5 +118,16 @@ public class OrderByComparator implements Comparator<SolutionMapping> {
 //            }
         }
         return 0;
+    }
+
+    public List<OrderCondition> getOrderConditions() {
+        return orderConditions;
+    }
+
+    @Override
+    public String toString() {
+        return toStringHelper("OrderByComparator")
+                .addValue(orderConditions)
+                .toString();
     }
 }

@@ -53,6 +53,7 @@ import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.VariableManager;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
 import org.semanticweb.owlapi.sparql.sparqldl.SPARQLDLQueryEngine;
+import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 
 import javax.swing.*;
@@ -126,7 +127,9 @@ public class TestParser {
     private static void parse(OWLOntology ontology, String s) {
         SPARQLTokenizer tokenizer = new SPARQLTokenizerJavaCCImpl(ontology, new StringReader(s));
         SPARQLParserImpl parser = new SPARQLParserImpl(tokenizer);
-        SPARQLQuery query = parser.parseQuery();
+        SelectQuery query = parser.parseQuery();
+        System.out.println(query.translate().toPrettyPrintedString());
+
         VariableManager decMan = tokenizer.getVariableManager();
         decMan.dump();
         SPARQLDLQueryEngine queryEngine = new SPARQLDLQueryEngine(resoner);

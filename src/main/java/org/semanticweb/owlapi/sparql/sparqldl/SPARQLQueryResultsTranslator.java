@@ -39,14 +39,15 @@
 
 package org.semanticweb.owlapi.sparql.sparqldl;
 
-import de.derivo.sparqldlapi.QueryArgument;
 import de.derivo.sparqldlapi.QueryBinding;
 import de.derivo.sparqldlapi.QueryResult;
 import de.derivo.sparqldlapi.impl.LiteralTranslator;
-import org.semanticweb.owlapi.model.IRI;
+import jpaul.Constraints.Var;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.syntax.OrderClause;
+import org.semanticweb.owlapi.sparql.syntax.SelectAs;
+import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 
 import java.util.*;
 
@@ -60,48 +61,71 @@ public class SPARQLQueryResultsTranslator {
 
     private final QueryResult result;
     
-    private final QueryResult minusResult;
-    
+//    private final QueryResult minusResult;
+//
+//    private final QueryResult optionalResult;
+
     private final OWLDataFactory dataFactory;
     
-    private final SPARQLQuery query;
+    private final SelectQuery query;
     
     private Map<String, Variable> nameVariableMap = new HashMap<String, Variable>();
 
     private SolutionMappingTranslator solutionMappingTranslator;
 
-    public SPARQLQueryResultsTranslator(SPARQLQuery query, QueryResult result, QueryResult minusResult, OWLDataFactory dataFactory) {
+    public SPARQLQueryResultsTranslator(SelectQuery query, QueryResult result, OWLDataFactory dataFactory) {
         this.query = query;
         this.result = result;
+//        this.optionalResult = optionalResult;
         this.dataFactory = dataFactory;
-        this.minusResult = minusResult;
-        for(Variable v : query.getGraphPatternVariables()) {
+//        this.minusResult = minusResult;
+        for(Variable v : query.getGroupPattern().getVariables()) {
             nameVariableMap.put(v.getName(), v);
         }
-        for(SelectAs selectAs : query.getSelectAs()) {
-            Variable variable = selectAs.getVariable();
+//        for(Variable v : query.getOptionalPatternVariables()) {
+//            nameVariableMap.put(v.getName(), v);
+//        }
+//        for(Variable v : query.getMinusGraphPatternVariables()) {
+//            nameVariableMap.put(v.getName(), v);
+//        }
+        for(Variable variable : query.getSelectClauseVariables()) {
             nameVariableMap.put(variable.getName(), variable);
         }
+//        for(SelectAs selectAs : query.getSelectAs()) {
+//            Variable variable = selectAs.getVariable();
+//            nameVariableMap.put(variable.getName(), variable);
+//        }
         LiteralTranslator translator = new LiteralTranslator(dataFactory);
         solutionMappingTranslator = new SolutionMappingTranslator(translator);
     }
     
     public SPARQLQueryResult translate() {
-        List<SolutionMapping> solutionSequence = translateResult(result);
-        List<SolutionMapping> minusSolutionSequence = translateResult(minusResult);
-
-        for(Iterator<SolutionMapping> it = solutionSequence.iterator(); it.hasNext();) {
-            SolutionMapping solutionMapping = it.next();
-            for(SolutionMapping minusSolutionMapping : minusSolutionSequence) {
-                if(solutionMapping.containsAll(minusSolutionMapping)) {
-                    it.remove();
-                    break;
-                }
-            }
-        }
-
-        Collections.sort(solutionSequence, new OrderByComparator(query.getSolutionModifier()));
-        return new SPARQLQueryResult(query, solutionSequence);
+//        List<SolutionMapping> solutionSequence = translateResult(result);
+//
+////        if (!query.getMinusGraphPatternVariables().isEmpty()) {
+////            List<SolutionMapping> minusSolutionSequence = translateResult(minusResult);
+////            Set<Variable> minusVariables = new HashSet<>();
+////            minusVariables.addAll(query.getGraphPatternVariables());
+////            minusVariables.retainAll(query.getMinusGraphPatternVariables());
+////            Minus minus = new Minus(solutionSequence, minusSolutionSequence, minusVariables);
+////            solutionSequence = minus.getMinus();
+////        }
+//
+////        if(!query.getOptionalPatterns().isEmpty()) {
+////            List<SolutionMapping> optionalSolutionSequence = translateResult(optionalResult);
+////            Set<Variable> joinVariables = new HashSet<>();
+////            joinVariables.addAll(query.getGraphPatternVariables());
+////            joinVariables.retainAll(query.getOptionalPatternVariables());
+////            Join join = new Join(solutionSequence, optionalSolutionSequence, joinVariables);
+////            solutionSequence = join.getLeftJoin();
+////        }
+//        SolutionModifier solutionModifier = query.getSolutionModifier();
+//        com.google.common.base.Optional<OrderClause> orderClause = solutionModifier.getOrderClause();
+//        if (orderClause.isPresent()) {
+//            Collections.sort(solutionSequence, new OrderByComparator(orderClause.get().getOrderConditions()));
+//        }
+//        return new SPARQLQueryResult(query, solutionSequence);
+        throw new RuntimeException();
     }
 
     private List<SolutionMapping> translateResult(QueryResult result) {
@@ -115,36 +139,37 @@ public class SPARQLQueryResultsTranslator {
     }
 
     private List<SolutionMapping> extendAndFilterSolutionSequence(List<SolutionMapping> solutionSequence) {
-        SPARQLGraphPattern graphPattern = query.getGraphPatterns().get(0);
-        if(query.getSelectAs().isEmpty() && graphPattern.getFilters().isEmpty() && graphPattern.getBinds().isEmpty()) {
-            return solutionSequence;
-        }
-        List<SolutionMapping> filteredSolutionMapping = new ArrayList<>();
-        for (SolutionMapping solutionMapping : solutionSequence) {
-            // Extend
-            for(SelectAs selectAs : query.getSelectAs()) {
-                EvaluationResult eval = selectAs.getExpression().evaluate(solutionMapping);
-                if (!eval.isError()) {
-                    solutionMapping.bind(selectAs.getVariable(), eval.getResult());
-                }
-            }
-            List<Bind> binds = graphPattern.getBinds();
-            for(Bind bind : binds) {
-                bind.evaluate(solutionMapping);
-            }
-
-            List<Expression> filterConditions = graphPattern.getFilters();
-            // Filter
-            if(filterConditions.isEmpty()) {
-                filteredSolutionMapping.add(solutionMapping);
-            }
-            else {
-                if(matches(filterConditions, solutionMapping)) {
-                    filteredSolutionMapping.add(solutionMapping);
-                }
-            }
-        }
-        return filteredSolutionMapping;
+//        SPARQLGraphPattern graphPattern = query.getGraphPatterns().get(0);
+//        if(query.getSelectAs().isEmpty() && graphPattern.getFilters().isEmpty() && graphPattern.getBinds().isEmpty()) {
+//            return solutionSequence;
+//        }
+//        List<SolutionMapping> filteredSolutionMapping = new ArrayList<>();
+//        for (SolutionMapping solutionMapping : solutionSequence) {
+//            // Extend
+//            for(SelectAs selectAs : query.getSelectAs()) {
+//                EvaluationResult eval = selectAs.getExpression().evaluate(solutionMapping);
+//                if (!eval.isError()) {
+//                    solutionMapping.bind(selectAs.getVariable(), eval.getResult());
+//                }
+//            }
+//            List<Bind> binds = graphPattern.getBinds();
+//            for(Bind bind : binds) {
+//                bind.evaluate(solutionMapping);
+//            }
+//
+//            List<Expression> filterConditions = graphPattern.getFilters();
+//            // Filter
+//            if(filterConditions.isEmpty()) {
+//                filteredSolutionMapping.add(solutionMapping);
+//            }
+//            else {
+//                if(matches(filterConditions, solutionMapping)) {
+//                    filteredSolutionMapping.add(solutionMapping);
+//                }
+//            }
+//        }
+//        return filteredSolutionMapping;
+        return solutionSequence;
     }
 
     private boolean matches(List<Expression> filterConditions, SolutionMapping solutionMapping) {

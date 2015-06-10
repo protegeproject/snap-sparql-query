@@ -32,8 +32,9 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
         return iri;
     }
 
-    public String getQName(PrefixManager pm) {
-        return pm.getPrefixIRI(iri);
+    public String getPrefixedName(PrefixManager pm) {
+        String prefixIRI = pm.getPrefixIRI(iri);
+        return prefixIRI != null ? prefixIRI : iri.toQuotedString();
     }
 
 

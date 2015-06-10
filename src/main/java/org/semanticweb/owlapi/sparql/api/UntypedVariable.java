@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.Collection;
@@ -49,5 +50,14 @@ public class UntypedVariable extends AbstractVariable implements AnnotationValue
     @Override
     public void collectVariables(Collection<Variable> variables) {
         variables.add(this);
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("UntypedVariable")
+                .addValue(getVariableNamePrefix().getPrefix())
+                .addValue(getName())
+                .toString();
     }
 }

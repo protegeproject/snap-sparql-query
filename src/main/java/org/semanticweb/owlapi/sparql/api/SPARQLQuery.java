@@ -41,11 +41,9 @@ package org.semanticweb.owlapi.sparql.api;
 
 
 import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.sparql.syntax.SelectAs;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Author: Matthew Horridge<br>
@@ -61,12 +59,14 @@ public class SPARQLQuery {
 
     private List<Variable> allVariables;
 
-    private List<SelectAs> selectAsList = new ArrayList<SelectAs>();
+    private List<SelectAs> selectAsList = new ArrayList<>();
     
-    private List<SPARQLGraphPattern> graphPatterns = new ArrayList<SPARQLGraphPattern>();
+    private List<SPARQLGraphPattern> graphPatterns = new ArrayList<>();
 
-    private List<SPARQLGraphPattern> minusPatterns = new ArrayList<SPARQLGraphPattern>();
-    
+    private List<SPARQLGraphPattern> minusPatterns = new ArrayList<>();
+
+    private List<SPARQLGraphPattern> optionalPatterns = new ArrayList<>();
+
     private SolutionModifier solutionModifier;
 
     private PrefixManager pm;
@@ -78,6 +78,7 @@ public class SPARQLQuery {
                        List<SelectAs> selectAsList,
                        List<SPARQLGraphPattern> graphPatterns,
                        List<SPARQLGraphPattern> minusPatterns,
+                       List<SPARQLGraphPattern> optionalPatterns,
                        SolutionModifier solutionModifier) {
         this.pm = pm;
         this.queryType = queryType;
@@ -87,11 +88,24 @@ public class SPARQLQuery {
         this.graphPatterns = graphPatterns;
         this.solutionModifier = solutionModifier;
         this.minusPatterns.addAll(minusPatterns);
+        this.optionalPatterns.addAll(optionalPatterns);
     }
 
     public Set<Variable> getGraphPatternVariables() {
-        Set<Variable> result = new HashSet<Variable>();
-        for(SPARQLGraphPattern pattern : graphPatterns) {
+        return getVariables(graphPatterns);
+    }
+
+    public Set<Variable> getOptionalPatternVariables() {
+        return getVariables(optionalPatterns);
+    }
+
+    public Set<Variable> getMinusGraphPatternVariables() {
+        return getVariables(minusPatterns);
+    }
+
+    public static Set<Variable> getVariables(Collection<SPARQLGraphPattern> patterns) {
+        Set<Variable> result = new HashSet<>();
+        for(SPARQLGraphPattern pattern : patterns) {
             result.addAll(pattern.getTriplePatternVariablesVariables());
         }
         return result;
@@ -116,7 +130,7 @@ public class SPARQLQuery {
     public List<Variable> getSelectAsVariables() {
         List<Variable> selectAsVariables = new ArrayList<Variable>();
         for(SelectAs selectAs : selectAsList) {
-            selectAsVariables.add(selectAs.getVariable());
+//            selectAsVariables.add(selectAs.getVariable());
         }
         return selectAsVariables;
     }
@@ -132,7 +146,11 @@ public class SPARQLQuery {
     public List<SPARQLGraphPattern> getMinusPatterns() {
         return minusPatterns;
     }
-    
+
+    public List<SPARQLGraphPattern> getOptionalPatterns() {
+        return optionalPatterns;
+    }
+
     public void addMinus(SPARQLGraphPattern graphPattern) {
         minusPatterns.add(graphPattern);
     }

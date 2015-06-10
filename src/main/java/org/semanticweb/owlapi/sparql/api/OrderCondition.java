@@ -39,6 +39,8 @@
 
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -66,5 +68,14 @@ public class OrderCondition {
 
     public OrderByModifier getOrderByModifier() {
         return orderByModifier;
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("OrderCondition")
+                .addValue(orderByModifier)
+                .addValue(variable)
+                .toString();
     }
 }

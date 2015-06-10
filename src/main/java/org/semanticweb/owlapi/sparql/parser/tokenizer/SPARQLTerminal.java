@@ -135,7 +135,9 @@ public enum SPARQLTerminal {
 
     DIVIDE("/"),
 
-    MINUS_KW("MINUS");
+    MINUS_KW("MINUS"),
+
+    OPTIONAL_KW("OPTIONAL");
 
 
 

@@ -64,26 +64,16 @@ public class SPARQLQueryResultsTableModel extends AbstractTableModel {
 
     private Map<Integer, Variable> indexVariableMap = new HashMap<Integer, Variable>();
 
-    private PrefixManager pm;
-
     public SPARQLQueryResult getResult() {
         return result;
     }
 
-    public void setPm(PrefixManager pm) {
-        this.pm = pm;
-    }
-
     public void setResult(SPARQLQueryResult result) {
         this.result = result;
-        this.size = result.getQuery().getSelectVariables().size() + result.getQuery().getSelectAsVariables().size();
+        this.size = result.getVariables().size();
         indexVariableMap.clear();
         int index = 0;
-        for(Variable var : result.getQuery().getSelectVariables()) {
-            indexVariableMap.put(index, var);
-            index++;
-        }
-        for(Variable var : result.getQuery().getSelectAsVariables()) {
+        for(Variable var : result.getVariables()) {
             indexVariableMap.put(index, var);
             index++;
         }

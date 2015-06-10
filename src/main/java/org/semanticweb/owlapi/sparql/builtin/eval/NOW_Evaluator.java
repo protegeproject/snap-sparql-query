@@ -12,7 +12,7 @@ public class NOW_Evaluator implements BuiltInCallEvaluator {
 
     @Override
     public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
-        Timestamp ts = sm.getTimestamp();
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
         return EvaluationResult.getResult(new Literal(Datatype.getXSDDateTime(), ts.getFormattedDateTime(), ""));
     }
 }

@@ -1,6 +1,10 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
+
 import java.util.Collection;
+
+import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Author: Matthew Horridge<br>
@@ -48,5 +52,13 @@ public class Declaration implements Axiom {
     @Override
     public void collectVariables(Collection<Variable> variables) {
         atomic.collectVariables(variables);
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper("Declaration")
+                .addValue(atomic)
+                .toString();
     }
 }

@@ -27,16 +27,18 @@ public class SolutionMapping_TestCase {
     private Map<Variable, Term> map;
 
     @Mock
-    private Variable variable;
+    private Variable variable, variable2;
 
     @Mock
-    private Term term;
+    private Term term, term2;
 
     @Before
     public void setUp() {
         when(variable.getName()).thenReturn("x");
+        when(variable2.getName()).thenReturn("y");
         map = new HashMap<>();
         map.put(variable, term);
+        map.put(variable2, term2);
         solutionMapping = new SolutionMapping(map);
     }
 

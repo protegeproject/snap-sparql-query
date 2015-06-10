@@ -20,28 +20,25 @@ public class SolutionMapping {
 
     private static SolutionMapping emptyMapping = new SolutionMapping();
 
-    private Map<Variable, Term> map = new HashMap<Variable, Term>();
+    private final Map<Variable, Term> map;
 
     public static SolutionMapping emptyMapping() {
         return emptyMapping;
     }
 
-    private final Timestamp timestamp;
-
     public SolutionMapping() {
-        this.timestamp = new Timestamp(System.currentTimeMillis());
+        map = Collections.emptyMap();
     }
 
     public SolutionMapping(Map<Variable, Term> map) {
+        this.map = new HashMap<>(map.size());
         for(Variable variable : map.keySet()) {
             this.map.put(checkNotNull(variable), checkNotNull(map.get(variable)));
         }
-        this.timestamp = new Timestamp(System.currentTimeMillis());
     }
 
-
-    public Timestamp getTimestamp() {
-        return timestamp;
+    private SolutionMapping(HashMap<Variable, Term> map) {
+        this.map = map;
     }
 
     public boolean isMapped(Variable variable) {
@@ -77,6 +74,22 @@ public class SolutionMapping {
 
     public Collection<Variable> getVariables() {
         return new ArrayList<>(map.keySet());
+    }
+
+    public SolutionMapping projectForVariables(Collection<Variable> variables) {
+        if(map.keySet().equals(variables)) {
+            return this;
+        }
+        else {
+            Map<Variable, Term> projectedMapping = new HashMap<>(variables.size());
+            for(Variable variable : variables) {
+                Term value = map.get(variable);
+                if (value != null) {
+                    projectedMapping.put(variable, value);
+                }
+            }
+            return new SolutionMapping(projectedMapping);
+        }
     }
 
     public boolean containsAll(SolutionMapping solutionMapping) {
