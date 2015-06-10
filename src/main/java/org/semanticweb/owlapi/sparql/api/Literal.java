@@ -180,6 +180,15 @@ public class Literal implements AtomicLiteral {
         return new Literal(Datatype.getRDFPlainLiteral(), lexicalForm, EMPTY_LANG_TAG);
     }
 
+    /**
+     * Gets a Simple Literal.  This is a literal that is a plain literal without a language tag.
+     * @param lexicalForm The lexical form.  Not {@code null}.
+     * @return The simple literal with the specified lexical form.
+     */
+    public static Literal createSimpleLiteral(String lexicalForm) {
+        return createRDFPlainLiteralNoLang(lexicalForm);
+    }
+
     private boolean isInBooleanLexicalSpace() {
         return datatype.isXSDBoolean() && OWL2Datatype.XSD_BOOLEAN.getPattern().matcher(lexicalForm).matches();
     }
