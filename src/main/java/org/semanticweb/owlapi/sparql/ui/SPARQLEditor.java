@@ -140,6 +140,7 @@ public class SPARQLEditor extends JTextPane {
         sparqlKeywords.add(SPARQLTerminal.ASC.getImage());
         sparqlKeywords.add(SPARQLTerminal.DESC.getImage());
         sparqlKeywords.add(SPARQLTerminal.MINUS_KW.getImage());
+        sparqlKeywords.add(SPARQLTerminal.OPTIONAL_KW.getImage());
 
         StyledDocument styledDocument = getStyledDocument();
 
