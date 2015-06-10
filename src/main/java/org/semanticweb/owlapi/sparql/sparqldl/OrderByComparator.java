@@ -63,6 +63,12 @@ import static com.google.common.base.Objects.toStringHelper;
  */
 public class OrderByComparator implements Comparator<SolutionMapping> {
 
+    public static final int BEFORE = -1;
+
+    public static final int AFTER = 1;
+
+    public static final int SAME = 0;
+
     private List<OrderCondition> orderConditions;
 
     private final TermComparator termComparator;
@@ -84,40 +90,19 @@ public class OrderByComparator implements Comparator<SolutionMapping> {
                     }
                 }
                 else {
-                    return -1;
+                    return BEFORE;
                 }
             }
             else {
                 if(binding2.isPresent()) {
-                    return 1;
+                    return AFTER;
                 }
                 else {
-                    return 0;
+                    return SAME;
                 }
             }
-
-//            int diff = 0;
-//            if(binding1 instanceof OWLLiteral && binding2 instanceof OWLLiteral) {
-//                OWLLiteral lit1 = ((OWLLiteral) binding1);
-//                OWLLiteral lit2 = ((OWLLiteral) binding2);
-//                Pattern pattern = OWL2Datatype.XSD_DOUBLE.getPattern();
-//                if(pattern.matcher(lit1.getLiteral()).matches() && pattern.matcher(lit2.getLiteral()).matches()) {
-//                    Double d1 = Double.parseDouble(lit1.getLiteral());
-//                    Double d2 = Double.parseDouble(lit2.getLiteral());
-//                    diff = d1.compareTo(d2);
-//                }
-//                else {
-//                    diff = binding1.compareTo(binding2);
-//                }
-//            }
-//            else {
-//                diff = binding1.compareTo(binding2);
-//            }
-//            if(diff != 0) {
-//                return orderCondition.getOrderByModifier() == OrderByModifier.ASC ? diff : -diff;
-//            }
         }
-        return 0;
+        return SAME;
     }
 
     public List<OrderCondition> getOrderConditions() {
