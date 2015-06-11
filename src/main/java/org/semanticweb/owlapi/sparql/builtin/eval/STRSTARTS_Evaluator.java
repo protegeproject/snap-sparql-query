@@ -16,6 +16,7 @@ public class STRSTARTS_Evaluator extends AbstractBinaryStringLiteralBuiltCallEva
 
     @Override
     protected EvaluationResult evaluateCompatibleLiterals(Literal left, Literal right, SolutionMapping sm) {
-        return EvaluationResult.getBoolean(left.getLexicalForm().startsWith(right.getLexicalForm()));
+        boolean b = left.getLexicalForm().startsWith(right.getLexicalForm());
+        return EvaluationResult.getBoolean(b);
     }
 }

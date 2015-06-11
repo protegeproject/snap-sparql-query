@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 
 import java.io.PrintWriter;
 import java.util.Set;
@@ -45,9 +46,9 @@ public class Minus extends GraphPatternAlgebraExpression {
     }
 
     @Override
-    public SolutionSequence evaluate(OWLReasoner reasoner) {
-        SolutionSequence leftSeq = left.evaluate(reasoner);
-        SolutionSequence rightSeq = right.evaluate(reasoner);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence leftSeq = left.evaluate(context);
+        SolutionSequence rightSeq = right.evaluate(context);
         Set<Variable> sharedVariables = left.getSharedVariables(right);
         org.semanticweb.owlapi.sparql.sparqldl.Minus minus = new org.semanticweb.owlapi.sparql.sparqldl.Minus(leftSeq.getSolutionMappings(), rightSeq.getSolutionMappings(), sharedVariables);
         return new SolutionSequence(leftSeq.getVariableList(), ImmutableList.copyOf(minus.getMinus()));
@@ -69,5 +70,11 @@ public class Minus extends GraphPatternAlgebraExpression {
         right.prettyPrint(writer, level + 1);
         writer.print(indentation);
         writer.println(")");
+    }
+
+
+    @Override
+    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+        return visitor.visit(this);
     }
 }

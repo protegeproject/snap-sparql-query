@@ -24,7 +24,13 @@ public class BOUND_Evaluator_TestCase {
     private SolutionMapping solutionMapping;
 
     @Mock
-    private Variable variable, otherVariable;
+    private Variable variable;
+
+    @Mock
+    private Variable otherVariable;
+
+
+
 
     @Before
     public void setUp() throws Exception {

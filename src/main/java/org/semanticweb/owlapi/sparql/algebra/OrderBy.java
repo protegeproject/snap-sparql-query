@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.OrderCondition;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 import org.semanticweb.owlapi.sparql.sparqldl.OrderByComparator;
 
 import java.io.PrintWriter;
@@ -25,8 +26,8 @@ public class OrderBy extends AlgebraExpression {
     }
 
     @Override
-    public SolutionSequence evaluate(OWLReasoner reasoner) {
-        SolutionSequence sequence = algebraExpression.evaluate(reasoner);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = algebraExpression.evaluate(context);
         List<SolutionMapping> sortedList = new ArrayList<>(sequence.getSolutionMappings());
         sortedList.sort(comparator);
         return new SolutionSequence(sequence.getVariableList(), ImmutableList.copyOf(sortedList));
@@ -44,5 +45,11 @@ public class OrderBy extends AlgebraExpression {
         }
         writer.print(indentation);
         writer.println(")");
+    }
+
+
+    @Override
+    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+        return visitor.visit(this);
     }
 }

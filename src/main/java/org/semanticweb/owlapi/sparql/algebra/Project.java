@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class Project extends AlgebraExpression {
     }
 
     @Override
-    public SolutionSequence evaluate(OWLReasoner reasoner) {
-        SolutionSequence sequence = algebra.evaluate(reasoner);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = algebra.evaluate(context);
         if(sequence.getVariableList().equals(projectVariables)) {
             return sequence;
         }
@@ -61,5 +62,11 @@ public class Project extends AlgebraExpression {
         writer.println();
         writer.print(indentation);
         writer.println(")");
+    }
+
+
+    @Override
+    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+        return visitor.visit(this);
     }
 }

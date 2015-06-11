@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -43,8 +44,8 @@ public class Filter extends GraphPatternAlgebraExpression {
     }
 
     @Override
-    public SolutionSequence evaluate(OWLReasoner reasoner) {
-        SolutionSequence sequence = algebraExpression.evaluate(reasoner);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = algebraExpression.evaluate(context);
         List<SolutionMapping> filteredList = new ArrayList<>();
         for(SolutionMapping sm : sequence.getSolutionMappings()) {
             for(Expression expression : expressions) {
@@ -83,5 +84,11 @@ public class Filter extends GraphPatternAlgebraExpression {
         algebraExpression.prettyPrint(writer, level + 1);
         writer.print(indentation);
         writer.print(")");
+    }
+
+
+    @Override
+    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+        return visitor.visit(this);
     }
 }

@@ -24,7 +24,7 @@ public abstract class AbstractBinaryStringLiteralBuiltCallEvaluator implements B
         if(evalLeft.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult evalRight = args.get(0).evaluateAsLiteral(sm);
+        EvaluationResult evalRight = args.get(1).evaluateAsLiteral(sm);
         if(evalRight.isError()) {
             return EvaluationResult.getError();
         }

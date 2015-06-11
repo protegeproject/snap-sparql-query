@@ -1,7 +1,5 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -10,7 +8,7 @@ import java.io.StringWriter;
  */
 public abstract class AlgebraExpression {
 
-    public abstract SolutionSequence evaluate(OWLReasoner reasoner);
+    public abstract SolutionSequence evaluate(AlgebraEvaluationContext context);
 
     public String toPrettyPrintedString() {
         StringWriter out = new StringWriter();
@@ -29,4 +27,6 @@ public abstract class AlgebraExpression {
     }
 
     protected abstract void prettyPrint(PrintWriter writer, int level, String indentation);
+
+    public abstract <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E;
 }

@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
+import jpaul.Constraints.Var;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.IRI;
 
@@ -34,22 +35,22 @@ public class ClassVariable extends AbstractVariable implements AtomicClass {
         return new NamedClass(iri);
     }
 
-    @Override
-    public int hashCode() {
-        return ClassVariable.class.getSimpleName().hashCode() + getName().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == this) {
-            return true;
-        }
-        if(!(obj instanceof ClassVariable)) {
-            return false;
-        }
-        ClassVariable other = (ClassVariable) obj;
-        return other.getName().equals(this.getName());
-    }
+//    @Override
+//    public int hashCode() {
+//        return ClassVariable.class.getSimpleName().hashCode() + getName().hashCode();
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        if(obj == this) {
+//            return true;
+//        }
+//        if(!(obj instanceof Variable)) {
+//            return false;
+//        }
+//        Variable other = (Variable) obj;
+//        return other.getName().equals(this.getName());
+//    }
 
     @Override
     public void collectVariables(Collection<Variable> variables) {

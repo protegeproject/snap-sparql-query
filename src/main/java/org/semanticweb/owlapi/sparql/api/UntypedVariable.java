@@ -30,22 +30,22 @@ public class UntypedVariable extends AbstractVariable implements AnnotationValue
         return new AtomicIRI(iri);
     }
 
-    @Override
-    public int hashCode() {
-        return UntypedVariable.class.getSimpleName().hashCode() + getName().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == this) {
-            return true;
-        }
-        if(!(obj instanceof UntypedVariable)) {
-            return false;
-        }
-        UntypedVariable other = (UntypedVariable) obj;
-        return getName().equals(other.getName());
-    }
+//    @Override
+//    public int hashCode() {
+//        return UntypedVariable.class.getSimpleName().hashCode() + getName().hashCode();
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        if(obj == this) {
+//            return true;
+//        }
+//        if(!(obj instanceof UntypedVariable)) {
+//            return false;
+//        }
+//        UntypedVariable other = (UntypedVariable) obj;
+//        return getName().equals(other.getName());
+//    }
 
     @Override
     public void collectVariables(Collection<Variable> variables) {

@@ -28,5 +28,4 @@ public abstract class GraphPatternAlgebraExpression extends AlgebraExpression {
         return result;
     }
 
-
 }

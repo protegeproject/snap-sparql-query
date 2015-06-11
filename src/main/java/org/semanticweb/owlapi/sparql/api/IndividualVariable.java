@@ -35,22 +35,22 @@ public class IndividualVariable extends AbstractVariable implements AtomicIndivi
         return new NamedIndividual(iri);
     }
 
-    @Override
-    public int hashCode() {
-        return IndividualVariable.class.getSimpleName().hashCode() + getName().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == this) {
-            return true;
-        }
-        if(!(obj instanceof IndividualVariable)) {
-            return false;
-        }
-        IndividualVariable other = (IndividualVariable) obj;
-        return other.getName().equals(this.getName());
-    }
+//    @Override
+//    public int hashCode() {
+//        return IndividualVariable.class.getSimpleName().hashCode() + getName().hashCode();
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        if(obj == this) {
+//            return true;
+//        }
+//        if(!(obj instanceof IndividualVariable)) {
+//            return false;
+//        }
+//        IndividualVariable other = (IndividualVariable) obj;
+//        return other.getName().equals(this.getName());
+//    }
 
     @Override
     public void collectVariables(Collection<Variable> variables) {

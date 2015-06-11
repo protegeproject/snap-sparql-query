@@ -3,6 +3,7 @@ package org.semanticweb.owlapi.sparql.algebra;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 
 import java.io.PrintWriter;
 import java.util.LinkedHashSet;
@@ -19,9 +20,13 @@ public class Distinct extends AlgebraExpression {
         this.expression = expression;
     }
 
+    public AlgebraExpression getExpression() {
+        return expression;
+    }
+
     @Override
-    public SolutionSequence evaluate(OWLReasoner reasoner) {
-        SolutionSequence sequence = expression.evaluate(reasoner);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = expression.evaluate(context);
         Set<SolutionMapping> distinctSolutions = new LinkedHashSet<>(sequence.getSolutionMappings());
         return new SolutionSequence(sequence.getVariableList(), ImmutableList.copyOf(distinctSolutions));
     }
@@ -33,5 +38,11 @@ public class Distinct extends AlgebraExpression {
         expression.prettyPrint(writer, level + 1);
         writer.print(indentation);
         writer.println(")");
+    }
+
+
+    @Override
+    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+        return visitor.visit(this);
     }
 }

@@ -39,38 +39,40 @@
 
 package org.semanticweb.owlapi.sparql.sparqldl;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraExpression;
+import org.semanticweb.owlapi.sparql.algebra.Bgp;
 import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
+import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 
 /**
- * Author: Matthew Horridge<br>
- * Stanford University<br>
- * Bio-Medical Informatics Research Group<br>
- * Date: 28/03/2012
+ * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 28/03/2012
  */
 public class SPARQLDLQueryEngine {
 
     private OWLReasoner reasoner;
 
+    private Cache<Bgp, SolutionSequence> cache;
+
     public SPARQLDLQueryEngine(OWLReasoner reasoner) {
         this.reasoner = reasoner;
+        cache = CacheBuilder.newBuilder().maximumSize(5).build();
     }
 
     public SPARQLQueryResult ask(SelectQuery query) {
 
 //        try {
-            OWLOntology rootOntology = reasoner.getRootOntology();
-            OWLOntologyManager man = rootOntology.getOWLOntologyManager();
-
-            AlgebraExpression algebraExpression = query.translate();
-            SolutionSequence solutionSequence = algebraExpression.evaluate(reasoner);
-
-            return new SPARQLQueryResult(query, solutionSequence);
+        AlgebraExpression algebraExpression = query.translate();
+        AlgebraEvaluationContext context = new AlgebraEvaluationContext(new BgpEvaluator(reasoner, cache));
+        SolutionSequence solutionSequence = algebraExpression.evaluate(context);
+        return new SPARQLQueryResult(query, solutionSequence);
 
 //            QueryEngine posQE = QueryEngine.create(man, reasoner);
 //

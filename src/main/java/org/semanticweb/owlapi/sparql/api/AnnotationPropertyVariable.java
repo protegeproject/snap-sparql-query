@@ -31,22 +31,22 @@ public class AnnotationPropertyVariable extends AbstractVariable implements Atom
         return new AnnotationProperty(iri);
     }
 
-    @Override
-    public int hashCode() {
-        return AnnotationPropertyVariable.class.getSimpleName().hashCode() + getName().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == this) {
-            return true;
-        }
-        if(!(obj instanceof AnnotationPropertyVariable)) {
-            return false;
-        }
-        AnnotationPropertyVariable other = (AnnotationPropertyVariable) obj;
-        return other.getName().equals(this.getName());
-    }
+//    @Override
+//    public int hashCode() {
+//        return AnnotationPropertyVariable.class.getSimpleName().hashCode() + getName().hashCode();
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        if(obj == this) {
+//            return true;
+//        }
+//        if(!(obj instanceof AnnotationPropertyVariable)) {
+//            return false;
+//        }
+//        AnnotationPropertyVariable other = (AnnotationPropertyVariable) obj;
+//        return other.getName().equals(this.getName());
+//    }
 
     @Override
     public void collectVariables(Collection<Variable> variables) {

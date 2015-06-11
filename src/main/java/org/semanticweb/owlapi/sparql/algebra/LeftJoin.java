@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 import org.semanticweb.owlapi.sparql.sparqldl.Joiner;
 
 import java.io.PrintWriter;
@@ -51,9 +52,9 @@ public class LeftJoin extends GraphPatternAlgebraExpression {
     }
 
     @Override
-    public SolutionSequence evaluate(OWLReasoner reasoner) {
-        SolutionSequence leftSeq = left.evaluate(reasoner);
-        SolutionSequence rightSeq = right.evaluate(reasoner);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence leftSeq = left.evaluate(context);
+        SolutionSequence rightSeq = right.evaluate(context);
         List<Variable> unionVariables = new ArrayList<>();
         unionVariables.addAll(leftSeq.getVariableList());
         for(Variable variable : rightSeq.getVariableList()) {
@@ -93,5 +94,11 @@ public class LeftJoin extends GraphPatternAlgebraExpression {
         right.prettyPrint(writer, level + 1);
         writer.print(indentation);
         writer.println(")");
+    }
+
+
+    @Override
+    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+        return visitor.visit(this);
     }
 }

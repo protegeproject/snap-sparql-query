@@ -81,6 +81,10 @@ public class SolutionMapping {
             return this;
         }
         else {
+//            Set<String> variableNames = new HashSet<>();
+//            for(Variable variable : variables) {
+//                variableNames.add(variable.getName());
+//            }
             Map<Variable, Term> projectedMapping = new HashMap<>(variables.size());
             for(Variable variable : variables) {
                 Term value = map.get(variable);

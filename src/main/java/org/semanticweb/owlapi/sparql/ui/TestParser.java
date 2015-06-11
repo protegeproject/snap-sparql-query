@@ -41,12 +41,12 @@ package org.semanticweb.owlapi.sparql.ui;
 
 //import org.semanticweb.HermiT.Reasoner;
 
+import com.google.common.base.Stopwatch;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
@@ -65,6 +65,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.StringReader;
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
 
 /**
@@ -75,7 +76,9 @@ public class TestParser {
 
     public static final String SPARQLEXAMPLE = "sparqlexample";
 
-    private static OWLReasoner resoner;
+    private static OWLReasoner reasoner;
+
+    private static SPARQLDLQueryEngine queryEngine;
 
 
     public static void main(String[] args) throws Exception {
@@ -85,11 +88,12 @@ public class TestParser {
             final OWLOntology rootOntology = manager.loadOntologyFromOntologyDocument(IRI.create(args[0]));
             System.out.println("Loaded ontology: " + rootOntology);
             System.out.println("Creating reasoner...");
-            resoner = new Reasoner(rootOntology);
+            reasoner = new Reasoner(rootOntology);
             System.out.println("    .... done");
             System.out.println("Precomputing class hierarchy...");
-            resoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+            reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
             System.out.println("    .... done");
+            queryEngine = new SPARQLDLQueryEngine(reasoner);
 
             JFrame f = new JFrame();
             final JTextComponent textArea = new SPARQLEditor(new OWLOntologyProvider() {
@@ -132,9 +136,9 @@ public class TestParser {
 
         VariableManager decMan = tokenizer.getVariableManager();
         decMan.dump();
-        SPARQLDLQueryEngine queryEngine = new SPARQLDLQueryEngine(resoner);
+        Stopwatch stopwatch = Stopwatch.createStarted();
         SPARQLQueryResult result = queryEngine.ask(query);
-
+        System.out.println("Answered query in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
         SPARQLResultsTable table = new SPARQLResultsTable();
         table.setPrefixManager(query.getPrefixManager());
         JFrame f = new JFrame();

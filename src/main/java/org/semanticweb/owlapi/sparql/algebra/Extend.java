@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import jpaul.Constraints.Var;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -29,14 +30,26 @@ public class Extend extends GraphPatternAlgebraExpression {
         this.expression = expression;
     }
 
+    public GraphPatternAlgebraExpression getAlgebraExpression() {
+        return algebraExpression;
+    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
+    public Variable getVariable() {
+        return variable;
+    }
+
     @Override
     public void collectVisibleVariables(ImmutableSet.Builder<Variable> variableBuilder) {
         variableBuilder.add(variable);
     }
 
     @Override
-    public SolutionSequence evaluate(OWLReasoner reasoner) {
-        SolutionSequence sequence = algebraExpression.evaluate(reasoner);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = algebraExpression.evaluate(context);
         ImmutableList.Builder<SolutionMapping> extendedSequence = ImmutableList.builder();
         for(SolutionMapping sm : sequence.getSolutionMappings()) {
             EvaluationResult result = expression.evaluate(sm);
@@ -81,5 +94,11 @@ public class Extend extends GraphPatternAlgebraExpression {
         writer.print(expression);
         writer.print(indentation);
         writer.print(")");
+    }
+
+
+    @Override
+    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+        return visitor.visit(this);
     }
 }

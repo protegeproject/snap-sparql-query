@@ -16,8 +16,8 @@ public class ToList extends AlgebraExpression {
     }
 
     @Override
-    public SolutionSequence evaluate(OWLReasoner reasoner) {
-        return algebraExpression.evaluate(reasoner);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        return algebraExpression.evaluate(context);
     }
 
     @Override
@@ -27,5 +27,11 @@ public class ToList extends AlgebraExpression {
         algebraExpression.prettyPrint(writer, level + 1);
         writer.print(indentation);
         writer.println(")");
+    }
+
+
+    @Override
+    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+        return visitor.visit(this);
     }
 }
