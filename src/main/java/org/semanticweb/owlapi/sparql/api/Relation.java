@@ -33,15 +33,21 @@ public enum Relation {
     public EvaluationResult evaluate(Expression left, Expression right, SolutionMapping sm) {
         EvaluationResult leftEval = left.evaluateAsNumeric(sm);
         EvaluationResult rightEval = right.evaluateAsNumeric(sm);
-        if(leftEval.isError()) {
-            return leftEval;
+        if(!leftEval.isError() && !rightEval.isError()) {
+            return evaluateNumeric(leftEval, rightEval);
         }
-        if(rightEval.isError()) {
-            return rightEval;
+        EvaluationResult litLeft = left.evaluateAsSimpleLiteral(sm);
+        EvaluationResult litRight = right.evaluateAsSimpleLiteral(sm);
+        if(!litLeft.isError() && !litRight.isError()) {
+            return evaluateSimpleLiteral(litLeft, litRight);
         }
+        return EvaluationResult.getError();
+    }
 
+    private EvaluationResult evaluateNumeric(EvaluationResult leftEval, EvaluationResult rightEval) {
         double leftValue = leftEval.asNumeric();
         double rightValue = rightEval.asNumeric();
+
         switch (this) {
             case EQUAL:
                 return EvaluationResult.getBoolean(leftValue == rightValue);
@@ -58,12 +64,27 @@ public enum Relation {
             default:
                 throw new RuntimeException("Unknown enum value");
         }
-        
     }
 
-    private EvaluationResult evaluateAsNumeric(Expression left, Expression right, SolutionMapping sm) {
-        return EvaluationResult.getError();
+    private EvaluationResult evaluateSimpleLiteral(EvaluationResult leftEval, EvaluationResult rightEval) {
+        String leftValue = leftEval.asSimpleLiteral();
+        String rightValue = rightEval.asSimpleLiteral();
+
+        switch (this) {
+            case EQUAL:
+                return EvaluationResult.getBoolean(leftValue.equals(rightValue));
+            case NOT_EQUAL:
+                return EvaluationResult.getBoolean(!leftValue.equals(rightValue));
+            case LESS_THAN:
+                return EvaluationResult.getBoolean(leftValue.compareTo(rightValue) < 0);
+            case LESS_THAN_OR_EQUAL:
+                return EvaluationResult.getBoolean(leftValue.compareTo(rightValue) <= 0);
+            case GREATER_THAN:
+                return EvaluationResult.getBoolean(leftValue.compareTo(rightValue) > 0);
+            case GREATER_THAN_OR_EQUAL:
+                return EvaluationResult.getBoolean(leftValue.compareTo(rightValue) >= 0);
+            default:
+                throw new RuntimeException("Unknown enum value");
+        }
     }
-
-
 }

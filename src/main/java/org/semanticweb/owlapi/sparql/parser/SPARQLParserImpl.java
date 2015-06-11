@@ -1256,6 +1256,7 @@ public class SPARQLParserImpl {
         }
         else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
             SPARQLToken token = tokenizer.consume();
+            tokenizer.getVariableManager().addVariableName(token.getImage());
             result = new UntypedVariable(token.getImage());
         }
         else if (tokenizer.peek(StringTokenType.get()) != null) {
