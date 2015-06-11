@@ -26,23 +26,7 @@ import static org.semanticweb.owlapi.vocab.OWLRDFVocabulary.*;
  */
 public class SPARQLParserImpl {
 
-    private SPARQLTokenizer tokenizer;
-
-    private List<String> mustBindVariables = new ArrayList<>();
-
-//    private Set<SPARQLGraphPattern> parsedBGPs = new HashSet<>();
-
-//    private Set<SPARQLGraphPattern> minusBGPs = new HashSet<>();
-
-//    private Set<SPARQLGraphPattern> optionalBGPs = new HashSet<>();
-
-    private SPARQLQueryType queryType = SPARQLQueryType.SELECT;
-
-//    private List<SelectAs> selectAsList = new ArrayList<>();
-
-    private boolean selectAll = false;
-
-//    private List<OrderCondition> orderConditions = new ArrayList<>();
+    private final SPARQLTokenizer tokenizer;
 
     public SPARQLParserImpl(SPARQLTokenizer tokenizer) {
         this.tokenizer = checkNotNull(tokenizer);
@@ -51,47 +35,7 @@ public class SPARQLParserImpl {
     public SelectQuery parseQuery() {
         parsePrologue();
         return parseSelectQuery();
-//        return createQueryObject();
     }
-
-//    private SPARQLQuery createQueryObject() {
-//        List<Variable> selectVariables = new ArrayList<>();
-//        for (String varName : mustBindVariables) {
-//            Collection<VariableTokenType> types = tokenizer.getVariableManager().getTypes(varName);
-//            TokenType tokenType = types.iterator().next();
-//            if (tokenType instanceof DeclaredVariableTokenType) {
-//                DeclaredVariableTokenType declaredVariableTokenType = (DeclaredVariableTokenType) tokenType;
-//                selectVariables.add(Variable.create(varName, declaredVariableTokenType.getPrimitiveType()));
-//            }
-//            else {
-//                selectVariables.add(new UntypedVariable(varName));
-//            }
-//        }
-//        List<SPARQLGraphPattern> graphPatterns = new ArrayList<>();
-//        List<Variable> allVariables = new ArrayList<>();
-//        allVariables.addAll(tokenizer.getVariableManager().getVariables());
-//
-//        for (SPARQLGraphPattern bgp : parsedBGPs) {
-//            allVariables.addAll(bgp.getTriplePatternVariablesVariables());
-//            graphPatterns.add(bgp);
-//            if (selectAll) {
-//                selectVariables.addAll(bgp.getTriplePatternVariablesVariables());
-//            }
-//        }
-//
-//        SolutionModifier solutionModifier = new SolutionModifier(orderConditions);
-//        return new SPARQLQuery(
-//                tokenizer.getPrefixManager(),
-//                queryType,
-//                selectVariables,
-//                allVariables,
-//                selectAsList,
-//                graphPatterns,
-//                new ArrayList<>(minusBGPs),
-//                new ArrayList<>(optionalBGPs),
-//                solutionModifier);
-//    }
-
 
     public void parsePrologue() {
         while (true) {
@@ -126,13 +70,13 @@ public class SPARQLParserImpl {
     public SelectClause parseSelectClause() {
         ImmutableList.Builder<SelectItem> selectFormBuilder = ImmutableList.builder();
         tokenizer.consume(SPARQLTerminal.SELECT);
+        SPARQLQueryType queryType = SPARQLQueryType.SELECT;
         if (tokenizer.peek(SPARQLTerminal.DISTINCT) != null) {
             tokenizer.consume(SPARQLTerminal.DISTINCT);
             queryType = SPARQLQueryType.SELECT_DISTINCT;
         }
         if (tokenizer.peek(SPARQLTerminal.ASTERISK) != null) {
             tokenizer.consume(SPARQLTerminal.ASTERISK);
-            selectAll = true;
         }
         else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null || tokenizer.peek(SPARQLTerminal.OPEN_PAR) != null) {
             while (true) {
@@ -163,7 +107,7 @@ public class SPARQLParserImpl {
 
     public SelectVariable parseSelectVariable() {
         SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
-        mustBindVariables.add(token.getImage());
+//        mustBindVariables.add(token.getImage());
         return new SelectVariable(new UntypedVariable(token.getImage()));
     }
 
@@ -173,7 +117,6 @@ public class SPARQLParserImpl {
         tokenizer.consume(SPARQLTerminal.AS);
         SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
         tokenizer.getVariableManager().addVariableName(token.getImage());
-//        selectAsList.add(new SelectAs(expression, new UntypedVariable(token.getImage())));
         tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
         return new SelectAs(expression, new UntypedVariable(token.getImage()));
     }
@@ -286,7 +229,15 @@ public class SPARQLParserImpl {
     }
 
     private SPARQLToken peekTypedOrUntypedVariable() {
-        return tokenizer.peek(UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.LITERAL));
+        return tokenizer.peek(
+                UndeclaredVariableTokenType.get(),
+                DeclaredVariableTokenType.get(PrimitiveType.CLASS),
+                DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY),
+                DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY),
+                DeclaredVariableTokenType.get(PrimitiveType.DATATYPE),
+                DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY),
+                DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL),
+                DeclaredVariableTokenType.get(PrimitiveType.LITERAL));
     }
 
     public TriplesBlockPattern parseTriplesBlock() {
@@ -1505,11 +1456,6 @@ public class SPARQLParserImpl {
             tokenizer.raiseError();
         }
         return result;
-    }
-
-
-    public List<String> getVariables() {
-        return mustBindVariables;
     }
 
 
