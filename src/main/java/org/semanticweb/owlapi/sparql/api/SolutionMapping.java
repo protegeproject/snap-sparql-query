@@ -3,6 +3,7 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Objects;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import org.semanticweb.owlapi.sparql.builtin.Timestamp;
 
 import java.util.*;
@@ -20,24 +21,17 @@ public class SolutionMapping {
 
     private static SolutionMapping emptyMapping = new SolutionMapping();
 
-    private final Map<Variable, Term> map;
+    private final ImmutableMap<Variable, Term> map;
 
     public static SolutionMapping emptyMapping() {
         return emptyMapping;
     }
 
     public SolutionMapping() {
-        map = Collections.emptyMap();
+        map = ImmutableMap.of();
     }
 
-    public SolutionMapping(Map<Variable, Term> map) {
-        this.map = new HashMap<>(map.size());
-        for(Variable variable : map.keySet()) {
-            this.map.put(checkNotNull(variable), checkNotNull(map.get(variable)));
-        }
-    }
-
-    private SolutionMapping(HashMap<Variable, Term> map) {
+    public SolutionMapping(ImmutableMap<Variable, Term> map) {
         this.map = map;
     }
 
@@ -51,8 +45,8 @@ public class SolutionMapping {
         map.put(variable, term);
     }
 
-    public Map<Variable, Term> asMap() {
-        return new HashMap<Variable, Term>(map);
+    public ImmutableMap<Variable, Term> asMap() {
+        return map;
     }
 
     public Optional<Term> getTermForVariable(Variable variable) {
@@ -85,14 +79,14 @@ public class SolutionMapping {
 //            for(Variable variable : variables) {
 //                variableNames.add(variable.getName());
 //            }
-            Map<Variable, Term> projectedMapping = new HashMap<>(variables.size());
+            ImmutableMap.Builder<Variable, Term> projectedMapping = ImmutableMap.builder();
             for(Variable variable : variables) {
                 Term value = map.get(variable);
                 if (value != null) {
                     projectedMapping.put(variable, value);
                 }
             }
-            return new SolutionMapping(projectedMapping);
+            return new SolutionMapping(projectedMapping.build());
         }
     }
 

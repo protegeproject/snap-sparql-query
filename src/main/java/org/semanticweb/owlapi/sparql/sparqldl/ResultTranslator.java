@@ -21,15 +21,11 @@ public class ResultTranslator {
 
     private SolutionMappingTranslator solutionMappingTranslator;
 
-    private LiteralTranslator literalTranslator;
-
     private ImmutableSet<Variable> variables;
 
     public ResultTranslator(SolutionMappingTranslator solutionMappingTranslator,
-                            LiteralTranslator literalTranslator,
                             ImmutableSet<Variable> variables) {
         this.solutionMappingTranslator = solutionMappingTranslator;
-        this.literalTranslator = literalTranslator;
         this.variables = variables;
     }
 

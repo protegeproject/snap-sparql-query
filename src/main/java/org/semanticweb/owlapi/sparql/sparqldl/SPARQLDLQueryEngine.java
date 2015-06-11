@@ -63,7 +63,7 @@ public class SPARQLDLQueryEngine {
 
     public SPARQLDLQueryEngine(OWLReasoner reasoner) {
         this.reasoner = reasoner;
-        cache = CacheBuilder.newBuilder().maximumSize(5).build();
+        cache = CacheBuilder.newBuilder().weakKeys().build();//maximumSize(5).build();
     }
 
     public SPARQLQueryResult ask(SelectQuery query) {

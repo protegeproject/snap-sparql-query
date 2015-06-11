@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.sparqldl;
 
+import com.google.common.collect.ImmutableMap;
 import de.derivo.sparqldlapi.QueryArgument;
 import de.derivo.sparqldlapi.QueryBinding;
 import de.derivo.sparqldlapi.impl.LiteralTranslator;
@@ -18,10 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SolutionMappingTranslator {
 
-    private final LiteralTranslator literalTranslator;
-
-    public SolutionMappingTranslator(LiteralTranslator literalTranslator) {
-        this.literalTranslator = checkNotNull(literalTranslator);
+    public SolutionMappingTranslator() {
     }
 
     /**
@@ -32,9 +30,9 @@ public class SolutionMappingTranslator {
      */
     public SolutionMapping translate(QueryBinding binding, Map<String, Variable> nameVariableMap) {
         Set<QueryArgument> boundArgs = binding.getBoundArgs();
-        Map<Variable, Term> solutionMapping = new HashMap<>(boundArgs.size());
+        ImmutableMap.Builder<Variable, Term> solutionMapping = ImmutableMap.builder();
         for(QueryArgument arg : boundArgs) {
-            Variable var = nameVariableMap.get(arg.getValue());
+            Variable var = nameVariableMap.get(arg.getValueAsVar().getName());
             QueryArgument value = binding.get(arg);
             Term term = null;
             switch (value.getType()) {
@@ -42,14 +40,14 @@ public class SolutionMappingTranslator {
                     // Shouldn't happen
                     break;
                 case URI:
-                    IRI iri = IRI.create(value.getValue());
+                    IRI iri = value.getValueAsIRI();
                     term = var.getBound(iri);
                     break;
                 case BNODE:
                     // TODO: Log
                     break;
                 case LITERAL:
-                    OWLLiteral literal = literalTranslator.toOWLLiteral(value);
+                    OWLLiteral literal = value.getValueAsLiteral();
                     term = new Literal(
                             Datatype.get(literal.getDatatype().getIRI()),
                             literal.getLiteral(),
@@ -60,6 +58,6 @@ public class SolutionMappingTranslator {
                 solutionMapping.put(var, term);
             }
         }
-        return new SolutionMapping(solutionMapping);
+        return new SolutionMapping(solutionMapping.build());
     }
 }

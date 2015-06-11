@@ -4,6 +4,7 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 import com.google.common.base.Optional;
 import de.derivo.sparqldlapi.QueryArgument;
 import de.derivo.sparqldlapi.QueryBinding;
+import de.derivo.sparqldlapi.Var;
 import de.derivo.sparqldlapi.impl.LiteralTranslator;
 import de.derivo.sparqldlapi.types.QueryArgumentType;
 import org.hamcrest.Matchers;
@@ -49,10 +50,10 @@ public class SolutionMappingTranslator_TestCase {
 
     @Before
     public void setUp() {
-        solutionMappingTranslator = new SolutionMappingTranslator(literalTranslator);
+        solutionMappingTranslator = new SolutionMappingTranslator();
         nameMap = new HashMap<>();
 
-        when(boundVariable.getValue()).thenReturn(VAR_NAME);
+        when(boundVariable.getValueAsVar()).thenReturn(new Var(VAR_NAME));
         when(boundVariable.getType()).thenReturn(QueryArgumentType.VAR);
 
         when(queryBinding.getBoundArgs()).thenReturn(Collections.singleton(boundVariable));
@@ -65,16 +66,11 @@ public class SolutionMappingTranslator_TestCase {
         nameMap.put(VAR_NAME, var);
     }
 
-    @Test(expected = java.lang.NullPointerException.class)
-    public void shouldThrowNullPointerExceptionIf_literalTranslator_IsNull() {
-        new SolutionMappingTranslator(null);
-    }
-
     @Test
     public void should_translateBoundArg() {
         IRI iri = IRI.create("http://stuff.com/A");
 
-        when(boundValue.getValue()).thenReturn(iri.toString());
+        when(boundValue.getValueAsIRI()).thenReturn(iri);
         when(boundValue.getType()).thenReturn(QueryArgumentType.URI);
 
         SolutionMapping solutionMapping = solutionMappingTranslator.translate(queryBinding, nameMap);

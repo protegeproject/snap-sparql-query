@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.sparqldl;
 
+import com.google.common.collect.ImmutableMap;
+import de.derivo.sparqldlapi.Var;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Term;
 import org.semanticweb.owlapi.sparql.api.Variable;
@@ -28,9 +30,10 @@ public class Joiner {
             for(SolutionMapping right : rightSolutionSequence) {
                 if(compatibilityChecker.isCompatible(left, right)) {
                     joined = true;
-                    Map<Variable, Term> map = left.asMap();
-                    map.putAll(right.asMap());
-                    SolutionMapping join = new SolutionMapping(map);
+                    ImmutableMap.Builder<Variable, Term> combined = ImmutableMap.builder();
+                    combined.putAll(left.asMap());
+                    combined.putAll(right.asMap());
+                    SolutionMapping join = new SolutionMapping(combined.build());
                     result.add(join);
                 }
             }
@@ -47,9 +50,10 @@ public class Joiner {
         for(SolutionMapping left : leftSolutionSequence) {
             for(SolutionMapping right : rightSolutionSequence) {
                 if(compatibilityChecker.isCompatible(left, right)) {
-                    Map<Variable, Term> map = left.asMap();
-                    map.putAll(right.asMap());
-                    SolutionMapping join = new SolutionMapping(map);
+                    ImmutableMap.Builder<Variable, Term> combined = ImmutableMap.builder();
+                    combined.putAll(left.asMap());
+                    combined.putAll(right.asMap());
+                    SolutionMapping join = new SolutionMapping(combined.build());
                     result.add(join);
                 }
             }

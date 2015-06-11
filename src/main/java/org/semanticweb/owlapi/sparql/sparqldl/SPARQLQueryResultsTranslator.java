@@ -96,7 +96,7 @@ public class SPARQLQueryResultsTranslator {
 //            nameVariableMap.put(variable.getName(), variable);
 //        }
         LiteralTranslator translator = new LiteralTranslator(dataFactory);
-        solutionMappingTranslator = new SolutionMappingTranslator(translator);
+        solutionMappingTranslator = new SolutionMappingTranslator();
     }
     
     public SPARQLQueryResult translate() {

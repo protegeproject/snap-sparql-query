@@ -9,6 +9,7 @@ import de.derivo.sparqldlapi.QueryEngine;
 import de.derivo.sparqldlapi.QueryResult;
 import de.derivo.sparqldlapi.exceptions.QueryEngineException;
 import de.derivo.sparqldlapi.impl.LiteralTranslator;
+import de.derivo.sparqldlapi.impl.QueryEngineImpl;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -44,12 +45,12 @@ public class BgpEvaluator {
         try {
             OWLOntology rootOntology = reasoner.getRootOntology();
             OWLOntologyManager manager = rootOntology.getOWLOntologyManager();
-            BgpTranslator bgpTranslator = new BgpTranslator();
+            BgpTranslator bgpTranslator = new BgpTranslator(reasoner.getRootOntology().getOWLOntologyManager().getOWLDataFactory());
             Query query = bgpTranslator.translate(bgp);
             QueryEngine posQE = QueryEngine.create(manager, reasoner);
+            ((QueryEngineImpl) posQE).setPerformArgumentChecking(false);
             QueryResult result = posQE.execute(query);
-            LiteralTranslator literalTranslator = new LiteralTranslator(manager.getOWLDataFactory());
-            ResultTranslator resultTranslator = new ResultTranslator(new SolutionMappingTranslator(literalTranslator), literalTranslator, bgp.getVariables());
+            ResultTranslator resultTranslator = new ResultTranslator(new SolutionMappingTranslator(), bgp.getVariables());
             ImmutableList<SolutionMapping> solutionMappings = resultTranslator.translateResult(result);
             SolutionSequence sequence = new SolutionSequence(new ArrayList<>(bgp.getVariables()), solutionMappings);
             cache.put(bgp, sequence);

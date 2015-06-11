@@ -3,12 +3,14 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 import de.derivo.sparqldlapi.Query;
 import de.derivo.sparqldlapi.QueryArgument;
 import de.derivo.sparqldlapi.QueryAtom;
+import de.derivo.sparqldlapi.Var;
 import de.derivo.sparqldlapi.impl.LiteralTranslator;
 import de.derivo.sparqldlapi.impl.QueryAtomGroupImpl;
 import de.derivo.sparqldlapi.impl.QueryImpl;
 import de.derivo.sparqldlapi.types.QueryArgumentType;
 import de.derivo.sparqldlapi.types.QueryAtomType;
 import de.derivo.sparqldlapi.types.QueryType;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.sparql.algebra.Bgp;
 import org.semanticweb.owlapi.sparql.api.*;
 
@@ -19,11 +21,17 @@ import java.util.*;
  */
 public class BgpTranslator {
 
+    private OWLDataFactory dataFactory;
+
+    public BgpTranslator(OWLDataFactory dataFactory) {
+        this.dataFactory = dataFactory;
+    }
+
     public Query translate(Bgp bgp) {
         QueryImpl query = new QueryImpl(QueryType.SELECT);
         Set<Variable> variables = bgp.getVariables();
         for (Variable v : variables) {
-            query.addResultVar(new QueryArgument(QueryArgumentType.VAR, v.getName()));
+            query.addResultVar(new QueryArgument(new Var(v.getName())));
         }
         AxiomTemplateVisitor axiomTemplateVisitor = new AxiomTemplateVisitor();
         QueryAtomGroupImpl queryAtomGroup = new QueryAtomGroupImpl();
@@ -256,67 +264,70 @@ public class BgpTranslator {
 
 
         public QueryArgument visit(AnonymousIndividual individual) {
-            return new QueryArgument(QueryArgumentType.BNODE, individual.getIdentifier());
+            return new QueryArgument(dataFactory.getOWLAnonymousIndividual(individual.getIdentifier()));
         }
 
         public QueryArgument visit(NamedClass node) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, node.getIRI().toString());
+            return new QueryArgument(node.getIRI());
         }
 
         public QueryArgument visit(AtomicIRI iri) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, iri.getIRI().toString());
+            return new QueryArgument(iri.getIRI());
         }
 
         public QueryArgument visit(DataProperty property) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, property.getIRI().toString());
+            return new QueryArgument(property.getIRI());
         }
 
         public QueryArgument visit(NamedIndividual individual) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, individual.getIRI().toString());
+            return new QueryArgument(individual.getIRI());
         }
 
         public QueryArgument visit(AnnotationProperty property) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, property.getIRI().toString());
+            return new QueryArgument(property.getIRI());
         }
 
         public QueryArgument visit(ObjectProperty property) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.URI, property.getIRI().toString());
+            return new QueryArgument(property.getIRI());
         }
 
         public QueryArgument visit(ClassVariable variable) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.VAR, variable.getName());
+            return new QueryArgument(new Var(variable.getName()));
         }
 
         public QueryArgument visit(DatatypeVariable variable) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.VAR, variable.getName());
+            return new QueryArgument(new Var(variable.getName()));
         }
 
         public QueryArgument visit(ObjectPropertyVariable variable) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.VAR, variable.getName());
+            return new QueryArgument(new Var(variable.getName()));
         }
 
         public QueryArgument visit(DataPropertyVariable variable) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.VAR, variable.getName());
+            return new QueryArgument(new Var(variable.getName()));
         }
 
         public QueryArgument visit(AnnotationPropertyVariable variable) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.VAR, variable.getName());
+            return new QueryArgument(new Var(variable.getName()));
         }
 
         public QueryArgument visit(IndividualVariable variable) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.VAR, variable.getName());
+            return new QueryArgument(new Var(variable.getName()));
         }
 
         public QueryArgument visit(LiteralVariable variable) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.VAR, variable.getName());
+            return new QueryArgument(new Var(variable.getName()));
         }
 
         public QueryArgument visit(UntypedVariable variable) throws RuntimeException {
-            return new QueryArgument(QueryArgumentType.VAR, variable.getName());
+            return new QueryArgument(new Var(variable.getName()));
         }
 
         public QueryArgument visit(Literal node) throws RuntimeException {
-            return LiteralTranslator.toQueryArgument(node.getLexicalForm(), node.getLang(), node.getDatatype().getIRI().toString());
+            if(node.isRDFPlainLiteral()) {
+                return new QueryArgument(dataFactory.getOWLLiteral(node.getLexicalForm(), node.getLang()));
+            }
+            return new QueryArgument(dataFactory.getOWLLiteral(node.getLexicalForm(), dataFactory.getOWLDatatype(node.getDatatype().getIRI())));
         }
     }
 

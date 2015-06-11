@@ -2,6 +2,7 @@ package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import jpaul.Constraints.Var;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -54,7 +55,7 @@ public class Extend extends GraphPatternAlgebraExpression {
         for(SolutionMapping sm : sequence.getSolutionMappings()) {
             EvaluationResult result = expression.evaluate(sm);
             if(!result.isError()) {
-                Map<Variable, Term> variableTermMap = sm.asMap();
+                ImmutableMap<Variable, Term> variableTermMap = sm.asMap();
                 variableTermMap.put(variable, result.getResult());
                 SolutionMapping extendedMapping = new SolutionMapping(variableTermMap);
                 extendedSequence.add(extendedMapping);

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
 import jpaul.Constraints.Var;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -24,7 +25,7 @@ public class SolutionMapping_TestCase {
 
     private SolutionMapping solutionMapping;
 
-    private Map<Variable, Term> map;
+    private ImmutableMap<Variable, Term> map;
 
     @Mock
     private Variable variable, variable2;
@@ -36,9 +37,7 @@ public class SolutionMapping_TestCase {
     public void setUp() {
         when(variable.getName()).thenReturn("x");
         when(variable2.getName()).thenReturn("y");
-        map = new HashMap<>();
-        map.put(variable, term);
-        map.put(variable2, term2);
+        map = ImmutableMap.of(variable, term, variable2, term2);
         solutionMapping = new SolutionMapping(map);
     }
 
@@ -64,7 +63,7 @@ public class SolutionMapping_TestCase {
 
     @Test
     public void shouldNotBeEqualToOtherThatHasDifferent_map() {
-        assertThat(solutionMapping, is(Matchers.not(new SolutionMapping(mock(Map.class)))));
+        assertThat(solutionMapping, is(Matchers.not(new SolutionMapping(mock(ImmutableMap.class)))));
     }
 
     @Test
