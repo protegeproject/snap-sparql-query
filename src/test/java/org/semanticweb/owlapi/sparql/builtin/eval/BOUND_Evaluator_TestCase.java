@@ -1,6 +1,8 @@
 
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +12,7 @@ import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
+import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -26,17 +29,9 @@ public class BOUND_Evaluator_TestCase {
     @Mock
     private Variable variable;
 
-    @Mock
-    private Variable otherVariable;
-
-
-
-
     @Before
     public void setUp() throws Exception {
         evaluator = new BOUND_Evaluator();
-        when(solutionMapping.isMapped(variable)).thenReturn(true);
-        when(solutionMapping.isMapped(otherVariable)).thenReturn(false);
     }
 
     @Test
@@ -46,11 +41,13 @@ public class BOUND_Evaluator_TestCase {
 
     @Test
     public void shouldReturnTrue() {
-        assertThat(evaluator.evaluate(variable, solutionMapping), is(EvaluationResult.getTrue()));
+        when(solutionMapping.isMapped(org.mockito.Matchers.any(Variable.class))).thenReturn(true);
+        assertThat(evaluator.evaluate(this.variable, solutionMapping), is(EvaluationResult.getTrue()));
     }
 
     @Test
     public void shouldReturnFalse() {
-        assertThat(evaluator.evaluate(otherVariable, solutionMapping), is(EvaluationResult.getFalse()));
+        when(solutionMapping.isMapped(org.mockito.Matchers.any(Variable.class))).thenReturn(false);
+        assertThat(evaluator.evaluate(variable, solutionMapping), is(EvaluationResult.getFalse()));
     }
 }
