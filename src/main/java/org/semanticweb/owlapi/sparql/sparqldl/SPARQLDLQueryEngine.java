@@ -41,16 +41,15 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraExpression;
 import org.semanticweb.owlapi.sparql.algebra.Bgp;
 import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
-import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 28/03/2012
@@ -63,40 +62,14 @@ public class SPARQLDLQueryEngine {
 
     public SPARQLDLQueryEngine(OWLReasoner reasoner) {
         this.reasoner = reasoner;
-        cache = CacheBuilder.newBuilder().build();//maximumSize(5).build();
+        cache = CacheBuilder.newBuilder().maximumSize(7).expireAfterWrite(2, TimeUnit.MINUTES).build();
     }
 
     public SPARQLQueryResult ask(SelectQuery query) {
-
-//        try {
         AlgebraExpression algebraExpression = query.translate();
         AlgebraEvaluationContext context = new AlgebraEvaluationContext(new BgpEvaluator(reasoner, cache));
         SolutionSequence solutionSequence = algebraExpression.evaluate(context);
         return new SPARQLQueryResult(query, solutionSequence);
-
-//            QueryEngine posQE = QueryEngine.create(man, reasoner);
-//
-//
-//            SPARQLQueryTranslator translator = new SPARQLQueryTranslator(query);
-//            Query translatedQuery = translator.translate();
-//            QueryResult queryResult = posQE.execute(translate);
-////            QueryResult queryResultMinus = posQE.execute(translator.translateMinus());
-////            QueryResult queryResultOptional = posQE.execute(translator.translateOptional());
-//
-//            SPARQLQueryResultsTranslator t = new SPARQLQueryResultsTranslator(
-//                    query,
-//                    queryResult,
-////                    queryResultMinus,
-////                    queryResultOptional,
-//                    man.getOWLDataFactory());
-//
-//            return t.translate();
-
-//        }
-//        catch (QueryEngineException e) {
-//            throw new RuntimeException(e);
-//        }
-
     }
 
 }

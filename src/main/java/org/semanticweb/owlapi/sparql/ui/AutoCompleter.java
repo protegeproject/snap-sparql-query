@@ -364,6 +364,17 @@ public class AutoCompleter {
                     }
                 }
             }
+            else if(et == EntityType.DATATYPE) {
+                for(OWL2Datatype datatype : OWL2Datatype.values()) {
+                    String pn = tokenizer.getPrefixManager().getPrefixIRI(datatype.getIRI());
+                    if(pn != null) {
+                        matches.add(pn);
+                    }
+                    else {
+                        matches.add(datatype.getIRI().toQuotedString());
+                    }
+                }
+            }
         }
         for(SPARQLTerminal terminal : e.getExpectedTerminals()) {
             matches.add(terminal.getImage());
