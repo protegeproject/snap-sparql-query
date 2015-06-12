@@ -365,7 +365,9 @@ public class AutoCompleter {
                 }
             }
             else if(et == EntityType.DATATYPE) {
-                for(OWL2Datatype datatype : OWL2Datatype.values()) {
+                Set<OWLDatatype> datatypesInSignature = ontology.getDatatypesInSignature(true);
+                datatypesInSignature.add(OWL2Datatype.RDF_PLAIN_LITERAL.getDatatype(ontology.getOWLOntologyManager().getOWLDataFactory()));
+                for(OWLDatatype datatype : datatypesInSignature) {
                     String pn = tokenizer.getPrefixManager().getPrefixIRI(datatype.getIRI());
                     if(pn != null) {
                         matches.add(pn);
