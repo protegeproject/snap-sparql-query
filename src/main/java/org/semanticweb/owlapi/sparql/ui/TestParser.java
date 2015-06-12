@@ -134,8 +134,6 @@ public class TestParser {
         SelectQuery query = parser.parseQuery();
         System.out.println(query.translate().toPrettyPrintedString());
 
-        VariableManager decMan = tokenizer.getVariableManager();
-        decMan.dump();
         Stopwatch stopwatch = Stopwatch.createStarted();
         SPARQLQueryResult result = queryEngine.ask(query);
         System.out.println("Answered query in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");

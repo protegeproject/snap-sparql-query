@@ -39,7 +39,8 @@
 
 package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
-import org.semanticweb.owlapi.model.EntityType;
+import com.google.common.base.*;
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.sparql.api.*;
 
 import java.util.*;
@@ -52,77 +53,92 @@ import java.util.*;
  */
 public class VariableManager {
 
-    Map<String, VariableTokenType> typeMap = new LinkedHashMap<String, VariableTokenType>();
-    
-    Set<String> variableNames = new LinkedHashSet<String>();
+    private final Set<UntypedVariable> variableNames = new LinkedHashSet<>();
 
-    public void addVariableName(String name) {
-        variableNames.add(name);
-    }
-    
-    public void putType(String variableName, VariableTokenType type) {
-        typeMap.put(variableName, type);
-    }
-    
-    public Set<String> getVariableNames() {
-        LinkedHashSet<String> varNames = new LinkedHashSet<String>();
-        varNames.addAll(variableNames);
-        varNames.addAll(typeMap.keySet());
-        return varNames;
+    private final Deque<VariableTypeManager> variableTypeManagerStack = new ArrayDeque<>();
+
+    public VariableManager() {
+        variableTypeManagerStack.push(new VariableTypeManager());
     }
 
-    public Set<Variable> getVariables() {
-        Set<Variable> result = new LinkedHashSet<Variable>();
-        for(String typedVarName : typeMap.keySet()) {
-            VariableTokenType variableTokenType = typeMap.get(typedVarName);
-            if (variableTokenType instanceof DeclaredVariableTokenType) {
-                DeclaredVariableTokenType declaredVariableTokenType = (DeclaredVariableTokenType) variableTokenType;
-                if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.CLASS) {
-                    result.add(new ClassVariable(typedVarName));
-                }
-                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.DATATYPE) {
-                    result.add(new DatatypeVariable(typedVarName));
-                }
-                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.OBJECT_PROPERTY) {
-                    result.add(new ObjectPropertyVariable(typedVarName));
-                }
-                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.DATA_PROPERTY) {
-                    result.add(new DataPropertyVariable(typedVarName));
-                }
-                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.ANNOTATION_PROPERTY) {
-                    result.add(new AnnotationPropertyVariable(typedVarName));
-                }
-                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.NAMED_INDIVIDUAL) {
-                    result.add(new IndividualVariable(typedVarName));
-                }
-                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.LITERAL) {
-                    result.add(new LiteralVariable(typedVarName));
-                }
-                else {
-                    throw new RuntimeException("Unknown primitive type " + declaredVariableTokenType.getPrimitiveType());
-                }
-            }
-        }
-        for(String untypedVariableName : variableNames) {
-            if(!typeMap.containsKey(untypedVariableName)) {
-                result.add(new UntypedVariable(untypedVariableName));
-            }
-        }
-        return result;
+    public void pushVariableTypeScope() {
+        variableTypeManagerStack.push(new VariableTypeManager());
+        System.out.println("PUSHED SCOPE (" + variableTypeManagerStack.size() + ")");
+    }
+
+    public void popVariableTypeScope() {
+        System.out.println("POPPING SCOPE (" + variableTypeManagerStack.size() + ")");
+        variableTypeManagerStack.pop();
+    }
+
+
+    public void registerVariable(UntypedVariable variable) {
+        variableNames.add(variable);
+    }
+
+    public void registerVariable(UntypedVariable variable, PrimitiveType type) {
+        variableNames.add(variable);
+        variableTypeManagerStack.peek().setVariableType(variable, type);
+    }
+
+    public Set<UntypedVariable> getVariables() {
+        return new LinkedHashSet<>(variableNames);
+//        Set<Variable> result = new LinkedHashSet<Variable>();
+//        for(String typedVarName : typeMap.keySet()) {
+//            VariableTokenType variableTokenType = typeMap.get(typedVarName);
+//            if (variableTokenType instanceof DeclaredVariableTokenType) {
+//                DeclaredVariableTokenType declaredVariableTokenType = (DeclaredVariableTokenType) variableTokenType;
+//                if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.CLASS) {
+//                    result.add(new ClassVariable(typedVarName));
+//                }
+//                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.DATATYPE) {
+//                    result.add(new DatatypeVariable(typedVarName));
+//                }
+//                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.OBJECT_PROPERTY) {
+//                    result.add(new ObjectPropertyVariable(typedVarName));
+//                }
+//                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.DATA_PROPERTY) {
+//                    result.add(new DataPropertyVariable(typedVarName));
+//                }
+//                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.ANNOTATION_PROPERTY) {
+//                    result.add(new AnnotationPropertyVariable(typedVarName));
+//                }
+//                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.NAMED_INDIVIDUAL) {
+//                    result.add(new IndividualVariable(typedVarName));
+//                }
+//                else if(declaredVariableTokenType.getPrimitiveType() == PrimitiveType.LITERAL) {
+//                    result.add(new LiteralVariable(typedVarName));
+//                }
+//                else {
+//                    throw new RuntimeException("Unknown primitive type " + declaredVariableTokenType.getPrimitiveType());
+//                }
+//            }
+//        }
+//        for(String untypedVariableName : variableNames) {
+//            if(!typeMap.containsKey(untypedVariableName)) {
+//                result.add(new UntypedVariable(untypedVariableName));
+//            }
+//        }
+//        return result;
     }
     
-    public Collection<VariableTokenType> getTypes(String variable) {
-        VariableTokenType type = typeMap.get(variable);
-        if(type == null) {
-            return Collections.<VariableTokenType>singleton(UndeclaredVariableTokenType.get());
-        }
-        else {
-            return Collections.<VariableTokenType>singleton(type);
-        }
-    }
+//    public Collection<VariableTokenType> getType(String variable) {
+////        VariableTokenType type = typeMap.get(variable);
+////        if(type == null) {
+////            return Collections.<VariableTokenType>singleton(UndeclaredVariableTokenType.get());
+////        }
+////        else {
+////            return Collections.<VariableTokenType>singleton(type);
+////        }
+//        return Collections.emptySet();
+//    }
 
-    public void dump() {
-        System.out.println(typeMap);
+    public Optional<PrimitiveType> getVariableType(UntypedVariable variable) {
+        System.err.println("Getting type of ?" + variable.getName() + " in scope " + variableTypeManagerStack.size());
+        VariableTypeManager typeManager = variableTypeManagerStack.peek();
+        Optional<PrimitiveType> variableType = typeManager.getVariableType(variable);
+        System.err.println("\tType: " + variableType);
+        Thread.currentThread().dumpStack();
+        return variableType;
     }
-
 }

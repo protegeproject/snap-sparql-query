@@ -54,9 +54,10 @@ public interface SPARQLTokenizer {
 
     VariableManager getVariableManager();
 
+//    void registerVariable(String variableName, PrimitiveType variableType);
+
     PrefixManager getPrefixManager();
     
-    void registerVariable(String variableName, PrimitiveType variableType);
 
     void registerPrefix(String prefixName, String prefix);
     

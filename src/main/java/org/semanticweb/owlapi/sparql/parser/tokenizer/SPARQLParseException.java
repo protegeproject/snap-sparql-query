@@ -40,6 +40,7 @@
 package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
 import org.semanticweb.owlapi.model.EntityType;
+import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -64,9 +65,9 @@ public class SPARQLParseException extends RuntimeException {
     
     private Set<TokenType> expectedTokenTypes = new HashSet<TokenType>();
     
-    private Set<Variable> parsedVariables = new HashSet<Variable>();
+    private Set<UntypedVariable> parsedVariables = new HashSet<>();
 
-    public SPARQLParseException(String message, Set<Variable> parsedVariables,  Set<TokenType> expectedTokenTypes, SPARQLToken error, Set<SPARQLTerminal> expectedTerminals, Set<EntityType> expectedEntityTypes, Set<OWLRDFVocabulary> expectedVocabulary) {
+    public SPARQLParseException(String message, Set<UntypedVariable> parsedVariables,  Set<TokenType> expectedTokenTypes, SPARQLToken error, Set<SPARQLTerminal> expectedTerminals, Set<EntityType> expectedEntityTypes, Set<OWLRDFVocabulary> expectedVocabulary) {
         super(message);
         this.parsedVariables.addAll(parsedVariables);
         this.token = error;
@@ -76,7 +77,7 @@ public class SPARQLParseException extends RuntimeException {
         this.expectedVocabulary = expectedVocabulary;
     }
 
-    public Set<Variable> getParsedVariables() {
+    public Set<UntypedVariable> getParsedVariables() {
         return parsedVariables;
     }
 
