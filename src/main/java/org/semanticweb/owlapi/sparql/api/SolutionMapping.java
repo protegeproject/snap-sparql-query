@@ -50,7 +50,7 @@ public class SolutionMapping {
     }
 
     public Optional<Term> getTermForVariable(Variable variable) {
-        return getTermForVariableName(variable.getName());
+        return Optional.fromNullable(map.get(variable));
     }
     
     public Optional<Term> getTermForVariableName(String variableName) {
@@ -75,10 +75,6 @@ public class SolutionMapping {
             return this;
         }
         else {
-//            Set<String> variableNames = new HashSet<>();
-//            for(Variable variable : variables) {
-//                variableNames.add(variable.getName());
-//            }
             ImmutableMap.Builder<Variable, Term> projectedMapping = ImmutableMap.builder();
             for(Variable variable : variables) {
                 Term value = map.get(variable);
@@ -92,11 +88,7 @@ public class SolutionMapping {
 
     public boolean containsAll(SolutionMapping solutionMapping) {
         for(Variable otherVariable : solutionMapping.getVariables()) {
-            Optional<Term> t = getTermForVariableName(otherVariable.getName());
-            if(!t.isPresent()) {
-                return false;
-            }
-            if(!t.equals(solutionMapping.getTermForVariable(otherVariable))) {
+            if(!map.containsKey(otherVariable)) {
                 return false;
             }
         }
