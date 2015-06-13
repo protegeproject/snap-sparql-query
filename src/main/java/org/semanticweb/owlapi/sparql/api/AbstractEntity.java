@@ -37,6 +37,27 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
         return prefixIRI != null ? prefixIRI : iri.toQuotedString();
     }
 
+    @Override
+    public boolean isSameRDFTermAs(Term term) {
+        if(term == this) {
+            return true;
+        }
+        if(!(term instanceof HasIRI)) {
+            return false;
+        }
+        HasIRI other = (HasIRI) term;
+        return this.iri.equals(other.getIRI());
+    }
+
+    @Override
+    public RDFTerm asRDFTerm() {
+        return new AtomicIRI(iri);
+    }
+
+    @Override
+    public <R, E extends Throwable> R accept(Visitor<R, E> visitor) throws E {
+        return null;
+    }
 
     public String getIdentifier() {
         return iri.toString();

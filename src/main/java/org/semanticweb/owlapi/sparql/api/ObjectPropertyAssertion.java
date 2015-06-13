@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
+
 import java.util.Collection;
 
 /**
@@ -39,5 +41,15 @@ public class ObjectPropertyAssertion extends AbstractAssertion<AtomicIndividual,
         }
         ObjectPropertyAssertion other = (ObjectPropertyAssertion) obj;
         return this.getProperty().equals(other.getProperty()) && this.getSubject().equals(other.getSubject()) && this.getObject().equals(this.getObject());
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("ObjectPropertyAssertion")
+                .addValue(getProperty())
+                .addValue(getSubject())
+                .addValue(getObject())
+                .toString();
     }
 }

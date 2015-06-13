@@ -60,40 +60,40 @@ public enum SparqlType {
 
     BLANK_NODE(),
 
-    DATATYPE(IntegerTokenType.get(), DecimalTokenType.get(), DoubleTokenType.get(), StringTokenType.get(), BooleanTokenType.get(), UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)),
+    DATATYPE(IntegerTokenType.get(), DecimalTokenType.get(), DoubleTokenType.get(), StringTokenType.get(), BooleanTokenType.get(), VariableTokenType.get()),
 
-    XSD_STRING(StringTokenType.get(), UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)),
+    XSD_STRING(StringTokenType.get(), VariableTokenType.get()),
 
-    XSD_INTEGER(IntegerTokenType.get(), UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)),
+    XSD_INTEGER(IntegerTokenType.get(), VariableTokenType.get()),
 
-    XSD_DOUBLE(),
+    XSD_DOUBLE(DoubleTokenType.get(), VariableTokenType.get()),
 
     XSD_DATE_TIME(),
 
-    NUMERIC(IntegerTokenType.get(), DecimalTokenType.get(), DoubleTokenType.get(), UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)),
+    NUMERIC(IntegerTokenType.get(), DecimalTokenType.get(), DoubleTokenType.get(), VariableTokenType.get()),
 
 
-    IRI(UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)),
+    IRI(VariableTokenType.get()),
 
     /**
      * Any type of literal (any datatype or language tag)
      */
-    LITERAL(StringTokenType.get(), UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)),
+    LITERAL(StringTokenType.get(), VariableTokenType.get()),
 
     /**
      * Any literal that has a type of rdf:PlainLiteral or xsd:string
      */
-    STRING_LITERAL(StringTokenType.get(), UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)),
+    STRING_LITERAL(StringTokenType.get(), VariableTokenType.get()),
 
     /**
      * A literal that has a type of rdf:PlainLiteral and an EMPTY language tag
      */
-    SIMPLE_LITERAL(StringTokenType.get(), UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)),
+    SIMPLE_LITERAL(StringTokenType.get(), VariableTokenType.get()),
 
 
-    RDF_TERM(DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), UndeclaredVariableTokenType.get(), ClassIRITokenType.get(), ObjectPropertyIRITokenType.get(), DataPropertyIRITokenType.get(), AnnotationPropertyIRITokenType.get(), IndividualIRITokenType.get(), DatatypeIRITokenType.get()),
+    RDF_TERM(VariableTokenType.get(), ClassIRITokenType.get(), ObjectPropertyIRITokenType.get(), DataPropertyIRITokenType.get(), AnnotationPropertyIRITokenType.get(), IndividualIRITokenType.get(), DatatypeIRITokenType.get()),
 
-    VARIABLE(DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), UndeclaredVariableTokenType.get()),
+    VARIABLE(VariableTokenType.get()),
 
     EXPRESSION;
 

@@ -39,7 +39,6 @@
 
 package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
-import com.google.common.base.*;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.sparql.api.*;
 
@@ -134,11 +133,10 @@ public class VariableManager {
 //    }
 
     public Optional<PrimitiveType> getVariableType(UntypedVariable variable) {
-        System.err.println("Getting type of ?" + variable.getName() + " in scope " + variableTypeManagerStack.size());
+        System.out.println("Getting type of ?" + variable.getName() + " in scope " + variableTypeManagerStack.size());
         VariableTypeManager typeManager = variableTypeManagerStack.peek();
         Optional<PrimitiveType> variableType = typeManager.getVariableType(variable);
-        System.err.println("\tType: " + variableType);
-        Thread.currentThread().dumpStack();
+        System.out.println("\tType: " + variableType);
         return variableType;
     }
 }

@@ -2,7 +2,6 @@ package org.semanticweb.owlapi.sparql.api;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Set;
  * Bio-Medical Informatics Research Group<br>
  * Date: 26/07/2012
  */
-public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, AnnotationSubject, AnnotationValue {
+public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, AnnotationSubject, AnnotationValue, RDFTerm, HasAsRDFTerm {
 
     private String id;
 
@@ -126,5 +125,15 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
     @Override
     public void collectVariables(Collection<Variable> variables) {
 
+    }
+
+    @Override
+    public boolean isSameRDFTermAs(Term term) {
+        return this.equals(term);
+    }
+
+    @Override
+    public RDFTerm asRDFTerm() {
+        return this;
     }
 }

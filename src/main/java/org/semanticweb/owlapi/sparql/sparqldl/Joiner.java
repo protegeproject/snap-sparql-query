@@ -30,10 +30,10 @@ public class Joiner {
             for(SolutionMapping right : rightSolutionSequence) {
                 if(compatibilityChecker.isCompatible(left, right)) {
                     joined = true;
-                    ImmutableMap.Builder<Variable, Term> combined = ImmutableMap.builder();
+                    HashMap<Variable, Term> combined = new HashMap<>();
                     combined.putAll(left.asMap());
                     combined.putAll(right.asMap());
-                    SolutionMapping join = new SolutionMapping(combined.build());
+                    SolutionMapping join = new SolutionMapping(ImmutableMap.copyOf(combined));
                     result.add(join);
                 }
             }

@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Bio-Medical Informatics Research Group<br>
  * Date: 26/07/2012
  */
-public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationValue {
+public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationValue, RDFTerm, HasAsRDFTerm {
 
     private final IRI iri;
 
@@ -80,6 +80,18 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
         return this.iri.equals(other.iri);
     }
 
+    @Override
+    public boolean isSameRDFTermAs(Term term) {
+        if(term == this) {
+            return true;
+        }
+        if(!(term instanceof HasIRI)) {
+            return false;
+        }
+        HasIRI other = (HasIRI) term;
+        return ((HasIRI) term).getIRI().equals(iri);
+    }
+
     public boolean isLiteral() {
         return false;
     }
@@ -90,6 +102,11 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
 
     public boolean isUntypedIRI() {
         return true;
+    }
+
+    @Override
+    public RDFTerm asRDFTerm() {
+        return this;
     }
 
     @Override

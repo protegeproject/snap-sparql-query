@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.builtin.ArgList;
 import org.semanticweb.owlapi.sparql.builtin.VarArg;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
+import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.Token;
 import org.semanticweb.owlapi.sparql.syntax.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -78,14 +79,14 @@ public class SPARQLParserImpl {
         if (tokenizer.peek(SPARQLTerminal.ASTERISK) != null) {
             tokenizer.consume(SPARQLTerminal.ASTERISK);
         }
-        else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null || tokenizer.peek(SPARQLTerminal.OPEN_PAR) != null) {
+        else if (tokenizer.peek(VariableTokenType.get()) != null || tokenizer.peek(SPARQLTerminal.OPEN_PAR) != null) {
             while (true) {
                 SelectItem selectItem = parseSelectVariableOrExpressionAsVariable();
                 selectFormBuilder.add(selectItem);
                 if (tokenizer.peek(SPARQLTerminal.WHERE) != null) {
                     break;
                 }
-                if (tokenizer.peek(UndeclaredVariableTokenType.get()) == null && tokenizer.peek(SPARQLTerminal.OPEN_PAR) == null) {
+                if (tokenizer.peek(VariableTokenType.get()) == null && tokenizer.peek(SPARQLTerminal.OPEN_PAR) == null) {
                     break;
                 }
             }
@@ -106,7 +107,7 @@ public class SPARQLParserImpl {
     }
 
     public SelectVariable parseSelectVariable() {
-        SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        SPARQLToken token = tokenizer.consume(VariableTokenType.get());
 //        mustBindVariables.add(token.getImage());
         return new SelectVariable(new UntypedVariable(token.getImage()));
     }
@@ -115,7 +116,7 @@ public class SPARQLParserImpl {
         tokenizer.consume(SPARQLTerminal.OPEN_PAR);
         Expression expression = parseExpression();
         tokenizer.consume(SPARQLTerminal.AS);
-        SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        SPARQLToken token = tokenizer.consume(VariableTokenType.get());
         tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()));
         tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
         return new SelectAs(expression, new UntypedVariable(token.getImage()));
@@ -187,7 +188,7 @@ public class SPARQLParserImpl {
             else if(tokenizer.peek(SPARQLTerminal.DESC) != null) {
                 conditionBuilder.add(parseOrderCondition());
             }
-            else if(peekTypedOrUntypedVariable() != null) {
+            else if(peekVariable() != null) {
                 conditionBuilder.add(parseOrderCondition());
             }
             else {
@@ -201,7 +202,7 @@ public class SPARQLParserImpl {
         if (tokenizer.peek(SPARQLTerminal.ASC) != null) {
             tokenizer.consume(SPARQLTerminal.ASC);
             tokenizer.consume(SPARQLTerminal.OPEN_PAR);
-            if (peekTypedOrUntypedVariable() != null) {
+            if (peekVariable() != null) {
                 SPARQLToken varToken = tokenizer.consume();
                 return new OrderCondition(varToken.getImage(), OrderByModifier.ASC);
             }
@@ -213,7 +214,7 @@ public class SPARQLParserImpl {
         else if (tokenizer.peek(SPARQLTerminal.DESC) != null) {
             tokenizer.consume(SPARQLTerminal.DESC);
             tokenizer.consume(SPARQLTerminal.OPEN_PAR);
-            if (peekTypedOrUntypedVariable() != null) {
+            if (peekVariable() != null) {
                 SPARQLToken varToken = tokenizer.consume();
                 return new OrderCondition(varToken.getImage(), OrderByModifier.DESC);
             }
@@ -222,7 +223,7 @@ public class SPARQLParserImpl {
             }
             tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
         }
-        else if (peekTypedOrUntypedVariable() != null) {
+        else if (peekVariable() != null) {
             SPARQLToken varToken = tokenizer.consume();
             return new OrderCondition(varToken.getImage());
         }
@@ -232,38 +233,69 @@ public class SPARQLParserImpl {
         throw new IllegalStateException();
     }
 
-    private SPARQLToken peekTypedOrUntypedVariable() {
+    private SPARQLToken peekVariable() {
         return tokenizer.peek(
-                UndeclaredVariableTokenType.get(),
-                DeclaredVariableTokenType.get(PrimitiveType.CLASS),
-                DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY),
-                DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY),
-                DeclaredVariableTokenType.get(PrimitiveType.DATATYPE),
-                DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY),
-                DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL),
-                DeclaredVariableTokenType.get(PrimitiveType.LITERAL));
+                VariableTokenType.get());
+    }
+
+    private boolean isVariableOfType(SPARQLToken token, PrimitiveType primitiveType) {
+        if(!token.getTokenTypes().contains(VariableTokenType.get())) {
+            return false;
+        }
+        return tokenizer.getVariableManager().getVariableType(new UntypedVariable(token.getImage())).equals(Optional.of(primitiveType));
+    }
+
+    private SPARQLToken peekUntypedVariable() {
+        SPARQLToken token = tokenizer.peek(VariableTokenType.get());
+        if(token == null) {
+            return null;
+        }
+        if(!tokenizer.getVariableManager().getVariableType(new UntypedVariable(token.getImage())).isPresent()) {
+            return token;
+        }
+        else {
+            return null;
+        }
+    }
+
+    private SPARQLToken peekTypedVariable(PrimitiveType primitiveType) {
+        SPARQLToken token = tokenizer.peek(VariableTokenType.get());
+        if(token == null) {
+            return null;
+        }
+        UntypedVariable variable = new UntypedVariable(token.getImage());
+        Optional<PrimitiveType> type = tokenizer.getVariableManager().getVariableType(variable);
+        if(!type.isPresent()) {
+            return null;
+        }
+        if(type.get().equals(primitiveType)) {
+            return token;
+        }
+        else {
+            return null;
+        }
     }
 
     public TriplesBlockPattern parseTriplesBlock() {
         TriplesBlockPattern.Builder builder = TriplesBlockPattern.builder();
         while (true) {
-            if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
+            if (peekUntypedVariable() != null) {
                 SPARQLToken varNameToken = tokenizer.consume();
                 parseUndeclaredVariablePropertyList(varNameToken, builder);
             }
-            else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.CLASS)) != null || tokenizer.peek(ClassIRITokenType.get()) != null) {
+            else if (peekTypedVariable(PrimitiveType.CLASS) != null || tokenizer.peek(ClassIRITokenType.get()) != null) {
                 SPARQLToken subjectToken = tokenizer.consume();
                 parseClassNodePropertyList(subjectToken, builder);
             }
-            else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY)) != null || tokenizer.peek(ObjectPropertyIRITokenType.get()) != null) {
+            else if (peekTypedVariable(PrimitiveType.OBJECT_PROPERTY) != null || tokenizer.peek(ObjectPropertyIRITokenType.get()) != null) {
                 SPARQLToken subjectToken = tokenizer.consume();
                 parseObjectPropertyNodePropertyList(subjectToken, builder);
             }
-            else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY)) != null || tokenizer.peek(DataPropertyIRITokenType.get()) != null) {
+            else if (peekTypedVariable(PrimitiveType.DATA_PROPERTY) != null || tokenizer.peek(DataPropertyIRITokenType.get()) != null) {
                 SPARQLToken subjectToken = tokenizer.consume();
                 parseDataPropertyNodePropertyList(subjectToken, builder);
             }
-            else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL)) != null || tokenizer.peek(IndividualIRITokenType.get()) != null) {
+            else if (peekTypedVariable(PrimitiveType.NAMED_INDIVIDUAL) != null || tokenizer.peek(IndividualIRITokenType.get()) != null) {
                 SPARQLToken subjectToken = tokenizer.consume();
                 parseIndividualNodePropertyList(subjectToken, builder);
             }
@@ -384,16 +416,16 @@ public class SPARQLParserImpl {
             else if (tokenizer.peek(RDF_TYPE) != null) {
                 parseIndividualType(subjectToken, builder);
             }
-            else if (tokenizer.peek(ObjectPropertyIRITokenType.get()) != null || tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY)) != null) {
+            else if (tokenizer.peek(ObjectPropertyIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.OBJECT_PROPERTY) != null) {
                 parseObjectPropertyAssertion(subjectToken, builder);
             }
-            else if (tokenizer.peek(DataPropertyIRITokenType.get()) != null || tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY)) != null) {
+            else if (tokenizer.peek(DataPropertyIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.DATA_PROPERTY) != null) {
                 parseDataPropertyAssertions(subjectToken, builder);
             }
-            else if (tokenizer.peek(AnnotationPropertyIRITokenType.get()) != null || tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)) != null) {
+            else if (tokenizer.peek(AnnotationPropertyIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.ANNOTATION_PROPERTY) != null) {
                 parseAnnotationAssertions(subjectToken, builder);
             }
-            else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
+            else if (tokenizer.peek(VariableTokenType.get()) != null) {
                 SPARQLToken propertyToken = tokenizer.consume();
                 // Object Property, Data Property or Annotation Property?
                 if (tokenizer.peek(UntypedIRITokenType.get()) != null) {
@@ -404,7 +436,7 @@ public class SPARQLParserImpl {
                         builder.add(new AnnotationAssertion(property, subject.toAnnotationSubject(), value));
                     }
                 }
-                else if (tokenizer.peek(IndividualIRITokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL)) != null) {
+                else if (tokenizer.peek(IndividualIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.NAMED_INDIVIDUAL) != null) {
                     AtomicIndividual subject = getAtomicIndividualFromToken(subjectToken);
                     AtomicObjectProperty property = getObjectPropertyFromToken(propertyToken);
                     tokenizer.getVariableManager().registerVariable(new UntypedVariable(propertyToken.getImage()), PrimitiveType.OBJECT_PROPERTY);
@@ -625,10 +657,10 @@ public class SPARQLParserImpl {
             else if (tokenizer.peek(OWL_DISJOINT_WITH) != null) {
                 parseDisjointWith(subjectToken, builder);
             }
-            else if (tokenizer.peek(AnnotationPropertyIRITokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)) != null) {
+            else if (tokenizer.peek(AnnotationPropertyIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.ANNOTATION_PROPERTY) != null) {
                 parseAnnotationAssertions(subjectToken, builder);
             }
-            else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
+            else if (tokenizer.peek(VariableTokenType.get()) != null) {
                 tokenizer.getVariableManager().registerVariable(new UntypedVariable(tokenizer.peek().getImage()), PrimitiveType.ANNOTATION_PROPERTY);
                 parseAnnotationAssertions(subjectToken, builder);
             }
@@ -672,7 +704,7 @@ public class SPARQLParserImpl {
     }
 
     private AtomicClass getAtomicClassFromToken(SPARQLToken token) {
-        if (token.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.CLASS), UndeclaredVariableTokenType.get())) {
+        if (token.hasTokenType(VariableTokenType.get())) {
             return new ClassVariable(token.getImage());
         }
         else {
@@ -683,13 +715,7 @@ public class SPARQLParserImpl {
 
     private Variable parseVariable() {
         SPARQLToken token = tokenizer.consume(
-                UndeclaredVariableTokenType.get(),
-                DeclaredVariableTokenType.get(PrimitiveType.CLASS),
-                DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY),
-                DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY),
-                DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY),
-                DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL),
-                DeclaredVariableTokenType.get(PrimitiveType.DATATYPE)
+                VariableTokenType.get()
         );
         return new UntypedVariable(token.getImage());
     }
@@ -735,7 +761,7 @@ public class SPARQLParserImpl {
                 tokenizer.getVariableManager().registerVariable(new UntypedVariable(varNameToken.getImage()), PrimitiveType.NAMED_INDIVIDUAL);
                 parseDifferentFrom(varNameToken, builder);
             }
-            else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY)) != null) {
+            else if (peekTypedVariable(PrimitiveType.OBJECT_PROPERTY) != null) {
                 tokenizer.getVariableManager().registerVariable(new UntypedVariable(varNameToken.getImage()), PrimitiveType.NAMED_INDIVIDUAL);
                 parseObjectPropertyAssertion(varNameToken, builder);
             }
@@ -743,11 +769,11 @@ public class SPARQLParserImpl {
                 tokenizer.getVariableManager().registerVariable(new UntypedVariable(varNameToken.getImage()), PrimitiveType.NAMED_INDIVIDUAL);
                 parseObjectPropertyAssertion(varNameToken, builder);
             }
-            else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY)) != null) {
+            else if (peekTypedVariable(PrimitiveType.DATA_PROPERTY) != null) {
                 tokenizer.getVariableManager().registerVariable(new UntypedVariable(varNameToken.getImage()), PrimitiveType.NAMED_INDIVIDUAL);
                 parseDataPropertyAssertions(varNameToken, builder);
             }
-            else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)) != null) {
+            else if (peekTypedVariable(PrimitiveType.ANNOTATION_PROPERTY) != null) {
                 parseAnnotationAssertions(varNameToken, builder);
             }
             else if (tokenizer.peek(DataPropertyIRITokenType.get()) != null) {
@@ -849,19 +875,19 @@ public class SPARQLParserImpl {
     private void parseUndeclaredVariableRange(SPARQLToken varNameToken, TriplesBlockPattern.Builder builder) {
         // TODO: Multiple Objects
         tokenizer.consume(OWLRDFVocabulary.RDFS_RANGE);
-        if (tokenizer.peek(ClassIRITokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS)) != null) {
+        if (tokenizer.peek(ClassIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.CLASS) != null) {
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(varNameToken.getImage()), PrimitiveType.OBJECT_PROPERTY);
             AtomicClass cls = getAtomicClassFromToken(tokenizer.consume());
             AtomicObjectProperty property = getObjectPropertyFromToken(varNameToken);
             builder.add(new ObjectPropertyRange(property, cls));
         }
-        else if (tokenizer.peek(DatatypeIRITokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE)) != null) {
+        else if (tokenizer.peek(DatatypeIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.DATATYPE) != null) {
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(varNameToken.getImage()), PrimitiveType.DATA_PROPERTY);
             AtomicDatatype dt = getDatatypeFromToken(tokenizer.consume());
             AtomicDataProperty property = getDataPropertyFromToken(varNameToken);
             builder.add(new DataPropertyRange(property, dt));
         }
-        else if (tokenizer.peek(AnnotationPropertyIRITokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)) != null) {
+        else if (tokenizer.peek(AnnotationPropertyIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.CLASS) != null) {
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(varNameToken.getImage()), PrimitiveType.ANNOTATION_PROPERTY);
             AtomicIRI iri = new AtomicIRI(getIRIFromToken(tokenizer.consume()));
             AtomicAnnotationProperty property = getAnnotationPropertyFromToken(varNameToken);
@@ -926,11 +952,11 @@ public class SPARQLParserImpl {
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(subjectToken.getImage()), PrimitiveType.OBJECT_PROPERTY);
             parseObjectPropertyTypeObjectList(subjectToken, builder);
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.CLASS)) != null || tokenizer.peek(ClassIRITokenType.get()) != null) {
+        else if (peekTypedVariable(PrimitiveType.CLASS) != null || tokenizer.peek(ClassIRITokenType.get()) != null) {
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(subjectToken.getImage()), PrimitiveType.NAMED_INDIVIDUAL);
             parseSubjectTypeClass(subjectToken, builder);
         }
-        else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
+        else if (tokenizer.peek(VariableTokenType.get()) != null) {
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(subjectToken.getImage()), PrimitiveType.NAMED_INDIVIDUAL);
             SPARQLToken typeNode = tokenizer.consume();
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(typeNode.getImage()), PrimitiveType.CLASS);
@@ -974,22 +1000,22 @@ public class SPARQLParserImpl {
     private void parseAnnotationAssertions(SPARQLToken subjectToken, TriplesBlockPattern.Builder builder) {
         SPARQLToken predicateToken = tokenizer.consume();
         AnnotationSubject subject;
-        if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.CLASS))) {
+        if(isVariableOfType(subjectToken, PrimitiveType.CLASS)) {
             subject = new ClassVariable(subjectToken.getImage());
         }
-        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.DATATYPE))) {
+        else if(isVariableOfType(subjectToken, PrimitiveType.DATATYPE)) {
             subject = new DatatypeVariable(subjectToken.getImage());
         }
-        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY))) {
+        else if(isVariableOfType(subjectToken, PrimitiveType.OBJECT_PROPERTY)) {
             subject = new ObjectPropertyVariable(subjectToken.getImage());
         }
-        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY))) {
+        else if(isVariableOfType(subjectToken, PrimitiveType.DATA_PROPERTY)) {
             subject = new DataPropertyVariable(subjectToken.getImage());
         }
-        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY))) {
+        else if(isVariableOfType(subjectToken, PrimitiveType.ANNOTATION_PROPERTY)) {
             subject = new AnnotationPropertyVariable(subjectToken.getImage());
         }
-        else if(subjectToken.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL))) {
+        else if(isVariableOfType(subjectToken, PrimitiveType.NAMED_INDIVIDUAL)) {
             subject = new IndividualVariable(subjectToken.getImage());
         }
         else {
@@ -1006,15 +1032,15 @@ public class SPARQLParserImpl {
     private AtomicProperty parseTypedProperty(EntityType<?>... types) {
         AtomicProperty property = null;
         List<EntityType<?>> possibleTypes = Arrays.asList(types);
-        if (possibleTypes.contains(EntityType.OBJECT_PROPERTY) && tokenizer.peek(ObjectPropertyIRITokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY)) != null) {
+        if (possibleTypes.contains(EntityType.OBJECT_PROPERTY) && (tokenizer.peek(ObjectPropertyIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.OBJECT_PROPERTY) != null)) {
             SPARQLToken token = tokenizer.consume();
             property = getObjectPropertyFromToken(token);
         }
-        else if (possibleTypes.contains(EntityType.DATA_PROPERTY) && tokenizer.peek(DataPropertyIRITokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY)) != null) {
+        else if (possibleTypes.contains(EntityType.DATA_PROPERTY) && (tokenizer.peek(DataPropertyIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.DATA_PROPERTY) != null)) {
             SPARQLToken token = tokenizer.consume();
             property = getDataPropertyFromToken(token);
         }
-        else if (possibleTypes.contains(EntityType.ANNOTATION_PROPERTY) && tokenizer.peek(AnnotationPropertyIRITokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)) != null) {
+        else if (possibleTypes.contains(EntityType.ANNOTATION_PROPERTY) && (tokenizer.peek(AnnotationPropertyIRITokenType.get()) != null || peekTypedVariable(PrimitiveType.ANNOTATION_PROPERTY) != null)) {
             SPARQLToken token = tokenizer.consume();
             property = getAnnotationPropertyFromToken(token);
         }
@@ -1064,12 +1090,12 @@ public class SPARQLParserImpl {
 
     private AtomicClass parseClassNode() {
         AtomicClass result = null;
-        if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
-            SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        if (tokenizer.peek(VariableTokenType.get()) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()), PrimitiveType.CLASS);
             result = new ClassVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.CLASS)) != null) {
+        else if (peekTypedVariable(PrimitiveType.CLASS) != null) {
             SPARQLToken token = tokenizer.consume();
             result = new ClassVariable(token.getImage());
         }
@@ -1086,24 +1112,21 @@ public class SPARQLParserImpl {
         return result;
     }
 
-    private AtomicClass getClassFromToken(SPARQLToken token) {
-        if(token.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.CLASS))) {
-            return new ClassVariable(token.getImage());
-        }
-        else if(token.hasTokenType(UndeclaredVariableTokenType.get())) {
-            return new ClassVariable(token.getImage());
-        }
-        else {
-            IRI iri = getIRIFromToken(token);
-            return new NamedClass(iri);
-        }
-    }
+//    private AtomicClass getClassFromToken(SPARQLToken token) {
+//        if(token.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.CLASS))) {
+//            return new ClassVariable(token.getImage());
+//        }
+//        else if(token.hasTokenType(VariableTokenType.get())) {
+//            return new ClassVariable(token.getImage());
+//        }
+//        else {
+//            IRI iri = getIRIFromToken(token);
+//            return new NamedClass(iri);
+//        }
+//    }
 
     private AtomicDatatype getDatatypeFromToken(SPARQLToken token) {
-        if(token.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.DATATYPE))) {
-            return new DatatypeVariable(token.getImage());
-        }
-        else if(token.hasTokenType(UndeclaredVariableTokenType.get())) {
+        if(token.hasTokenType(VariableTokenType.get())) {
             return new DatatypeVariable(token.getImage());
         }
         else {
@@ -1113,10 +1136,7 @@ public class SPARQLParserImpl {
     }
     
     private AtomicObjectProperty getObjectPropertyFromToken(SPARQLToken token) {
-        if(token.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY))) {
-            return new ObjectPropertyVariable(token.getImage());
-        }
-        else if(token.hasTokenType(UndeclaredVariableTokenType.get())) {
+        if(token.hasTokenType(VariableTokenType.get())) {
             return new ObjectPropertyVariable(token.getImage());
         }
         else {
@@ -1126,10 +1146,7 @@ public class SPARQLParserImpl {
     }
 
     private AtomicDataProperty getDataPropertyFromToken(SPARQLToken token) {
-        if(token.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY))) {
-            return new DataPropertyVariable(token.getImage());
-        }
-        else if(token.hasTokenType(UndeclaredVariableTokenType.get())) {
+        if(token.hasTokenType(VariableTokenType.get())) {
             return new DataPropertyVariable(token.getImage());
         }
         else {
@@ -1139,10 +1156,7 @@ public class SPARQLParserImpl {
     }
 
     private AtomicAnnotationProperty getAnnotationPropertyFromToken(SPARQLToken token) {
-        if(token.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY))) {
-            return new AnnotationPropertyVariable(token.getImage());
-        }
-        else if(token.hasTokenType(UndeclaredVariableTokenType.get())) {
+        if(token.hasTokenType(VariableTokenType.get())) {
             return new AnnotationPropertyVariable(token.getImage());
         }
         else {
@@ -1152,10 +1166,7 @@ public class SPARQLParserImpl {
     }
 
     private AtomicIndividual getAtomicIndividualFromToken(SPARQLToken token) {
-        if(token.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL))) {
-            return new IndividualVariable(token.getImage());
-        }
-        else if(token.hasTokenType(UndeclaredVariableTokenType.get())) {
+        if(token.hasTokenType(VariableTokenType.get())) {
             return new IndividualVariable(token.getImage());
         }
         else {
@@ -1186,7 +1197,7 @@ public class SPARQLParserImpl {
         if (token.hasTokenType(PrefixNameTokenType.get())) {
             return tokenizer.getPrefixManager().getIRI(token.getImage());
         }
-        else if (token.hasTokenType(UndeclaredVariableTokenType.get(), DeclaredVariableTokenType.get(PrimitiveType.CLASS), DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY), DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL), DeclaredVariableTokenType.get(PrimitiveType.DATATYPE), DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY))) {
+        else if (token.hasTokenType(VariableTokenType.get())) {
             return IRI.create(token.getImage());
         }
         else {
@@ -1214,12 +1225,12 @@ public class SPARQLParserImpl {
 
     private AtomicIndividual parseIndividualNode() {
         AtomicIndividual result = null;
-        if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
-            SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        if (tokenizer.peek(VariableTokenType.get()) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()), PrimitiveType.NAMED_INDIVIDUAL);
             result = new IndividualVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL)) != null) {
+        else if (peekTypedVariable(PrimitiveType.NAMED_INDIVIDUAL) != null) {
             SPARQLToken token = tokenizer.consume();
             result = new IndividualVariable(token.getImage());
         }
@@ -1258,7 +1269,7 @@ public class SPARQLParserImpl {
             SPARQLToken token = tokenizer.consume();
             result = new AtomicIRI(getIRIFromToken(token));
         }
-        else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
+        else if (tokenizer.peek(VariableTokenType.get()) != null) {
             SPARQLToken token = tokenizer.consume();
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()));
             result = new UntypedVariable(token.getImage());
@@ -1305,12 +1316,12 @@ public class SPARQLParserImpl {
 
     private AtomicObjectProperty parseObjectPropertyNode() {
         AtomicObjectProperty result = null;
-        if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
-            SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        if (tokenizer.peek(VariableTokenType.get()) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()), PrimitiveType.OBJECT_PROPERTY);
             result = new ObjectPropertyVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY)) != null) {
+        else if (peekTypedVariable(PrimitiveType.OBJECT_PROPERTY) != null) {
             SPARQLToken token = tokenizer.consume();
             result = new ObjectPropertyVariable(token.getImage());
         }
@@ -1340,12 +1351,12 @@ public class SPARQLParserImpl {
     }
 
     private AtomicDataProperty parseDataPropertyNode() {
-        if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
-            SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        if (tokenizer.peek(VariableTokenType.get()) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()), PrimitiveType.DATA_PROPERTY);
             return new DataPropertyVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY)) != null) {
+        else if (peekTypedVariable(PrimitiveType.DATA_PROPERTY) != null) {
             SPARQLToken token = tokenizer.consume();
             return new DataPropertyVariable(token.getImage());
         }
@@ -1404,7 +1415,7 @@ public class SPARQLParserImpl {
             SPARQLToken token = tokenizer.consume();
             result = Literal.createBoolean(Boolean.parseBoolean(token.getImage()));
         }
-        else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
+        else if (tokenizer.peek(VariableTokenType.get()) != null) {
             SPARQLToken token = tokenizer.consume();
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()), PrimitiveType.LITERAL);
             result = new LiteralVariable(token.getImage());
@@ -1444,12 +1455,12 @@ public class SPARQLParserImpl {
 
     private AtomicDatatype parseDataTypeNode() {
         AtomicDatatype result = null;
-        if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
-            SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        if (tokenizer.peek(VariableTokenType.get()) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()), PrimitiveType.DATATYPE);
             result = new DatatypeVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.DATATYPE)) != null) {
+        else if (peekTypedVariable(PrimitiveType.DATATYPE) != null) {
             SPARQLToken token = tokenizer.consume();
             result = new DatatypeVariable(token.getImage());
         }
@@ -1662,36 +1673,36 @@ public class SPARQLParserImpl {
         else if (tokenizer.peek(IntegerTokenType.get(), DoubleTokenType.get(), DecimalTokenType.get(), StringTokenType.get(), BooleanTokenType.get()) != null) {
             expression = parseLiteralNode();
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.CLASS)) != null) {
-            SPARQLToken token = tokenizer.consume(DeclaredVariableTokenType.get(PrimitiveType.CLASS));
+        else if (peekTypedVariable(PrimitiveType.CLASS) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             expression = new ClassVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.DATATYPE)) != null) {
-            SPARQLToken token = tokenizer.consume(DeclaredVariableTokenType.get(PrimitiveType.DATATYPE));
+        else if (peekTypedVariable(PrimitiveType.DATATYPE) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             expression = new DatatypeVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY)) != null) {
-            SPARQLToken token = tokenizer.consume(DeclaredVariableTokenType.get(PrimitiveType.OBJECT_PROPERTY));
+        else if (peekTypedVariable(PrimitiveType.OBJECT_PROPERTY) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             expression = new ObjectPropertyVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY)) != null) {
-            SPARQLToken token = tokenizer.consume(DeclaredVariableTokenType.get(PrimitiveType.DATA_PROPERTY));
+        else if (peekTypedVariable(PrimitiveType.DATA_PROPERTY) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             expression = new DataPropertyVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY)) != null) {
-            SPARQLToken token = tokenizer.consume(DeclaredVariableTokenType.get(PrimitiveType.ANNOTATION_PROPERTY));
+        else if (peekTypedVariable(PrimitiveType.ANNOTATION_PROPERTY) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             expression = new AnnotationPropertyVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL)) != null) {
-            SPARQLToken token = tokenizer.consume(DeclaredVariableTokenType.get(PrimitiveType.NAMED_INDIVIDUAL));
+        else if (peekTypedVariable(PrimitiveType.NAMED_INDIVIDUAL) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             expression = new IndividualVariable(token.getImage());
         }
-        else if (tokenizer.peek(DeclaredVariableTokenType.get(PrimitiveType.LITERAL)) != null) {
-            SPARQLToken token = tokenizer.consume(DeclaredVariableTokenType.get(PrimitiveType.LITERAL));
+        else if (peekTypedVariable(PrimitiveType.LITERAL) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             expression = new LiteralVariable(token.getImage());
         }
-        else if (tokenizer.peek(UndeclaredVariableTokenType.get()) != null) {
-            SPARQLToken token = tokenizer.consume(UndeclaredVariableTokenType.get());
+        else if (tokenizer.peek(VariableTokenType.get()) != null) {
+            SPARQLToken token = tokenizer.consume(VariableTokenType.get());
             expression = new UntypedVariable(token.getImage());
         }
         else if (tokenizer.peek(StringTokenType.get()) != null) {

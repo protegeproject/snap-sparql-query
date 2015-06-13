@@ -37,6 +37,17 @@ public abstract class AbstractVariable extends Variable {
 //        }
     }
 
+    @Override
+    public boolean isSameRDFTermAs(Term term) {
+        if(term == this) {
+            return true;
+        }
+        if(!(term instanceof AbstractVariable)) {
+            return false;
+        }
+        AbstractVariable other = (AbstractVariable) term;
+        return this.getName().equals(other.getName());
+    }
 //    public Set<Variable> getVariables() {
 //        return Collections.<Variable>singleton(this);
 //    }

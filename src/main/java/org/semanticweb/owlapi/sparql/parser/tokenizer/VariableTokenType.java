@@ -45,7 +45,34 @@ package org.semanticweb.owlapi.sparql.parser.tokenizer;
  * Bio-Medical Informatics Research Group<br>
  * Date: 16/03/2012
  */
-public abstract class VariableTokenType extends TokenType {
+public class VariableTokenType extends TokenType {
 
+    private static VariableTokenType instance = new VariableTokenType();
 
+    private VariableTokenType() {
+    }
+
+    @Override
+    public <R, E extends Throwable> R accept(TokenTypeVisitor<R, E> visitor) throws E {
+        return visitor.visit(this);
+    }
+
+    public static VariableTokenType get() {
+        return instance;
+    }
+
+    @Override
+    public String toString() {
+        return "UndeclaredVariable()";
+    }
+
+    @Override
+    public int hashCode() {
+        return 33;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof VariableTokenType;
+    }
 }

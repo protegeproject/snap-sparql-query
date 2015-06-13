@@ -31,8 +31,13 @@ public class CompatibilityChecker {
         for(Variable var : variables) {
             Optional<Term> leftTerm = left.getTermForVariable(var);
             Optional<Term> rightTerm = right.getTermForVariable(var);
-            if(!(rightTerm.isPresent() && leftTerm.equals(rightTerm))) {
-                return false;
+
+            if(rightTerm.isPresent()) {
+                if(leftTerm.isPresent()) {
+                    if(!leftTerm.get().isSameRDFTermAs(rightTerm.get())) {
+                        return false;
+                    }
+                }
             }
         }
         return true;

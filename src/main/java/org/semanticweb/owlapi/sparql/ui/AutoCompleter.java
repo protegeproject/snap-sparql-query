@@ -448,21 +448,21 @@ public class AutoCompleter {
         
 
         for(TokenType tokenType : e.getExpectedTokenTypes()) {
-            if(tokenType instanceof UndeclaredVariableTokenType) {
+            if(tokenType instanceof VariableTokenType) {
                 for(Variable variable : e.getParsedVariables()) {
                     if(variable instanceof UntypedVariable) {
                         matches.add(variable.getVariableNamePrefix().getPrefix() + variable.getName());
                     }
                 }
             }
-            else if(tokenType instanceof DeclaredVariableTokenType) {
-                DeclaredVariableTokenType declaredVariableTokenType = (DeclaredVariableTokenType) tokenType;
-                for(Variable variable : e.getParsedVariables()) {
-                    if(variable.getType() == declaredVariableTokenType.getPrimitiveType()) {
-                        matches.add(variable.getVariableNamePrefix().getPrefix() + variable.getName());
-                    }
-                }
-            }
+//            else if(tokenType instanceof DeclaredVariableTokenType) {
+//                DeclaredVariableTokenType declaredVariableTokenType = (DeclaredVariableTokenType) tokenType;
+//                for(Variable variable : e.getParsedVariables()) {
+//                    if(variable.getType() == declaredVariableTokenType.getPrimitiveType()) {
+//                        matches.add(variable.getVariableNamePrefix().getPrefix() + variable.getName());
+//                    }
+//                }
+//            }
         }
         return matches;
     }

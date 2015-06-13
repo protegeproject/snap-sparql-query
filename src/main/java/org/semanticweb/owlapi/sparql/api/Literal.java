@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Bio-Medical Informatics Research Group<br>
  * Date: 26/07/2012
  */
-public class Literal implements AtomicLiteral {
+public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
 
     private static final Literal FALSE = new Literal(Datatype.getXSDBoolean(), "false", "");
 
@@ -362,7 +362,15 @@ public class Literal implements AtomicLiteral {
         return this.datatype.equals(other.datatype) && this.lexicalForm.equals(other.lexicalForm) && this.langTag.equals(other.langTag);
     }
 
+    @Override
+    public boolean isSameRDFTermAs(Term term) {
+        return this.equals(term);
+    }
 
+    @Override
+    public RDFTerm asRDFTerm() {
+        return this;
+    }
 
     @Override
     public void collectVariables(Collection<Variable> variables) {

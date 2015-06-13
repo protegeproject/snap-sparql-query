@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
@@ -41,6 +42,15 @@ public class SolutionSequence {
 
     public SolutionMapping get(int index) {
         return solutionMappings.get(index);
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("SolutionSequence")
+                .addValue(variableList)
+                .addValue(solutionMappings)
+                .toString();
     }
 
 }

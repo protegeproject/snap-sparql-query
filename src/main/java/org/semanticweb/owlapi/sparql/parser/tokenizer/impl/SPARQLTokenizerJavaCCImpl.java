@@ -39,7 +39,6 @@
 
 package org.semanticweb.owlapi.sparql.parser.tokenizer.impl;
 
-import com.google.common.base.*;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.sparql.api.PrimitiveType;
 import org.semanticweb.owlapi.model.*;
@@ -255,11 +254,7 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
                     return null;
                 }
 
-                public Object visit(DeclaredVariableTokenType tokenType) throws RuntimeException {
-                    return null;
-                }
-
-                public Object visit(UndeclaredVariableTokenType tokenType) throws RuntimeException {
+                public Object visit(VariableTokenType tokenType) throws RuntimeException {
                     return null;
                 }
 
@@ -512,9 +507,9 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
             case UNION:
                 return wrap(SPARQLTerminal.UNION);
             case VAR1:
-                return getVariableTypes(new UntypedVariable(image), kind);
+                return wrap(VariableTokenType.get());
             case VAR2:
-                return getVariableTypes(new UntypedVariable(image), kind);
+                return wrap(VariableTokenType.get());
             case VARNAME:
                 // Sub-token
                 break;
@@ -544,15 +539,15 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
         return pos;
     }
     
-    private Collection<TokenType> getVariableTypes(UntypedVariable variable, int kind) {
-        Optional<PrimitiveType> type = variableManager.getVariableType(variable);
-        if(type.isPresent()) {
-            return Collections.<TokenType>singleton(DeclaredVariableTokenType.get(type.get()));
-        }
-        else {
-            return Collections.<TokenType>singleton(UndeclaredVariableTokenType.get());
-        }
-    }
+//    private Collection<TokenType> getVariableTypes(UntypedVariable variable, int kind) {
+//        Optional<PrimitiveType> type = variableManager.getVariableType(variable);
+//        if(type.isPresent()) {
+//            return Collections.<TokenType>singleton(DeclaredVariableTokenType.get(type.get()));
+//        }
+//        else {
+//            return Collections.<TokenType>singleton(VariableTokenType.get());
+//        }
+//    }
 
     private Collection<TokenType> getIRITypes(String image, int kind) {
         IRI iri = getIRI(image, kind);

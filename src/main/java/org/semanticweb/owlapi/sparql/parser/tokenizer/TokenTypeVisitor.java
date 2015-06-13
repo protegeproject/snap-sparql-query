@@ -61,7 +61,7 @@ public interface TokenTypeVisitor<R, E extends Throwable> {
 
     R visit(UntypedIRITokenType tokenType) throws E;
 
-    R visit(DeclaredVariableTokenType tokenType) throws E;
+//    R visit(DeclaredVariableTokenType tokenType) throws E;
 //
 //    R visit(ObjectPropertyVariableTokenType tokenType) throws E;
 //
@@ -73,7 +73,7 @@ public interface TokenTypeVisitor<R, E extends Throwable> {
 //
 //    R visit(DatatypeVariableTokenType tokenType) throws E;
 //
-    R visit(UndeclaredVariableTokenType tokenType) throws E;
+    R visit(VariableTokenType tokenType) throws E;
     
     R visit(OWLRDFVocabularyTokenType tokenType) throws E;
     
