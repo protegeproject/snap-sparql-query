@@ -42,12 +42,7 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.api.Term;
-import org.semanticweb.owlapi.sparql.api.TermComparator;
-import org.semanticweb.owlapi.sparql.api.OrderByModifier;
-import org.semanticweb.owlapi.sparql.api.OrderCondition;
-import org.semanticweb.owlapi.sparql.api.SolutionModifier;
+import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.syntax.OrderClause;
 
 import java.util.Comparator;
@@ -80,8 +75,8 @@ public class OrderByComparator implements Comparator<SolutionMapping> {
 
     public int compare(SolutionMapping o1, SolutionMapping o2) {
         for(OrderCondition orderCondition : orderConditions) {
-            Optional<Term> binding1 = o1.getTermForVariableName(orderCondition.getVariable());
-            Optional<Term> binding2 = o2.getTermForVariableName(orderCondition.getVariable());
+            Optional<RDFTerm> binding1 = o1.getTermForVariableName(orderCondition.getVariable());
+            Optional<RDFTerm> binding2 = o2.getTermForVariableName(orderCondition.getVariable());
             if(binding1.isPresent()) {
                 if(binding2.isPresent()) {
                     int diff = termComparator.compare(binding1.get(), binding2.get());

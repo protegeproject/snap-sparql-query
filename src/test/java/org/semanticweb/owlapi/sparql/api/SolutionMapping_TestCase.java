@@ -25,13 +25,13 @@ public class SolutionMapping_TestCase {
 
     private SolutionMapping solutionMapping;
 
-    private ImmutableMap<Variable, Term> map;
+    private ImmutableMap<Variable, RDFTerm> map;
 
     @Mock
     private Variable variable, variable2;
 
     @Mock
-    private Term term, term2;
+    private RDFTerm term, term2;
 
     @Before
     public void setUp() {
@@ -91,7 +91,7 @@ public class SolutionMapping_TestCase {
     public void should_bindVariableToTerm() {
         Variable otherVariable = mock(Variable.class);
         when(otherVariable.getName()).thenReturn("y");
-        Term otherTerm = mock(Term.class);
+        RDFTerm otherTerm = mock(RDFTerm.class);
         solutionMapping.bind(otherVariable, otherTerm);
         assertThat(solutionMapping.getTermForVariable(otherVariable), is(Optional.of(otherTerm)));
     }

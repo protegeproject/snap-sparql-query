@@ -46,7 +46,7 @@ public class SolutionMappingTranslator_TestCase {
     private Variable var;
 
     @Mock
-    private Term boundTerm;
+    private RDFTerm boundTerm;
 
     @Before
     public void setUp() {

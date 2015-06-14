@@ -21,7 +21,7 @@ public class SolutionMapping {
 
     private static SolutionMapping emptyMapping = new SolutionMapping();
 
-    private final ImmutableMap<Variable, Term> map;
+    private final ImmutableMap<Variable, RDFTerm> map;
 
     public static SolutionMapping emptyMapping() {
         return emptyMapping;
@@ -31,7 +31,7 @@ public class SolutionMapping {
         map = ImmutableMap.of();
     }
 
-    public SolutionMapping(ImmutableMap<Variable, Term> map) {
+    public SolutionMapping(ImmutableMap<Variable, RDFTerm> map) {
         this.map = map;
     }
 
@@ -39,21 +39,21 @@ public class SolutionMapping {
         return map.get(variable) != null;
     }
 
-    public void bind(Variable variable, Term term) {
+    public void bind(Variable variable, RDFTerm term) {
         checkNotNull(variable);
         checkNotNull(term);
         map.put(variable, term);
     }
 
-    public ImmutableMap<Variable, Term> asMap() {
+    public ImmutableMap<Variable, RDFTerm> asMap() {
         return map;
     }
 
-    public Optional<Term> getTermForVariable(Variable variable) {
+    public Optional<RDFTerm> getTermForVariable(Variable variable) {
         return Optional.fromNullable(map.get(variable));
     }
     
-    public Optional<Term> getTermForVariableName(String variableName) {
+    public Optional<RDFTerm> getTermForVariableName(String variableName) {
         String searchString = variableName;
         if(variableName.startsWith("?") || variableName.startsWith("$")) {
             searchString = variableName.substring(1);
@@ -75,9 +75,9 @@ public class SolutionMapping {
             return this;
         }
         else {
-            ImmutableMap.Builder<Variable, Term> projectedMapping = ImmutableMap.builder();
+            ImmutableMap.Builder<Variable, RDFTerm> projectedMapping = ImmutableMap.builder();
             for(Variable variable : variables) {
-                Term value = map.get(variable);
+                RDFTerm value = map.get(variable);
                 if (value != null) {
                     projectedMapping.put(variable, value);
                 }

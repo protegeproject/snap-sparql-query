@@ -41,10 +41,7 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.api.Term;
-import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
+import org.semanticweb.owlapi.sparql.api.*;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.HashMap;
@@ -92,7 +89,7 @@ public class SPARQLQueryResultsTableModel extends AbstractTableModel {
         SolutionMapping binding = result.getBindingAt(rowIndex);
         Variable variable = indexVariableMap.get(columnIndex);
         if (variable != null) {
-            Optional<Term> termForVariable = binding.getTermForVariable(variable);
+            Optional<RDFTerm> termForVariable = binding.getTermForVariable(variable);
             return termForVariable.orNull();
         }
         else {

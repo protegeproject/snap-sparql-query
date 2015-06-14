@@ -30,11 +30,11 @@ public class SolutionMappingTranslator {
      */
     public SolutionMapping translate(QueryBinding binding, Map<String, Variable> nameVariableMap) {
         Set<QueryArgument> boundArgs = binding.getBoundArgs();
-        ImmutableMap.Builder<Variable, Term> solutionMapping = ImmutableMap.builder();
+        ImmutableMap.Builder<Variable, RDFTerm> solutionMapping = ImmutableMap.builder();
         for(QueryArgument arg : boundArgs) {
             Variable var = nameVariableMap.get(arg.getValueAsVar().getName());
             QueryArgument value = binding.get(arg);
-            Term term = null;
+            RDFTerm term = null;
             switch (value.getType()) {
                 case VAR:
                     // Shouldn't happen

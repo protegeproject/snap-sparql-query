@@ -8,9 +8,9 @@ import java.util.Comparator;
  * Bio-Medical Informatics Research Group<br>
  * Date: 01/08/2012
  */
-public class TermComparator implements Comparator<Term> {
+public class TermComparator implements Comparator<RDFTerm> {
 
-    public int compare(Term o1, Term o2) {
+    public int compare(RDFTerm o1, RDFTerm o2) {
         // Anonymous individuals
         if(o1 instanceof AnonymousIndividual) {
             if(o2 instanceof AnonymousIndividual) {

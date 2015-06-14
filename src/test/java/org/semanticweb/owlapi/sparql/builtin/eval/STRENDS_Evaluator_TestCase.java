@@ -86,7 +86,7 @@ public class STRENDS_Evaluator_TestCase {
     private void verifyExpectedResultIs(boolean expectedResult) {
         EvaluationResult eval = evaluator.evaluate(args, sm);
         assertThat(eval.isError(), is(false));
-        Term result = eval.getResult();
+        RDFTerm result = eval.getResult();
         assertThat(result, is(instanceOf(Literal.class)));
         assertThat(((Literal) result).toBoolean(), is(expectedResult));
     }

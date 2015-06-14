@@ -27,8 +27,8 @@ public class DataPropertyVariable extends AbstractVariable implements AtomicData
     }
 
     @Override
-    public Term getBound(IRI iri) {
-        return new DataProperty(iri);
+    public RDFTerm getBound(IRI iri) {
+        return new AtomicIRI(iri);
     }
 
 //    @Override

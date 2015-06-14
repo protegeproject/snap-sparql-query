@@ -55,9 +55,9 @@ public class Extend extends GraphPatternAlgebraExpression {
         for(SolutionMapping sm : sequence.getSolutionMappings()) {
             EvaluationResult result = expression.evaluate(sm);
             if(!result.isError()) {
-                ImmutableMap<Variable, Term> variableTermMap = sm.asMap();
-                variableTermMap.put(variable, result.getResult());
-                SolutionMapping extendedMapping = new SolutionMapping(variableTermMap);
+                ImmutableMap<Variable, RDFTerm> variableTermMap = sm.asMap();
+                ImmutableMap<Variable, RDFTerm> extended = ImmutableMap.<Variable, RDFTerm>builder().putAll(variableTermMap).put(variable, result.getResult()).build();
+                SolutionMapping extendedMapping = new SolutionMapping(extended);
                 extendedSequence.add(extendedMapping);
             }
             else {

@@ -31,8 +31,8 @@ public class IndividualVariable extends AbstractVariable implements AtomicIndivi
     }
 
     @Override
-    public Term getBound(IRI iri) {
-        return new NamedIndividual(iri);
+    public RDFTerm getBound(IRI iri) {
+        return new AtomicIRI(iri);
     }
 
 //    @Override

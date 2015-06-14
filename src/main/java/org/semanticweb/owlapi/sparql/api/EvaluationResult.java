@@ -18,12 +18,12 @@ public class EvaluationResult {
 
     private static final EvaluationResult TRUE = new EvaluationResult(Literal.getTrue());
 
-    private Term result;
+    private RDFTerm result;
     
     private boolean error;
 
 
-    public EvaluationResult(Term result) {
+    public EvaluationResult(RDFTerm result) {
         this.result = checkNotNull(result);
         this.error = false;
     }
@@ -33,11 +33,11 @@ public class EvaluationResult {
         this.error = true;
     }
 
-    public Term getResult() {
+    public RDFTerm getResult() {
         return result;
     }
 
-    public static EvaluationResult getResult(Term result) {
+    public static EvaluationResult getResult(RDFTerm result) {
         return new EvaluationResult(result);
     }
     

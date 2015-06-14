@@ -26,7 +26,7 @@ public class UntypedVariable extends AbstractVariable implements AnnotationValue
         return null;
     }
 
-    public Term getBound(IRI iri) {
+    public RDFTerm getBound(IRI iri) {
         return new AtomicIRI(iri);
     }
 

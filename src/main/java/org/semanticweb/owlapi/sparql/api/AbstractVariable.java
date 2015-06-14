@@ -77,7 +77,7 @@ public abstract class AbstractVariable extends Variable {
 
 
     public EvaluationResult evaluate(SolutionMapping sm) {
-        Optional<Term> term = sm.getTermForVariable(this);
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
@@ -89,7 +89,7 @@ public abstract class AbstractVariable extends Variable {
 //    }
 
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
-        Optional<Term> term = sm.getTermForVariable(this);
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
@@ -101,7 +101,7 @@ public abstract class AbstractVariable extends Variable {
 //    }
 
     public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
-        Optional<Term> term = sm.getTermForVariable(this);
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
@@ -109,7 +109,7 @@ public abstract class AbstractVariable extends Variable {
     }
 
     public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
-        Optional<Term> term = sm.getTermForVariable(this);
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
@@ -117,7 +117,7 @@ public abstract class AbstractVariable extends Variable {
     }
 
     public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
-        Optional<Term> term = sm.getTermForVariable(this);
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
@@ -125,7 +125,7 @@ public abstract class AbstractVariable extends Variable {
     }
 
     public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
-        Optional<Term> term = sm.getTermForVariable(this);
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
@@ -134,7 +134,7 @@ public abstract class AbstractVariable extends Variable {
 
     @Override
     public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
-        Optional<Term> term = sm.getTermForVariable(this);
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
@@ -143,7 +143,7 @@ public abstract class AbstractVariable extends Variable {
 
     @Override
     public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
-        Optional<Term> term = sm.getTermForVariable(this);
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }

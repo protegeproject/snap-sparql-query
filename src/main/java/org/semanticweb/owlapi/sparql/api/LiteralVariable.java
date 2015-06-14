@@ -27,7 +27,7 @@ public class LiteralVariable extends AbstractVariable implements AtomicLiteral {
     }
 
     @Override
-    public Term getBound(IRI iri) {
+    public RDFTerm getBound(IRI iri) {
         return Literal.createString(iri.toString());
     }
 

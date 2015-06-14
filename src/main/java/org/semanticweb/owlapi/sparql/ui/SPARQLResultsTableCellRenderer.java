@@ -42,6 +42,7 @@ package org.semanticweb.owlapi.sparql.ui;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.sparql.api.AtomicIRI;
 import org.semanticweb.owlapi.sparql.api.HasPrefixedName;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
@@ -71,8 +72,8 @@ public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer imp
         if(value instanceof HasPrefixedName) {
             label.setText(((HasPrefixedName) value).getPrefixedName(pm));
         }
-        else if(value instanceof OWLEntity) {
-            OWLEntity entity = (OWLEntity) value;
+        else if(value instanceof AtomicIRI) {
+            AtomicIRI entity = (AtomicIRI) value;
             String prefixIRI = pm.getPrefixIRI(entity.getIRI());
             label.setText(prefixIRI == null ? entity.getIRI().toQuotedString() : prefixIRI);
         }

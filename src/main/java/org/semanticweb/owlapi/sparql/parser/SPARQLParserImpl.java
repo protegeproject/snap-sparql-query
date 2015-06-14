@@ -204,24 +204,25 @@ public class SPARQLParserImpl {
             tokenizer.consume(SPARQLTerminal.OPEN_PAR);
             if (peekVariable() != null) {
                 SPARQLToken varToken = tokenizer.consume();
+                tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
                 return new OrderCondition(varToken.getImage(), OrderByModifier.ASC);
             }
             else {
                 tokenizer.raiseError();
             }
-            tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
         }
         else if (tokenizer.peek(SPARQLTerminal.DESC) != null) {
             tokenizer.consume(SPARQLTerminal.DESC);
             tokenizer.consume(SPARQLTerminal.OPEN_PAR);
             if (peekVariable() != null) {
                 SPARQLToken varToken = tokenizer.consume();
+                tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
                 return new OrderCondition(varToken.getImage(), OrderByModifier.DESC);
             }
             else {
                 tokenizer.raiseError();
             }
-            tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
+
         }
         else if (peekVariable() != null) {
             SPARQLToken varToken = tokenizer.consume();

@@ -141,7 +141,7 @@ public class AtomicIRI_TestCase {
     public void should_evaluateAsIRI() {
         EvaluationResult eval = atomicIRI.evaluateAsIRI(sm);
         assertThat(eval.isError(), is(false));
-        assertThat(eval.getResult(), Matchers.<Term>is(atomicIRI));
+        assertThat(eval.getResult(), Matchers.<RDFTerm>is(atomicIRI));
     }
 
     @Test

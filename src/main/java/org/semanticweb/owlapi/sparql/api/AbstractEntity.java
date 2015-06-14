@@ -76,7 +76,7 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
     }
 
     public EvaluationResult evaluate(SolutionMapping sm) {
-        return EvaluationResult.getResult(this);
+        return EvaluationResult.getResult(this.asRDFTerm());
     }
 
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {

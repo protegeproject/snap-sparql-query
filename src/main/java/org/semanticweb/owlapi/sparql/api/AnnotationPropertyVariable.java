@@ -27,8 +27,8 @@ public class AnnotationPropertyVariable extends AbstractVariable implements Atom
     }
 
     @Override
-    public Term getBound(IRI iri) {
-        return new AnnotationProperty(iri);
+    public RDFTerm getBound(IRI iri) {
+        return new AtomicIRI(iri);
     }
 
 //    @Override

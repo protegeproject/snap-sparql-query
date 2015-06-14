@@ -27,8 +27,8 @@ public class DatatypeVariable extends AbstractVariable implements AtomicDatatype
     }
 
     @Override
-    public Term getBound(IRI iri) {
-        return Datatype.get(iri);
+    public RDFTerm getBound(IRI iri) {
+        return new AtomicIRI(iri);
     }
 
 //    @Override

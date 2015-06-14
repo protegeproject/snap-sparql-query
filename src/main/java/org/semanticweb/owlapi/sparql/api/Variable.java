@@ -64,7 +64,7 @@ public abstract class Variable implements Atomic, HasIdentifier, HasVariables, H
         return prefix;
     }
 
-    public abstract Term getBound(IRI iri);
+    public abstract RDFTerm getBound(IRI iri);
 
     public abstract PrimitiveType getType();
 

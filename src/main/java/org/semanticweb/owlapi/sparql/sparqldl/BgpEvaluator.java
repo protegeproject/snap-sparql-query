@@ -54,8 +54,6 @@ public class BgpEvaluator {
             ImmutableList<SolutionMapping> solutionMappings = resultTranslator.translateResult(result);
             SolutionSequence sequence = new SolutionSequence(new ArrayList<>(bgp.getVariables()), solutionMappings);
             System.out.println("Evaluated BGP in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
-            System.out.println(bgp.getAxioms());
-            System.out.println(sequence);
             cache.put(bgp, sequence);
             return sequence;
         } catch (QueryEngineException e) {

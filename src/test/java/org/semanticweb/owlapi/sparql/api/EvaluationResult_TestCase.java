@@ -17,7 +17,7 @@ public class EvaluationResult_TestCase {
     private EvaluationResult evaluationResult;
 
     @Mock
-    private Term result;
+    private RDFTerm result;
 
     @Before
     public void setUp() {
@@ -51,7 +51,7 @@ public class EvaluationResult_TestCase {
 
     @Test
     public void shouldNotBeEqualToOtherThatHasDifferent_result() {
-        MatcherAssert.assertThat(evaluationResult, Matchers.is(Matchers.not(new EvaluationResult(Mockito.mock(org.semanticweb.owlapi.sparql.api.Term.class)))));
+        MatcherAssert.assertThat(evaluationResult, Matchers.is(Matchers.not(new EvaluationResult(Mockito.mock(org.semanticweb.owlapi.sparql.api.RDFTerm.class)))));
     }
 
     @Test

@@ -181,7 +181,7 @@ public class Literal_TestCase {
     public void should_evaluateAsSelf() {
         EvaluationResult eval = literal.evaluate(sm);
         assertThat(eval.isError(), is(false));
-        assertThat(eval.getResult(), Matchers.<Term>is(literal));
+        assertThat(eval.getResult(), Matchers.<RDFTerm>is(literal));
     }
 
     @Test
