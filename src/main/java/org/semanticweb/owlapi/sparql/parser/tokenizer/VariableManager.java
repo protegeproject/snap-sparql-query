@@ -62,11 +62,9 @@ public class VariableManager {
 
     public void pushVariableTypeScope() {
         variableTypeManagerStack.push(new VariableTypeManager());
-        System.out.println("PUSHED SCOPE (" + variableTypeManagerStack.size() + ")");
     }
 
     public void popVariableTypeScope() {
-        System.out.println("POPPING SCOPE (" + variableTypeManagerStack.size() + ")");
         variableTypeManagerStack.pop();
     }
 
@@ -133,10 +131,8 @@ public class VariableManager {
 //    }
 
     public Optional<PrimitiveType> getVariableType(UntypedVariable variable) {
-        System.out.println("Getting type of ?" + variable.getName() + " in scope " + variableTypeManagerStack.size());
         VariableTypeManager typeManager = variableTypeManagerStack.peek();
         Optional<PrimitiveType> variableType = typeManager.getVariableType(variable);
-        System.out.println("\tType: " + variableType);
         return variableType;
     }
 }
