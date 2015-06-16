@@ -21,12 +21,12 @@ public class TermComparator implements Comparator<RDFTerm> {
             }
         }
         // IRIs
-        else if(o1 instanceof Entity) {
+        else if(o1 instanceof AtomicIRI) {
             if(o2 instanceof AnonymousIndividual) {
                 return 1;
             }
-            else if(o2 instanceof Entity) {
-                return ((Entity) o1).getIRI().compareTo(((Entity) o2).getIRI());
+            else if(o2 instanceof AtomicIRI) {
+                return ((AtomicIRI) o1).getIRI().compareTo(((AtomicIRI) o2).getIRI());
             }
             else {
                 return -1;
@@ -37,7 +37,7 @@ public class TermComparator implements Comparator<RDFTerm> {
             if(o2 instanceof AnonymousIndividual) {
                 return -1;
             }
-            else if(o2 instanceof Entity) {
+            else if(o2 instanceof AtomicIRI) {
                 return -1;
             }
             else if(o2 instanceof Literal) {
