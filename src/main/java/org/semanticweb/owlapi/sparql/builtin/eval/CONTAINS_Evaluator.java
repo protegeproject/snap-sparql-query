@@ -16,7 +16,7 @@ public class CONTAINS_Evaluator extends AbstractBinaryStringLiteralBuiltCallEval
 
     @Override
     protected EvaluationResult evaluateCompatibleLiterals(Literal left, Literal right, SolutionMapping sm) {
-        boolean contains = left.getLexicalForm().contains(left.getLexicalForm());
+        boolean contains = left.getLexicalForm().contains(right.getLexicalForm());
         return EvaluationResult.getBoolean(contains);
     }
 }
