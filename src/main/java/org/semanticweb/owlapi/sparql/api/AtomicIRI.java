@@ -61,7 +61,7 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     }
 
     public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
-        return EvaluationResult.getError();
+        return EvaluationResult.getSimpleLiteral(iri.toString());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
 
     @Override
     public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
-        return EvaluationResult.getError();
+        return EvaluationResult.getSimpleLiteral(iri.toString());
     }
 
     @Override
