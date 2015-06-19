@@ -394,12 +394,11 @@ public class AutoCompleter {
 
 
         Set<String> prefixes = new HashSet<String>();
-        prefixes.add(Namespaces.OWL.toString());
-        prefixes.add(Namespaces.RDF.toString());
-        prefixes.add(Namespaces.RDFS.toString());
-        prefixes.add(Namespaces.XSD.toString());
-        prefixes.add(Namespaces.XML.toString());
-        prefixes.add(Namespaces.SKOS.toString());
+        prefixes.add(Namespaces.OWL.getPrefixIRI());
+        prefixes.add(Namespaces.RDF.getPrefixIRI());
+        prefixes.add(Namespaces.RDFS.getPrefixIRI());
+        prefixes.add(Namespaces.XSD.getPrefixIRI());
+        prefixes.add(Namespaces.XML.getPrefixIRI());
 
         for(OWLOntology ont : ontology.getImportsClosure()) {
             for(OWLEntity entity : ont.getSignature()) {
@@ -429,7 +428,17 @@ public class AutoCompleter {
                         }
                     }
                 }
-                prefixNamesToPrefixes.put(prefixName, prefix);
+                if (!prefixes.contains(prefix)) {
+                    prefixNamesToPrefixes.put(prefixName, prefix);
+                }
+            }
+        }
+
+        for(String prefix : prefixes) {
+            for(Namespaces ns : Namespaces.values()) {
+                if(ns.getPrefixIRI().equals(prefix)) {
+                    prefixNamesToPrefixes.put(ns.getPrefixName(), ns.getPrefixIRI());
+                }
             }
         }
 
