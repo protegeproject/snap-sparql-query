@@ -239,11 +239,11 @@ public class SPARQLParserImpl {
                 VariableTokenType.get());
     }
 
-    private boolean isVariableOfType(SPARQLToken token, PrimitiveType primitiveType) {
+    private boolean isVariableOfTypeOrIndirectType(SPARQLToken token, PrimitiveType primitiveType) {
         if(!token.getTokenTypes().contains(VariableTokenType.get())) {
             return false;
         }
-        return tokenizer.getVariableManager().getVariableType(new UntypedVariable(token.getImage())).equals(Optional.of(primitiveType));
+        return tokenizer.getVariableManager().getVariableTypeIndirect(new UntypedVariable(token.getImage())).equals(Optional.of(primitiveType));
     }
 
     private SPARQLToken peekUntypedVariable() {
@@ -1001,22 +1001,22 @@ public class SPARQLParserImpl {
     private void parseAnnotationAssertions(SPARQLToken subjectToken, TriplesBlockPattern.Builder builder) {
         SPARQLToken predicateToken = tokenizer.consume();
         AnnotationSubject subject;
-        if(isVariableOfType(subjectToken, PrimitiveType.CLASS)) {
+        if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.CLASS)) {
             subject = new ClassVariable(subjectToken.getImage());
         }
-        else if(isVariableOfType(subjectToken, PrimitiveType.DATATYPE)) {
+        else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.DATATYPE)) {
             subject = new DatatypeVariable(subjectToken.getImage());
         }
-        else if(isVariableOfType(subjectToken, PrimitiveType.OBJECT_PROPERTY)) {
+        else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.OBJECT_PROPERTY)) {
             subject = new ObjectPropertyVariable(subjectToken.getImage());
         }
-        else if(isVariableOfType(subjectToken, PrimitiveType.DATA_PROPERTY)) {
+        else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.DATA_PROPERTY)) {
             subject = new DataPropertyVariable(subjectToken.getImage());
         }
-        else if(isVariableOfType(subjectToken, PrimitiveType.ANNOTATION_PROPERTY)) {
+        else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.ANNOTATION_PROPERTY)) {
             subject = new AnnotationPropertyVariable(subjectToken.getImage());
         }
-        else if(isVariableOfType(subjectToken, PrimitiveType.NAMED_INDIVIDUAL)) {
+        else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.NAMED_INDIVIDUAL)) {
             subject = new IndividualVariable(subjectToken.getImage());
         }
         else {
