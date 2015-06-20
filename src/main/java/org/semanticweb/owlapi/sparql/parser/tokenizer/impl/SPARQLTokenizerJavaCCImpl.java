@@ -132,13 +132,16 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
         prefixManager.setPrefix(prefixName, prefix);
     }
 
+    @Override
+    public SPARQLToken nextToken() {
+        return advanceToNextToken();
+    }
+
     public SPARQLToken advanceToNextToken() {
-        if (currentToken != null) {
-        }
         Token javaCCToken = tm.getNextToken();
         currentJavaCCToken = javaCCToken;
         currentToken = translate(javaCCToken);
-       return currentToken;
+        return currentToken;
     }
 
     public SPARQLToken getCurrentToken() {
@@ -185,6 +188,9 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
         peekedTypes.clear();
         SPARQLToken token = currentToken;
         advanceToNextToken();
+        while (currentToken.hasTokenType(CommentTokenType.get())) {
+            advanceToNextToken();
+        }
         return token;
     }
 
@@ -305,6 +311,11 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
                 }
 
                 public Object visit(BuiltInCallTokenType tokenType) throws RuntimeException {
+                    return null;
+                }
+
+                @Override
+                public Object visit(CommentTokenType tokenType) throws RuntimeException {
                     return null;
                 }
             });
@@ -522,6 +533,8 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
                 break;
             case BUILT_IN_CALL:
                 return wrap(BuiltInCallTokenType.get());
+            case COMMENT:
+                return wrap(CommentTokenType.get());
             default:
                 return wrap(ErrorTokenType.get());
         }

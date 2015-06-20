@@ -97,9 +97,8 @@ public interface TokenTypeVisitor<R, E extends Throwable> {
 
     R visit(BuiltInCallTokenType tokenType) throws E;
 
+    R visit(CommentTokenType tokenType) throws E;
+
     R visit(EOFTokenType tokenType) throws E;
-
-
-
 
 }

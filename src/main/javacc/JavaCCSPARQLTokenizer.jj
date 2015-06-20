@@ -24,6 +24,7 @@ PARSER_END(JavaCCSPARQLTokenizer)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+
 SKIP: {
     <" "|"\t"|"\n"|"\r">
 }
@@ -383,6 +384,18 @@ TOKEN: {
 
 TOKEN: {
     <CLOSE_PAR: ")">
+}
+
+MORE: {
+    <COMMENT_START: "#"> : IN_COMMENT
+}
+
+<IN_COMMENT> MORE: {
+    <~["\n"]>
+}
+
+<IN_COMMENT> TOKEN: {
+    <COMMENT: "\n"> : DEFAULT
 }
 
 TOKEN: {

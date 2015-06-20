@@ -82,6 +82,8 @@ public interface SPARQLTokenizer {
 
     SPARQLToken consume(SPARQLTerminal terminal);
 
+    SPARQLToken nextToken();
+
     boolean hasMoreTokens();
 
     void throwParseError();

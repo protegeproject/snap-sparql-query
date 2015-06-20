@@ -74,6 +74,7 @@ import java.util.Set;
  */
 public class SPARQLEditor extends JTextPane {
 
+    private final Style commentStyle;
     private Style sparqlKeywordStyle;
 
     private Style rdfVocabularyStyle;
@@ -168,6 +169,9 @@ public class SPARQLEditor extends JTextPane {
         builtInStyle = styledDocument.addStyle("builtIn", null);
         StyleConstants.setForeground(builtInStyle, new Color(90, 158, 218));
 
+        commentStyle = styledDocument.addStyle("comment", null);
+        StyleConstants.setForeground(commentStyle, new Color(200, 200, 200));
+
         defaultStyle = styledDocument.addStyle("default", null);
         StyleConstants.setForeground(defaultStyle, Color.BLACK);
     }
@@ -208,7 +212,6 @@ public class SPARQLEditor extends JTextPane {
             setToolTipText("");
             OWLOntology rootOntology = ontologyProvider.getOntology();
             StringReader reader = new StringReader(getText());
-            OWLDataFactory df = rootOntology.getOWLOntologyManager().getOWLDataFactory();
             SPARQLTokenizer tokenizer = new SPARQLTokenizerJavaCCImpl(rootOntology, reader);
             SPARQLParserImpl parser = new SPARQLParserImpl(tokenizer);
             parser.parseQuery();
@@ -242,7 +245,7 @@ public class SPARQLEditor extends JTextPane {
 
             private void performHighlighting(SPARQLTokenizer tokenizer, Set<String> selectVariableNames) {
                 while(tokenizer.hasMoreTokens()) {
-                    SPARQLToken token = tokenizer.consume();
+                    SPARQLToken token = tokenizer.nextToken();
                     Style tokenStyle = getTokenStyle(token, selectVariableNames);
                     TokenPosition tokenPosition = token.getTokenPosition();
                     int start = tokenPosition.getStart();
@@ -311,6 +314,9 @@ public class SPARQLEditor extends JTextPane {
             }
             else if(type instanceof StringTokenType) {
                 return stringStyle;
+            }
+            else if(type instanceof CommentTokenType) {
+                return commentStyle;
             }
 //            else if(type instanceof UntypedIRITokenType) {
 //                    return fullIRIStyle;
