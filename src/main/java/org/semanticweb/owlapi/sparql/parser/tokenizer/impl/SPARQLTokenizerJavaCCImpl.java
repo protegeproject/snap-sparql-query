@@ -134,7 +134,9 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
 
     @Override
     public SPARQLToken nextToken() {
-        return advanceToNextToken();
+        SPARQLToken token = currentToken;
+        advanceToNextToken();
+        return token;
     }
 
     public SPARQLToken advanceToNextToken() {

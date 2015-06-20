@@ -55,11 +55,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,7 +74,10 @@ import java.util.Set;
  */
 public class SPARQLEditor extends JTextPane {
 
+    public static final String COMMENT_CHARACTER = "#";
+
     private final Style commentStyle;
+
     private Style sparqlKeywordStyle;
 
     private Style rdfVocabularyStyle;
@@ -90,7 +93,7 @@ public class SPARQLEditor extends JTextPane {
     private Style builtInStyle;
 
     private Style fullIRIStyle;
-    
+
     private Set<String> sparqlKeywords = new HashSet<String>();
 
     private int errorStart;
@@ -147,11 +150,9 @@ public class SPARQLEditor extends JTextPane {
 
         sparqlKeywordStyle = styledDocument.addStyle("keyword", null);
         StyleConstants.setForeground(sparqlKeywordStyle, new Color(170, 13, 145));
-//        StyleConstants.setBold(sparqlKeywordStyle, true);
 
         rdfVocabularyStyle = styledDocument.addStyle("voc", null);
         StyleConstants.setForeground(rdfVocabularyStyle, new Color(63, 110, 116));
-//        StyleConstants.setBold(rdfVocabularyStyle, true);
 
         variableStyle = styledDocument.addStyle("vs", null);
         StyleConstants.setForeground(variableStyle, new Color(28, 0, 207));
@@ -174,6 +175,15 @@ public class SPARQLEditor extends JTextPane {
 
         defaultStyle = styledDocument.addStyle("default", null);
         StyleConstants.setForeground(defaultStyle, Color.BLACK);
+
+        getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "toggle-comment");
+        getActionMap().put("toggle-comment", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleComment();
+            }
+        });
     }
 
 
@@ -340,6 +350,33 @@ public class SPARQLEditor extends JTextPane {
             }
             catch (BadLocationException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private void toggleComment() {
+        int caretPos = getCaretPosition();
+        if(caretPos == -1) {
+            return;
+        }
+        for(int i = caretPos - 1; i > -1; i--) {
+            Document doc = getDocument();
+            if (doc.getLength() > i) {
+                try {
+                    String text = doc.getText(i, 1);
+                    if(text.equals("\n")) {
+                        String nextChar = doc.getText(i + 1, 1);
+                        if(nextChar.equals(COMMENT_CHARACTER)) {
+                            doc.remove(i + 1, 1);
+                        }
+                        else {
+                            doc.insertString(i + 1, COMMENT_CHARACTER, commentStyle);
+                        }
+                        break;
+                    }
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
