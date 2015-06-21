@@ -45,6 +45,7 @@ import org.semanticweb.owlapi.sparql.builtin.eval.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.semanticweb.owlapi.sparql.builtin.BuiltInCallType.*;
 import static org.semanticweb.owlapi.sparql.builtin.SparqlType.*;
 
 /**
@@ -55,32 +56,38 @@ public enum BuiltInCall {
     // @formatter:off
 
     STR(
+            SIMPLE,
             new STR_Evaluator(),
             SimpleLiteral(),
             argList(LITERAL),
             argList(SparqlType.IRI)),
 
     LANG(
+            SIMPLE,
             new LANG_Evaluator(),
             SimpleLiteral(),
             argList(LITERAL)),
 
     LANGMATCHES(
+            SIMPLE,
             new LANGMATCHES_Evaluator(),
             Boolean(),
             namedArg(SIMPLE_LITERAL, "language-tag"), namedArg(SIMPLE_LITERAL, "language-range")),
 
     DATATYPE(
+            SIMPLE,
             notImplemented(),
             IRI(),
             argList(LITERAL)),
 
     BOUND(
+            SIMPLE,
             new BOUND_Evaluator(),
             Boolean(),
             argList(VARIABLE)),
 
     IRI(
+            SIMPLE,
             new IRI_Evaluator(),
             IRI(), argList(SIMPLE_LITERAL),
             argList(XSD_STRING),
@@ -88,12 +95,14 @@ public enum BuiltInCall {
 
 
     URI(
+            SIMPLE,
             notImplemented(), IRI(),
             argList(SIMPLE_LITERAL),
             argList(XSD_STRING),
             argList(SparqlType.IRI)),
 
     BNODE(
+            SIMPLE,
             notImplemented(),
             new ReturnType(SparqlType.BLANK_NODE),
             argList(),
@@ -101,218 +110,260 @@ public enum BuiltInCall {
             argList(XSD_STRING)),
 
     RAND(
+            SIMPLE,
             new RAND_Evaluator(),
             Double(),
             argList()),
 
     ABS(
+            SIMPLE,
             new ABS_Evaluator(),
             Numeric(),
             argList(NUMERIC)),
 
     CEIL(
+            SIMPLE,
             notImplemented(),
             Numeric(),
             argList(NUMERIC)),
 
     FLOOR(
+            SIMPLE,
             notImplemented(),
             Numeric(),
             argList(NUMERIC)),
 
     ROUND(
+            SIMPLE,
             new ROUND_Evaluator(),
             Numeric(),
             argList(NUMERIC)),
 
     CONCAT(
+            SIMPLE,
             new CONCAT_Evaluator(),
             StringLiteral(),
             argList(STRING_LITERAL, VarArg.VARIABLE)),
 
     SUBSTR(
+            SIMPLE,
             new SUBSTR_Evaluator(),
             StringLiteral(),
             argList(new Arg(STRING_LITERAL), namedArg(XSD_INTEGER, "startingLoc")),
             argList(new Arg(STRING_LITERAL), namedArg(XSD_INTEGER, "startingLoc"), namedArg(XSD_INTEGER, "length"))),
 
     STRLEN(
+            SIMPLE,
             new STRLEN_Evaluator(),
             Numeric(),
             argList(STRING_LITERAL)),
 
     REPLACE(
+            SIMPLE,
             new REPLACE_Evaluator(),
             StringLiteral(),
             argList(namedArg(STRING_LITERAL, "arg"), namedArg(SIMPLE_LITERAL, "pattern"), namedArg(SIMPLE_LITERAL, "replacement")),
             argList(namedArg(STRING_LITERAL, "arg"), namedArg(SIMPLE_LITERAL, "pattern"), namedArg(SIMPLE_LITERAL, "replacement"), namedArg(SIMPLE_LITERAL, "flags"))),
 
     UCASE(
+            SIMPLE,
             new UCASE_Evaluator(),
             StringLiteral(),
             argList(SIMPLE_LITERAL)),
 
     LCASE(
+            SIMPLE,
             new LCASE_Evaluator(),
             StringLiteral(),
             argList(SIMPLE_LITERAL)),
 
     ENCODE_FOR_URI(
+            SIMPLE,
             notImplemented(),
             SimpleLiteral(),
             argList(STRING_LITERAL)),
 
     CONTAINS(
+            SIMPLE,
             new CONTAINS_Evaluator(),
             Boolean(),
             argList(STRING_LITERAL, STRING_LITERAL)),
 
     STRSTARTS(
+            SIMPLE,
             new STRSTARTS_Evaluator(),
             Boolean(),
             argList(STRING_LITERAL, STRING_LITERAL)),
 
     STRENDS(
+            SIMPLE,
             new STRENDS_Evaluator(),
             Boolean(),
             argList(STRING_LITERAL, STRING_LITERAL)),
 
     STRBEFORE(
+            SIMPLE,
             new STRBEFORE_Evaluator(),
             Literal(),
             argList(STRING_LITERAL, STRING_LITERAL)),
 
     STRAFTER(
+            SIMPLE,
             new STRAFTER_Evaluator(),
             Literal(),
             argList(STRING_LITERAL, STRING_LITERAL)),
 
     YEAR(
+            SIMPLE,
             new YEAR_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     MONTH(
+            SIMPLE,
             new MONTH_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     DAY(
+            SIMPLE,
             new DAY_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     HOURS(
+            SIMPLE,
             new HOURS_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     MINUTES(
+            SIMPLE,
             new MINUTES_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     SECONDS(
+            SIMPLE,
             new SECONDS_Evaluator(),
             Integer(),
             argList(XSD_DATE_TIME)),
 
     TIMEZONE(
+            SIMPLE,
             notImplemented(),
             new ReturnType(XSD_DATE_TIME),
             argList(XSD_DATE_TIME)),
 
     TZ(
+            SIMPLE,
             notImplemented(),
             SimpleLiteral(),
             argList(XSD_DATE_TIME)),
 
     NOW(
+            SIMPLE,
             new NOW_Evaluator(),
             new ReturnType(XSD_DATE_TIME),
             argList()),
 
     MD5(
+            SIMPLE,
             notImplemented(),
             SimpleLiteral(),
             argList(STRING_LITERAL),
             argList(XSD_STRING)),
 
     SHA1(
+            SIMPLE,
             notImplemented(),
             SimpleLiteral(),
             argList(STRING_LITERAL),
             argList(XSD_STRING)),
 
     SHA256(
+            SIMPLE,
             notImplemented(),
             SimpleLiteral(),
             argList(STRING_LITERAL),
             argList(XSD_STRING)),
 
     SHA384(
+            SIMPLE,
             notImplemented(),
             SimpleLiteral(),
             argList(STRING_LITERAL),
             argList(XSD_STRING)),
 
     SHA512(
+            SIMPLE,
             notImplemented(),
             SimpleLiteral(),
             argList(STRING_LITERAL),
             argList(XSD_STRING)),
 
     COALESCE(
+            SIMPLE,
             notImplemented(),
             SimpleLiteral(),
             argList(EXPRESSION, VarArg.VARIABLE)),
 
     IF(
+            SIMPLE,
             new IF_Evaluator(),
             Boolean(),
             argList(EXPRESSION, EXPRESSION, EXPRESSION)),
 
     STRLANG(
+            SIMPLE,
             new STRLANG_Evaluator(),
             Literal(),
             argList(SIMPLE_LITERAL, SIMPLE_LITERAL)),
 
     STRDT(
+            SIMPLE,
             new STRDT_Evaluator(),
             Literal(),
             argList(SIMPLE_LITERAL, SparqlType.IRI)),
 
     SAMETERM(
+            SIMPLE,
             new SAMETERM_Evaluator(),
             Boolean(),
             argList(RDF_TERM, RDF_TERM)),
 
     ISIRI(
+            SIMPLE,
             notImplemented(),
             Boolean(),
             argList(RDF_TERM)),
 
     ISURI(
+            SIMPLE,
             notImplemented(),
             Boolean(),
             argList(RDF_TERM)),
 
     ISBLANK(
+            SIMPLE,
             notImplemented(),
             Boolean(),
             argList(RDF_TERM)),
 
     ISLITERAL(
+            SIMPLE,
             notImplemented(),
             Boolean(),
             argList(RDF_TERM)),
 
     ISNUMERIC(
+            SIMPLE,
             notImplemented(),
             Boolean(),
             argList(RDF_TERM)),
 
     REGEX(
+            SIMPLE,
             new REGEX_Evaluator(),
             Boolean(),
             argList(namedArg(SIMPLE_LITERAL, "text"), namedArg(SIMPLE_LITERAL, "pattern")),
@@ -320,12 +371,14 @@ public enum BuiltInCall {
 
 
     UUID(
+            SIMPLE,
             new UUID_Evaluator(),
             IRI(),
             argList()
     ),
 
     STRUUID(
+            SIMPLE,
             new STRUUID_Evaluator(),
             SimpleLiteral(),
             argList()
@@ -333,13 +386,19 @@ public enum BuiltInCall {
 
     // @formatter:on
 
+    private final BuiltInCallType type;
+
     private final ImmutableList<ArgList> argLists;
 
     private final ReturnType returnType;
 
     private final BuiltInCallEvaluator evaluator;
 
-    private BuiltInCall(BuiltInCallEvaluator evaluator, ReturnType returnType, ArgList... argLists) {
+    private BuiltInCall(BuiltInCallType type,
+                        BuiltInCallEvaluator evaluator,
+                        ReturnType returnType,
+                        ArgList... argLists) {
+        this.type = type;
         this.evaluator = evaluator;
         this.returnType = returnType;
         ImmutableList.Builder<ArgList> builder = ImmutableList.builder();
@@ -349,7 +408,9 @@ public enum BuiltInCall {
         this.argLists = builder.build();
     }
 
-    private BuiltInCall(BuiltInCallEvaluator evaluator, ReturnType returnType, Arg... args) {
+    private BuiltInCall(BuiltInCallType type,
+                        BuiltInCallEvaluator evaluator, ReturnType returnType, Arg... args) {
+        this.type = type;
         this.evaluator = evaluator;
         this.returnType = returnType;
         argLists = ImmutableList.of(new ArgList(args));
