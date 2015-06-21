@@ -40,6 +40,7 @@
 package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
@@ -78,23 +79,21 @@ public class SPARQLEditor extends JTextPane {
 
     private final Style commentStyle;
 
-    private Style sparqlKeywordStyle;
+    private final Style sparqlKeywordStyle;
 
-    private Style rdfVocabularyStyle;
+    private final Style rdfVocabularyStyle;
 
-    private Style variableStyle;
+    private final Style variableStyle;
 
-    private Style projectedVariableStyle;
+    private final Style projectedVariableStyle;
 
-    private Style defaultStyle;
+    private final Style defaultStyle;
 
-    private Style stringStyle;
+    private final Style stringStyle;
 
-    private Style builtInStyle;
+    private final Style builtInStyle;
 
-    private Style fullIRIStyle;
-
-    private Set<String> sparqlKeywords = new HashSet<String>();
+    private final ImmutableSet<String> sparqlKeywords;
 
     private int errorStart;
 
@@ -102,9 +101,9 @@ public class SPARQLEditor extends JTextPane {
 
     private boolean validQuery = false;
 
-    private ArrayList<ChangeListener> changeListenerList = new ArrayList<ChangeListener>();
+    private final ArrayList<ChangeListener> changeListenerList = new ArrayList<>();
 
-    private OWLOntologyProvider ontologyProvider;
+    private final OWLOntologyProvider ontologyProvider;
 
     private ErrorMessageProvider errorMessageProvider = new DefaultErrorMessageProvider();
 
@@ -115,17 +114,18 @@ public class SPARQLEditor extends JTextPane {
         setFont(new Font("verdana", Font.PLAIN, 12));
         getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
-                performHighlighting();
+                highlight();
             }
 
             public void removeUpdate(DocumentEvent e) {
-                performHighlighting();
+                highlight();
             }
 
             public void changedUpdate(DocumentEvent e) {
             }
         });
-        
+
+        ImmutableSet.Builder<String> sparqlKeywords = ImmutableSet.builder();
         sparqlKeywords.add(SPARQLTerminal.AS.getImage());
         sparqlKeywords.add(SPARQLTerminal.FILTER.getImage());
         sparqlKeywords.add(SPARQLTerminal.BASE.getImage());
@@ -145,6 +145,8 @@ public class SPARQLEditor extends JTextPane {
         sparqlKeywords.add(SPARQLTerminal.DESC.getImage());
         sparqlKeywords.add(SPARQLTerminal.MINUS_KW.getImage());
         sparqlKeywords.add(SPARQLTerminal.OPTIONAL_KW.getImage());
+        this.sparqlKeywords = sparqlKeywords.build();
+
 
         StyledDocument styledDocument = getStyledDocument();
 
@@ -164,9 +166,6 @@ public class SPARQLEditor extends JTextPane {
         stringStyle = styledDocument.addStyle("string", null);
         StyleConstants.setForeground(stringStyle, new Color(196, 26, 22));
 
-        fullIRIStyle = styledDocument.addStyle("iri", null);
-        StyleConstants.setForeground(fullIRIStyle, new Color(150, 150, 150));
-
         builtInStyle = styledDocument.addStyle("builtIn", null);
         StyleConstants.setForeground(builtInStyle, new Color(90, 158, 218));
 
@@ -176,9 +175,10 @@ public class SPARQLEditor extends JTextPane {
         defaultStyle = styledDocument.addStyle("default", null);
         StyleConstants.setForeground(defaultStyle, Color.BLACK);
 
+        final String toggleCommentKey = "toggle-comment";
         getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH,
-                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "toggle-comment");
-        getActionMap().put("toggle-comment", new AbstractAction() {
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), toggleCommentKey);
+        getActionMap().put(toggleCommentKey, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 toggleComment();
@@ -206,14 +206,14 @@ public class SPARQLEditor extends JTextPane {
     }
 
     public void refresh() {
-        performHighlighting();
+        highlight();
     }
 
     public boolean isValidQuery() {
         return validQuery;
     }
 
-    private void performHighlighting() {
+    private void highlight() {
         validQuery = false;
         performHighlightingInSeparateThread();
         try {
@@ -246,45 +246,45 @@ public class SPARQLEditor extends JTextPane {
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    // Not critical
                 }
-                Set<String> variables = getProjectedVariableNames();
-                SPARQLTokenizer tokenizer = createTokenizer();
-                performHighlighting(tokenizer, variables);
-            }
-
-            private void performHighlighting(SPARQLTokenizer tokenizer, Set<String> selectVariableNames) {
-                while(tokenizer.hasMoreTokens()) {
-                    SPARQLToken token = tokenizer.nextToken();
-                    Style tokenStyle = getTokenStyle(token, selectVariableNames);
-                    TokenPosition tokenPosition = token.getTokenPosition();
-                    int start = tokenPosition.getStart();
-                    int end = tokenPosition.getEnd();
-                    getStyledDocument().setCharacterAttributes(start, end - start, tokenStyle, true);
-                }
+                performHighlighting();
             }
         });
         t.start();
     }
 
-    private Set<String> getProjectedVariableNames() {
-        final SPARQLParserImpl sparqlParser = new SPARQLParserImpl(createTokenizer());
-        Optional<SelectClause> selectClause;
-        try {
-            selectClause = Optional.of(sparqlParser.parsePrologueAndSelectClause());
-        } catch (Throwable e) {
-            selectClause = Optional.absent();
+    private void performHighlighting() {
+        Set<String> projectedVariableNames = getProjectedVariableNames();
+        SPARQLTokenizer tokenizer = createTokenizer();
+        while(tokenizer.hasMoreTokens()) {
+            SPARQLToken token = tokenizer.nextToken();
+            Style tokenStyle = getTokenStyle(token, projectedVariableNames);
+            TokenPosition tokenPosition = token.getTokenPosition();
+            int start = tokenPosition.getStart();
+            int end = tokenPosition.getEnd();
+            getStyledDocument().setCharacterAttributes(start, end - start, tokenStyle, true);
         }
-        Set<String> variables;
+    }
+
+    private Set<String> getProjectedVariableNames() {
+        Optional<SelectClause> selectClause = parseSelectClause();
+        final Set<String> variables = new HashSet<>();
         if(selectClause.isPresent()) {
-            variables = new HashSet<>();
             for(UntypedVariable variable : selectClause.get().getVariables()) {
                 variables.add("?" + variable.getName());
             }
         }
-        else {
-            variables = Collections.emptySet();
-        } return variables;
+        return variables;
+    }
+
+    private Optional<SelectClause> parseSelectClause() {
+        try {
+            SPARQLParserImpl parser = new SPARQLParserImpl(createTokenizer());
+            return Optional.of(parser.parsePrologueAndSelectClause());
+        } catch (Throwable e) {
+            return Optional.absent();
+        }
     }
 
     private SPARQLTokenizerJavaCCImpl createTokenizer() {
@@ -328,9 +328,6 @@ public class SPARQLEditor extends JTextPane {
             else if(type instanceof CommentTokenType) {
                 return commentStyle;
             }
-//            else if(type instanceof UntypedIRITokenType) {
-//                    return fullIRIStyle;
-//            }
         }
         return defaultStyle;
     }
