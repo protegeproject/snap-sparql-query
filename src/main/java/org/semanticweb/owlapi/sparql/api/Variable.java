@@ -60,6 +60,10 @@ public abstract class Variable implements Atomic, HasIdentifier, HasVariables, H
         return variableName;
     }
 
+    public String getDisplayName() {
+        return "?" + variableName;
+    }
+
     public VariableNamePrefix getVariableNamePrefix() {
         return prefix;
     }

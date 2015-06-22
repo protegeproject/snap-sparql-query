@@ -41,7 +41,7 @@ package org.semanticweb.owlapi.sparql.api;
 
 
 import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.sparql.syntax.SelectAs;
+import org.semanticweb.owlapi.sparql.syntax.SelectExpressionAsVariable;
 
 import java.util.*;
 
@@ -59,7 +59,7 @@ public class SPARQLQuery {
 
     private List<Variable> allVariables;
 
-    private List<SelectAs> selectAsList = new ArrayList<>();
+    private List<SelectExpressionAsVariable> selectExpressionAsVariableList = new ArrayList<>();
     
     private List<SPARQLGraphPattern> graphPatterns = new ArrayList<>();
 
@@ -75,7 +75,7 @@ public class SPARQLQuery {
                        SPARQLQueryType queryType,
                        List<Variable> selectVariables,
                        List<Variable> graphPatternVariables,
-                       List<SelectAs> selectAsList,
+                       List<SelectExpressionAsVariable> selectExpressionAsVariableList,
                        List<SPARQLGraphPattern> graphPatterns,
                        List<SPARQLGraphPattern> minusPatterns,
                        List<SPARQLGraphPattern> optionalPatterns,
@@ -84,7 +84,7 @@ public class SPARQLQuery {
         this.queryType = queryType;
         this.selectVariables = selectVariables;
         this.allVariables = graphPatternVariables;
-        this.selectAsList.addAll(selectAsList);
+        this.selectExpressionAsVariableList.addAll(selectExpressionAsVariableList);
         this.graphPatterns = graphPatterns;
         this.solutionModifier = solutionModifier;
         this.minusPatterns.addAll(minusPatterns);
@@ -129,14 +129,14 @@ public class SPARQLQuery {
 
     public List<Variable> getSelectAsVariables() {
         List<Variable> selectAsVariables = new ArrayList<Variable>();
-        for(SelectAs selectAs : selectAsList) {
+        for(SelectExpressionAsVariable selectExpressionAsVariable : selectExpressionAsVariableList) {
 //            selectAsVariables.add(selectAs.getVariable());
         }
         return selectAsVariables;
     }
 
-    public List<SelectAs> getSelectAs() {
-        return selectAsList;
+    public List<SelectExpressionAsVariable> getSelectAs() {
+        return selectExpressionAsVariableList;
     }
 
     public List<SPARQLGraphPattern> getGraphPatterns() {

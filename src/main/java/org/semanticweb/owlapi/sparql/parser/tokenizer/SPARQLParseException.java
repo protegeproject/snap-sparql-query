@@ -78,12 +78,12 @@ public class SPARQLParseException extends RuntimeException {
         this.expectedVocabulary = expectedVocabulary;
     }
 
-    public static SPARQLParseException getPlainException(String message, String image, TokenPosition tokenPosition) {
+    public static SPARQLParseException getPlainException(String message, TokenPosition tokenPosition) {
         return new SPARQLParseException(
                 message,
                 Collections.<UntypedVariable>emptySet(),
                 Collections.<TokenType>emptySet(),
-                new SPARQLToken(image, tokenPosition, Collections.<TokenType>emptySet()),
+                new SPARQLToken("", tokenPosition, Collections.<TokenType>emptySet()),
                 Collections.<SPARQLTerminal>emptySet(),
                 Collections.<EntityType>emptySet(),
                 Collections.<OWLRDFVocabulary>emptySet()

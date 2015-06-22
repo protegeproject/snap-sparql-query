@@ -101,45 +101,10 @@ public class SPARQLParserImpl {
     }
 
     private void checkSelectForm(SelectQuery selectQuery) {
-        SelectClause selectClause = selectQuery.getSelectClause();
-        ImmutableList<SelectItem> selectForms = selectClause.getSelectItems();
-
-
-
-        if(selectQuery.isAggregateQuery()) {
-
-            Optional<GroupClause> groupClause = selectQuery.getSolutionModifier().getGroupClause();
-            final Collection<UntypedVariable> groupVariables;
-
-            if(groupClause.isPresent()) {
-                groupVariables = groupClause.get().getGroupVariables();
-            }
-            else {
-                groupVariables = Collections.emptySet();
-            }
-
-
-            for(SelectItem item : selectForms) {
-                if(item.isVariable()) {
-                    if (!groupVariables.contains(item.getVariable())) {
-                        throw SPARQLParseException.getPlainException(
-                                "Encountered the variable " + item.getVariable().getName() + " in the SELECT AS clause.  Expected a variable that appears in the GROUP BY clause (" + groupVariables + ")",
-                                "",
-                                item.getStartTokenPosition()
-                        );
-                    }
-                }
-                else if(!item.isAggregate()) {
-                    TokenPosition startPos = item.getStartTokenPosition();
-                    TokenPosition endPos = item.getEndTokenPosition();
-                    TokenPosition pos = new TokenPosition(startPos.getStart(), endPos.getEnd(), startPos.getLine(), startPos.getCol());
-                    throw SPARQLParseException.getPlainException(
-                            "Encountered a non-aggregate built-in call in the SELECT AS clause.  Exprected one of COUNT, SUM, MIN, MAX, AVG, GROUP_CONCAT, or SAMPLE.",
-                            "",
-                            pos
-                    );
-                }
-            }
+        ProjectionChecker checker = new ProjectionChecker(selectQuery);
+        Optional<ProjectionRestrictionViolation> error = checker.checkSelectClause();
+        if(error.isPresent()) {
+            throw error.get().getException();
         }
     }
 
@@ -157,14 +122,17 @@ public class SPARQLParserImpl {
         return new SelectVariable(new UntypedVariable(token.getImage()), token.getTokenPosition());
     }
 
-    public SelectAs parseExpressionAsVariable() {
+    public SelectExpressionAsVariable parseExpressionAsVariable() {
         SPARQLToken startToken = tokenizer.consume(SPARQLTerminal.OPEN_PAR);
         Expression expression = parseExpression();
         tokenizer.consume(SPARQLTerminal.AS);
-        UntypedVariable variable = parseVariable();
+        SPARQLToken variableToken = tokenizer.consume(
+                VariableTokenType.get()
+        );
+        UntypedVariable variable = new UntypedVariable(variableToken.getImage());
         tokenizer.getVariableManager().registerVariable(variable);
         SPARQLToken endToken = tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
-        return new SelectAs(expression, variable, startToken.getTokenPosition(), endToken.getTokenPosition());
+        return new SelectExpressionAsVariable(expression, variable, startToken.getTokenPosition(), endToken.getTokenPosition(), variableToken.getTokenPosition());
     }
 
 

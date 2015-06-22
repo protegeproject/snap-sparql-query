@@ -89,4 +89,8 @@ public class TokenPosition {
     public String toString() {
         return "Line " + line + " column " + col;
     }
+
+    public static TokenPosition merge(TokenPosition left, TokenPosition right) {
+        return new TokenPosition(left.getStart(), right.getEnd(), left.getLine(), left.getCol());
+    }
 }

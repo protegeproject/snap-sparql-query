@@ -1,16 +1,13 @@
 package org.semanticweb.owlapi.sparql.syntax;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.BuiltInCallExpression;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
-import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenPosition;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.Token;
 
 import static com.google.common.base.Objects.toStringHelper;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: Matthew Horridge<br>
@@ -18,16 +15,21 @@ import static com.google.common.base.Objects.toStringHelper;
  * Bio-Medical Informatics Research Group<br>
  * Date: 31/07/2012
  */
-public class SelectAs extends SelectItem {
+public class SelectExpressionAsVariable extends SelectItem {
 
     private final Expression expression;
 
+    private final TokenPosition variablePosition;
+
     private final UntypedVariable variable;
 
-    public SelectAs(Expression expression, UntypedVariable variable, TokenPosition start, TokenPosition end) {
+
+
+    public SelectExpressionAsVariable(Expression expression, UntypedVariable variable, TokenPosition start, TokenPosition end, TokenPosition variablePosition) {
         super(start, end);
-        this.expression = expression;
-        this.variable = variable;
+        this.variablePosition = checkNotNull(variablePosition);
+        this.expression = checkNotNull(expression);
+        this.variable = checkNotNull(variable);
     }
 
     @Override
@@ -41,6 +43,10 @@ public class SelectAs extends SelectItem {
 
     public UntypedVariable getVariable() {
         return variable;
+    }
+
+    public TokenPosition getVariablePosition() {
+        return variablePosition;
     }
 
     public boolean isAggregate() {
@@ -57,10 +63,10 @@ public class SelectAs extends SelectItem {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof SelectAs)) {
+        if (!(obj instanceof SelectExpressionAsVariable)) {
             return false;
         }
-        SelectAs other = (SelectAs) obj;
+        SelectExpressionAsVariable other = (SelectExpressionAsVariable) obj;
         return this.expression.equals(other.expression) && this.variable.equals(other.variable);
     }
 

@@ -1,7 +1,6 @@
 package org.semanticweb.owlapi.sparql.syntax;
 
 
-import com.google.common.base.*;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -110,17 +109,17 @@ public class SelectQuery {
                         projectionVariables.add(untypedVariable);
                     }
                 }
-                else if(selectItem instanceof SelectAs) {
-                    SelectAs selectAs = (SelectAs) selectItem;
-                    UntypedVariable untypedVariable = selectAs.getVariable();
+                else if(selectItem instanceof SelectExpressionAsVariable) {
+                    SelectExpressionAsVariable selectExpressionAsVariable = (SelectExpressionAsVariable) selectItem;
+                    UntypedVariable untypedVariable = selectExpressionAsVariable.getVariable();
                     projectionVariables.add(untypedVariable);
                     // TODO: Check that it's not already in the visible set
                     Variable typedVariable = name2VariableMap.get(untypedVariable.getName());
                     if(typedVariable != null) {
-                        X = new Extend(X, typedVariable, selectAs.getExpression());
+                        X = new Extend(X, typedVariable, selectExpressionAsVariable.getExpression());
                     }
                     else {
-                        X = new Extend(X, untypedVariable, selectAs.getExpression());
+                        X = new Extend(X, untypedVariable, selectExpressionAsVariable.getExpression());
                     }
 
                 }

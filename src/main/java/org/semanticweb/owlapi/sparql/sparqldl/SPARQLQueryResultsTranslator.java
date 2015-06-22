@@ -42,11 +42,8 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 import de.derivo.sparqldlapi.QueryBinding;
 import de.derivo.sparqldlapi.QueryResult;
 import de.derivo.sparqldlapi.impl.LiteralTranslator;
-import jpaul.Constraints.Var;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.syntax.OrderClause;
-import org.semanticweb.owlapi.sparql.syntax.SelectAs;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 
 import java.util.*;
