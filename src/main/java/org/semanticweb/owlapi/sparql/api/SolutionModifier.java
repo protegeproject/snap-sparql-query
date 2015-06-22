@@ -54,27 +54,22 @@ import java.util.List;
  */
 public class SolutionModifier {
 
-    private Optional<OrderClause> orderClause;
+    private final Optional<GroupClause> groupClause;
 
-    public SolutionModifier(Optional<OrderClause> orderClause) {
+    private final Optional<OrderClause> orderClause;
+
+    public SolutionModifier(Optional<GroupClause> groupClause, Optional<OrderClause> orderClause) {
+        this.groupClause = groupClause;
         this.orderClause = orderClause;
+    }
+
+    public Optional<GroupClause> getGroupClause() {
+        return groupClause;
     }
 
     public Optional<OrderClause> getOrderClause() {
         return orderClause;
     }
 
-    //    private List<OrderCondition> orderConditions = new ArrayList<OrderCondition>();
-//
-//    public SolutionModifier() {
-//    }
-//
-//    public SolutionModifier(List<OrderCondition> orderConditions) {
-//        this.orderConditions.addAll(orderConditions);
-//    }
-//
-//    public List<OrderCondition> getOrderConditions() {
-//        return Collections.unmodifiableList(orderConditions);
-//    }
 
 }

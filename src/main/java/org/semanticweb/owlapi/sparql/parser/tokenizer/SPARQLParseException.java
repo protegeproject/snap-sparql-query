@@ -44,6 +44,7 @@ import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -75,6 +76,18 @@ public class SPARQLParseException extends RuntimeException {
         this.expectedTerminals = expectedTerminals;
         this.expectedEntityTypes = expectedEntityTypes;
         this.expectedVocabulary = expectedVocabulary;
+    }
+
+    public static SPARQLParseException getPlainException(String message, String image, TokenPosition tokenPosition) {
+        return new SPARQLParseException(
+                message,
+                Collections.<UntypedVariable>emptySet(),
+                Collections.<TokenType>emptySet(),
+                new SPARQLToken(image, tokenPosition, Collections.<TokenType>emptySet()),
+                Collections.<SPARQLTerminal>emptySet(),
+                Collections.<EntityType>emptySet(),
+                Collections.<OWLRDFVocabulary>emptySet()
+        );
     }
 
     public Set<UntypedVariable> getParsedVariables() {

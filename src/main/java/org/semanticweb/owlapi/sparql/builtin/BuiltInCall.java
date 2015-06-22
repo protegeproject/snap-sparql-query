@@ -382,6 +382,13 @@ public enum BuiltInCall {
             new STRUUID_Evaluator(),
             SimpleLiteral(),
             argList()
+    ),
+
+    SUM(
+            AGGREGATE,
+            new SUM_Evaluator(),
+            Numeric(),
+            argList(NUMERIC)
     );
 
     // @formatter:on
@@ -490,5 +497,9 @@ public enum BuiltInCall {
 
     private static NullBuiltInCallEvaluator notImplemented() {
         return new NullBuiltInCallEvaluator();
+    }
+
+    public boolean isAggregate() {
+        return type == AGGREGATE;
     }
 }

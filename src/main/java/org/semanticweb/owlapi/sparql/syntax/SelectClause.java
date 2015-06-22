@@ -36,4 +36,13 @@ public class SelectClause {
         }
         return result;
     }
+
+    public boolean containsAggregates() {
+        for(SelectItem item : selectItems) {
+            if(item.isAggregate()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

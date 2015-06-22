@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenPosition;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -15,12 +16,23 @@ public class SelectVariable extends SelectItem {
 
     private final UntypedVariable variable;
 
-    public SelectVariable(UntypedVariable variable) {
+    public SelectVariable(UntypedVariable variable, TokenPosition tokenPosition) {
+        super(tokenPosition, tokenPosition);
         this.variable = checkNotNull(variable);
     }
 
     public UntypedVariable getVariable() {
         return variable;
+    }
+
+    @Override
+    public boolean isAggregate() {
+        return false;
+    }
+
+    @Override
+    public boolean isVariable() {
+        return true;
     }
 
     @Override

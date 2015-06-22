@@ -2,9 +2,13 @@ package org.semanticweb.owlapi.sparql.syntax;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import org.semanticweb.owlapi.sparql.api.BuiltInCallExpression;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
+import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenPosition;
+import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.Token;
 
 import static com.google.common.base.Objects.toStringHelper;
 
@@ -16,13 +20,19 @@ import static com.google.common.base.Objects.toStringHelper;
  */
 public class SelectAs extends SelectItem {
 
-    private Expression expression;
+    private final Expression expression;
 
-    private UntypedVariable variable;
+    private final UntypedVariable variable;
 
-    public SelectAs(Expression expression, UntypedVariable variable) {
+    public SelectAs(Expression expression, UntypedVariable variable, TokenPosition start, TokenPosition end) {
+        super(start, end);
         this.expression = expression;
         this.variable = variable;
+    }
+
+    @Override
+    public boolean isVariable() {
+        return false;
     }
 
     public Expression getExpression() {
@@ -31,6 +41,10 @@ public class SelectAs extends SelectItem {
 
     public UntypedVariable getVariable() {
         return variable;
+    }
+
+    public boolean isAggregate() {
+        return expression instanceof BuiltInCallExpression && ((BuiltInCallExpression) expression).isAggregate();
     }
 
     @Override

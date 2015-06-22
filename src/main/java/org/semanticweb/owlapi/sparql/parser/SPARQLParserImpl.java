@@ -9,7 +9,6 @@ import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.builtin.ArgList;
 import org.semanticweb.owlapi.sparql.builtin.VarArg;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.Token;
 import org.semanticweb.owlapi.sparql.syntax.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -60,7 +59,9 @@ public class SPARQLParserImpl {
         GroupPattern groupPattern = parseWhereClause();
         SolutionModifier solutionModifier = parseSolutionModifier();
         tokenizer.consume(EOFTokenType.get());
-        return new SelectQuery(tokenizer.getPrefixManager(),selectClause, groupPattern, solutionModifier);
+        SelectQuery selectQuery = new SelectQuery(tokenizer.getPrefixManager(), selectClause, groupPattern, solutionModifier);
+        checkSelectForm(selectQuery);
+        return selectQuery;
     }
 
     public SelectClause parsePrologueAndSelectClause() {
@@ -94,12 +95,57 @@ public class SPARQLParserImpl {
         else {
             tokenizer.raiseError();
         }
-        return new SelectClause(queryType == SPARQLQueryType.SELECT_DISTINCT, selectFormBuilder.build());
+        ImmutableList<SelectItem> selectForms = selectFormBuilder.build();
+        return new SelectClause(queryType == SPARQLQueryType.SELECT_DISTINCT, selectForms);
+
+    }
+
+    private void checkSelectForm(SelectQuery selectQuery) {
+        SelectClause selectClause = selectQuery.getSelectClause();
+        ImmutableList<SelectItem> selectForms = selectClause.getSelectItems();
+
+
+
+        if(selectQuery.isAggregateQuery()) {
+
+            Optional<GroupClause> groupClause = selectQuery.getSolutionModifier().getGroupClause();
+            final Collection<UntypedVariable> groupVariables;
+
+            if(groupClause.isPresent()) {
+                groupVariables = groupClause.get().getGroupVariables();
+            }
+            else {
+                groupVariables = Collections.emptySet();
+            }
+
+
+            for(SelectItem item : selectForms) {
+                if(item.isVariable()) {
+                    if (!groupVariables.contains(item.getVariable())) {
+                        throw SPARQLParseException.getPlainException(
+                                "Encountered the variable " + item.getVariable().getName() + " in the SELECT AS clause.  Expected a variable that appears in the GROUP BY clause (" + groupVariables + ")",
+                                "",
+                                item.getStartTokenPosition()
+                        );
+                    }
+                }
+                else if(!item.isAggregate()) {
+                    TokenPosition startPos = item.getStartTokenPosition();
+                    TokenPosition endPos = item.getEndTokenPosition();
+                    TokenPosition pos = new TokenPosition(startPos.getStart(), endPos.getEnd(), startPos.getLine(), startPos.getCol());
+                    throw SPARQLParseException.getPlainException(
+                            "Encountered a non-aggregate built-in call in the SELECT AS clause.  Exprected one of COUNT, SUM, MIN, MAX, AVG, GROUP_CONCAT, or SAMPLE.",
+                            "",
+                            pos
+                    );
+                }
+            }
+        }
     }
 
     public SelectItem parseSelectVariableOrExpressionAsVariable() {
         if (tokenizer.peek(SPARQLTerminal.OPEN_PAR) != null) {
-            return parseSelectExpressionAsVariable();
+            return parseExpressionAsVariable();
         }
         else {
             return parseSelectVariable();
@@ -108,18 +154,17 @@ public class SPARQLParserImpl {
 
     public SelectVariable parseSelectVariable() {
         SPARQLToken token = tokenizer.consume(VariableTokenType.get());
-//        mustBindVariables.add(token.getImage());
-        return new SelectVariable(new UntypedVariable(token.getImage()));
+        return new SelectVariable(new UntypedVariable(token.getImage()), token.getTokenPosition());
     }
 
-    public SelectAs parseSelectExpressionAsVariable() {
-        tokenizer.consume(SPARQLTerminal.OPEN_PAR);
+    public SelectAs parseExpressionAsVariable() {
+        SPARQLToken startToken = tokenizer.consume(SPARQLTerminal.OPEN_PAR);
         Expression expression = parseExpression();
         tokenizer.consume(SPARQLTerminal.AS);
-        SPARQLToken token = tokenizer.consume(VariableTokenType.get());
-        tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()));
-        tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
-        return new SelectAs(expression, new UntypedVariable(token.getImage()));
+        UntypedVariable variable = parseVariable();
+        tokenizer.getVariableManager().registerVariable(variable);
+        SPARQLToken endToken = tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
+        return new SelectAs(expression, variable, startToken.getTokenPosition(), endToken.getTokenPosition());
     }
 
 
@@ -167,14 +212,22 @@ public class SPARQLParserImpl {
     }
 
     public SolutionModifier parseSolutionModifier() {
-        Optional<OrderClause> orderClause;
+        final Optional<GroupClause> groupClause;
+        if(tokenizer.peek(SPARQLTerminal.GROUP) != null) {
+            groupClause = Optional.of(parseGroupClause());
+        }
+        else {
+            groupClause = Optional.absent();
+        }
+
+        final Optional<OrderClause> orderClause;
         if (tokenizer.peek(SPARQLTerminal.ORDER) != null) {
             orderClause = Optional.of(parseOrderByClause());
         }
         else {
             orderClause = Optional.absent();
         }
-        return new SolutionModifier(orderClause);
+        return new SolutionModifier(groupClause, orderClause);
     }
 
     public OrderClause parseOrderByClause() {
@@ -232,6 +285,50 @@ public class SPARQLParserImpl {
             tokenizer.raiseError();
         }
         throw new IllegalStateException();
+    }
+
+    private GroupClause parseGroupClause() {
+        tokenizer.consume(SPARQLTerminal.GROUP);
+        tokenizer.consume(SPARQLTerminal.BY);
+        List<GroupCondition> groupConditions = new ArrayList<>();
+        while(true) {
+            if(tokenizer.peek(BuiltInCallTokenType.get()) != null) {
+                BuiltInCallExpression expr = parseBuiltInCall();
+                groupConditions.add(new GroupConditionBuiltInCall(expr));
+            }
+            else if(tokenizer.peek(SPARQLTerminal.OPEN_PAR) != null) {
+                GroupConditionExpressionAs condition = parseExpressionWithOptionalAsVariable();
+                groupConditions.add(condition);
+            }
+            else if(peekVariable() != null) {
+                UntypedVariable variable = parseVariable();
+                groupConditions.add(new GroupConditionVariable(variable));
+            }
+            else if(groupConditions.isEmpty()) {
+                tokenizer.raiseError();
+            }
+            else {
+                break;
+            }
+        }
+        return new GroupClause(ImmutableList.copyOf(groupConditions));
+    }
+
+    private GroupConditionExpressionAs parseExpressionWithOptionalAsVariable() {
+        tokenizer.consume(SPARQLTerminal.OPEN_PAR);
+        Expression expr = parseExpression();
+        final Optional<UntypedVariable> optionalVariable;
+        if(tokenizer.peek(SPARQLTerminal.AS) != null) {
+            tokenizer.consume(SPARQLTerminal.AS);
+            UntypedVariable variable = parseVariable();
+            tokenizer.getVariableManager().registerVariable(variable);
+            optionalVariable = Optional.of(variable);
+        }
+        else {
+            optionalVariable = Optional.absent();
+        }
+        tokenizer.consume(SPARQLTerminal.CLOSE_PAR);
+        return new GroupConditionExpressionAs(expr, optionalVariable);
     }
 
     private SPARQLToken peekVariable() {
@@ -714,7 +811,7 @@ public class SPARQLParserImpl {
         }
     }
 
-    private Variable parseVariable() {
+    private UntypedVariable parseVariable() {
         SPARQLToken token = tokenizer.consume(
                 VariableTokenType.get()
         );
@@ -1716,7 +1813,7 @@ public class SPARQLParserImpl {
 
     }
 
-    public Expression parseBuiltInCall() {
+    public BuiltInCallExpression parseBuiltInCall() {
         SPARQLToken token = tokenizer.consume(BuiltInCallTokenType.get());
         tokenizer.consume(SPARQLTerminal.OPEN_PAR);
         String callName = token.getImage().toUpperCase();

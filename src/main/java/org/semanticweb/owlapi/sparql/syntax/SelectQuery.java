@@ -34,6 +34,16 @@ public class SelectQuery {
         this.solutionModifier = solutionModifier;
     }
 
+    public boolean isAggregateQuery() {
+        if(solutionModifier.getGroupClause().isPresent()) {
+            return true;
+        }
+        if(selectClause.containsAggregates()) {
+            return true;
+        }
+        return false;
+    }
+
     public PrefixManager getPrefixManager() {
         return prefixManager;
     }

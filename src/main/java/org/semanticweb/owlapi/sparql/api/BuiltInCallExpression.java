@@ -34,6 +34,10 @@ public class BuiltInCallExpression implements Expression {
                 .toString();
     }
 
+    public boolean isAggregate() {
+        return builtInCall.isAggregate();
+    }
+
 //
 //    @Override
 //    public String toString() {
