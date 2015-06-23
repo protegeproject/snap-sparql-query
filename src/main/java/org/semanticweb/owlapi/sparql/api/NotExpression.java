@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -116,5 +118,26 @@ public class NotExpression implements Expression {
     @Override
     public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
         return EvaluationResult.getError();
+    }
+
+//    @Override
+//    public Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
+//        if(this.equals(subExpression)) {
+//            return withExpression;
+//        }
+//        return new NotExpression(expression.replaceSubExpressionWith(subExpression, withExpression));
+//    }
+
+    @Override
+    public List<Expression> getSubExpressions() {
+        ArrayList<Expression> expressions = new ArrayList<>();
+        expressions.add(this);
+        expressions.addAll(expression.getSubExpressions());
+        return expressions;
+    }
+
+    @Override
+    public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
+        return visitor.visit(this, context);
     }
 }

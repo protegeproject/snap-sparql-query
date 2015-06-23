@@ -31,25 +31,13 @@ public class DatatypeVariable extends AbstractVariable implements AtomicDatatype
         return new AtomicIRI(iri);
     }
 
-//    @Override
-//    public int hashCode() {
-//        return DatatypeVariable.class.getSimpleName().hashCode() + getName().hashCode();
-//    }
-//
-//    @Override
-//    public boolean equals(Object obj) {
-//        if(obj == this) {
-//            return true;
-//        }
-//        if(!(obj instanceof DatatypeVariable)) {
-//            return false;
-//        }
-//        DatatypeVariable other = (DatatypeVariable) obj;
-//        return other.getName().equals(this.getName());
-//    }
-
     @Override
     public void collectVariables(Collection<Variable> variables) {
         variables.add(this);
+    }
+
+    @Override
+    public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
+        return visitor.visit(this, context);
     }
 }

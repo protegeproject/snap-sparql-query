@@ -29,5 +29,10 @@ public interface AlgebraExpressionVisitor<R, E extends Exception> {
 
     R visit(Union union) throws E;
 
+    R visit(Aggregation aggregation) throws E;
+
+    R visit(AggregateJoin aggregateJoin) throws E;
+
+    R visit(Group group) throws E;
 }
 

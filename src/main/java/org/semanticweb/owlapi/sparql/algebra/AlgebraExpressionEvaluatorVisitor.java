@@ -75,4 +75,19 @@ public class AlgebraExpressionEvaluatorVisitor implements AlgebraExpressionVisit
     public SolutionSequence visit(Union union) {
         return null;
     }
+
+    @Override
+    public SolutionSequence visit(Aggregation aggregation) throws RuntimeException {
+        return null;
+    }
+
+    @Override
+    public SolutionSequence visit(AggregateJoin aggregateJoin) throws RuntimeException {
+        return null;
+    }
+
+    @Override
+    public SolutionSequence visit(Group group) throws RuntimeException {
+        return null;
+    }
 }

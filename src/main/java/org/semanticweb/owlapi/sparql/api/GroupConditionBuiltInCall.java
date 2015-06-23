@@ -21,4 +21,9 @@ public class GroupConditionBuiltInCall extends GroupCondition {
     public Optional<UntypedVariable> getGroupConditionVariable() {
         return Optional.absent();
     }
+
+    @Override
+    public Expression asExpression() {
+        return expression;
+    }
 }

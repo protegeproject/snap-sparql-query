@@ -4,11 +4,13 @@ package org.semanticweb.owlapi.sparql.syntax;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import de.derivo.sparqldlapi.Var;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.sparql.algebra.*;
-import org.semanticweb.owlapi.sparql.api.SolutionModifier;
-import org.semanticweb.owlapi.sparql.api.UntypedVariable;
-import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
+import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenPosition;
+import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.Token;
 import org.semanticweb.owlapi.sparql.sparqldl.OrderByComparator;
 
 import java.util.*;
@@ -83,7 +85,7 @@ public class SelectQuery {
         G.collectVisibleVariables(visibleVariablesBuilder);
         Set<Variable> visibleVariables = visibleVariablesBuilder.build();
 
-        ImmutableList<SelectItem> selectItems = selectClause.getSelectItems();
+
         GraphPatternAlgebraExpression X = G;
 
         Map<String, Variable> name2VariableMap = new HashMap<>();
@@ -91,13 +93,77 @@ public class SelectQuery {
             name2VariableMap.put(visibleVariable.getName(), visibleVariable);
         }
 
+
+        final List<SelectItem> E;
+
+
+        if (isAggregateQuery()) {
+
+            E = new ArrayList<>();
+
+            if(solutionModifier.getGroupClause().isPresent()) {
+                ImmutableList<GroupCondition> groupConditions = solutionModifier.getGroupClause().get().getGroupConditions();
+                X = new Group(groupConditions, X);
+            }
+            else {
+                X = new Group(ImmutableList.of(), X);
+            }
+
+
+            final List<SelectItem> rewrittenSelectItems = new ArrayList<>();
+
+            AggregateBuiltInReplacer.ReplacementContext replacementContext = new AggregateBuiltInReplacer.ReplacementContext(X);
+            AggregateBuiltInReplacer aggregateBuiltInReplacer = new AggregateBuiltInReplacer(replacementContext);
+
+            for(SelectItem selectItem : getSelectClause().getSelectItems()) {
+                if(selectItem instanceof SelectExpressionAsVariable) {
+                    SelectExpressionAsVariable expressionAsVariable = (SelectExpressionAsVariable) selectItem;
+                    Expression expression = expressionAsVariable.getExpression();
+                    UnaggregatedVariableReplacer replacer = new UnaggregatedVariableReplacer();
+                    expression = replacer.replaceUnaggregatedVariables(expression);
+
+                    expression = aggregateBuiltInReplacer.replaceAggregateBuiltInWithVariable(expression);
+
+                    rewrittenSelectItems.add(new SelectExpressionAsVariable(expression, expressionAsVariable.getVariable()));
+                }
+                else {
+                    rewrittenSelectItems.add(selectItem);
+                }
+            }
+
+            List<Aggregation> aggregations = new ArrayList<>();
+            aggregations.addAll(replacementContext.getAggregations());
+
+            for(SelectItem selectItem : rewrittenSelectItems) {
+                if(selectItem instanceof SelectVariable) {
+                    Aggregation aggregation = new Aggregation(
+                            new BuiltInCallExpression(
+                                    BuiltInCall.SAMPLE,
+                                    ImmutableList.<Expression>of(selectItem.getVariable())
+                            ),
+                            X);
+                    E.add(new SelectExpressionAsVariable(new UntypedVariable("agg_" + aggregations.size()), selectItem.getVariable()));
+                    aggregations.add(aggregation);
+                }
+                else if(selectItem instanceof SelectExpressionAsVariable) {
+                    E.add(selectItem);
+                }
+            }
+
+            X = new AggregateJoin(ImmutableList.copyOf(aggregations));
+        }
+        else {
+            E = getSelectClause().getSelectItems();
+        }
+
+        System.out.println(E);
         Set<Variable> projectionVariables = new LinkedHashSet<>();
-        if(selectItems.isEmpty()) {
+        if(E.isEmpty()) {
             projectionVariables.addAll(visibleVariables);
         }
         else {
             // TODO: Convert to proper typed variables
-            for(SelectItem selectItem : selectItems) {
+            for(SelectItem selectItem : E) {
                 if(selectItem instanceof SelectVariable) {
                     SelectVariable selectVariable = (SelectVariable) selectItem;
                     UntypedVariable untypedVariable = selectVariable.getVariable();
@@ -128,6 +194,10 @@ public class SelectQuery {
                 }
             }
         }
+
+
+        // TODO: ORDER
+
         AlgebraExpression M = new ToList(X);
         Optional<OrderClause> orderClause = solutionModifier.getOrderClause();
         if(orderClause.isPresent()) {

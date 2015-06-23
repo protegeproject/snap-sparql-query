@@ -6,6 +6,9 @@ import org.semanticweb.owlapi.sparql.api.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
@@ -30,19 +33,15 @@ public class SelectClause {
     }
 
     public List<UntypedVariable> getVariables() {
-        List<UntypedVariable> result = new ArrayList<>();
-        for(SelectItem selectItem : selectItems) {
-            result.add(selectItem.getVariable());
-        }
-        return result;
+        return selectItems
+                .stream()
+                .map(SelectItem::getVariable)
+                .collect(toList());
     }
 
     public boolean containsAggregates() {
-        for(SelectItem item : selectItems) {
-            if(item.isAggregate()) {
-                return true;
-            }
-        }
-        return false;
+        return selectItems
+                .stream()
+                .anyMatch(SelectItem::isAggregate);
     }
 }

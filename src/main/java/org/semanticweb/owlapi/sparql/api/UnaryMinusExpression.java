@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,6 +16,10 @@ public class UnaryMinusExpression implements Expression {
 
     public UnaryMinusExpression(Expression expression) {
         this.expression = expression;
+    }
+
+    public Expression getExpression() {
+        return expression;
     }
 
     public Set<Variable> getVariables() {
@@ -86,5 +92,26 @@ public class UnaryMinusExpression implements Expression {
     @Override
     public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
         return EvaluationResult.getError();
+    }
+
+//    @Override
+//    public Expression replaceSubExpressionWith(Expression subExpression, Expression replaceWith) {
+//        if(subExpression.equals(this)) {
+//            return replaceWith;
+//        }
+//        return new UnaryMinusExpression(expression.replaceSubExpressionWith(subExpression, replaceWith));
+//    }
+
+    @Override
+    public List<Expression> getSubExpressions() {
+        ArrayList<Expression> result = new ArrayList<>();
+        result.add(this);
+        result.addAll(expression.getSubExpressions());
+        return result;
+    }
+
+    @Override
+    public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
+        return visitor.visit(this, context);
     }
 }

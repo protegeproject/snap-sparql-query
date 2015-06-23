@@ -40,6 +40,7 @@
 package org.semanticweb.owlapi.sparql.builtin;
 
 import com.google.common.collect.ImmutableList;
+import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.builtin.eval.*;
 
 import java.util.ArrayList;
@@ -389,6 +390,20 @@ public enum BuiltInCall {
             new SUM_Evaluator(),
             Numeric(),
             argList(NUMERIC)
+    ),
+
+    COUNT(
+            AGGREGATE,
+            new COUNT_Evaluator(),
+            Numeric(),
+            argList(NUMERIC)
+    ),
+
+    SAMPLE(
+            AGGREGATE,
+            notImplemented(),
+            Term(),
+            argList(RDF_TERM)
     );
 
     // @formatter:on
@@ -449,6 +464,10 @@ public enum BuiltInCall {
 
     private static ReturnType Integer() {
         return new ReturnType(XSD_INTEGER);
+    }
+
+    private static ReturnType Term() {
+        return new ReturnType(RDF_TERM);
     }
 
     private static ReturnType Literal() {

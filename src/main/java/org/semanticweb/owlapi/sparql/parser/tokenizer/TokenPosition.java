@@ -93,4 +93,8 @@ public class TokenPosition {
     public static TokenPosition merge(TokenPosition left, TokenPosition right) {
         return new TokenPosition(left.getStart(), right.getEnd(), left.getLine(), left.getCol());
     }
+
+    public static TokenPosition empty() {
+        return new TokenPosition(0, 0, 0, 0);
+    }
 }

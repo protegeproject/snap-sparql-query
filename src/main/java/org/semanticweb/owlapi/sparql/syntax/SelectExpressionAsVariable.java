@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.api.BuiltInCallExpression;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenPosition;
+import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.Token;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -30,6 +31,10 @@ public class SelectExpressionAsVariable extends SelectItem {
         this.variablePosition = checkNotNull(variablePosition);
         this.expression = checkNotNull(expression);
         this.variable = checkNotNull(variable);
+    }
+
+    public SelectExpressionAsVariable(Expression expression, UntypedVariable variable) {
+        this(expression, variable, TokenPosition.empty(), TokenPosition.empty(), TokenPosition.empty());
     }
 
     @Override

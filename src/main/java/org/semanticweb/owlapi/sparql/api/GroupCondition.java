@@ -9,4 +9,6 @@ import com.google.common.base.Optional;
 public abstract class GroupCondition {
 
     public abstract Optional<UntypedVariable> getGroupConditionVariable();
+
+    public abstract Expression asExpression();
 }

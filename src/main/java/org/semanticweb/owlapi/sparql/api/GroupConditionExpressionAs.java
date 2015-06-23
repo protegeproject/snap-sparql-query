@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 
 /**
@@ -27,5 +28,19 @@ public class GroupConditionExpressionAs extends GroupCondition {
     @Override
     public Optional<UntypedVariable> getGroupConditionVariable() {
         return variable;
+    }
+
+    @Override
+    public Expression asExpression() {
+        return expression;
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("GroupConditionExpressionAs")
+                .addValue(expression)
+                .addValue(variable)
+                .toString();
     }
 }

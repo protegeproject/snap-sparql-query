@@ -40,4 +40,9 @@ public class NamedClass extends AbstractEntity implements Entity, AtomicClass {
     public String toString() {
         return String.format("NamedClass(%s)", getIRI());
     }
+
+    @Override
+    public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
+        return visitor.visit(this, context);
+    }
 }

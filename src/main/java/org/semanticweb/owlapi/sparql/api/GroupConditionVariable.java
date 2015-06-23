@@ -21,4 +21,9 @@ public class GroupConditionVariable extends GroupCondition {
     public Optional<UntypedVariable> getGroupConditionVariable() {
         return Optional.of(variable);
     }
+
+    @Override
+    public Expression asExpression() {
+        return variable;
+    }
 }

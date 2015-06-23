@@ -3,7 +3,9 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Objects;
 import org.semanticweb.owlapi.model.IRI;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -112,5 +114,18 @@ public abstract class Variable implements Atomic, HasIdentifier, HasVariables, H
             return new LiteralVariable(name);
         }
         throw new IllegalStateException("Unknown EntityType: " + entityType);
+    }
+
+//    @Override
+//    public final Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
+//        if(this.equals(subExpression)) {
+//            return withExpression;
+//        }
+//        return this;
+//    }
+
+    @Override
+    public List<Expression> getSubExpressions() {
+        return Arrays.asList(this);
     }
 }

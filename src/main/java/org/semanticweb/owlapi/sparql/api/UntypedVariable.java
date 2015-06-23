@@ -30,23 +30,6 @@ public class UntypedVariable extends AbstractVariable implements AnnotationValue
         return new AtomicIRI(iri);
     }
 
-//    @Override
-//    public int hashCode() {
-//        return UntypedVariable.class.getSimpleName().hashCode() + getName().hashCode();
-//    }
-//
-//    @Override
-//    public boolean equals(Object obj) {
-//        if(obj == this) {
-//            return true;
-//        }
-//        if(!(obj instanceof UntypedVariable)) {
-//            return false;
-//        }
-//        UntypedVariable other = (UntypedVariable) obj;
-//        return getName().equals(other.getName());
-//    }
-
     @Override
     public void collectVariables(Collection<Variable> variables) {
         variables.add(this);
@@ -56,8 +39,12 @@ public class UntypedVariable extends AbstractVariable implements AnnotationValue
     @Override
     public String toString() {
         return Objects.toStringHelper("UntypedVariable")
-                .addValue(getVariableNamePrefix().getPrefix())
-                .addValue(getName())
+                .addValue(getDisplayName())
                 .toString();
+    }
+
+    @Override
+    public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
+        return visitor.visit(this, context);
     }
 }

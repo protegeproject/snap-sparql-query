@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -34,6 +36,16 @@ public class DataPropertyAssertion extends AbstractAssertion<AtomicIndividual, D
             return false;
         }
         DataPropertyAssertion other = (DataPropertyAssertion) obj;
-        return this.getProperty().equals(other.getProperty()) && this.getSubject().equals(other.getSubject()) && this.getObject().equals(this.getObject());
+        return this.getProperty().equals(other.getProperty()) && this.getSubject().equals(other.getSubject()) && this.getObject().equals(other.getObject());
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("DataPropertyAssertion")
+                .addValue(getProperty())
+                .addValue(getSubject())
+                .addValue(getObject())
+                .toString();
     }
 }

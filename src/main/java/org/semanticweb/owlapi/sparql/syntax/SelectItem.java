@@ -23,8 +23,6 @@ public abstract class SelectItem {
 
     public abstract boolean isVariable();
 
-
-
     public TokenPosition getStartTokenPosition() {
         return start;
     }
@@ -32,4 +30,5 @@ public abstract class SelectItem {
     public TokenPosition getEndTokenPosition() {
         return end;
     }
+
 }

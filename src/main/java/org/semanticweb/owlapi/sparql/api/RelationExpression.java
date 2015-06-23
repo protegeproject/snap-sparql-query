@@ -2,7 +2,9 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,6 +25,18 @@ public class RelationExpression implements Expression {
         this.left = left;
         this.right = right;
         this.relation = relation;
+    }
+
+    public Relation getRelation() {
+        return relation;
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
     }
 
     public Set<Variable> getVariables() {
@@ -99,5 +113,31 @@ public class RelationExpression implements Expression {
                 .addValue(left)
                 .addValue(right)
                 .toString();
+    }
+
+//    @Override
+//    public Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
+//        if(this.equals(subExpression)) {
+//            return withExpression;
+//        }
+//        return new RelationExpression(
+//                left.replaceSubExpressionWith(subExpression, withExpression),
+//                right.replaceSubExpressionWith(subExpression, withExpression),
+//                relation
+//        );
+//    }
+
+    @Override
+    public List<Expression> getSubExpressions() {
+        ArrayList<Expression> expressions = new ArrayList<>();
+        expressions.add(this);
+        expressions.addAll(left.getSubExpressions());
+        expressions.addAll(right.getSubExpressions());
+        return expressions;
+    }
+
+    @Override
+    public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
+        return visitor.visit(this, context);
     }
 }

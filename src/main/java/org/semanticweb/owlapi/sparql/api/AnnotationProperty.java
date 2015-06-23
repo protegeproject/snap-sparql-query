@@ -49,4 +49,9 @@ public class AnnotationProperty extends AbstractEntity implements AtomicAnnotati
     public IRI getIRI() {
         return super.getIRI();
     }
+
+    @Override
+    public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
+        return visitor.visit(this, context);
+    }
 }

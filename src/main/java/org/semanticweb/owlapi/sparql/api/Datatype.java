@@ -215,5 +215,8 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
         return this.getIRI().equals(other.getIRI());
     }
 
-
+    @Override
+    public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
+        return visitor.visit(this, context);
+    }
 }

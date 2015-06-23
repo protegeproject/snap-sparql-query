@@ -92,8 +92,8 @@ public class Extend extends GraphPatternAlgebraExpression {
         writer.print(variable.getName());
         writer.println();
         writer.print(indentation + "    ");
-        writer.print(expression);
-        writer.print(indentation);
+        writer.println(expression);
+        algebraExpression.prettyPrint(writer, level + 1);
         writer.print(")");
     }
 

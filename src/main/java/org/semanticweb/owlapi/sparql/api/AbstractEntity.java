@@ -3,10 +3,7 @@ package org.semanticweb.owlapi.sparql.api;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.PrefixManager;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -116,5 +113,18 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
     @Override
     public final AnnotationSubject toAnnotationSubject() {
         return new AtomicIRI(getIRI());
+    }
+
+//    @Override
+//    public final Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
+//        if(this.equals(subExpression)) {
+//            return withExpression;
+//        }
+//        return this;
+//    }
+
+    @Override
+    public List<Expression> getSubExpressions() {
+        return Arrays.asList(this);
     }
 }

@@ -5,9 +5,7 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -375,5 +373,23 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     @Override
     public void collectVariables(Collection<Variable> variables) {
 
+    }
+
+//    @Override
+//    public Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
+//        if(this.equals(subExpression)) {
+//            return withExpression;
+//        }
+//        return this;
+//    }
+
+    @Override
+    public List<Expression> getSubExpressions() {
+        return Arrays.asList(this);
+    }
+
+    @Override
+    public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
+        return visitor.visit(this, context);
     }
 }
