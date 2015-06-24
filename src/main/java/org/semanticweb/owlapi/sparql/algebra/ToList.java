@@ -7,11 +7,11 @@ import java.io.PrintWriter;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15
  */
-public class ToList extends AlgebraExpression {
+public class ToList extends AlgebraExpression<SolutionSequence> {
 
-    private GraphPatternAlgebraExpression algebraExpression;
+    private GraphPatternAlgebraExpression<SolutionSequence> algebraExpression;
 
-    public ToList(GraphPatternAlgebraExpression algebraExpression) {
+    public ToList(GraphPatternAlgebraExpression<SolutionSequence> algebraExpression) {
         this.algebraExpression = algebraExpression;
     }
 

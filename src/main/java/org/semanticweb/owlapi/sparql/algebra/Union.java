@@ -15,19 +15,19 @@ import java.util.List;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
  */
-public class Union extends GraphPatternAlgebraExpression {
+public class Union extends GraphPatternAlgebraExpression<SolutionSequence> {
 
-    private GraphPatternAlgebraExpression left;
+    private GraphPatternAlgebraExpression<SolutionSequence> left;
 
-    private GraphPatternAlgebraExpression right;
+    private GraphPatternAlgebraExpression<SolutionSequence> right;
 
-    public Union(GraphPatternAlgebraExpression left, GraphPatternAlgebraExpression right) {
+    public Union(GraphPatternAlgebraExpression<SolutionSequence> left, GraphPatternAlgebraExpression<SolutionSequence> right) {
         this.left = left;
         this.right = right;
     }
 
     @Override
-    public GraphPatternAlgebraExpression getSimplified() {
+    public GraphPatternAlgebraExpression<SolutionSequence> getSimplified() {
         return new Union(left.getSimplified(), right.getSimplified());
     }
 

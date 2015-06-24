@@ -66,7 +66,7 @@ public class SPARQLDLQueryEngine {
     }
 
     public SPARQLQueryResult ask(SelectQuery query) {
-        AlgebraExpression algebraExpression = query.translate();
+        AlgebraExpression<SolutionSequence> algebraExpression = query.translate();
         AlgebraEvaluationContext context = new AlgebraEvaluationContext(new BgpEvaluator(reasoner, cache));
         SolutionSequence solutionSequence = algebraExpression.evaluate(context);
         return new SPARQLQueryResult(query, solutionSequence);

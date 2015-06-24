@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 22/06/15
  */
-public class Sample extends AlgebraExpression {
+public class Sample extends AlgebraExpression<SolutionSequence> {
 
 
     @Override

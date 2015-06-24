@@ -20,16 +20,16 @@ import java.util.Set;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
  */
-public class LeftJoin extends GraphPatternAlgebraExpression {
+public class LeftJoin extends GraphPatternAlgebraExpression<SolutionSequence> {
 
-    private final GraphPatternAlgebraExpression left;
+    private final GraphPatternAlgebraExpression<SolutionSequence> left;
 
-    private final GraphPatternAlgebraExpression right;
+    private final GraphPatternAlgebraExpression<SolutionSequence> right;
 
     private final ImmutableList<Expression> expression;
 
-    public LeftJoin(GraphPatternAlgebraExpression left,
-                    GraphPatternAlgebraExpression right,
+    public LeftJoin(GraphPatternAlgebraExpression<SolutionSequence> left,
+                    GraphPatternAlgebraExpression<SolutionSequence> right,
                     ImmutableList<Expression> expression) {
         this.left = left;
         this.right = right;
@@ -41,7 +41,7 @@ public class LeftJoin extends GraphPatternAlgebraExpression {
     }
 
     @Override
-    public GraphPatternAlgebraExpression getSimplified() {
+    public GraphPatternAlgebraExpression<SolutionSequence> getSimplified() {
         return new LeftJoin(left.getSimplified(), right.getSimplified(), expression);
     }
 

@@ -1,31 +1,32 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import org.semanticweb.owlapi.sparql.api.Expression;
-import org.semanticweb.owlapi.sparql.api.GroupClause;
-import org.semanticweb.owlapi.sparql.api.GroupCondition;
-import org.semanticweb.owlapi.sparql.api.Variable;
+import com.google.common.base.Optional;
+import com.google.common.collect.*;
+import org.semanticweb.owlapi.sparql.api.*;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 22/06/15
  */
-public class Group extends GraphPatternAlgebraExpression {
-
+public class Group extends GraphPatternAlgebraExpression<GroupEvaluation> {
 
     private ImmutableList<GroupCondition> expressionList;
 
-    private GraphPatternAlgebraExpression pattern;
+    private GraphPatternAlgebraExpression<SolutionSequence> pattern;
 
-    public Group(ImmutableList<GroupCondition> expressionList, GraphPatternAlgebraExpression pattern) {
+    private Optional<GroupEvaluation> lastEvaluation = Optional.absent();
+
+    public Group(ImmutableList<GroupCondition> expressionList, GraphPatternAlgebraExpression<SolutionSequence> pattern) {
         this.expressionList = expressionList;
         this.pattern = pattern;
     }
 
     @Override
-    public GraphPatternAlgebraExpression getSimplified() {
+    public Group getSimplified() {
         return this;
     }
 
@@ -35,9 +36,34 @@ public class Group extends GraphPatternAlgebraExpression {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
-        // Zero groups
-        return pattern.evaluate(context);
+    public GroupEvaluation evaluate(AlgebraEvaluationContext context) {
+        if(lastEvaluation.isPresent()) {
+            return lastEvaluation.get();
+        }
+        SolutionSequence sequence = pattern.evaluate(context);
+        if(expressionList.isEmpty()) {
+            return new GroupEvaluation(ImmutableMap.of(GroupKey.empty(), sequence));
+        }
+        else {
+            Multimap<GroupKey, SolutionMapping> map = HashMultimap.create();
+            for (SolutionMapping sm : sequence.getSolutionMappings()) {
+                ImmutableList.Builder<EvaluationResult> groupKeyBuilder = ImmutableList.builder();
+                for(GroupCondition condition : expressionList) {
+                    EvaluationResult eval = condition.asExpression().evaluate(sm);
+                    groupKeyBuilder.add(eval);
+                }
+                GroupKey key = new GroupKey(groupKeyBuilder.build());
+                map.put(key, sm);
+            }
+            ImmutableMap.Builder<GroupKey, SolutionSequence> mapBuilder = ImmutableMap.builder();
+            for(GroupKey key : map.keySet()) {
+                mapBuilder.put(key, new SolutionSequence(sequence.getVariableList(), ImmutableList.copyOf(map.get(key))));
+            }
+            GroupEvaluation groupEvaluation = new GroupEvaluation(mapBuilder.build());
+            lastEvaluation = Optional.of(groupEvaluation);
+            return groupEvaluation;
+
+        }
     }
 
     @Override

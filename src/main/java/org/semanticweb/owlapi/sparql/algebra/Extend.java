@@ -17,15 +17,15 @@ import java.util.Map;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
  */
-public class Extend extends GraphPatternAlgebraExpression {
+public class Extend extends GraphPatternAlgebraExpression<SolutionSequence> {
 
-    private GraphPatternAlgebraExpression algebraExpression;
+    private GraphPatternAlgebraExpression<SolutionSequence> algebraExpression;
 
     private Variable variable;
 
     private Expression expression;
 
-    public Extend(GraphPatternAlgebraExpression algebraExpression, Variable variable, Expression expression) {
+    public Extend(GraphPatternAlgebraExpression<SolutionSequence> algebraExpression, Variable variable, Expression expression) {
         this.algebraExpression = algebraExpression;
         this.variable = variable;
         this.expression = expression;
@@ -79,7 +79,7 @@ public class Extend extends GraphPatternAlgebraExpression {
     }
 
     @Override
-    public GraphPatternAlgebraExpression getSimplified() {
+    public GraphPatternAlgebraExpression<SolutionSequence> getSimplified() {
         return new Extend(algebraExpression.getSimplified(), variable, expression);
     }
 

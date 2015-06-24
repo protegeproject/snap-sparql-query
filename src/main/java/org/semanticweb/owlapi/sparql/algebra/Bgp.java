@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
  */
-public class Bgp extends GraphPatternAlgebraExpression {
+public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     private final ImmutableList<Axiom> axioms;
 

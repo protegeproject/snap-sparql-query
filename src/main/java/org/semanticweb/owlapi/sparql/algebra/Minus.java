@@ -15,13 +15,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
  */
-public class Minus extends GraphPatternAlgebraExpression {
+public class Minus extends GraphPatternAlgebraExpression<SolutionSequence> {
 
-    private GraphPatternAlgebraExpression left;
+    private GraphPatternAlgebraExpression<SolutionSequence> left;
 
-    private GraphPatternAlgebraExpression right;
+    private GraphPatternAlgebraExpression<SolutionSequence> right;
 
-    public Minus(GraphPatternAlgebraExpression left, GraphPatternAlgebraExpression right) {
+    public Minus(GraphPatternAlgebraExpression<SolutionSequence> left, GraphPatternAlgebraExpression<SolutionSequence> right) {
         this.left = checkNotNull(left);
         this.right = checkNotNull(right);
     }
@@ -35,7 +35,7 @@ public class Minus extends GraphPatternAlgebraExpression {
     }
 
     @Override
-    public GraphPatternAlgebraExpression getSimplified() {
+    public GraphPatternAlgebraExpression<SolutionSequence> getSimplified() {
         return new Minus(left.getSimplified(), right.getSimplified());
     }
 

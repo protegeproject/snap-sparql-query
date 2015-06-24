@@ -1,7 +1,10 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.collect.ImmutableList;
+import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
+import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInAggregateCallEvaluator;
+import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInCallEvaluator;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,22 +42,6 @@ public class BuiltInCallExpression implements Expression {
         return builtInCall.isAggregate();
     }
 
-//
-//    @Override
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("Expression(BUILTIN ");
-//        sb.append(builtInCall.name().toUpperCase());
-//        sb.append(" ");
-//        for(Expression expression : args) {
-//            sb.append("Arg(");
-//            sb.append(expression);
-//            sb.append(") ");
-//        }
-//        sb.append(")");
-//        return sb.toString();
-//    }
-
     public BuiltInCall getBuiltInCall() {
         return builtInCall;
     }
@@ -64,7 +51,7 @@ public class BuiltInCallExpression implements Expression {
     }
 
     public Set<Variable> getVariables() {
-        Set<Variable> result = new HashSet<Variable>();
+        Set<Variable> result = new HashSet<>();
         for(Expression arg : args) {
             Set<Variable> argVariables = arg.getVariables();
             result.addAll(argVariables);
@@ -74,6 +61,14 @@ public class BuiltInCallExpression implements Expression {
 
     public EvaluationResult evaluate(SolutionMapping sm) {
         return builtInCall.getEvaluator().evaluate(args, sm);
+    }
+
+    public EvaluationResult evaluateAsAggregate(SolutionSequence solutionSequence) {
+        BuiltInCallEvaluator evaluator = builtInCall.getEvaluator();
+        if(!(evaluator instanceof BuiltInAggregateCallEvaluator)) {
+            throw new RuntimeException("Expected an aggregate builtin call evaluator");
+        }
+        return ((BuiltInAggregateCallEvaluator) evaluator).evaluateAsAggregate(args, solutionSequence);
     }
 
     public boolean canEvaluateAsBoolean(SolutionMapping sm) {

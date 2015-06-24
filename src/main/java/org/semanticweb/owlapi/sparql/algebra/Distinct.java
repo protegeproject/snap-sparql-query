@@ -12,11 +12,11 @@ import java.util.Set;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15
  */
-public class Distinct extends AlgebraExpression {
+public class Distinct extends AlgebraExpression<SolutionSequence> {
 
-    private AlgebraExpression expression;
+    private AlgebraExpression<SolutionSequence> expression;
 
-    public Distinct(AlgebraExpression expression) {
+    public Distinct(AlgebraExpression<SolutionSequence> expression) {
         this.expression = expression;
     }
 

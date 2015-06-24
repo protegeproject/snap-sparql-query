@@ -399,9 +399,30 @@ public enum BuiltInCall {
             argList(NUMERIC)
     ),
 
+    MAX(
+            AGGREGATE,
+            new MAX_Evaluator(),
+            Numeric(),
+            argList(NUMERIC)
+    ),
+
+    MIN(
+            AGGREGATE,
+            new MIN_Evaluator(),
+            Numeric(),
+            argList(NUMERIC)
+    ),
+
+    AVG(
+            AGGREGATE,
+            new AVG_Evaluator(),
+            Numeric(),
+            argList(NUMERIC)
+    ),
+
     SAMPLE(
             AGGREGATE,
-            notImplemented(),
+            new SAMPLE_Evaluator(),
             Term(),
             argList(RDF_TERM)
     );

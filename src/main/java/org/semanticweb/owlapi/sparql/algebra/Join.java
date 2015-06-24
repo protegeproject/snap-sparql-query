@@ -17,13 +17,13 @@ import java.util.List;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
  */
-public class Join extends GraphPatternAlgebraExpression {
+public class Join extends GraphPatternAlgebraExpression<SolutionSequence> {
 
-    private final GraphPatternAlgebraExpression left;
+    private final GraphPatternAlgebraExpression<SolutionSequence> left;
 
-    private final GraphPatternAlgebraExpression right;
+    private final GraphPatternAlgebraExpression<SolutionSequence> right;
 
-    public Join(GraphPatternAlgebraExpression left, GraphPatternAlgebraExpression right) {
+    public Join(GraphPatternAlgebraExpression<SolutionSequence> left, GraphPatternAlgebraExpression<SolutionSequence> right) {
         this.left = left;
         this.right = right;
     }
@@ -37,9 +37,9 @@ public class Join extends GraphPatternAlgebraExpression {
     }
 
     @Override
-    public GraphPatternAlgebraExpression getSimplified() {
-        GraphPatternAlgebraExpression leftSimp = left.getSimplified();
-        GraphPatternAlgebraExpression rightSimp = right.getSimplified();
+    public GraphPatternAlgebraExpression<SolutionSequence> getSimplified() {
+        GraphPatternAlgebraExpression<SolutionSequence> leftSimp = left.getSimplified();
+        GraphPatternAlgebraExpression<SolutionSequence> rightSimp = right.getSimplified();
         if(leftSimp instanceof Empty) {
             return rightSimp;
         }

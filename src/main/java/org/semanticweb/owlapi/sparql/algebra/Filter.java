@@ -19,13 +19,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
  */
-public class Filter extends GraphPatternAlgebraExpression {
+public class Filter extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     private final ImmutableList<Expression> expressions;
 
-    private final GraphPatternAlgebraExpression algebraExpression;
+    private final GraphPatternAlgebraExpression<SolutionSequence> algebraExpression;
 
-    public Filter(ImmutableList<Expression> expressions, GraphPatternAlgebraExpression algebraExpression) {
+    public Filter(ImmutableList<Expression> expressions, GraphPatternAlgebraExpression<SolutionSequence> algebraExpression) {
         this.expressions = expressions;
         this.algebraExpression = algebraExpression;
     }
@@ -67,7 +67,7 @@ public class Filter extends GraphPatternAlgebraExpression {
     }
 
     @Override
-    public GraphPatternAlgebraExpression getSimplified() {
+    public GraphPatternAlgebraExpression<SolutionSequence> getSimplified() {
         return new Filter(expressions, algebraExpression.getSimplified());
     }
 

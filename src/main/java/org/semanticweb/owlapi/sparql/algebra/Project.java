@@ -13,13 +13,13 @@ import java.util.List;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15
  */
-public class Project extends AlgebraExpression {
+public class Project extends AlgebraExpression<SolutionSequence> {
 
-    private AlgebraExpression algebra;
+    private AlgebraExpression<SolutionSequence> algebra;
 
     private List<Variable> projectVariables;
 
-    public Project(AlgebraExpression algebra, List<Variable> projectVariables) {
+    public Project(AlgebraExpression<SolutionSequence> algebra, List<Variable> projectVariables) {
         this.algebra = algebra;
         this.projectVariables = projectVariables;
     }

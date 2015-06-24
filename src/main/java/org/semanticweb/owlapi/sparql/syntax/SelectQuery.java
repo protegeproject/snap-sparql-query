@@ -78,7 +78,7 @@ public class SelectQuery {
         }
     }
 
-    public AlgebraExpression translate() {
+    public AlgebraExpression<SolutionSequence> translate() {
         GraphPatternAlgebraExpression G = groupPattern.translate().getSimplified();
 
         ImmutableSet.Builder<Variable> visibleVariablesBuilder = ImmutableSet.builder();
@@ -112,7 +112,7 @@ public class SelectQuery {
 
             final List<SelectItem> rewrittenSelectItems = new ArrayList<>();
 
-            AggregateBuiltInReplacer.ReplacementContext replacementContext = new AggregateBuiltInReplacer.ReplacementContext(X);
+            AggregateBuiltInReplacer.ReplacementContext replacementContext = new AggregateBuiltInReplacer.ReplacementContext((Group) X);
             AggregateBuiltInReplacer aggregateBuiltInReplacer = new AggregateBuiltInReplacer(replacementContext);
 
             for(SelectItem selectItem : getSelectClause().getSelectItems()) {
@@ -136,13 +136,14 @@ public class SelectQuery {
 
             for(SelectItem selectItem : rewrittenSelectItems) {
                 if(selectItem instanceof SelectVariable) {
+                    UntypedVariable variable = new UntypedVariable("agg_" + aggregations.size());
                     Aggregation aggregation = new Aggregation(
                             new BuiltInCallExpression(
                                     BuiltInCall.SAMPLE,
                                     ImmutableList.<Expression>of(selectItem.getVariable())
                             ),
-                            X);
-                    E.add(new SelectExpressionAsVariable(new UntypedVariable("agg_" + aggregations.size()), selectItem.getVariable()));
+                            (Group) X, variable);
+                    E.add(new SelectExpressionAsVariable(variable, selectItem.getVariable()));
                     aggregations.add(aggregation);
                 }
                 else if(selectItem instanceof SelectExpressionAsVariable) {

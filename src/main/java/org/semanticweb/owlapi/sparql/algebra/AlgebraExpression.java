@@ -6,9 +6,9 @@ import java.io.StringWriter;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15
  */
-public abstract class AlgebraExpression {
+public abstract class AlgebraExpression<E> {
 
-    public abstract SolutionSequence evaluate(AlgebraEvaluationContext context);
+    public abstract E evaluate(AlgebraEvaluationContext context);
 
     public String toPrettyPrintedString() {
         StringWriter out = new StringWriter();

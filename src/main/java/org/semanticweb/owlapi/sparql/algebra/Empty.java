@@ -12,7 +12,7 @@ import java.util.Collections;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15
  */
-public class Empty extends GraphPatternAlgebraExpression {
+public class Empty extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     private static final Empty instance = new Empty();
 

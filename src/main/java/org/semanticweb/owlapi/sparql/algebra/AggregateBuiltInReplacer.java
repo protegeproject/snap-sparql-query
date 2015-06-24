@@ -165,17 +165,17 @@ public class AggregateBuiltInReplacer {
 
     public static final class ReplacementContext {
 
-        private final GraphPatternAlgebraExpression pattern;
+        private final Group pattern;
 
         private final Map<Aggregation, Variable> map = new LinkedHashMap<>();
 
-        public ReplacementContext(GraphPatternAlgebraExpression pattern) {
+        public ReplacementContext(Group pattern) {
             this.pattern = pattern;
         }
 
         public Variable replaceAggregate(BuiltInCallExpression expression) {
-            Aggregation aggregation = new Aggregation(expression, pattern);
             UntypedVariable variable = new UntypedVariable("agg_" + map.size());
+            Aggregation aggregation = new Aggregation(expression, pattern, variable);
             map.put(aggregation, variable);
             return variable;
         }

@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15
  */
-public class OrderBy extends AlgebraExpression {
+public class OrderBy extends AlgebraExpression<SolutionSequence> {
 
-    private AlgebraExpression algebraExpression;
+    private AlgebraExpression<SolutionSequence> algebraExpression;
 
     private OrderByComparator comparator;
 
-    public OrderBy(AlgebraExpression algebraExpression, OrderByComparator comparator) {
+    public OrderBy(AlgebraExpression<SolutionSequence> algebraExpression, OrderByComparator comparator) {
         this.algebraExpression = algebraExpression;
         this.comparator = comparator;
     }

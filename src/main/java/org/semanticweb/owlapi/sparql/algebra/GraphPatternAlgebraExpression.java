@@ -10,9 +10,9 @@ import java.util.Set;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
  */
-public abstract class GraphPatternAlgebraExpression extends AlgebraExpression {
+public abstract class GraphPatternAlgebraExpression<E> extends AlgebraExpression<E> {
 
-    public abstract GraphPatternAlgebraExpression getSimplified();
+    public abstract GraphPatternAlgebraExpression<E> getSimplified();
 
     public abstract void collectVisibleVariables(ImmutableSet.Builder<Variable> variableBuilder);
 
