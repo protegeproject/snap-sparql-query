@@ -88,8 +88,9 @@ public class TestParser {
     public static void main(String[] args) throws Exception {
         try {
             OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-            manager.addIRIMapper(new AutoIRIMapper(new File(new URI(args[0])).getParentFile(), false));
-            final OWLOntology rootOntology = manager.loadOntologyFromOntologyDocument(IRI.create(args[0]));
+            File file = new File(args[0]);
+            manager.addIRIMapper(new AutoIRIMapper(file.getParentFile(), false));
+            final OWLOntology rootOntology = manager.loadOntologyFromOntologyDocument(IRI.create(file));
             System.out.println("Loaded ontology: " + rootOntology);
             System.out.println("Creating reasoner...");
             reasoner = new Reasoner(rootOntology);
