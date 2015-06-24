@@ -1,10 +1,8 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.collect.ImmutableList;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;

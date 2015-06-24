@@ -4,13 +4,10 @@ package org.semanticweb.owlapi.sparql.syntax;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import de.derivo.sparqldlapi.Var;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.sparql.algebra.*;
 import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenPosition;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.Token;
 import org.semanticweb.owlapi.sparql.sparqldl.OrderByComparator;
 
 import java.util.*;

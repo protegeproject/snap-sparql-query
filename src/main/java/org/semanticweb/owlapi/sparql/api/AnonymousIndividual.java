@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>

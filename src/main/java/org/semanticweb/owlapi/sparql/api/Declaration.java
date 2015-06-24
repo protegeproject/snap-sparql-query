@@ -1,7 +1,5 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Objects;
-
 import java.util.Collection;
 
 import static com.google.common.base.Objects.toStringHelper;

@@ -2,11 +2,8 @@ package org.semanticweb.owlapi.sparql.syntax;
 
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
-import org.semanticweb.owlapi.sparql.api.Variable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 

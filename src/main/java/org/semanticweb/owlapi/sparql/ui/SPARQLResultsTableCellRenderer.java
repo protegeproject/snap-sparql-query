@@ -40,7 +40,6 @@
 package org.semanticweb.owlapi.sparql.ui;
 
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.sparql.api.AtomicIRI;
 import org.semanticweb.owlapi.sparql.api.HasPrefixedName;

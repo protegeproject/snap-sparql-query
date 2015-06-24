@@ -40,7 +40,6 @@
 package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: Matthew Horridge<br>

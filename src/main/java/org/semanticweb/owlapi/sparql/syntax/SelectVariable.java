@@ -1,9 +1,7 @@
 package org.semanticweb.owlapi.sparql.syntax;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
-import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenPosition;
 
 import static com.google.common.base.Objects.toStringHelper;

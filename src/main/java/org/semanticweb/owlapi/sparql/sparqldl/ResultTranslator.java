@@ -4,14 +4,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import de.derivo.sparqldlapi.QueryBinding;
 import de.derivo.sparqldlapi.QueryResult;
-import de.derivo.sparqldlapi.impl.LiteralTranslator;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

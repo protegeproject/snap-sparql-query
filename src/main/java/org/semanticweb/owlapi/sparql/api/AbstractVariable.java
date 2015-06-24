@@ -2,11 +2,6 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 
-import java.util.Collections;
-import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>

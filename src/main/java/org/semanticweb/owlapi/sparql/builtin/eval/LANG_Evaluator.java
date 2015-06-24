@@ -1,6 +1,9 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
-import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.api.EvaluationResult;
+import org.semanticweb.owlapi.sparql.api.Expression;
+import org.semanticweb.owlapi.sparql.api.Literal;
+import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
 /**
  * Matthew Horridge

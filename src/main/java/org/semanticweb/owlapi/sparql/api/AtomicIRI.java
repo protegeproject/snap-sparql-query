@@ -3,7 +3,9 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Objects;
 import org.semanticweb.owlapi.model.IRI;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

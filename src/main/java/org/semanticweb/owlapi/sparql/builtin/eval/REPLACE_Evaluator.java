@@ -6,7 +6,6 @@ import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 07/06/15

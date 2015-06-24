@@ -46,7 +46,10 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Author: Matthew Horridge<br>

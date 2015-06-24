@@ -1,12 +1,11 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import org.semanticweb.owlapi.sparql.builtin.Timestamp;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;

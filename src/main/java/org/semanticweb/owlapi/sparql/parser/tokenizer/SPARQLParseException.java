@@ -41,7 +41,6 @@ package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
-import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import java.util.Collections;

@@ -2,8 +2,6 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
 
-import java.util.Collection;
-
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>

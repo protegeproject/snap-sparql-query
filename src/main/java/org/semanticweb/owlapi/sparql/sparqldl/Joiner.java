@@ -1,13 +1,14 @@
 package org.semanticweb.owlapi.sparql.sparqldl;
 
 import com.google.common.collect.ImmutableMap;
-import de.derivo.sparqldlapi.Var;
 import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.api.Term;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 07/06/15

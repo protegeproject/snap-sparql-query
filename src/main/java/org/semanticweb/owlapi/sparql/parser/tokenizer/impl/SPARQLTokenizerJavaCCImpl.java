@@ -39,10 +39,7 @@
 
 package org.semanticweb.owlapi.sparql.parser.tokenizer.impl;
 
-import com.google.common.base.Optional;
-import org.semanticweb.owlapi.sparql.api.PrimitiveType;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;

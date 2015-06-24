@@ -42,7 +42,6 @@ package org.semanticweb.owlapi.sparql.api;
 import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

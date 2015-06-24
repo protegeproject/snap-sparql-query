@@ -3,7 +3,8 @@ package org.semanticweb.owlapi.sparql.algebra;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.*;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 23/06/15

@@ -2,12 +2,12 @@ package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.*;
-import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.api.EvaluationResult;
+import org.semanticweb.owlapi.sparql.api.GroupCondition;
+import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.api.Variable;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 22/06/15

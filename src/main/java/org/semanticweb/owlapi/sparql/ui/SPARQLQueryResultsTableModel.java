@@ -40,8 +40,10 @@
 package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.base.Optional;
-import org.semanticweb.owlapi.model.PrefixManager;
-import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.api.RDFTerm;
+import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
+import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.api.Variable;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.HashMap;

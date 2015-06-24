@@ -2,9 +2,7 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**

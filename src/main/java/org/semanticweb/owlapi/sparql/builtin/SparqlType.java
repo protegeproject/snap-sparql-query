@@ -39,7 +39,6 @@
 
 package org.semanticweb.owlapi.sparql.builtin;
 
-import org.semanticweb.owlapi.sparql.api.PrimitiveType;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 
 import java.util.ArrayList;

@@ -1,6 +1,5 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.Collection;

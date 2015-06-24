@@ -4,7 +4,8 @@ import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 23/06/15

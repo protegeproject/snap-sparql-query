@@ -40,13 +40,13 @@
 package org.semanticweb.owlapi.sparql.builtin;
 
 import com.google.common.collect.ImmutableList;
-import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.builtin.eval.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.semanticweb.owlapi.sparql.builtin.BuiltInCallType.*;
+import static org.semanticweb.owlapi.sparql.builtin.BuiltInCallType.AGGREGATE;
+import static org.semanticweb.owlapi.sparql.builtin.BuiltInCallType.SIMPLE;
 import static org.semanticweb.owlapi.sparql.builtin.SparqlType.*;
 
 /**

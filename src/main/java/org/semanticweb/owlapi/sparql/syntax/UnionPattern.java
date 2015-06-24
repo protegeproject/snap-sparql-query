@@ -2,7 +2,6 @@ package org.semanticweb.owlapi.sparql.syntax;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.sparql.algebra.GraphPatternAlgebraExpression;
-import org.semanticweb.owlapi.sparql.algebra.Union;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
 import java.util.Set;

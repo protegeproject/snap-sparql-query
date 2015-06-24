@@ -1,7 +1,5 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
-
 import java.io.PrintWriter;
 
 /**

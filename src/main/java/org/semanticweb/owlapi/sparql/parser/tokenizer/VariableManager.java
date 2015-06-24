@@ -40,9 +40,13 @@
 package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
 import com.google.common.base.Optional;
-import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.api.PrimitiveType;
+import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>

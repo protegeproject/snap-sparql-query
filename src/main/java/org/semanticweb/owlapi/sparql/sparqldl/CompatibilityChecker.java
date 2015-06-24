@@ -3,7 +3,6 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.api.Term;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
 import java.util.Set;

@@ -41,11 +41,9 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTerminal;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
@@ -59,11 +57,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 

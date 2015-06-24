@@ -1,14 +1,15 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.collect.*;
-import de.derivo.sparqldlapi.Var;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 22/06/15

@@ -2,12 +2,9 @@ package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 
 import java.io.PrintWriter;
-import java.util.Collections;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15

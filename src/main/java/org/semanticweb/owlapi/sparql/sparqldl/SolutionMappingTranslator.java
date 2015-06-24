@@ -3,16 +3,12 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 import com.google.common.collect.ImmutableMap;
 import de.derivo.sparqldlapi.QueryArgument;
 import de.derivo.sparqldlapi.QueryBinding;
-import de.derivo.sparqldlapi.impl.LiteralTranslator;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.sparql.api.*;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 21/03/15

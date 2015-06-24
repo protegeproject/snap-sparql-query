@@ -5,7 +5,6 @@ import org.semanticweb.owlapi.sparql.api.BuiltInCallExpression;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenPosition;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.Token;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;

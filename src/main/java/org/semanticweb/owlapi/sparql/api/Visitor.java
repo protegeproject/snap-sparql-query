@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.SWRLRule;
 
 /**
  * Author: Matthew Horridge<br>

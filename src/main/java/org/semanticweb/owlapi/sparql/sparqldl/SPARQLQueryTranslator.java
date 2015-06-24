@@ -40,23 +40,7 @@
 package org.semanticweb.owlapi.sparql.sparqldl;
 
 
-import de.derivo.sparqldlapi.Query;
-import de.derivo.sparqldlapi.QueryArgument;
-import de.derivo.sparqldlapi.QueryAtom;
-import de.derivo.sparqldlapi.impl.LiteralTranslator;
-import de.derivo.sparqldlapi.impl.QueryAtomGroupImpl;
-import de.derivo.sparqldlapi.impl.QueryImpl;
-import de.derivo.sparqldlapi.types.QueryArgumentType;
-import de.derivo.sparqldlapi.types.QueryAtomType;
-import de.derivo.sparqldlapi.types.QueryType;
-import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.api.SPARQLGraphPattern;
-import org.semanticweb.owlapi.sparql.api.SPARQLQuery;
-import org.semanticweb.owlapi.sparql.api.SPARQLQueryType;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
-import org.semanticweb.owlapi.sparql.syntax.TriplesBlockPattern;
-
-import java.util.*;
 
 /**
  * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 27/03/2012

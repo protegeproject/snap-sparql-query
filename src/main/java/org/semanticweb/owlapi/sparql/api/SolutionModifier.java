@@ -42,10 +42,6 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.sparql.syntax.OrderClause;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>

@@ -6,8 +6,9 @@ import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInAggregateCallEvaluator;
 import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInCallEvaluator;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 

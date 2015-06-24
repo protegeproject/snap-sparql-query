@@ -1,16 +1,13 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.collect.ImmutableList;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.OrderCondition;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 import org.semanticweb.owlapi.sparql.sparqldl.OrderByComparator;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15

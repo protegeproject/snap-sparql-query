@@ -2,10 +2,11 @@ package org.semanticweb.owlapi.sparql.api;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
-import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

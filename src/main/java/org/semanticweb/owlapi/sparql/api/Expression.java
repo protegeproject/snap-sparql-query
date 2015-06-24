@@ -1,8 +1,5 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>

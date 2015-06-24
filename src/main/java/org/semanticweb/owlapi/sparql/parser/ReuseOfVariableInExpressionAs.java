@@ -1,7 +1,6 @@
 package org.semanticweb.owlapi.sparql.parser;
 
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLParseException;
-import org.semanticweb.owlapi.sparql.parser.tokenizer.TokenPosition;
 import org.semanticweb.owlapi.sparql.syntax.SelectExpressionAsVariable;
 
 /**

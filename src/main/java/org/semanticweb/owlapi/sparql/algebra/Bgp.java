@@ -1,29 +1,14 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import de.derivo.sparqldlapi.Query;
-import de.derivo.sparqldlapi.QueryEngine;
-import de.derivo.sparqldlapi.QueryResult;
-import de.derivo.sparqldlapi.exceptions.QueryEngineException;
-import de.derivo.sparqldlapi.impl.LiteralTranslator;
-import javafx.scene.paint.Stop;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.api.Axiom;
-import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
-import org.semanticweb.owlapi.sparql.sparqldl.BgpTranslator;
-import org.semanticweb.owlapi.sparql.sparqldl.ResultTranslator;
-import org.semanticweb.owlapi.sparql.sparqldl.SolutionMappingTranslator;
 
 import java.io.PrintWriter;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15

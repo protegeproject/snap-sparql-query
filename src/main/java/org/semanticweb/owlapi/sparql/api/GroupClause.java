@@ -2,8 +2,6 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.List;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**

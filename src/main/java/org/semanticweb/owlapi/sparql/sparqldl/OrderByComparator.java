@@ -39,11 +39,9 @@
 
 package org.semanticweb.owlapi.sparql.sparqldl;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.syntax.OrderClause;
 
 import java.util.Comparator;
 import java.util.List;

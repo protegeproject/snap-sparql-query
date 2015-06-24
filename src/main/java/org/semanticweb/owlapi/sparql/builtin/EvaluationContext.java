@@ -1,7 +1,5 @@
 package org.semanticweb.owlapi.sparql.builtin;
 
-import java.util.Date;
-
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 05/06/15
  */

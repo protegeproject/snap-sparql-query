@@ -2,12 +2,15 @@ package org.semanticweb.owlapi.sparql.syntax;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import jpaul.Constraints.Var;
 import org.semanticweb.owlapi.sparql.algebra.*;
-import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.api.Axiom;
+import org.semanticweb.owlapi.sparql.api.Expression;
+import org.semanticweb.owlapi.sparql.api.Variable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

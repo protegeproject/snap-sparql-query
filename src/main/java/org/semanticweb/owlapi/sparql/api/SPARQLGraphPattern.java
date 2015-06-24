@@ -39,12 +39,6 @@
 
 package org.semanticweb.owlapi.sparql.api;
 
-import jpaul.Constraints.Var;
-import org.semanticweb.owlapi.sparql.api.Axiom;
-import org.semanticweb.owlapi.sparql.api.Bind;
-import org.semanticweb.owlapi.sparql.api.Expression;
-import org.semanticweb.owlapi.sparql.api.Variable;
-
 import java.util.*;
 
 /**

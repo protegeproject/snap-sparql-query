@@ -3,7 +3,6 @@ package org.semanticweb.owlapi.sparql.algebra;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 

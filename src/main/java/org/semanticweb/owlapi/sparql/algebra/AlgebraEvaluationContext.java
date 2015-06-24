@@ -1,6 +1,5 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.sparqldl.BgpEvaluator;
 
 /**

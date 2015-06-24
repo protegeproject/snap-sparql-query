@@ -1,16 +1,12 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import de.derivo.sparqldlapi.Var;
-import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
-import org.semanticweb.owlapi.sparql.syntax.SelectExpressionAsVariable;
+import org.semanticweb.owlapi.sparql.api.BuiltInCallExpression;
+import org.semanticweb.owlapi.sparql.api.EvaluationResult;
+import org.semanticweb.owlapi.sparql.api.Variable;
 
 import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 22/06/15

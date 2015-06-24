@@ -5,8 +5,6 @@ import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
-import java.util.List;
-
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 10/06/15
  */
