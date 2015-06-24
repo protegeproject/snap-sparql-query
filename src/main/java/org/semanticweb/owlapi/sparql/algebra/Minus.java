@@ -61,18 +61,7 @@ public class Minus extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(Minus ");
-        left.prettyPrint(writer, level + 1);
-        right.prettyPrint(writer, level + 1);
-        writer.print(indentation);
-        writer.println(")");
-    }
-
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 }

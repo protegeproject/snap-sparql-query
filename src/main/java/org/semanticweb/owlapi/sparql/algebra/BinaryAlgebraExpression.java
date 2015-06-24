@@ -25,16 +25,4 @@ public abstract class BinaryAlgebraExpression extends AlgebraExpression {
     }
 
     protected abstract String getName();
-
-    @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.print("( ");
-        writer.print(getName());
-        writer.println();
-        left.prettyPrint(writer, level + 1);
-        writer.println();
-        right.prettyPrint(writer, level + 1);
-        writer.println(")");
-    }
 }

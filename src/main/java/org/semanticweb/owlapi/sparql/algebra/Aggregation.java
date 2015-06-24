@@ -25,6 +25,18 @@ public class Aggregation extends GraphPatternAlgebraExpression<ImmutableList<Agg
         this.variable = variable;
     }
 
+    public BuiltInCallExpression getExpression() {
+        return expression;
+    }
+
+    public Group getAlgebraExpression() {
+        return algebraExpression;
+    }
+
+    public Variable getVariable() {
+        return variable;
+    }
+
     @Override
     public Aggregation getSimplified() {
         return this;
@@ -49,18 +61,7 @@ public class Aggregation extends GraphPatternAlgebraExpression<ImmutableList<Agg
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(Aggregation ");
-        writer.print(indentation + "    ");
-        writer.println(expression);
-        algebraExpression.prettyPrint(writer, level + 1);
-        writer.print(indentation);
-        writer.println(")");
-    }
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 }

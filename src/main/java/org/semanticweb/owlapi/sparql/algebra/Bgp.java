@@ -46,7 +46,7 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 
@@ -60,18 +60,6 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
         return Objects.toStringHelper("BGP")
                 .addValue(axioms)
                 .toString();
-    }
-
-    @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(Bgp ");
-        for(Axiom ax : axioms) {
-            writer.print(indentation + "    ");
-            writer.println(ax);
-        }
-        writer.print(indentation);
-        writer.println(")");
     }
 
     @Override

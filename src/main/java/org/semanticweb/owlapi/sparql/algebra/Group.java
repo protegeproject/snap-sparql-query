@@ -25,6 +25,14 @@ public class Group extends GraphPatternAlgebraExpression<GroupEvaluation> {
         this.pattern = pattern;
     }
 
+    public ImmutableList<GroupCondition> getExpressionList() {
+        return expressionList;
+    }
+
+    public GraphPatternAlgebraExpression<SolutionSequence> getPattern() {
+        return pattern;
+    }
+
     @Override
     public Group getSimplified() {
         return this;
@@ -67,20 +75,7 @@ public class Group extends GraphPatternAlgebraExpression<GroupEvaluation> {
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(Group ");
-        for(GroupCondition condition : expressionList) {
-            writer.print(indentation + "    ");
-            writer.println(condition.asExpression());
-        }
-        pattern.prettyPrint(writer, level + 1);
-        writer.print(indentation);
-        writer.println(")");
-    }
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 }

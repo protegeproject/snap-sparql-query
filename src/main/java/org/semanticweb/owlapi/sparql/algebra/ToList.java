@@ -18,18 +18,12 @@ public class ToList extends AlgebraExpression<SolutionSequence> {
         return algebraExpression.evaluate(context);
     }
 
-    @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(ToList ");
-        algebraExpression.prettyPrint(writer, level + 1);
-        writer.print(indentation);
-        writer.println(")");
+    public GraphPatternAlgebraExpression<SolutionSequence> getAlgebraExpression() {
+        return algebraExpression;
     }
 
-
     @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 }

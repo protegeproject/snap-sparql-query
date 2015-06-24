@@ -80,22 +80,7 @@ public class Extend extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(Extend ");
-        writer.print(indentation + "    ");
-        writer.print(variable.getVariableNamePrefix().getPrefix());
-        writer.print(variable.getName());
-        writer.println();
-        writer.print(indentation + "    ");
-        writer.println(expression);
-        algebraExpression.prettyPrint(writer, level + 1);
-        writer.print(")");
-    }
-
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 }

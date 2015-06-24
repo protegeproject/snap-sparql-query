@@ -29,6 +29,14 @@ public class Union extends GraphPatternAlgebraExpression<SolutionSequence> {
         return new Union(left.getSimplified(), right.getSimplified());
     }
 
+    public GraphPatternAlgebraExpression<SolutionSequence> getLeft() {
+        return left;
+    }
+
+    public GraphPatternAlgebraExpression<SolutionSequence> getRight() {
+        return right;
+    }
+
     @Override
     public void collectVisibleVariables(ImmutableSet.Builder<Variable> variableBuilder) {
         left.collectVisibleVariables(variableBuilder);
@@ -57,19 +65,7 @@ public class Union extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(Union ");
-        left.prettyPrint(writer, level + 1);
-        writer.println();
-        right.prettyPrint(writer, level + 1);
-        writer.print(indentation);
-        writer.println(")");
-    }
-
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, X extends Throwable> R accept(AlgebraExpressionVisitor<R, X> visitor) throws X {
         return visitor.visit(this);
     }
 }

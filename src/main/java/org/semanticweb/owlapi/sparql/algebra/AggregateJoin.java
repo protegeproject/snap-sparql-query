@@ -32,6 +32,10 @@ public class AggregateJoin extends GraphPatternAlgebraExpression<SolutionSequenc
 
     }
 
+    public ImmutableList<Aggregation> getAggregations() {
+        return aggregations;
+    }
+
     @Override
     public SolutionSequence evaluate(AlgebraEvaluationContext context) {
         Set<Variable> variables = new HashSet<>();
@@ -57,18 +61,7 @@ public class AggregateJoin extends GraphPatternAlgebraExpression<SolutionSequenc
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(AggregateJoin ");
-        for(Aggregation aggregation : aggregations) {
-            aggregation.prettyPrint(writer, level + 1);
-        }
-        writer.print(indentation);
-        writer.println(")");
-    }
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, X extends Throwable> R accept(AlgebraExpressionVisitor<R, X> visitor) throws X {
         return visitor.visit(this);
     }
 }

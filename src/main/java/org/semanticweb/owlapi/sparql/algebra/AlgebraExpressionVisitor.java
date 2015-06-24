@@ -3,7 +3,7 @@ package org.semanticweb.owlapi.sparql.algebra;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 11/06/15
  */
-public interface AlgebraExpressionVisitor<R, E extends Exception> {
+public interface AlgebraExpressionVisitor<R, E extends Throwable> {
 
     R visit(Bgp bgp) throws E;
 

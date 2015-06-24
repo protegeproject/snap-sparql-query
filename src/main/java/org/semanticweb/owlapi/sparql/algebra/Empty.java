@@ -37,19 +37,12 @@ public class Empty extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public GraphPatternAlgebraExpression getSimplified() {
+    public Empty getSimplified() {
         return this;
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(Empty)");
-    }
-
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 }

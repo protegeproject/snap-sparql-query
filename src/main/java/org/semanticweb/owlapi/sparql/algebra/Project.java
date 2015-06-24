@@ -47,24 +47,7 @@ public class Project extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(Project ");
-        algebra.prettyPrint(writer, level + 1);
-        writer.print(indentation + "    ");
-        for(Variable variable : projectVariables) {
-            writer.print(variable.getVariableNamePrefix().getPrefix());
-            writer.print(variable.getName());
-            writer.print(" ");
-        }
-        writer.println();
-        writer.print(indentation);
-        writer.println(")");
-    }
-
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 }

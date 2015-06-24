@@ -68,23 +68,7 @@ public class Filter extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(Filter ");
-        writer.print(indentation + "    ");
-        for(Expression expression : expressions) {
-            writer.print(expression);
-            writer.print(" ");
-        }
-        writer.println();
-        algebraExpression.prettyPrint(writer, level + 1);
-        writer.print(indentation);
-        writer.print(")");
-    }
-
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 }

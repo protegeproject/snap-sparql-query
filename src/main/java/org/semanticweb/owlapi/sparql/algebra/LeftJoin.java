@@ -37,6 +37,10 @@ public class LeftJoin extends GraphPatternAlgebraExpression<SolutionSequence> {
         return left;
     }
 
+    public GraphPatternAlgebraExpression<SolutionSequence> getRight() {
+        return right;
+    }
+
     @Override
     public GraphPatternAlgebraExpression<SolutionSequence> getSimplified() {
         return new LeftJoin(left.getSimplified(), right.getSimplified(), expression);
@@ -84,18 +88,8 @@ public class LeftJoin extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(LeftJoin ");
-        left.prettyPrint(writer, level + 1);
-        right.prettyPrint(writer, level + 1);
-        writer.print(indentation);
-        writer.println(")");
-    }
-
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, X extends Throwable> R accept(AlgebraExpressionVisitor<R, X> visitor) throws X {
         return visitor.visit(this);
     }
+
 }

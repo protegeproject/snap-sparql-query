@@ -23,6 +23,14 @@ public class OrderBy extends AlgebraExpression<SolutionSequence> {
         this.comparator = comparator;
     }
 
+    public AlgebraExpression<SolutionSequence> getAlgebraExpression() {
+        return algebraExpression;
+    }
+
+    public OrderByComparator getComparator() {
+        return comparator;
+    }
+
     @Override
     public SolutionSequence evaluate(AlgebraEvaluationContext context) {
         SolutionSequence sequence = algebraExpression.evaluate(context);
@@ -32,22 +40,7 @@ public class OrderBy extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    protected void prettyPrint(PrintWriter writer, int level, String indentation) {
-        writer.print(indentation);
-        writer.println("(OrderBy ");
-        algebraExpression.prettyPrint(writer, level + 1);
-        for(OrderCondition orderCondition : comparator.getOrderConditions()) {
-            writer.print(indentation);
-            writer.print("    ");
-            writer.println(orderCondition);
-        }
-        writer.print(indentation);
-        writer.println(")");
-    }
-
-
-    @Override
-    public <R, E extends Exception> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
+    public <R, E extends Throwable> R accept(AlgebraExpressionVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
 }

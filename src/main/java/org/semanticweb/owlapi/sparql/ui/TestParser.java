@@ -50,6 +50,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraPrettyPrinter;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
@@ -65,6 +66,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
@@ -134,7 +136,7 @@ public class TestParser {
         SPARQLTokenizer tokenizer = new SPARQLTokenizerJavaCCImpl(ontology, new StringReader(s));
         SPARQLParserImpl parser = new SPARQLParserImpl(tokenizer);
         SelectQuery query = parser.parseQuery();
-        System.out.println(query.translate().toPrettyPrintedString());
+        new AlgebraPrettyPrinter().prettyPrint(query.translate(), new PrintWriter(System.out));
 
         Stopwatch stopwatch = Stopwatch.createStarted();
         SPARQLQueryResult result = queryEngine.ask(query);
