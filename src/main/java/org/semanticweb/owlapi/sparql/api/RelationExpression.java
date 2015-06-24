@@ -115,27 +115,6 @@ public class RelationExpression implements Expression {
                 .toString();
     }
 
-//    @Override
-//    public Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
-//        if(this.equals(subExpression)) {
-//            return withExpression;
-//        }
-//        return new RelationExpression(
-//                left.replaceSubExpressionWith(subExpression, withExpression),
-//                right.replaceSubExpressionWith(subExpression, withExpression),
-//                relation
-//        );
-//    }
-
-    @Override
-    public List<Expression> getSubExpressions() {
-        ArrayList<Expression> expressions = new ArrayList<>();
-        expressions.add(this);
-        expressions.addAll(left.getSubExpressions());
-        expressions.addAll(right.getSubExpressions());
-        return expressions;
-    }
-
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);

@@ -153,27 +153,6 @@ public class BuiltInCallExpression implements Expression {
         return builtInCall.getEvaluator().evaluate(args, sm);
     }
 
-//    @Override
-//    public Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
-//        if(subExpression.equals(this)) {
-//            return withExpression;
-//        }
-//        List<Expression> replacementArgs = args.stream()
-//                .map((a) -> a.replaceSubExpressionWith(subExpression, withExpression))
-//                .collect(Collectors.toList());
-//        return new BuiltInCallExpression(builtInCall, ImmutableList.copyOf(replacementArgs));
-//    }
-
-    @Override
-    public List<Expression> getSubExpressions() {
-        List<Expression> result = new ArrayList<>();
-        result.add(this);
-        for(Expression arg : args) {
-            result.addAll(arg.getSubExpressions());
-        }
-        return result;
-    }
-
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);

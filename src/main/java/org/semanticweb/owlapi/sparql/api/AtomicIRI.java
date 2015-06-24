@@ -128,19 +128,6 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
                 .addValue(iri)
                 .toString();
     }
-//
-//    @Override
-//    public Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
-//        if(this.equals(subExpression)) {
-//            return withExpression;
-//        }
-//        return this;
-//    }
-
-    @Override
-    public List<Expression> getSubExpressions() {
-        return Arrays.asList(this);
-    }
 
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {

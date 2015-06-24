@@ -11,9 +11,5 @@ import java.util.Map;
  */
 public interface Expression extends HasEvaluation, HasVariables {
 
-//    Expression replaceSubExpressionWith(Map<? extends Expression, ? extends Expression> replacementMap);
-
-    List<Expression> getSubExpressions();
-
     <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E;
 }

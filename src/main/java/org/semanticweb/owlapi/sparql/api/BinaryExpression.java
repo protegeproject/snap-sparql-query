@@ -49,27 +49,4 @@ public abstract class BinaryExpression implements Expression {
         return right;
     }
 
-//    @Override
-//    public final Expression replaceSubExpressionWith(Map<? extends Expression, ? extends Expression> map) {
-//        Expression replacementExpression = map.get(this);
-//        if(replacementExpression == null) {
-//
-//        }
-//        if(this.equals(subExpression)) {
-//            return withExpression;
-//        }
-//        return new MultiplyExpression(
-//                getLeft().replaceSubExpressionWith(subExpression, withExpression),
-//                getRight().replaceSubExpressionWith(subExpression, withExpression)
-//        );
-//    }
-
-    @Override
-    public List<Expression> getSubExpressions() {
-        ArrayList<Expression> expressions = new ArrayList<>();
-        expressions.add(this);
-        expressions.addAll(left.getSubExpressions());
-        expressions.addAll(right.getSubExpressions());
-        return expressions;
-    }
 }

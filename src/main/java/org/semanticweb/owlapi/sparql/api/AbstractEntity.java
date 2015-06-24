@@ -114,17 +114,4 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
     public final AnnotationSubject toAnnotationSubject() {
         return new AtomicIRI(getIRI());
     }
-
-//    @Override
-//    public final Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
-//        if(this.equals(subExpression)) {
-//            return withExpression;
-//        }
-//        return this;
-//    }
-
-    @Override
-    public List<Expression> getSubExpressions() {
-        return Arrays.asList(this);
-    }
 }

@@ -116,16 +116,4 @@ public abstract class Variable implements Atomic, HasIdentifier, HasVariables, H
         throw new IllegalStateException("Unknown EntityType: " + entityType);
     }
 
-//    @Override
-//    public final Expression replaceSubExpressionWith(Expression subExpression, Expression withExpression) {
-//        if(this.equals(subExpression)) {
-//            return withExpression;
-//        }
-//        return this;
-//    }
-
-    @Override
-    public List<Expression> getSubExpressions() {
-        return Arrays.asList(this);
-    }
 }
