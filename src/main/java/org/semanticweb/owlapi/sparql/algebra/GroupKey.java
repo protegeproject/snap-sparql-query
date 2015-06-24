@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 
 import static com.google.common.base.Objects.toStringHelper;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 23/06/15
@@ -16,7 +17,7 @@ public class GroupKey {
     private final static GroupKey EMPTY = new GroupKey(ImmutableList.of());
 
     public GroupKey(ImmutableList<EvaluationResult> key) {
-        this.key = key;
+        this.key = checkNotNull(key);
     }
 
     public static GroupKey empty() {
