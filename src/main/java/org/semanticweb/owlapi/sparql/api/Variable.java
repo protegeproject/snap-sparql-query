@@ -70,7 +70,7 @@ public abstract class Variable implements Atomic, HasIdentifier, HasVariables, H
 
     public abstract RDFTerm getBound(IRI iri);
 
-    public abstract PrimitiveType getType();
+//    public abstract PrimitiveType getType();
 
     @Override
     final public boolean equals(Object obj) {

@@ -21,10 +21,10 @@ public class LiteralVariable extends AbstractVariable implements AtomicLiteral {
         return visitor.visit(this);
     }
 
-    @Override
-    public PrimitiveType getType() {
-        return PrimitiveType.LITERAL;
-    }
+//    @Override
+//    public PrimitiveType getType() {
+//        return PrimitiveType.LITERAL;
+//    }
 
     @Override
     public RDFTerm getBound(IRI iri) {

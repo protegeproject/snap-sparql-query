@@ -22,11 +22,6 @@ public class ObjectPropertyVariable extends AbstractVariable implements AtomicOb
     }
 
     @Override
-    public PrimitiveType getType() {
-        return PrimitiveType.OBJECT_PROPERTY;
-    }
-
-    @Override
     public RDFTerm getBound(IRI iri) {
         return new AtomicIRI(iri);
     }

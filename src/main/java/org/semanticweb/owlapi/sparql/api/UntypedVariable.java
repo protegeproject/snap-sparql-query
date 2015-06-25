@@ -23,11 +23,6 @@ public class UntypedVariable extends AbstractVariable  {
         return visitor.visit(this);
     }
 
-    @Override
-    public PrimitiveType getType() {
-        return null;
-    }
-
     public RDFTerm getBound(IRI iri) {
         return new AtomicIRI(iri);
     }

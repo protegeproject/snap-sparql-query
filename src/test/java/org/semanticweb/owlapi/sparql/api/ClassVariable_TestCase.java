@@ -54,10 +54,4 @@ public class ClassVariable_TestCase {
     public void shouldImplementToString() {
         MatcherAssert.assertThat(classVariable.toString(), Matchers.startsWith("ClassVariable"));
     }
-
-    @Test
-    public void should_getType() {
-        MatcherAssert.assertThat(classVariable.getType(), Matchers.is(PrimitiveType.CLASS));
-    }
-
 }

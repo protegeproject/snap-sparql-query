@@ -1239,27 +1239,16 @@ public class SPARQLParserImpl {
             SPARQLToken token = tokenizer.consume();
             result = new NamedClass(getIRIFromToken(token));
         }
-//        else if(peek(OPEN_PAR)) {
-//            parseClassExpression();
+        // TODO: Consider supporting this in CONSTRUCT queries
+//        else if (peek(UntypedIRITokenType.get())) {
+//            SPARQLToken token = tokenizer.consume();
+//            result = new NamedClass(getIRIFromToken(token));
 //        }
         else {
             tokenizer.raiseError();
         }
         return result;
     }
-
-//    private AtomicClass getClassFromToken(SPARQLToken token) {
-//        if(token.hasTokenType(DeclaredVariableTokenType.get(PrimitiveType.CLASS))) {
-//            return new ClassVariable(token.getImage());
-//        }
-//        else if(token.hasTokenType(VariableTokenType.get())) {
-//            return new ClassVariable(token.getImage());
-//        }
-//        else {
-//            IRI iri = getIRIFromToken(token);
-//            return new NamedClass(iri);
-//        }
-//    }
 
     private AtomicDatatype getDatatypeFromToken(SPARQLToken token) {
         if(token.hasTokenType(VariableTokenType.get())) {

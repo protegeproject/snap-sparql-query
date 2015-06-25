@@ -24,11 +24,6 @@ public class ClassVariable extends AbstractVariable implements AtomicClass {
     }
 
     @Override
-    public PrimitiveType getType() {
-        return PrimitiveType.CLASS;
-    }
-
-    @Override
     public RDFTerm getBound(IRI iri) {
         return new AtomicIRI(iri);
     }

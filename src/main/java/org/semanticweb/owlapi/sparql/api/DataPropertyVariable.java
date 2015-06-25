@@ -22,11 +22,6 @@ public class DataPropertyVariable extends AbstractVariable implements AtomicData
     }
 
     @Override
-    public PrimitiveType getType() {
-        return PrimitiveType.DATA_PROPERTY;
-    }
-
-    @Override
     public RDFTerm getBound(IRI iri) {
         return new AtomicIRI(iri);
     }

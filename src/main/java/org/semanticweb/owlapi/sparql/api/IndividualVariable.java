@@ -22,11 +22,6 @@ public class IndividualVariable extends AbstractVariable implements AtomicIndivi
     }
 
     @Override
-    public PrimitiveType getType() {
-        return PrimitiveType.NAMED_INDIVIDUAL;
-    }
-
-    @Override
     public RDFTerm getBound(IRI iri) {
         return new AtomicIRI(iri);
     }

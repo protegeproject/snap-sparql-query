@@ -19,11 +19,11 @@ public class IRIVariable extends AbstractVariable implements AnnotationSubject, 
         return null;
     }
 
-    @Override
-    public PrimitiveType getType() {
-        return PrimitiveType.LITERAL;
-    }
-
+//    @Override
+//    public PrimitiveType getType() {
+//        return PrimitiveType.LITERAL;
+//    }
+//
     @Override
     public Optional<AtomicIRI> bind(SolutionMapping sm) {
         return sm.getIRIForVariable(this);
