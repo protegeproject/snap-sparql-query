@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Set;
 
 /**
@@ -41,5 +43,14 @@ public class EquivalentClasses extends NaryClassAxiom implements ClassAxiom {
         }
         EquivalentClasses other = (EquivalentClasses) obj;
         return this.getClassExpressions().equals(other.getClassExpressions());
+    }
+
+    @Override
+    public Optional<EquivalentClasses> bind(SolutionMapping sm) {
+        Optional<Set<ClassExpression>> boundClassExpressions = getBoundClassExpressions(sm);
+        if(!boundClassExpressions.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new EquivalentClasses(boundClassExpressions.get()));
     }
 }

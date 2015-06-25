@@ -44,7 +44,7 @@ public class Aggregation extends GraphPatternAlgebraExpression<ImmutableList<Agg
 
     @Override
     public void collectVisibleVariables(ImmutableSet.Builder<Variable> variableBuilder) {
-
+        algebraExpression.collectVisibleVariables(variableBuilder);
     }
 
     @Override

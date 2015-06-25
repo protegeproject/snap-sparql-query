@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.Collection;
@@ -38,5 +39,16 @@ public class AnnotationPropertyVariable extends AbstractVariable implements Atom
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);
+    }
+
+    @Override
+    public Optional<? extends AtomicAnnotationProperty> bind(SolutionMapping sm) {
+        Optional<AtomicIRI> term = sm.getIRIForVariable(this);
+        if(term.isPresent()) {
+            return Optional.of(new AnnotationProperty(term.get().getIRI()));
+        }
+        else {
+            return Optional.absent();
+        }
     }
 }

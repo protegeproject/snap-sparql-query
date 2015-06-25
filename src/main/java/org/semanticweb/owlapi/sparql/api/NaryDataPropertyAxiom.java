@@ -1,9 +1,14 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Author: Matthew Horridge<br>
@@ -34,5 +39,19 @@ public abstract class NaryDataPropertyAxiom implements HasDataPropertyExpression
         for(DataPropertyExpression pe : propertyExpressions) {
             pe.collectVariables(variables);
         }
+    }
+
+    protected Optional<Set<DataPropertyExpression>> getBoundDataProperties(SolutionMapping sm) {
+        Set<DataPropertyExpression> boundProperties = new HashSet<>();
+        for(DataPropertyExpression property : propertyExpressions) {
+            Optional<? extends DataPropertyExpression> boundProperty = property.bind(sm);
+            if(!boundProperty.isPresent()) {
+                return Optional.absent();
+            }
+            else {
+                boundProperties.add(boundProperty.get());
+            }
+        }
+        return Optional.of(boundProperties);
     }
 }

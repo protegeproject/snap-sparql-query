@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.Collection;
@@ -48,5 +49,17 @@ public class ClassVariable extends AbstractVariable implements AtomicClass {
                 .addValue(getVariableNamePrefix().getPrefix())
                 .addValue(getName())
                 .toString();
+    }
+
+    @Override
+    public Optional<NamedClass> bind(SolutionMapping sm) {
+        Optional<AtomicIRI> term = sm.getIRIForVariable(this);
+        if(term.isPresent()) {
+            return Optional.of(new NamedClass(term.get().getIRI()));
+        }
+        else {
+            return Optional.absent();
+        }
+
     }
 }

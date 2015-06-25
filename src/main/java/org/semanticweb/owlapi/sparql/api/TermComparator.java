@@ -41,12 +41,30 @@ public class TermComparator implements Comparator<RDFTerm> {
                 return -1;
             }
             else if(o2 instanceof Literal) {
-                int diff = ((Literal) o1).getLexicalForm().compareTo(((Literal) o2).getLexicalForm());
+                int diff;
+                Literal l1 = (Literal) o1;
+                Literal l2 = (Literal) o2;
+                try {
+                    if(l1.isDatatypeNumeric() && l2.isDatatypeNumeric()) {
+                        double d1 = Double.parseDouble(l1.getLexicalForm());
+                        double d2 = Double.parseDouble(l2.getLexicalForm());
+                        if(d1 < d2) {
+                            return -1;
+                        }
+                        else if(d1 > d2) {
+                            return 1;
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    // Ignore
+                }
+
+                diff = l1.getLexicalForm().compareTo(l2.getLexicalForm());
                 if(diff != 0) {
                     return diff;
                 }
                 else {
-                    return ((Literal) o1).getLang().compareTo(((Literal) o2).getLang());
+                    return l1.getLang().compareTo(l2.getLang());
                 }
             }
             else {

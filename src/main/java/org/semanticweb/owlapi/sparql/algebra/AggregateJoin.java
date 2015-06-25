@@ -29,7 +29,9 @@ public class AggregateJoin extends GraphPatternAlgebraExpression<SolutionSequenc
 
     @Override
     public void collectVisibleVariables(ImmutableSet.Builder<Variable> variableBuilder) {
-
+        for(Aggregation aggregation : aggregations) {
+            aggregation.collectVisibleVariables(variableBuilder);
+        }
     }
 
     public ImmutableList<Aggregation> getAggregations() {

@@ -84,6 +84,8 @@ public enum SPARQLTerminal {
 
     SELECT("SELECT"),
 
+    CONSTRUCT("CONSTRUCT"),
+
     UNION("UNION"),
 
     FROM("FROM"),

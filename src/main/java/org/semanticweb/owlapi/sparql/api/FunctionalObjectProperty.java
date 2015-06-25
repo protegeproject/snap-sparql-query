@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -35,5 +37,14 @@ public class FunctionalObjectProperty extends ObjectPropertyCharacteristic imple
         }
         FunctionalObjectProperty other = (FunctionalObjectProperty) obj;
         return this.getProperty().equals(other.getProperty());
+    }
+
+    @Override
+    public Optional<FunctionalObjectProperty> bind(SolutionMapping sm) {
+        Optional<? extends ObjectPropertyExpression> property = getProperty().bind(sm);
+        if(!property.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new FunctionalObjectProperty(property.get()));
     }
 }

@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -8,4 +10,6 @@ package org.semanticweb.owlapi.sparql.api;
  */
 public interface AtomicAnnotationProperty extends AtomicProperty {
 
+    @Override
+    Optional<? extends AtomicAnnotationProperty> bind(SolutionMapping sm);
 }

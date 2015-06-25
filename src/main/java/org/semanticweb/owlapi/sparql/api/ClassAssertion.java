@@ -1,5 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 
 /**
@@ -55,5 +58,27 @@ public class ClassAssertion implements Axiom, HasClassExpression, HasIndividual 
     public void collectVariables(Collection<Variable> variables) {
         classExpression.collectVariables(variables);
         individual.collectVariables(variables);
+    }
+
+    @Override
+    public Optional<ClassAssertion> bind(SolutionMapping sm) {
+        Optional<? extends ClassExpression> ce = classExpression.bind(sm);
+        if(!ce.isPresent()) {
+            return Optional.absent();
+        }
+        Optional<? extends AtomicIndividual> ind = individual.bind(sm);
+        if(!ind.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new ClassAssertion(ce.get(), ind.get()));
+    }
+
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper("ClassAssertion")
+                .addValue(classExpression)
+                .addValue(individual)
+                .toString();
     }
 }

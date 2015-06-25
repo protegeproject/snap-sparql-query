@@ -41,6 +41,7 @@ package org.semanticweb.owlapi.sparql.ui;
 
 //import org.semanticweb.HermiT.Reasoner;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -51,11 +52,15 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraPrettyPrinter;
+import org.semanticweb.owlapi.sparql.api.Axiom;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
+import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
 import org.semanticweb.owlapi.sparql.sparqldl.SPARQLDLQueryEngine;
+import org.semanticweb.owlapi.sparql.syntax.ConstructQuery;
+import org.semanticweb.owlapi.sparql.syntax.Query;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 
@@ -136,12 +141,37 @@ public class TestParser {
     private static void parse(OWLOntology ontology, String s) {
         SPARQLTokenizer tokenizer = new SPARQLTokenizerJavaCCImpl(ontology, new StringReader(s));
         SPARQLParserImpl parser = new SPARQLParserImpl(tokenizer);
-        SelectQuery query = parser.parseQuery();
+
+        Query query = parser.parseQuery();
+
+//        SelectQuery query = parser.parseQuery();
+
         new AlgebraPrettyPrinter().prettyPrint(query.translate(), new PrintWriter(System.out));
 
+
         Stopwatch stopwatch = Stopwatch.createStarted();
-        SPARQLQueryResult result = queryEngine.ask(query);
+        SPARQLQueryResult result = queryEngine.ask(query.asSelectQuery());
         System.out.println("Answered query in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
+
+        if (query instanceof ConstructQuery) {
+            ConstructQuery constructQuery = (ConstructQuery) query;
+            int count = 0;
+            for (SolutionMapping sm : result.getSolutionSequence().getSolutionMappings()) {
+                for(Axiom ax : constructQuery.getConstructTemplate().getAxioms()) {
+                    Optional<? extends Axiom> boundAxiom = ax.bind(sm);
+                    if(boundAxiom.isPresent()) {
+                        System.out.println(boundAxiom);
+                    }
+                    count++;
+
+                }
+                if(count > 100) {
+                    break;
+                }
+
+            }
+        }
+
         SPARQLResultsTable table = new SPARQLResultsTable();
         table.setPrefixManager(query.getPrefixManager());
         JFrame f = new JFrame();

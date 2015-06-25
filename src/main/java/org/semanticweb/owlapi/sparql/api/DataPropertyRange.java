@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 
 /**
@@ -56,5 +58,21 @@ public class DataPropertyRange implements Axiom, HasProperty<DataPropertyExpress
     public void collectVariables(Collection<Variable> variables) {
         property.collectVariables(variables);
         dataRange.collectVariables(variables);
+    }
+
+    @Override
+    public Optional<DataPropertyRange> bind(SolutionMapping sm) {
+        Optional<? extends DataPropertyExpression> property = this.property.bind(sm);
+        if(!property.isPresent()) {
+            return Optional.absent();
+        }
+        Optional<? extends DataRange> dataRange = this.dataRange.bind(sm);
+        if(!dataRange.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(
+                new DataPropertyRange(property.get(), dataRange.get())
+        );
+
     }
 }

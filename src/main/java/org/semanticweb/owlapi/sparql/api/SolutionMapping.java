@@ -3,6 +3,8 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import de.derivo.sparqldlapi.Var;
+import org.semanticweb.owlapi.model.IRI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,6 +52,16 @@ public class SolutionMapping {
 
     public Optional<RDFTerm> getTermForVariable(Variable variable) {
         return Optional.fromNullable(map.get(variable));
+    }
+
+    public Optional<AtomicIRI> getIRIForVariable(Variable variable) {
+        RDFTerm term = map.get(variable);
+        if(term instanceof AtomicIRI) {
+            return Optional.of((AtomicIRI) term);
+        }
+        else {
+            return Optional.absent();
+        }
     }
     
     public Optional<RDFTerm> getTermForVariableName(String variableName) {

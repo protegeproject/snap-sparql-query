@@ -36,7 +36,7 @@ public class Filter extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     @Override
     public void collectVisibleVariables(ImmutableSet.Builder<Variable> variableBuilder) {
-
+        algebraExpression.collectVisibleVariables(variableBuilder);
     }
 
     @Override

@@ -502,6 +502,8 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
                 break;
             case SELECT:
                 return wrap(SPARQLTerminal.SELECT);
+            case CONSTRUCT:
+                return wrap(SPARQLTerminal.CONSTRUCT);
             case SEMI_COLON:
                 return wrap(SPARQLTerminal.SEMI_COLON);
             case STRING_LITERAL1:

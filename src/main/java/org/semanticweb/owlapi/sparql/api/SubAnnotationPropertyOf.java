@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 
 /**
@@ -56,5 +58,12 @@ public class SubAnnotationPropertyOf implements Axiom, HasSubProperty<AtomicAnno
     public void collectVariables(Collection<Variable> variables) {
         subProperty.collectVariables(variables);
         superProperty.collectVariables(variables);
+    }
+
+    @Override
+    public Optional<SubAnnotationPropertyOf> bind(SolutionMapping sm) {
+        Optional<? extends AtomicAnnotationProperty> subProperty = this.subProperty.bind(sm);
+        Optional<? extends AtomicAnnotationProperty> superProperty = this.superProperty.bind(sm);
+        return Optional.of(new SubAnnotationPropertyOf(subProperty.get(), superProperty.get()));
     }
 }

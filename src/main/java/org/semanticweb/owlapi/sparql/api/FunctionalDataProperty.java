@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 
 /**
@@ -48,5 +50,14 @@ public class FunctionalDataProperty implements Axiom, HasProperty<DataPropertyEx
     @Override
     public void collectVariables(Collection<Variable> variables) {
         dataPropertyExpression.collectVariables(variables);
+    }
+
+    @Override
+    public Optional<FunctionalDataProperty> bind(SolutionMapping sm) {
+        Optional<? extends DataPropertyExpression> property = dataPropertyExpression.bind(sm);
+        if(!property.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new FunctionalDataProperty(property.get()));
     }
 }

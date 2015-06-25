@@ -321,6 +321,11 @@ public class BgpTranslator {
             return new QueryArgument(new Var(variable.getName()));
         }
 
+        @Override
+        public QueryArgument visit(IRIVariable variable) throws RuntimeException {
+            return new QueryArgument(new Var(variable.getName()));
+        }
+
         public QueryArgument visit(Literal node) throws RuntimeException {
             if(node.isRDFPlainLiteral()) {
                 return new QueryArgument(dataFactory.getOWLLiteral(node.getLexicalForm(), node.getLang()));

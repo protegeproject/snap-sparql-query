@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.Collection;
@@ -14,10 +15,6 @@ public class IndividualVariable extends AbstractVariable implements AtomicIndivi
 
     public IndividualVariable(String variableName) {
         super(variableName);
-    }
-
-    public AnnotationSubject toAnnotationSubject() {
-        return this;
     }
 
     public <R, E extends Throwable> R accept(Visitor<R, E> visitor) throws E {
@@ -42,5 +39,16 @@ public class IndividualVariable extends AbstractVariable implements AtomicIndivi
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);
+    }
+
+    @Override
+    public Optional<? extends AtomicIndividual> bind(SolutionMapping sm) {
+        Optional<AtomicIRI> term = sm.getIRIForVariable(this);
+        if(term.isPresent()) {
+            return Optional.of(new NamedIndividual(term.get().getIRI()));
+        }
+        else {
+            return Optional.absent();
+        }
     }
 }

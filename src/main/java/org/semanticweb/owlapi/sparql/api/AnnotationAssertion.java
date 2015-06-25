@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 
 /**
  * Author: Matthew Horridge<br>
@@ -51,5 +52,28 @@ public class AnnotationAssertion extends AbstractAssertion<AnnotationSubject, At
                 .addValue(getSubject())
                 .addValue(getObject())
                 .toString();
+    }
+
+    @Override
+    public Optional<AnnotationAssertion> bind(SolutionMapping sm) {
+        Optional<? extends AtomicAnnotationProperty> property = getProperty().bind(sm);
+        if(!property.isPresent()) {
+            return Optional.absent();
+        }
+        Optional<? extends AnnotationSubject> subject = getSubject().bind(sm);
+        if(!subject.isPresent()) {
+            return Optional.absent();
+        }
+        Optional<? extends AnnotationValue> value = getObject().bind(sm);
+        if(!value.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(
+                new AnnotationAssertion(
+                        property.get(),
+                        subject.get(),
+                        value.get()
+                )
+        );
     }
 }

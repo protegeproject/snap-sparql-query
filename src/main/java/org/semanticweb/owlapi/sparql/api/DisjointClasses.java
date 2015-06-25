@@ -1,7 +1,10 @@
 package org.semanticweb.owlapi.sparql.api;
 
 
+import com.google.common.base.Optional;
+
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Author: Matthew Horridge<br>
@@ -42,5 +45,14 @@ public class DisjointClasses extends NaryClassAxiom implements ClassAxiom {
         }
         DisjointClasses other = (DisjointClasses) obj;
         return this.getClassExpressions().equals(other.getClassExpressions());
+    }
+
+    @Override
+    public Optional<DisjointClasses> bind(SolutionMapping sm) {
+        Optional<Set<ClassExpression>> boundClassExpressions = getBoundClassExpressions(sm);
+        if(!boundClassExpressions.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new DisjointClasses(boundClassExpressions.get()));
     }
 }

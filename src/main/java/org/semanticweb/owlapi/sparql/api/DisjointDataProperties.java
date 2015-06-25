@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Set;
 
 /**
@@ -41,5 +43,14 @@ public class DisjointDataProperties extends NaryDataPropertyAxiom implements Axi
         }
         DisjointDataProperties other = (DisjointDataProperties) obj;
         return this.getDataProperties().equals(other.getDataProperties());
+    }
+
+    @Override
+    public Optional<DisjointDataProperties> bind(SolutionMapping sm) {
+        Optional<Set<DataPropertyExpression>> boundDataProperties = getBoundDataProperties(sm);
+        if(!boundDataProperties.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new DisjointDataProperties(boundDataProperties.get()));
     }
 }

@@ -14,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Bio-Medical Informatics Research Group<br>
  * Date: 26/07/2012
  */
-public abstract class Variable implements Atomic, HasIdentifier, HasVariables, HasName, AnnotationSubject {
+public abstract class Variable implements Atomic, HasIdentifier, HasVariables, HasName {
 
 
     private final VariableNamePrefix prefix;

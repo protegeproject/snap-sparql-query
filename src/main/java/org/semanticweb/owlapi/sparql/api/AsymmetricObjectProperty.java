@@ -1,5 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
+
+import com.google.common.base.Optional;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -37,5 +40,12 @@ public class AsymmetricObjectProperty extends ObjectPropertyCharacteristic {
         return this.getProperty().equals(other.getProperty());
     }
 
-
+    @Override
+    public Optional<AsymmetricObjectProperty> bind(SolutionMapping sm) {
+        Optional<? extends ObjectPropertyExpression> boundProperty = getProperty().bind(sm);
+        if(!boundProperty.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new AsymmetricObjectProperty(boundProperty.get()));
+    }
 }

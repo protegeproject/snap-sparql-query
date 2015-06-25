@@ -13,10 +13,7 @@ import org.semanticweb.owlapi.sparql.syntax.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTerminal.*;
@@ -34,11 +31,6 @@ public class SPARQLParserImpl {
 
     public SPARQLParserImpl(SPARQLTokenizer tokenizer) {
         this.tokenizer = checkNotNull(tokenizer);
-    }
-
-    public SelectQuery parseQuery() {
-        parsePrologue();
-        return parseSelectQuery();
     }
 
     private boolean peek(TokenType ... tokenTypes) {
@@ -74,7 +66,22 @@ public class SPARQLParserImpl {
         }
     }
 
+    public Query parseQuery() {
+        parsePrologue();
+        if(peek(SELECT)) {
+            return parseSelectQuery();
+        }
+        else if(peek(CONSTRUCT)) {
+            return parseConstructQuery();
+        }
+        else {
+            tokenizer.raiseError();
+            return null;
+        }
+    }
+
     public SelectQuery parseSelectQuery() {
+        parsePrologue();
         SelectClause selectClause = parseSelectClause();
         GroupPattern groupPattern = parseWhereClause();
         SolutionModifier solutionModifier = parseSolutionModifier();
@@ -84,9 +91,41 @@ public class SPARQLParserImpl {
         return selectQuery;
     }
 
-    public SelectClause parsePrologueAndSelectClause() {
+    public ConstructQuery parseConstructQuery() {
         parsePrologue();
-        return parseSelectClause();
+        ConstructTemplate constructTemplate = parseConstructClause();
+        GroupPattern groupPattern = parseWhereClause();
+        SolutionModifier solutionModifier = parseSolutionModifier();
+        tokenizer.consume(EOFTokenType.get());
+        return new ConstructQuery(tokenizer.getPrefixManager(), constructTemplate, groupPattern, solutionModifier);
+
+    }
+
+    private ConstructTemplate parseConstructClause() {
+        tokenizer.consume(CONSTRUCT);
+        ConstructTemplate constructTemplate;
+        constructTemplate = parseConstructTemplate();
+        return constructTemplate;
+    }
+
+    private ConstructTemplate parseConstructTemplate() {
+        tokenizer.consume(OPEN_BRACE);
+        TriplesBlockPattern triplesBlockPattern = parseTriplesBlock();
+        tokenizer.consume(CLOSE_BRACE);
+        return new ConstructTemplate(triplesBlockPattern.getAxioms());
+    }
+
+    public Collection<? extends Variable> parseProjectedVariables() {
+        parsePrologue();
+        if(peek(SELECT)) {
+            return parseSelectClause().getVariables();
+        }
+        else if(peek(CONSTRUCT)) {
+            return parseConstructClause().getVariables();
+        }
+        else {
+            return Collections.emptySet();
+        }
     }
 
     public SelectClause parseSelectClause() {
@@ -1098,22 +1137,22 @@ public class SPARQLParserImpl {
         SPARQLToken predicateToken = tokenizer.consume();
         AnnotationSubject subject;
         if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.CLASS)) {
-            subject = new ClassVariable(subjectToken.getImage());
+            subject = new IRIVariable(subjectToken.getImage());
         }
         else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.DATATYPE)) {
-            subject = new DatatypeVariable(subjectToken.getImage());
+            subject = new IRIVariable(subjectToken.getImage());
         }
         else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.OBJECT_PROPERTY)) {
-            subject = new ObjectPropertyVariable(subjectToken.getImage());
+            subject = new IRIVariable(subjectToken.getImage());
         }
         else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.DATA_PROPERTY)) {
-            subject = new DataPropertyVariable(subjectToken.getImage());
+            subject = new IRIVariable(subjectToken.getImage());
         }
         else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.ANNOTATION_PROPERTY)) {
-            subject = new AnnotationPropertyVariable(subjectToken.getImage());
+            subject = new IRIVariable(subjectToken.getImage());
         }
         else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.NAMED_INDIVIDUAL)) {
-            subject = new IndividualVariable(subjectToken.getImage());
+            subject = new IRIVariable(subjectToken.getImage());
         }
         else {
             subject = new AtomicIRI(getIRIFromToken(subjectToken));
@@ -1369,7 +1408,7 @@ public class SPARQLParserImpl {
         else if (peek(VariableTokenType.get())) {
             SPARQLToken token = tokenizer.consume();
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()));
-            result = new UntypedVariable(token.getImage());
+            result = new LiteralVariable(token.getImage());
         }
         else if (peek(StringTokenType.get())) {
             result = parseLiteralNode();

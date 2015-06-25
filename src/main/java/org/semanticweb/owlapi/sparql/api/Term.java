@@ -9,4 +9,6 @@ package org.semanticweb.owlapi.sparql.api;
 public interface Term extends Expression, Visitable {
 
     boolean isSameRDFTermAs(Term term);
+
+
 }

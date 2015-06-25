@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 
 /**
@@ -56,5 +58,18 @@ public class AnnotationPropertyRange implements Axiom {
     public void collectVariables(Collection<Variable> variables) {
         property.collectVariables(variables);
         range.collectVariables(variables);
+    }
+
+    @Override
+    public Optional<AnnotationPropertyRange> bind(SolutionMapping sm) {
+        Optional<? extends AtomicAnnotationProperty> property = this.property.bind(sm);
+        if(!property.isPresent()) {
+            return Optional.absent();
+        }
+        Optional<AtomicIRI> range = this.range.bind(sm);
+        if(!range.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new AnnotationPropertyRange(property.get(), range.get()));
     }
 }

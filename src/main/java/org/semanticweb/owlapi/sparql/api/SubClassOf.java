@@ -1,11 +1,10 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.*;
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,6 +43,19 @@ public class SubClassOf implements ClassAxiom {
 
     public Set<ClassExpression> getClassExpressions() {
         return new HashSet<>(Arrays.asList(subClass, superClass));
+    }
+
+    @Override
+    public Optional<SubClassOf> bind(SolutionMapping sm) {
+        Optional<? extends ClassExpression> boundSub = subClass.bind(sm);
+        if(!boundSub.isPresent()) {
+            return Optional.absent();
+        }
+        Optional<? extends ClassExpression> boundSuper = superClass.bind(sm);
+        if(!boundSuper.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new SubClassOf(boundSub.get(), boundSuper.get()));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 
 /**
@@ -56,5 +58,18 @@ public class AnnotationPropertyDomain implements Axiom {
     public void collectVariables(Collection<Variable> variables) {
         property.collectVariables(variables);
         domain.collectVariables(variables);
+    }
+
+    @Override
+    public Optional<AnnotationPropertyDomain> bind(SolutionMapping sm) {
+        Optional<? extends AtomicAnnotationProperty> property = this.property.bind(sm);
+        if(!property.isPresent()) {
+            return Optional.absent();
+        }
+        Optional<AtomicIRI> domain = this.domain.bind(sm);
+        if(!domain.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new AnnotationPropertyDomain(property.get(), domain.get()));
     }
 }

@@ -1,8 +1,10 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 
+import javax.swing.text.html.Option;
 import java.util.Collection;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Collection;
  * Bio-Medical Informatics Research Group<br>
  * Date: 31/07/2012
  */
-public class UntypedVariable extends AbstractVariable implements AnnotationValue  {
+public class UntypedVariable extends AbstractVariable  {
 
     public UntypedVariable(String variableName) {
         super(variableName);
@@ -46,5 +48,24 @@ public class UntypedVariable extends AbstractVariable implements AnnotationValue
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);
+    }
+
+    @Override
+    public Optional<Atomic> bind(SolutionMapping sm) {
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
+            return Optional.absent();
+        }
+        RDFTerm t = term.get();
+        if(t instanceof Literal) {
+            return Optional.of((Literal) t);
+        }
+        else if(t instanceof AtomicIRI) {
+            return Optional.of((AtomicIRI) t);
+        }
+        else if(t instanceof AnonymousIndividual) {
+            return Optional.of((AnonymousIndividual) t);
+        }
+        return Optional.absent();
     }
 }

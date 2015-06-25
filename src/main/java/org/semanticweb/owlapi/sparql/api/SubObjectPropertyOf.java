@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -63,5 +65,18 @@ public class SubObjectPropertyOf implements Axiom, HasSubProperty<ObjectProperty
     public void collectVariables(Collection<Variable> variables) {
         subProperty.collectVariables(variables);
         superProperty.collectVariables(variables);
+    }
+
+    @Override
+    public Optional<SubObjectPropertyOf> bind(SolutionMapping sm) {
+        Optional<? extends ObjectPropertyExpression> subProperty = this.subProperty.bind(sm);
+        if(!subProperty.isPresent()) {
+            return Optional.absent();
+        }
+        Optional<? extends ObjectPropertyExpression> superProperty = this.superProperty.bind(sm);
+        if(!superProperty.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new SubObjectPropertyOf(subProperty.get(), superProperty.get()));
     }
 }

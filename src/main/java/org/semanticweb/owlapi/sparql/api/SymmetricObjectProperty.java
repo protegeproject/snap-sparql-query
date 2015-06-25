@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -35,5 +37,14 @@ public class SymmetricObjectProperty extends ObjectPropertyCharacteristic {
         }
         SymmetricObjectProperty other = (SymmetricObjectProperty) obj;
         return this.getProperty().equals(other.getProperty());
+    }
+
+    @Override
+    public Optional<SymmetricObjectProperty> bind(SolutionMapping sm) {
+        Optional<? extends ObjectPropertyExpression> property = getProperty().bind(sm);
+        if(!property.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new SymmetricObjectProperty(property.get()));
     }
 }

@@ -1,8 +1,13 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Author: Matthew Horridge<br>
@@ -58,5 +63,20 @@ public class SameIndividual implements Axiom, HasIndividuals {
         for(AtomicIndividual individual : individuals) {
             individual.collectVariables(variables);
         }
+    }
+
+    @Override
+    public Optional<SameIndividual> bind(SolutionMapping sm) {
+        Set<AtomicIndividual> boundIndividuals = new HashSet<>();
+        for(AtomicIndividual individual : individuals) {
+            Optional<? extends AtomicIndividual> boundIndividual = individual.bind(sm);
+            if(!boundIndividual.isPresent()) {
+                return Optional.absent();
+            }
+            else {
+                boundIndividuals.add(boundIndividual.get());
+            }
+        }
+        return Optional.of(new SameIndividual(boundIndividuals));
     }
 }

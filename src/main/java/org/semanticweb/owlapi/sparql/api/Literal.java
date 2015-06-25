@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
@@ -379,5 +380,10 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);
+    }
+
+    @Override
+    public Optional<Literal> bind(SolutionMapping sm) {
+        return Optional.of(this);
     }
 }

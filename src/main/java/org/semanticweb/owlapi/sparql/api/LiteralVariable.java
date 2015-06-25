@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.Collection;
@@ -38,5 +39,16 @@ public class LiteralVariable extends AbstractVariable implements AtomicLiteral {
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);
+    }
+
+    @Override
+    public Optional<Literal> bind(SolutionMapping sm) {
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
+        if(term.isPresent() && term.get() instanceof Literal) {
+            return Optional.of((Literal) term.get());
+        }
+        else {
+            return Optional.absent();
+        }
     }
 }

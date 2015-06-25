@@ -46,6 +46,10 @@ TOKEN: {
 }
 
 TOKEN: {
+    <CONSTRUCT: "CONSTRUCT">
+}
+
+TOKEN: {
     <WHERE: "WHERE">
 }
 

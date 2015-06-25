@@ -42,6 +42,7 @@ public class Extend extends GraphPatternAlgebraExpression<SolutionSequence> {
     @Override
     public void collectVisibleVariables(ImmutableSet.Builder<Variable> variableBuilder) {
         variableBuilder.add(variable);
+        algebraExpression.collectVisibleVariables(variableBuilder);
     }
 
     @Override

@@ -1,9 +1,14 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Author: Matthew Horridge<br>
@@ -34,5 +39,19 @@ public abstract class NaryObjectPropertyAxiom implements Axiom, HasObjectPropert
         for(ObjectPropertyExpression pe : propertyExpressions) {
             pe.collectVariables(variables);
         }
+    }
+
+    protected Optional<Set<ObjectPropertyExpression>> getBoundPropertyExpressions(SolutionMapping sm) {
+        Set<ObjectPropertyExpression> result = new HashSet<>();
+        for(ObjectPropertyExpression propertyExpression : propertyExpressions) {
+            Optional<? extends ObjectPropertyExpression> boundPropertyExpression = propertyExpression.bind(sm);
+            if(!boundPropertyExpression.isPresent()) {
+                return Optional.absent();
+            }
+            else {
+                result.add(propertyExpression);
+            }
+        }
+        return Optional.of(result);
     }
 }

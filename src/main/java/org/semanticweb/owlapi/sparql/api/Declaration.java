@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -58,5 +60,14 @@ public class Declaration implements Axiom {
         return toStringHelper("Declaration")
                 .addValue(atomic)
                 .toString();
+    }
+
+    @Override
+    public Optional<Declaration> bind(SolutionMapping sm) {
+        Optional<? extends Atomic> atomic = this.atomic.bind(sm);
+        if(!atomic.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new Declaration(atomic.get()));
     }
 }

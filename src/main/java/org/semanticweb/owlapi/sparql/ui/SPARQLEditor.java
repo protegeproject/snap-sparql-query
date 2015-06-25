@@ -41,8 +41,10 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import de.derivo.sparqldlapi.Var;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
+import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
@@ -59,9 +61,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Author: Matthew Horridge<br>
@@ -132,6 +133,7 @@ public class SPARQLEditor extends JTextPane {
         sparqlKeywords.add(SPARQLTerminal.PREFIX.getImage());
         sparqlKeywords.add(SPARQLTerminal.REDUCED.getImage());
         sparqlKeywords.add(SPARQLTerminal.SELECT.getImage());
+        sparqlKeywords.add(SPARQLTerminal.CONSTRUCT.getImage());
         sparqlKeywords.add(SPARQLTerminal.UNION.getImage());
         sparqlKeywords.add(SPARQLTerminal.WHERE.getImage());
         sparqlKeywords.add(SPARQLTerminal.GROUP.getImage());
@@ -264,22 +266,18 @@ public class SPARQLEditor extends JTextPane {
     }
 
     private Set<String> getProjectedVariableNames() {
-        Optional<SelectClause> selectClause = parseSelectClause();
-        final Set<String> variables = new HashSet<>();
-        if(selectClause.isPresent()) {
-            for(UntypedVariable variable : selectClause.get().getVariables()) {
-                variables.add("?" + variable.getName());
-            }
-        }
-        return variables;
+        return parseProjectedVariables()
+            .stream()
+                .map((v) -> "?" + v.getName())
+                .collect(Collectors.toSet());
     }
 
-    private Optional<SelectClause> parseSelectClause() {
+    private Collection<? extends Variable> parseProjectedVariables() {
         try {
             SPARQLParserImpl parser = new SPARQLParserImpl(createTokenizer());
-            return Optional.of(parser.parsePrologueAndSelectClause());
+            return parser.parseProjectedVariables();
         } catch (Throwable e) {
-            return Optional.absent();
+            return Collections.emptySet();
         }
     }
 
@@ -289,7 +287,7 @@ public class SPARQLEditor extends JTextPane {
     }
 
 
-    private Style getTokenStyle(SPARQLToken token, Set<String> selectVariableNames) {
+    private Style getTokenStyle(SPARQLToken token, Set<String> projectedVariable) {
         for(TokenType type : token.getTokenTypes()) {
             if(type instanceof SPARQLTerminalTokenType) {
                 if(sparqlKeywords.contains(token.getImage())) {
@@ -307,8 +305,8 @@ public class SPARQLEditor extends JTextPane {
                 return rdfVocabularyStyle;
             }
             else if(type instanceof VariableTokenType) {
-                if(!selectVariableNames.isEmpty()) {
-                    if(selectVariableNames.contains(token.getImage())) {
+                if(!projectedVariable.isEmpty()) {
+                    if(projectedVariable.contains(token.getImage())) {
                         return projectedVariableStyle;
                     }
                 }

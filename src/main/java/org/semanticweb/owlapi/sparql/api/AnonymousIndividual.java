@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -140,5 +142,10 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);
+    }
+
+    @Override
+    public Optional<AnonymousIndividual> bind(SolutionMapping sm) {
+        return Optional.of(this);
     }
 }

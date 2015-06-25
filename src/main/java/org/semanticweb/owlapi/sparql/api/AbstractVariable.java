@@ -32,6 +32,7 @@ public abstract class AbstractVariable extends Variable {
 //        }
     }
 
+
     @Override
     public boolean isSameRDFTermAs(Term term) {
         if(term == this) {
@@ -70,6 +71,9 @@ public abstract class AbstractVariable extends Variable {
 //        return prefix;
 //    }
 
+    public AnnotationSubject toAnnotationSubject() {
+        return new IRIVariable(getName());
+    }
 
     public EvaluationResult evaluate(SolutionMapping sm) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);

@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
+
 import java.util.Set;
 
 /**
@@ -41,5 +43,14 @@ public class DisjointObjectProperties extends NaryObjectPropertyAxiom implements
         }
         DisjointObjectProperties other = (DisjointObjectProperties) obj;
         return this.getObjectPropertyExpressions().equals(other.getObjectPropertyExpressions());
+    }
+
+    @Override
+    public Optional<DisjointObjectProperties> bind(SolutionMapping sm) {
+        Optional<Set<ObjectPropertyExpression>> boundPropertyExpressions = getBoundPropertyExpressions(sm);
+        if(!boundPropertyExpressions.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new DisjointObjectProperties(boundPropertyExpressions.get()));
     }
 }

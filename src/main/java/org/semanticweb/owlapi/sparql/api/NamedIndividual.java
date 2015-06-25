@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
@@ -58,5 +59,10 @@ public class NamedIndividual extends AbstractEntity implements Entity, AtomicInd
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);
+    }
+
+    @Override
+    public Optional<NamedIndividual> bind(SolutionMapping sm) {
+        return Optional.of(this);
     }
 }
