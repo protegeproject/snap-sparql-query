@@ -12,40 +12,56 @@ import java.util.List;
  */
 public class SUBSTR_Evaluator implements BuiltInCallEvaluator {
 
+
+    private static final int MIN_ARGS_LENGTH = 2;
+
+    private static final int MAX_ARGS_LENGTH = 3;
+
+    private static final int STRING_ARG_INDEX = 0;
+
+    private static final int START_INDEX_INDEX = 1;
+
+    private static final int LENGTH_ARG_INDEX = 2;
+
+
     @Override
     public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
-        if(args.size() < 2 || args.size() > 3) {
+        if(args.size() < MIN_ARGS_LENGTH || args.size() > MAX_ARGS_LENGTH) {
             return EvaluationResult.getError();
         }
-        Expression arg0;
-        Expression arg1;
-        arg0 = args.get(0);
-        EvaluationResult arg0Eval = arg0.evaluateAsLiteral(sm);
-        if(arg0Eval.isError()) {
-            return arg0Eval;
+        final EvaluationResult stringArgEval = args.get(STRING_ARG_INDEX).evaluateAsLiteral(sm);
+        if(stringArgEval.isError()) {
+            return EvaluationResult.getError();
         }
-        Literal literal = arg0Eval.asLiteral();
+
+        final EvaluationResult startIndexArgEval = args.get(START_INDEX_INDEX).evaluateAsNumeric(sm);
+        if(startIndexArgEval.isError()) {
+            return EvaluationResult.getError();
+        }
+
+        Literal literal = stringArgEval.asLiteral();
         String lexicalForm = literal.getLexicalForm();
 
-        arg1 = args.get(1);
-        EvaluationResult arg1Eval = arg1.evaluateAsNumeric(sm);
-        if(arg1Eval.isError()) {
-            return arg0Eval;
-        }
-
-        int startIndex = (int) arg1Eval.asNumeric();
-        int length = lexicalForm.length();
-        if(args.size() == 3) {
-            EvaluationResult arg2Eval = args.get(2).evaluateAsNumeric(sm);
-            if(arg2Eval.isError()) {
-                return arg2Eval;
+        int startIndex = (int) startIndexArgEval.asNumeric();
+        final String substring;
+        if(argsContainsLengthArg(args)) {
+            EvaluationResult lengthArgEval = args.get(LENGTH_ARG_INDEX).evaluateAsNumeric(sm);
+            if(lengthArgEval.isError()) {
+                return EvaluationResult.getError();
             }
-            length = (int) arg2Eval.asNumeric();
+            int length = (int) lengthArgEval.asNumeric();
+            if(startIndex + length > lexicalForm.length()) {
+                return EvaluationResult.getError();
+            }
+            substring = lexicalForm.substring(startIndex, startIndex + length);
         }
-        if(startIndex + length > lexicalForm.length()) {
-            return EvaluationResult.getError();
+        else {
+            substring = lexicalForm.substring(startIndex);
         }
-        String substring = lexicalForm.substring(startIndex, startIndex + length);
         return EvaluationResult.getResult(new Literal(literal.getDatatype(), substring, literal.getLang()));
+    }
+
+    private static boolean argsContainsLengthArg(List<Expression> args) {
+        return args.size() == 3;
     }
 }
