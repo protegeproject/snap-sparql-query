@@ -149,4 +149,6 @@ public interface Visitor<R, E extends Throwable> {
     R visit(UntypedVariable variable) throws E;
 
     R visit(IRIVariable variable) throws E;
+
+    R visit(AnnotationValueVariable variable) throws E;
 }

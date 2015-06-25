@@ -54,6 +54,11 @@ public class UnaggregatedVariableReplacer {
         }
 
         @Override
+        public Expression visit(AnnotationValueVariable variable, ReplacementContext context) throws RuntimeException {
+            return replaceVariableWithSampleVariable(variable);
+        }
+
+        @Override
         public Expression visit(AnnotationProperty annotationProperty, ReplacementContext context) throws RuntimeException {
             return annotationProperty;
         }

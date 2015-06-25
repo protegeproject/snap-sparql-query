@@ -64,10 +64,14 @@ public class Declaration implements Axiom {
 
     @Override
     public Optional<Declaration> bind(SolutionMapping sm) {
-        Optional<? extends Atomic> atomic = this.atomic.bind(sm);
+        Optional<?> atomic = this.atomic.bind(sm);
         if(!atomic.isPresent()) {
             return Optional.absent();
         }
-        return Optional.of(new Declaration(atomic.get()));
+        Object o = atomic.get();
+        if(!(o instanceof Atomic)) {
+            return Optional.absent();
+        }
+        return Optional.of(new Declaration((Atomic) o));
     }
 }

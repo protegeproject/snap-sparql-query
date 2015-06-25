@@ -214,4 +214,9 @@ public class VisitorAdapter<R, E extends Throwable> implements Visitor<R, E> {
     public R visit(IRIVariable variable) throws E {
         return null;
     }
+
+    @Override
+    public R visit(AnnotationValueVariable variable) throws E {
+        return null;
+    }
 }

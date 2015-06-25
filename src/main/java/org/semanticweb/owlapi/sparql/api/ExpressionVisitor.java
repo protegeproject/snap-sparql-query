@@ -35,6 +35,8 @@ public interface ExpressionVisitor<R, E extends Throwable, C> {
 
     R visit(AtomicIRI atomicIRI, C context) throws E;
 
+    R visit(AnnotationValueVariable variable, C context) throws E;
+
     R visit(Literal literal, C context) throws E;
 
     R visit(LiteralVariable variable, C context) throws E;

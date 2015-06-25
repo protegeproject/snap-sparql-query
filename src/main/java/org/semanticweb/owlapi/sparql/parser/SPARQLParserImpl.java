@@ -1397,7 +1397,7 @@ public class SPARQLParserImpl {
         else if (peek(VariableTokenType.get())) {
             SPARQLToken token = tokenizer.consume();
             tokenizer.getVariableManager().registerVariable(new UntypedVariable(token.getImage()));
-            result = new LiteralVariable(token.getImage());
+            result = new AnnotationValueVariable(token.getImage());
         }
         else if (peek(StringTokenType.get())) {
             result = parseLiteralNode();

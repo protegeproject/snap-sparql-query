@@ -94,6 +94,11 @@ public class AggregateBuiltInReplacer {
         }
 
         @Override
+        public Expression visit(AnnotationValueVariable variable, ReplacementContext context) throws RuntimeException {
+            return variable;
+        }
+
+        @Override
         public Expression visit(AtomicIRI atomicIRI, ReplacementContext context) throws RuntimeException {
             return atomicIRI;
         }

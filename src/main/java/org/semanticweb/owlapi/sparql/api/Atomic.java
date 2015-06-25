@@ -11,6 +11,7 @@ import java.io.Serializable;
  * Date: 26/07/2012
  */
 public interface Atomic extends Term, Expression, Serializable, HasCollectVariables, HasBind {
-    @Override
-    Optional<? extends Atomic> bind(SolutionMapping sm);
+
+//    @Override
+//    Optional<? extends Atomic> bind(SolutionMapping sm);
 }
