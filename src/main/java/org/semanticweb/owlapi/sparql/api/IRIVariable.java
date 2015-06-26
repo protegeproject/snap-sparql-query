@@ -16,14 +16,9 @@ public class IRIVariable extends AbstractVariable implements AnnotationSubject, 
 
     @Override
     public RDFTerm getBound(IRI iri) {
-        return null;
+        return new AtomicIRI(iri);
     }
 
-//    @Override
-//    public PrimitiveType getType() {
-//        return PrimitiveType.LITERAL;
-//    }
-//
     @Override
     public Optional<AtomicIRI> bind(SolutionMapping sm) {
         return sm.getIRIForVariable(this);
@@ -31,7 +26,7 @@ public class IRIVariable extends AbstractVariable implements AnnotationSubject, 
 
     @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
-        return null;//visitor.visit(this, context);
+        return visitor.visit(this, context);
     }
 
     @Override
@@ -43,5 +38,4 @@ public class IRIVariable extends AbstractVariable implements AnnotationSubject, 
     public <R, E extends Throwable> R accept(Visitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }
-
 }

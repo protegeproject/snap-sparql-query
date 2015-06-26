@@ -69,6 +69,11 @@ public class UnaggregatedVariableReplacer {
         }
 
         @Override
+        public Expression visit(IRIVariable variable, ReplacementContext context) throws RuntimeException {
+            return replaceVariableWithSampleVariable(variable);
+        }
+
+        @Override
         public Expression visit(NamedIndividual individual, ReplacementContext context) throws RuntimeException {
             return individual;
         }

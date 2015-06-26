@@ -21,6 +21,8 @@ public interface ExpressionVisitor<R, E extends Throwable, C> {
 
     R visit(AnnotationPropertyVariable variable, C context) throws E;
 
+    R visit(IRIVariable variable, C context) throws E;
+
     R visit(NamedIndividual individual, C context) throws E;
 
     R visit(IndividualVariable variable, C context) throws E;
