@@ -5,14 +5,12 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 /**
- * Author: Matthew Horridge<br>
- * Stanford University<br>
- * Bio-Medical Informatics Research Group<br>
- * Date: 26/07/2012
+ * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 26/07/2012
  */
 public class Datatype extends AbstractEntity implements AtomicDatatype {
 
@@ -20,21 +18,25 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
 
     static {
         ImmutableMap.Builder<IRI, Datatype> iriMapBuilder = ImmutableMap.builder();
-        for(OWL2Datatype owl2Datatype : OWL2Datatype.values()) {
+        for (OWL2Datatype owl2Datatype : OWL2Datatype.values()) {
             Datatype datatype = new Datatype(owl2Datatype);
             iriMapBuilder.put(owl2Datatype.getIRI(), datatype);
         }
 
+
+
+
         iri2Datatype = iriMapBuilder.build();
     }
 
+
     private static final Datatype RDF_PLAIN_LITERAL = new Datatype(OWLRDFVocabulary.RDF_PLAIN_LITERAL.getIRI());
 
-    private static final Datatype XSD_BOOLEAN = new Datatype(OWL2Datatype.XSD_BOOLEAN);
-    
-    private static final Datatype XSD_INTEGER = new Datatype(OWL2Datatype.XSD_INTEGER);
+    private static final Datatype XSD_STRING = new Datatype(OWL2Datatype.XSD_STRING);
 
-    private static final Datatype XSD_DECIMAL = new Datatype(OWL2Datatype.XSD_DECIMAL);
+
+
+    private static final Datatype XSD_BOOLEAN = new Datatype(OWL2Datatype.XSD_BOOLEAN);
 
     private static final Datatype XSD_DOUBLE = new Datatype(OWL2Datatype.XSD_DOUBLE);
 
@@ -42,8 +44,11 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
 
     private static final Datatype XSD_DATETIME = new Datatype(OWL2Datatype.XSD_DATE_TIME);
 
-    private static final Datatype XSD_STRING = new Datatype(OWL2Datatype.XSD_STRING);
 
+
+    private static final Datatype XSD_DECIMAL = new Datatype(OWL2Datatype.XSD_DECIMAL);
+
+    private static final Datatype XSD_INTEGER = new Datatype(OWL2Datatype.XSD_INTEGER);
 
     private static final Datatype XSD_NON_POSITIVE_INTEGER = new Datatype(OWL2Datatype.XSD_NON_POSITIVE_INTEGER);
 
@@ -70,38 +75,52 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
     private static final Datatype XSD_POSITIVE_INTEGER = new Datatype(OWL2Datatype.XSD_POSITIVE_INTEGER);
 
 
-
-
     private static final ImmutableSet<Datatype> NUMERIC_TYPES;
 
+    private static final ImmutableSet<Datatype> XSD_INTEGER_DERIVED_TYPES;
+
     static {
-        ImmutableSet.Builder<Datatype> builder = ImmutableSet.builder();
+        //@formatter:off
+        NUMERIC_TYPES = ImmutableSet.<Datatype>builder()
+                .add(XSD_DOUBLE)
+                .add(XSD_FLOAT)
+                .add(XSD_DECIMAL)
+                .add(XSD_INTEGER)
+                .add(XSD_NON_POSITIVE_INTEGER)
+                .add(XSD_NON_NEGATIVE_INTEGER)
+                .add(XSD_LONG)
+                .add(XSD_INT)
+                .add(XSD_SHORT)
+                .add(XSD_BYTE)
+                .add(XSD_NEGATIVE_INTEGER)
+                .add(XSD_UNSIGNED_LONG)
+                .add(XSD_UNSIGNED_INT)
+                .add(XSD_UNSIGNED_SHORT)
+                .add(XSD_UNSIGNED_BYTE)
+                .add(XSD_POSITIVE_INTEGER)
+                .build();
 
-            builder.add(XSD_INTEGER).
-                add(XSD_DECIMAL)
-                    .add(XSD_DOUBLE).
-                    add(XSD_FLOAT).
-                    add(XSD_NON_POSITIVE_INTEGER).
-                    add(XSD_NON_NEGATIVE_INTEGER).
-                    add(XSD_LONG).
-                    add(XSD_INT).
-                    add(XSD_SHORT).
-                    add(XSD_BYTE).
-                    add(XSD_NEGATIVE_INTEGER).
-                    add(XSD_UNSIGNED_LONG).
-                    add(XSD_UNSIGNED_INT).
-                    add(XSD_UNSIGNED_SHORT).
-                    add(XSD_UNSIGNED_BYTE).
-                    add(XSD_POSITIVE_INTEGER);
-
-        NUMERIC_TYPES = builder.build();
-
+        XSD_INTEGER_DERIVED_TYPES = ImmutableSet.<Datatype>builder()
+                .add(XSD_INTEGER)
+                .add(XSD_NON_POSITIVE_INTEGER)
+                .add(XSD_NEGATIVE_INTEGER)
+                .add(XSD_NON_NEGATIVE_INTEGER)
+                .add(XSD_POSITIVE_INTEGER)
+                .add(XSD_LONG)
+                .add(XSD_UNSIGNED_LONG)
+                .add(XSD_INT)
+                .add(XSD_UNSIGNED_INT)
+                .add(XSD_SHORT)
+                .add(XSD_UNSIGNED_SHORT)
+                .add(XSD_BYTE)
+                .add(XSD_UNSIGNED_BYTE)
+                .build();
+        
+        //@formatter:on
     }
 
 
-
     private final Optional<OWL2Datatype> owl2Datatype;
-
 
     public Datatype(IRI iri) {
         super(iri);
@@ -116,39 +135,14 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
 
     public static Datatype get(IRI iri) {
         Datatype result = iri2Datatype.get(iri);
-        if(result != null) {
+        if (result != null) {
             return result;
         }
         return new Datatype(iri);
     }
 
-    public boolean isInLexicalSpace(String lexicalValue) {
-        return !owl2Datatype.isPresent() || owl2Datatype.get().getPattern().matcher(lexicalValue).matches();
-    }
-
-    public <R, E extends Throwable> R accept(Visitor<R, E> visitor) throws E {
-        return visitor.visit(this);
-    }
-
-    @Override
-    public String toString() {
-        return "Datatype(" + getIRI() + ")";
-    }
-
     public static Datatype getRDFPlainLiteral() {
         return RDF_PLAIN_LITERAL;
-    }
-
-    public boolean isRDFPlainLiteral() {
-        return RDF_PLAIN_LITERAL.equals(this);
-    }
-
-    public boolean isXSDString() {
-        return XSD_STRING.equals(this);
-    }
-
-    public boolean isXSDBoolean() {
-        return XSD_BOOLEAN.equals(this);
     }
 
     public static Datatype getXSDString() {
@@ -158,7 +152,7 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
     public static Datatype getXSDBoolean() {
         return XSD_BOOLEAN;
     }
-    
+
     public static Datatype getXSDInteger() {
         return XSD_INTEGER;
     }
@@ -183,6 +177,54 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
         return XSD_DATETIME;
     }
 
+    public boolean isInLexicalSpace(String lexicalValue) {
+        return !owl2Datatype.isPresent() || owl2Datatype.get().getPattern().matcher(lexicalValue).matches();
+    }
+
+    public <R, E extends Throwable> R accept(Visitor<R, E> visitor) throws E {
+        return visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Datatype(" + getIRI() + ")";
+    }
+
+    public boolean isRDFPlainLiteral() {
+        return RDF_PLAIN_LITERAL.equals(this);
+    }
+
+    public boolean isXSDString() {
+        return XSD_STRING.equals(this);
+    }
+
+    public boolean isXSDBoolean() {
+        return XSD_BOOLEAN.equals(this);
+    }
+
+    public boolean isXSDDecimal() {
+        return XSD_DECIMAL.equals(this);
+    }
+
+    public boolean isXSDDecimalDerived() {
+        return this.isXSDDecimal() || XSD_INTEGER_DERIVED_TYPES.contains(this);
+    }
+
+    public boolean isXSDIntegerDerived() {
+        return isXSDInteger() || XSD_INTEGER_DERIVED_TYPES.contains(this);
+    }
+
+    public boolean isXSDFloat() {
+        return XSD_FLOAT.equals(this);
+    }
+    public boolean isXSDInteger() {
+        return XSD_INTEGER.equals(this);
+    }
+
+    public boolean isXSDDouble() {
+        return XSD_DOUBLE.equals(this);
+    }
+
     public boolean isNumeric() {
         return NUMERIC_TYPES.contains(this);
     }
@@ -195,13 +237,13 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
     public int hashCode() {
         return Objects.hashCode(getIRI());
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-        if(obj == this) {
+        if (obj == this) {
             return true;
         }
-        if(!(obj instanceof Datatype)) {
+        if (!(obj instanceof Datatype)) {
             return false;
         }
         Datatype other = (Datatype) obj;
@@ -217,4 +259,5 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
     public Optional<Datatype> bind(SolutionMapping sm) {
         return Optional.of(this);
     }
+    
 }

@@ -55,7 +55,7 @@ public class DivideExpression extends BinaryExpression implements Expression {
         }
         double leftVal = leftEval.asNumeric();
         double rightVal = rightEval.asNumeric();
-        return EvaluationResult.getDouble(leftVal / rightVal);
+        return EvaluationResult.getDecimal(leftVal / rightVal);
     }
 
     public boolean canEvaluateAsDateTime(SolutionMapping sm) {

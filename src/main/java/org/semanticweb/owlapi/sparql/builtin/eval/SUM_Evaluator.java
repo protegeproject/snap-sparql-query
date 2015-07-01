@@ -1,9 +1,11 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
+import org.semanticweb.owlapi.sparql.api.Datatype;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.builtin.BasicNumericType;
 
 import java.util.List;
 
@@ -24,13 +26,14 @@ public class SUM_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
         }
         Expression arg = args.get(0);
         double sum = 0;
+        Datatype mostSpecificBasicType = Datatype.getXSDInteger();
         for(SolutionMapping sm : solutionSequence.getSolutionMappings()) {
             EvaluationResult argEval = arg.evaluateAsNumeric(sm);
-            if(argEval.isError()) {
-                return EvaluationResult.getError();
+            if(!argEval.isError()) {
+                mostSpecificBasicType = BasicNumericType.getMostSpecificBasicNumericType(mostSpecificBasicType, argEval.asLiteral().getDatatype());
+                sum += argEval.asNumeric();
             }
-            sum += argEval.asNumeric();
         }
-        return EvaluationResult.getDecimal(sum);
+        return EvaluationResult.getResult(BasicNumericType.getLiteralOfBasicNumericType(sum, mostSpecificBasicType));
     }
 }

@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 
+import org.semanticweb.owlapi.sparql.builtin.BasicNumericType;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -57,7 +59,10 @@ public class PlusExpression extends BinaryExpression implements Expression {
         }
         double leftValue = leftEval.asNumeric();
         double rightValue = rightEval.asNumeric();
-        return EvaluationResult.getDouble(leftValue + rightValue);
+        Literal leftLiteral = leftEval.asLiteral();
+        Literal rightLiteral = rightEval.asLiteral();
+        Datatype returnType = BasicNumericType.getMostSpecificBasicNumericType(leftLiteral.getDatatype(), rightLiteral.getDatatype());
+        return EvaluationResult.getResult(BasicNumericType.getLiteralOfBasicNumericType(leftValue + rightValue, returnType));
     }
 
     public boolean canEvaluateAsDateTime(SolutionMapping sm) {

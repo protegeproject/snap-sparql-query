@@ -10,14 +10,11 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
-import javax.xml.crypto.Data;
-
 import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(org.mockito.runners.MockitoJUnitRunner.class)
 public class Datatype_TestCase {
@@ -295,4 +292,63 @@ public class Datatype_TestCase {
         assertThat(datatype.evaluateAsIRI(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new AtomicIRI(datatype.getIRI()))));
     }
 
+    @Test
+    public void shouldReturnTrue_For_XSD_Decimal_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.DECIMAL.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrue_For_XSD_Integer_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.INTEGER.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrue_For_XSD_Long_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.LONG.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrue_For_XSD_INT_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.INT.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrue_For_XSD_SHORT_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.SHORT.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrue_For_XSD_Byte_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.BYTE.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrue_For_XSD_NonPositiveInteger_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.NON_POSITIVE_INTEGER.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrue_For_XSD_NegativeInteger_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.NEGATIVE_INTEGER.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrue_For_XSD_NonNegativeInteger_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.NON_NEGATIVE_INTEGER.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrue_For_XSD_PositiveInteger_isDecimalDerivedType() {
+        assertThat(new Datatype(XSDVocabulary.POSITIVE_INTEGER.getIRI()).isXSDDecimalDerived(), is(true));
+    }
+
+    @Test
+    public void shouldReturn_True_For_Is_Float() {
+        assertThat(new Datatype(XSDVocabulary.FLOAT.getIRI()).isXSDFloat(), is(true));
+    }
+
+    @Test
+    public void shouldReturn_True_For_Is_Double() {
+        assertThat(new Datatype(XSDVocabulary.DOUBLE.getIRI()).isXSDDouble(), is(true));
+    }
 }

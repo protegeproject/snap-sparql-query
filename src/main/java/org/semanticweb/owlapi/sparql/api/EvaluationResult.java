@@ -34,6 +34,9 @@ public class EvaluationResult {
     }
 
     public RDFTerm getResult() {
+        if(error) {
+            throw new RuntimeException("getResult should not be called for an error");
+        }
         return result;
     }
 
