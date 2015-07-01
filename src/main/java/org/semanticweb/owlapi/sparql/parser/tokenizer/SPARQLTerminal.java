@@ -111,6 +111,8 @@ public enum SPARQLTerminal {
 
     FILTER("FILTER"),
 
+    HAVING("HAVING"),
+
     BIND("BIND"),
 
     OR("||"),

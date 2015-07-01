@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
+import com.google.common.base.*;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.*;
@@ -52,6 +54,7 @@ public class Syntax2AlgebraTranslator {
             AggregateBuiltInReplacer.ReplacementContext replacementContext = new AggregateBuiltInReplacer.ReplacementContext((Group) X);
             AggregateBuiltInReplacer aggregateBuiltInReplacer = new AggregateBuiltInReplacer(replacementContext);
 
+            // (X AS Var)
             for(SelectItem selectItem : selectQuery.getSelectClause().getSelectItems()) {
                 if(selectItem instanceof SelectExpressionAsVariable) {
                     SelectExpressionAsVariable expressionAsVariable = (SelectExpressionAsVariable) selectItem;
@@ -65,6 +68,20 @@ public class Syntax2AlgebraTranslator {
                 }
                 else {
                     rewrittenSelectItems.add(selectItem);
+                }
+            }
+
+
+            // HAVING(X)
+            ImmutableList.Builder<HavingCondition> rewrittenHavingConditions = ImmutableList.builder();
+            Optional<HavingClause> havingClause = solutionModifier.getHavingClause();
+            if(havingClause.isPresent()) {
+                for(HavingCondition havingCondition : havingClause.get().getConditions()) {
+                    Expression expression = havingCondition.getExpression();
+//                    UnaggregatedVariableReplacer replacer = new UnaggregatedVariableReplacer();
+//                    expression = replacer.replaceUnaggregatedVariables(expression);
+                    expression = aggregateBuiltInReplacer.replaceAggregateBuiltInWithVariable(expression);
+                    rewrittenHavingConditions.add(new HavingCondition(expression));
                 }
             }
 
@@ -89,10 +106,19 @@ public class Syntax2AlgebraTranslator {
             }
 
             X = new AggregateJoin(ImmutableList.copyOf(aggregations));
+
+            for(HavingCondition havingCondition : rewrittenHavingConditions.build()) {
+                X = new Filter(ImmutableList.of(havingCondition.getExpression()), X);
+            }
+
         }
         else {
             E = selectQuery.getSelectClause().getSelectItems();
         }
+
+
+
+
 
         Set<Variable> projectionVariables = new LinkedHashSet<>();
         if(E.isEmpty()) {

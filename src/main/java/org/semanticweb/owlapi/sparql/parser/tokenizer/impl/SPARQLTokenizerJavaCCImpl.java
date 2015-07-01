@@ -411,6 +411,8 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
                 return wrap(BooleanTokenType.get());
             case FILTER:
                 return wrap(SPARQLTerminal.FILTER);
+            case HAVING:
+                return wrap(SPARQLTerminal.HAVING);
             case FROM:
                 return wrap(SPARQLTerminal.FROM);
             case GREATER_THAN:

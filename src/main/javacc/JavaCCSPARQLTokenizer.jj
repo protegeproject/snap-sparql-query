@@ -151,6 +151,11 @@ TOKEN: {
 
 
 TOKEN: {
+    <HAVING: "HAVING">
+}
+
+
+TOKEN: {
     <BIND: "BIND">
 }
 

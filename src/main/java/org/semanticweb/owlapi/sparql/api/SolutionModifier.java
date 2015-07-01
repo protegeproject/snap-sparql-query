@@ -42,6 +42,8 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.sparql.syntax.OrderClause;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -52,15 +54,23 @@ public class SolutionModifier {
 
     private final Optional<GroupClause> groupClause;
 
+    private final Optional<HavingClause> havingClause;
+
     private final Optional<OrderClause> orderClause;
 
-    public SolutionModifier(Optional<GroupClause> groupClause, Optional<OrderClause> orderClause) {
-        this.groupClause = groupClause;
-        this.orderClause = orderClause;
+    public SolutionModifier(Optional<GroupClause> groupClause, Optional<HavingClause> havingClause, Optional<OrderClause> orderClause) {
+        this.groupClause = checkNotNull(groupClause);
+        this.havingClause = checkNotNull(havingClause);
+        this.orderClause = checkNotNull(orderClause);
     }
 
     public Optional<GroupClause> getGroupClause() {
         return groupClause;
+    }
+
+
+    public Optional<HavingClause> getHavingClause() {
+        return havingClause;
     }
 
     public Optional<OrderClause> getOrderClause() {

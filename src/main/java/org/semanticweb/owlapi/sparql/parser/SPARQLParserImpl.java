@@ -246,7 +246,13 @@ public class SPARQLParserImpl {
         else {
             groupClause = Optional.absent();
         }
-
+        Optional<HavingClause> havingClause;
+        if(peek(HAVING)) {
+            havingClause = Optional.of(parseHavingClause());
+        }
+        else {
+            havingClause = Optional.absent();
+        }
         final Optional<OrderClause> orderClause;
         if (peek(ORDER)) {
             orderClause = Optional.of(parseOrderByClause());
@@ -254,7 +260,7 @@ public class SPARQLParserImpl {
         else {
             orderClause = Optional.absent();
         }
-        return new SolutionModifier(groupClause, orderClause);
+        return new SolutionModifier(groupClause, havingClause, orderClause);
     }
 
     public OrderClause parseOrderByClause() {
@@ -339,6 +345,17 @@ public class SPARQLParserImpl {
             }
         }
         return new GroupClause(ImmutableList.copyOf(groupConditions));
+    }
+
+    private HavingClause parseHavingClause() {
+        tokenizer.consume(HAVING);
+        ImmutableList.Builder<HavingCondition> havingConditionBuilder = ImmutableList.builder();
+        Expression expression = parseConstraint();
+        havingConditionBuilder.add(new HavingCondition(expression));
+        while(peek(OPEN_PAR) || peek(BuiltInCallTokenType.get())) {
+            havingConditionBuilder.add(new HavingCondition(expression));
+        }
+        return new HavingClause(havingConditionBuilder.build());
     }
 
     private GroupConditionExpressionAs parseExpressionWithOptionalAsVariable() {
