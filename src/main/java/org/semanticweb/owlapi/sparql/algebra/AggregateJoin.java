@@ -54,7 +54,9 @@ public class AggregateJoin extends GraphPatternAlgebraExpression<SolutionSequenc
             ImmutableMap.Builder<Variable, RDFTerm> termMap = ImmutableMap.builder();
             for(Variable variable : table.columnKeySet()) {
                 EvaluationResult result = table.get(key, variable);
-                termMap.put(variable, result.getResult());
+                if (!result.isError()) {
+                    termMap.put(variable, result.getResult());
+                }
             }
             SolutionMapping sm = new SolutionMapping(termMap.build());
             builder.add(sm);

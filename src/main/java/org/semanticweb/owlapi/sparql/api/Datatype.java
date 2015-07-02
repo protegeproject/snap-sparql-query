@@ -259,5 +259,5 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
     public Optional<Datatype> bind(SolutionMapping sm) {
         return Optional.of(this);
     }
-    
+
 }
