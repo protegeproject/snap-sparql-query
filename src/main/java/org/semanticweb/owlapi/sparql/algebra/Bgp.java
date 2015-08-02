@@ -26,7 +26,7 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public GraphPatternAlgebraExpression getSimplified() {
+    public GraphPatternAlgebraExpression<SolutionSequence> getSimplified() {
         return this;
     }
 
