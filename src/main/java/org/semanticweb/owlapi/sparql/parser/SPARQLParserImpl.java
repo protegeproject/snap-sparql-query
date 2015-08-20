@@ -609,8 +609,8 @@ public class SPARQLParserImpl {
     private void parseIndividualType(SPARQLToken subjectToken, TriplesBlockPattern.Builder builder) {
         tokenizer.consume();
         AtomicIndividual individual = getAtomicIndividualFromToken(subjectToken);
-        List<AtomicClass> types = parseClassNodeObjectList();
-        for (AtomicClass type : types) {
+        List<ClassExpression> types = parseClassNodeObjectList();
+        for (ClassExpression type : types) {
             builder.add(new ClassAssertion(type, individual));
         }
     }
@@ -642,8 +642,8 @@ public class SPARQLParserImpl {
             }
             else if (peek(RDFS_DOMAIN)) {
                 tokenizer.consume();
-                List<AtomicClass> clses = parseClassNodeObjectList();
-                for (AtomicClass cls : clses) {
+                List<ClassExpression> clses = parseClassNodeObjectList();
+                for (ClassExpression cls : clses) {
                     builder.add(new DataPropertyDomain(subject, cls));
                 }
             }
@@ -713,17 +713,17 @@ public class SPARQLParserImpl {
             }
             else if (peek(RDFS_DOMAIN)) {
                 tokenizer.consume();
-                List<AtomicClass> clses = parseClassNodeObjectList();
+                List<ClassExpression> clses = parseClassNodeObjectList();
                 AtomicObjectProperty subject = getObjectPropertyFromToken(subjectToken);
-                for (AtomicClass cls : clses) {
+                for (ClassExpression cls : clses) {
                     builder.add(new ObjectPropertyDomain(subject, cls));
                 }
             }
             else if (peek(RDFS_RANGE)) {
                 tokenizer.consume();
-                List<AtomicClass> clses = parseClassNodeObjectList();
+                List<ClassExpression> clses = parseClassNodeObjectList();
                 AtomicObjectProperty subject = getObjectPropertyFromToken(subjectToken);
-                for (AtomicClass cls : clses) {
+                for (ClassExpression cls : clses) {
                     builder.add(new ObjectPropertyRange(subject, cls));
                 }
             }
@@ -832,8 +832,8 @@ public class SPARQLParserImpl {
     private void parseDisjointWith(SPARQLToken subjectToken, TriplesBlockPattern.Builder builder) {
         tokenizer.consume(OWL_DISJOINT_WITH);
         AtomicClass subject = getAtomicClassFromToken(subjectToken);
-        List<AtomicClass> clses = parseClassNodeObjectList();
-        for (AtomicClass object : clses) {
+        List<ClassExpression> clses = parseClassNodeObjectList();
+        for (ClassExpression object : clses) {
             builder.add(new DisjointClasses(subject, object));
         }
     }
@@ -841,8 +841,8 @@ public class SPARQLParserImpl {
     private void parseEquivalentClasses(SPARQLToken subjectToken, TriplesBlockPattern.Builder builder) {
         tokenizer.consume(OWL_EQUIVALENT_CLASS);
         AtomicClass subject = getAtomicClassFromToken(subjectToken);
-        List<AtomicClass> clses = parseClassNodeObjectList();
-        for (AtomicClass object : clses) {
+        List<ClassExpression> clses = parseClassNodeObjectList();
+        for (ClassExpression object : clses) {
             builder.add(new EquivalentClasses(subject, object));
         }
     }
@@ -850,8 +850,8 @@ public class SPARQLParserImpl {
     private void parseSubClassOf(SPARQLToken subjectToken, TriplesBlockPattern.Builder builder) {
         tokenizer.consume(RDFS_SUBCLASS_OF);
         AtomicClass subject = getAtomicClassFromToken(subjectToken);
-        List<AtomicClass> clses = parseClassNodeObjectList();
-        for (AtomicClass object : clses) {
+        List<ClassExpression> clses = parseClassNodeObjectList();
+        for (ClassExpression object : clses) {
             builder.add(new SubClassOf(subject, object));
         }
     }
@@ -1226,10 +1226,10 @@ public class SPARQLParserImpl {
         tokenizer.setBase(token.getImage());
     }
 
-    private List<AtomicClass> parseClassNodeObjectList() {
-        List<AtomicClass> result = new ArrayList<>();
+    private List<ClassExpression> parseClassNodeObjectList() {
+        List<ClassExpression> result = new ArrayList<>();
         while (true) {
-            AtomicClass cls = parseClassNode();
+            ClassExpression cls = parseClassNode();
             result.add(cls);
             if (peek(COMMA)) {
                 tokenizer.consume();
@@ -1241,7 +1241,7 @@ public class SPARQLParserImpl {
         return result;
     }
 
-    private AtomicClass parseClassNode() {
+    private ClassExpression parseClassNode() {
         AtomicClass result = null;
         if (peek(VariableTokenType.get())) {
             SPARQLToken token = tokenizer.consume(VariableTokenType.get());
