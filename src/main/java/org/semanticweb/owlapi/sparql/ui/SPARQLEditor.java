@@ -168,7 +168,8 @@ public class SPARQLEditor extends JTextPane {
         StyleConstants.setForeground(builtInStyle, new Color(90, 158, 218));
 
         commentStyle = styledDocument.addStyle("comment", null);
-        StyleConstants.setForeground(commentStyle, new Color(200, 200, 200));
+        StyleConstants.setForeground(commentStyle, new Color(100, 100, 100));
+//        StyleConstants.setForeground(commentStyle, new Color(200, 200, 200));
 
         defaultStyle = styledDocument.addStyle("default", null);
         StyleConstants.setForeground(defaultStyle, Color.BLACK);
