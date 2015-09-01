@@ -58,35 +58,25 @@ import java.awt.event.*;
 import java.io.StringReader;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * Author: Matthew Horridge<br>
- * Stanford University<br>
- * Bio-Medical Informatics Research Group<br>
- * Date: 27/03/2012
+ * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 27/03/2012
  */
 public class AutoCompleter {
 
     public static final int DEFAULT_MAX_ENTRIES = 100;
-
-    private JTextComponent textComponent;
-
-    private Set<String> wordDelimeters;
-
-    private AutoCompleterMatcher matcher;
-
-    private JList popupList;
-
-    private JWindow popupWindow;
-
     public static final int POPUP_WIDTH = 350;
-
     public static final int POPUP_HEIGHT = 300;
-
+    public static final int TYPE_LIMIT = 100;
+    private JTextComponent textComponent;
+    private Set<String> wordDelimeters;
+    private AutoCompleterMatcher matcher;
+    private JList popupList;
+    private JWindow popupWindow;
     private String lastTextUpdate = "*";
-
     private int maxEntries = DEFAULT_MAX_ENTRIES;
-
     private KeyListener keyListener = new KeyAdapter() {
         public void keyPressed(KeyEvent e) {
             processKeyPressed(e);
@@ -102,7 +92,6 @@ public class AutoCompleter {
             }
         }
     };
-
     private ComponentAdapter componentListener = new ComponentAdapter() {
         public void componentHidden(ComponentEvent event) {
             hidePopup();
@@ -116,7 +105,6 @@ public class AutoCompleter {
             hidePopup();
         }
     };
-
     private HierarchyListener hierarchyListener = new HierarchyListener() {
         /**
          * Called when the hierarchy has been changed. To discern the actual
@@ -127,13 +115,12 @@ public class AutoCompleter {
             if ((e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) != 0) {
                 createPopupWindow();
                 Container frame = textComponent.getTopLevelAncestor();
-                if (frame != null){
+                if (frame != null) {
                     frame.addComponentListener(componentListener);
                 }
             }
         }
     };
-
     private MouseListener mouseListener = new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) {
@@ -141,14 +128,11 @@ public class AutoCompleter {
             }
         }
     };
-
-    private FocusListener focusListener = new FocusAdapter(){
+    private FocusListener focusListener = new FocusAdapter() {
         public void focusLost(FocusEvent event) {
             hidePopup();
         }
     };
-
-
     private OWLOntologyProvider ontologyProvider;
 
     public AutoCompleter(OWLOntologyProvider ontologyProvider, JTextComponent tc) {
@@ -190,11 +174,34 @@ public class AutoCompleter {
         createPopupWindow();
     }
 
-
-    public void cancel(){
-        hidePopup();
+    private static Set<? extends OWLEntity> getSignatureOfType(EntityType<?> et, OWLOntology o) {
+        if (et == EntityType.CLASS) {
+            return o.getClassesInSignature();
+        } else if (et == EntityType.OBJECT_PROPERTY) {
+            return o.getObjectPropertiesInSignature();
+        } else if (et == EntityType.DATA_PROPERTY) {
+            return o.getDataPropertiesInSignature();
+        } else if (et == EntityType.ANNOTATION_PROPERTY) {
+            return o.getAnnotationPropertiesInSignature();
+        } else if (et == EntityType.NAMED_INDIVIDUAL) {
+            return o.getIndividualsInSignature();
+        } else {
+            return o.getDatatypesInSignature();
+        }
     }
 
+    private static String renderEntity(PrefixManager pm, OWLEntity entity) {
+        String pn = pm.getPrefixIRI(entity.getIRI());
+        if (pn != null) {
+            return pn;
+        } else {
+            return entity.getIRI().toQuotedString();
+        }
+    }
+
+    public void cancel() {
+        hidePopup();
+    }
 
     private void processKeyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE && e.isControlDown()) {
@@ -211,34 +218,28 @@ public class AutoCompleter {
                 e.consume();
                 hidePopup();
             }
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+        } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (popupWindow.isVisible()) {
                 // Complete
                 e.consume();
                 completeWithPopupSelection();
             }
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             if (popupWindow.isVisible()) {
                 e.consume();
                 incrementSelection();
             }
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_UP) {
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             if (popupWindow.isVisible()) {
                 e.consume();
                 decrementSelection();
             }
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             hidePopup();
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             hidePopup();
         }
     }
-
 
     private void completeWithPopupSelection() {
         if (popupWindow.isVisible()) {
@@ -246,15 +247,13 @@ public class AutoCompleter {
             if (selObject != null) {
                 if (selObject instanceof OWLEntity) {
                     insertWord(getInsertText(selObject));
-                }
-                else {
+                } else {
                     insertWord(getInsertText(selObject));
                 }
                 hidePopup();
             }
         }
     }
-
 
     private java.util.List getMatches() {
         // We need to determine if the matches should be classes, individuals etc.
@@ -269,8 +268,7 @@ public class AutoCompleter {
             SPARQLParserImpl sparqlParser = new SPARQLParserImpl(tokenizer);
             try {
                 sparqlParser.parseQuery();
-            }
-            catch (SPARQLParseException e) {
+            } catch (SPARQLParseException e) {
                 String word = getWordToComplete();
                 Set matches = getMatchesFromParseException(ontology, tokenizer, e);
                 List<String> kwMatches = new ArrayList<String>(matches.size() + 10);
@@ -282,8 +280,7 @@ public class AutoCompleter {
                 }
                 return kwMatches;
             }
-        }
-        catch (BadLocationException e) {
+        } catch (BadLocationException e) {
         }
         return Collections.EMPTY_LIST;
     }
@@ -293,172 +290,112 @@ public class AutoCompleter {
     }
 
     private Set getMatchesFromParseException(OWLOntology ontology, SPARQLTokenizerJavaCCImpl tokenizer, SPARQLParseException e) {
-        Set<String> matches = new TreeSet<String>();
-        for(OWLRDFVocabulary voc : e.getExpectedVocabulary()) {
-            String pn = tokenizer.getPrefixManager().getPrefixIRI(voc.getIRI());
-            matches.add(pn);
-        }
-        for(EntityType<?> et : e.getExpectedEntityTypes()) {
-            if(et == EntityType.CLASS) {
-                for(OWLClass cls : ontology.getClassesInSignature(true)) {
-                    String pn = tokenizer.getPrefixManager().getPrefixIRI(cls.getIRI());
-                    if (pn != null) {
-                        matches.add(pn);
-                    }
-                    else {
-                        matches.add(cls.getIRI().toQuotedString());
-                    }
-                }
-            }
-            else if(et == EntityType.OBJECT_PROPERTY) {
-                for(OWLObjectProperty prop : ontology.getObjectPropertiesInSignature(true)) {
-                    String pn = tokenizer.getPrefixManager().getPrefixIRI(prop.getIRI());
-                    if (pn != null) {
-                        matches.add(pn);
-                    }
-                    else {
-                        matches.add(prop.getIRI().toQuotedString());
-                    }
-                }
-            }
-            else if(et == EntityType.DATA_PROPERTY) {
-                for(OWLDataProperty prop : ontology.getDataPropertiesInSignature(true)) {
-                    String pn = tokenizer.getPrefixManager().getPrefixIRI(prop.getIRI());
-                    if (pn != null) {
-                        matches.add(pn);
-                    }
-                    else {
-                        matches.add(prop.getIRI().toQuotedString());
-                    }
-                }
-            }
-            else if(et == EntityType.NAMED_INDIVIDUAL) {
-                for(OWLNamedIndividual ind : ontology.getIndividualsInSignature(true)) {
-                    String pn = tokenizer.getPrefixManager().getPrefixIRI(ind.getIRI());
-                    if (pn != null) {
-                        matches.add(pn);
-                    }
-                    else {
-                        matches.add(ind.getIRI().toQuotedString());
-                    }
-                }
-            }
-            else if(et == EntityType.ANNOTATION_PROPERTY) {
-                for(OWLAnnotationProperty prop : ontology.getAnnotationPropertiesInSignature()) {
-                    String pn = tokenizer.getPrefixManager().getPrefixIRI(prop.getIRI());
-                    if (pn != null) {
-                        matches.add(pn);
-                    }
-                    else {
-                        matches.add(prop.getIRI().toQuotedString());
-                    }
-                }
-                for(IRI builtin : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS) {
-                    String pn = tokenizer.getPrefixManager().getPrefixIRI(builtin);
-                    if (pn != null) {
-                        matches.add(pn);
-                    }
-                    else {
-                        matches.add(builtin.toQuotedString());
-                    }
-                }
-            }
-            else if(et == EntityType.DATATYPE) {
-                Set<OWLDatatype> datatypesInSignature = ontology.getDatatypesInSignature(true);
-                datatypesInSignature.add(OWL2Datatype.RDF_PLAIN_LITERAL.getDatatype(ontology.getOWLOntologyManager().getOWLDataFactory()));
-                for(OWLDatatype datatype : datatypesInSignature) {
-                    String pn = tokenizer.getPrefixManager().getPrefixIRI(datatype.getIRI());
-                    if(pn != null) {
-                        matches.add(pn);
-                    }
-                    else {
-                        matches.add(datatype.getIRI().toQuotedString());
-                    }
-                }
-            }
-        }
-        for(SPARQLTerminal terminal : e.getExpectedTerminals()) {
-            matches.add(terminal.getImage());
-        }
-        
-        if(e.getExpectedTokenTypes().contains(BuiltInCallTokenType.get())) {
-            for(BuiltInCall builtInCall : BuiltInCall.values()) {
-                if (builtInCall.isSupported()) {
-                    matches.add(builtInCall.name());
-                }
-            }
-        }
+        Set<String> matches = new TreeSet<>();
 
-        Map<String, String> prefixNamesToPrefixes = new HashMap<String, String>();
+        e.getExpectedVocabulary().stream()
+                .map(OWLRDFVocabulary::getIRI)
+                .map(iri -> tokenizer.getPrefixManager().getPrefixIRI(iri))
+                .forEach(matches::add);
 
 
-        Set<String> prefixes = new HashSet<String>();
-        prefixes.add(Namespaces.OWL.getPrefixIRI());
-        prefixes.add(Namespaces.RDF.getPrefixIRI());
-        prefixes.add(Namespaces.RDFS.getPrefixIRI());
-        prefixes.add(Namespaces.XSD.getPrefixIRI());
-        prefixes.add(Namespaces.XML.getPrefixIRI());
+        e.getExpectedEntityTypes().stream()
+                .forEach(et -> {
+                    ontology.getImportsClosure().stream()
+                            .map(o -> getSignatureOfType(et, o))
+                            .flatMap(Collection::stream)
+                            .limit(TYPE_LIMIT)
+                            .map(entity -> renderEntity(tokenizer.getPrefixManager(), entity))
+                            .forEach(matches::add);
+                });
 
-        for(OWLOntology ont : ontology.getImportsClosure()) {
-            for(OWLEntity entity : ont.getSignature()) {
-                IRI iri = entity.getIRI();
-                String prefix = null;
-                String prefixName = null;
-                int lastStop = iri.length();
-                for(int i = iri.length() - 1; i > 0; i--) {
-                    char ch = iri.charAt(i);
-                    if(ch == '#' || ch == '/') {
-                        if (prefix == null) {
-                            CharSequence seq = iri.subSequence(0, i + 1);
-                            prefix = seq.toString();
-                            prefixes.add(prefix);
-                            lastStop = i;
-                        }
-                        else if(prefixName == null) {
-                            CharSequence seq = iri.subSequence(i + 1, lastStop);
-                            String seqString = seq.toString();
-                            if(!OWL2Datatype.XSD_DECIMAL.getPattern().matcher(seqString).matches()) {
-                                prefixName = seqString;
-                                if(prefixName.endsWith(".owl")) {
-                                    prefixName = prefixName.substring(0, prefixName.length() - 4);
-                                }
+        e.getExpectedTerminals().stream()
+                .map(SPARQLTerminal::getImage)
+                .forEach(matches::add);
+
+
+        if (e.getExpectedTokenTypes().contains(BuiltInCallTokenType.get())) {
+            Stream.of(BuiltInCall.values())
+                    .filter(BuiltInCall::isSupported)
+                    .map(BuiltInCall::name)
+                    .forEach(matches::add);
+        }
+
+
+        boolean prologueIRIExpected = e.getExpectedTokenTypes().contains(PrologueDeclarationIRITokenType.get());
+        boolean prologuePrefixNameExpected = e.getExpectedTokenTypes().contains(PrefixNameTokenType.get());
+
+
+        if (prologueIRIExpected || prologuePrefixNameExpected) {
+            Map<String, String> prefixNamesToPrefixes = new HashMap<>();
+            Set<String> prefixes = new HashSet<>();
+            prefixes.add(Namespaces.OWL.getPrefixIRI());
+            prefixes.add(Namespaces.RDF.getPrefixIRI());
+            prefixes.add(Namespaces.RDFS.getPrefixIRI());
+            prefixes.add(Namespaces.XSD.getPrefixIRI());
+            prefixes.add(Namespaces.XML.getPrefixIRI());
+
+
+            for (OWLOntology ont : ontology.getImportsClosure()) {
+                for (OWLEntity entity : ont.getSignature()) {
+                    IRI iri = entity.getIRI();
+                    String prefix = null;
+                    String prefixName = null;
+                    int lastStop = iri.length();
+                    for (int i = iri.length() - 1; i > 0; i--) {
+                        char ch = iri.charAt(i);
+                        if (ch == '#' || ch == '/') {
+                            if (prefix == null) {
+                                CharSequence seq = iri.subSequence(0, i + 1);
+                                prefix = seq.toString();
+                                prefixes.add(prefix);
+                                lastStop = i;
                             }
-                            lastStop = i;
+                            else if (prefixName == null) {
+                                CharSequence seq = iri.subSequence(i + 1, lastStop);
+                                String seqString = seq.toString();
+                                if (!OWL2Datatype.XSD_DECIMAL.getPattern().matcher(seqString).matches()) {
+                                    prefixName = seqString;
+                                    if (prefixName.endsWith(".owl")) {
+                                        prefixName = prefixName.substring(0, prefixName.length() - 4);
+                                    }
+                                }
+                                lastStop = i;
+                            }
                         }
                     }
+                    if (!prefixes.contains(prefix)) {
+                        prefixNamesToPrefixes.put(prefixName, prefix);
+                    }
                 }
-                if (!prefixes.contains(prefix)) {
-                    prefixNamesToPrefixes.put(prefixName, prefix);
+            }
+
+            for (String prefix : prefixes) {
+                for (Namespaces ns : Namespaces.values()) {
+                    if (ns.getPrefixIRI().equals(prefix)) {
+                        prefixNamesToPrefixes.put(ns.getPrefixName(), ns.getPrefixIRI());
+                    }
                 }
+            }
+
+
+            if (prologueIRIExpected) {
+                prefixes.stream()
+                        .map(prefix -> "<" + prefix + ">")
+                        .forEach(matches::add);
+            }
+
+            if (prologuePrefixNameExpected) {
+                prefixNamesToPrefixes.keySet().stream()
+                        .map(prefixName -> prefixName + ":")
+                        .forEach(matches::add);
             }
         }
 
-        for(String prefix : prefixes) {
-            for(Namespaces ns : Namespaces.values()) {
-                if(ns.getPrefixIRI().equals(prefix)) {
-                    prefixNamesToPrefixes.put(ns.getPrefixName(), ns.getPrefixIRI());
-                }
-            }
-        }
 
-        if(e.getExpectedTokenTypes().contains(PrologueDeclarationIRITokenType.get())) {
-            for(String prefix : prefixes) {
-                matches.add("<" + prefix + ">");
-            }
-        }
-        
-        if(e.getExpectedTokenTypes().contains(PrefixNameTokenType.get())) {
-            for(String prefixName : prefixNamesToPrefixes.keySet()) {
-                matches.add(prefixName + ":");
-            }
-        }
-        
-        
-
-        for(TokenType tokenType : e.getExpectedTokenTypes()) {
-            if(tokenType instanceof VariableTokenType) {
-                for(Variable variable : e.getParsedVariables()) {
-                    if(variable instanceof UntypedVariable) {
+        for (TokenType tokenType : e.getExpectedTokenTypes()) {
+            if (tokenType instanceof VariableTokenType) {
+                for (Variable variable : e.getParsedVariables()) {
+                    if (variable instanceof UntypedVariable) {
                         matches.add(variable.getVariableNamePrefix().getPrefix() + variable.getName());
                     }
                 }
@@ -475,7 +412,6 @@ public class AutoCompleter {
         return matches;
     }
 
-
     private void createPopupWindow() {
         JScrollPane sp = new JScrollPane(popupList);
         popupWindow = new JWindow((Window) SwingUtilities.getAncestorOfClass(Window.class, textComponent));
@@ -491,8 +427,7 @@ public class AutoCompleter {
         if (matches.size() == 1) {
             // Don't show popup
             insertWord(getInsertText(matches.iterator().next()));
-        }
-        else if (matches.size() > 1) {
+        } else if (matches.size() > 1) {
             // Show popup
             lastTextUpdate = textComponent.getText();
             showPopup();
@@ -508,18 +443,17 @@ public class AutoCompleter {
             int selStart = textComponent.getSelectionStart();
             int selEnd = textComponent.getSelectionEnd();
             int selLen = selEnd - selStart;
-            if (selLen > 0){
+            if (selLen > 0) {
                 textComponent.getDocument().remove(selStart, selLen);
             }
 
             int index = getWordIndex();
             int caretIndex = textComponent.getCaretPosition();
-            if (caretIndex > 0 && caretIndex > index){
+            if (caretIndex > 0 && caretIndex > index) {
                 textComponent.getDocument().remove(index, caretIndex - index);
             }
             textComponent.getDocument().insertString(index, word, null);
-        }
-        catch (BadLocationException e) {
+        } catch (BadLocationException e) {
             e.printStackTrace();
         }
     }
@@ -534,14 +468,13 @@ public class AutoCompleter {
             try {
                 int wordIndex = getWordIndex();
                 Point p = new Point(0, 0); // default for when the doc is empty
-                if (wordIndex > 0){
+                if (wordIndex > 0) {
                     p = textComponent.modelToView(wordIndex).getLocation();
                 }
                 SwingUtilities.convertPointToScreen(p, textComponent);
                 p.y = p.y + textComponent.getFontMetrics(textComponent.getFont()).getHeight();
                 popupWindow.setLocation(p);
-            }
-            catch (BadLocationException e) {
+            } catch (BadLocationException e) {
                 e.printStackTrace();
             }
             popupWindow.setVisible(true);
@@ -551,19 +484,18 @@ public class AutoCompleter {
 
     private void hidePopup() {
         popupWindow.setVisible(false);
-        popupList.setListData(new Object [0]);
+        popupList.setListData(new Object[0]);
     }
 
 
     private void updatePopup(java.util.List matches) {
         int count = matches.size();
-        if(count > maxEntries) {
+        if (count > maxEntries) {
             count = maxEntries;
         }
         if (!matches.isEmpty()) {
             popupList.setListData(matches.subList(0, count).toArray());
-        }
-        else {
+        } else {
             popupList.setListData(matches.toArray());
         }
         popupList.setSelectedIndex(0);
@@ -599,11 +531,9 @@ public class AutoCompleter {
     }
 
 
-
-
     private int getWordIndex() {
         int index = getEscapedWordIndex();
-        if (index == -1){
+        if (index == -1) {
             index = getUnbrokenWordIndex();
         }
         return Math.max(0, index);
@@ -616,20 +546,18 @@ public class AutoCompleter {
             int caretPos = Math.max(0, getEffectiveCaretPosition() - 1);
             String expression = textComponent.getDocument().getText(0, caretPos);
             int escapeEnd = -1;
-            do{
-                int escapeStart = expression.indexOf("'", escapeEnd+1);
-                if (escapeStart != -1){
-                    escapeEnd = expression.indexOf("'", escapeStart+1);
-                    if (escapeEnd == -1){
+            do {
+                int escapeStart = expression.indexOf("'", escapeEnd + 1);
+                if (escapeStart != -1) {
+                    escapeEnd = expression.indexOf("'", escapeStart + 1);
+                    if (escapeEnd == -1) {
                         return escapeStart;
                     }
-                }
-                else{
+                } else {
                     return -1;
                 }
-            }while(true);
-        }
-        catch (BadLocationException e) {
+            } while (true);
+        } catch (BadLocationException e) {
         }
         return -1;
     }
@@ -638,7 +566,7 @@ public class AutoCompleter {
     private int getUnbrokenWordIndex() {
         try {
             int caretPos = Math.max(0, getEffectiveCaretPosition() - 1);
-            if (caretPos > 0){
+            if (caretPos > 0) {
                 for (int index = caretPos; index > -1; index--) {
                     if (wordDelimeters.contains(textComponent.getDocument().getText(index, 1))) {
                         return index + 1;
@@ -648,8 +576,7 @@ public class AutoCompleter {
                     }
                 }
             }
-        }
-        catch (BadLocationException e) {
+        } catch (BadLocationException e) {
         }
         return -1;
     }
@@ -661,7 +588,7 @@ public class AutoCompleter {
 //            return mngr.getRendering((OWLObject) o);
 //        }
 //        else {
-            return o.toString();
+        return o.toString();
 //        }
     }
 
@@ -671,16 +598,15 @@ public class AutoCompleter {
             int index = getWordIndex();
             int caretIndex = getEffectiveCaretPosition();
             return textComponent.getDocument().getText(index, caretIndex - index);
-        }
-        catch (BadLocationException e) {
+        } catch (BadLocationException e) {
             return "";
         }
     }
 
     // the caret pos should be read as the start of the selection if there is one
-    private int getEffectiveCaretPosition(){
+    private int getEffectiveCaretPosition() {
         int startSel = textComponent.getSelectionStart();
-        if (startSel >= 0){
+        if (startSel >= 0) {
             return startSel;
         }
         return textComponent.getCaretPosition();
