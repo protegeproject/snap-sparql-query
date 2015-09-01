@@ -2,6 +2,7 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.LinkedHashMultiset;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -56,16 +58,20 @@ public class MinusEvaluator {
 
     private static class Key {
 
-        private final List<Optional<RDFTerm>> bindings;
-
         private final SolutionMapping solutionMapping;
 
+        private final ImmutableList<Variable> sharedVariables;
+
+        private final int hashCode;
+
         public Key(ImmutableList<Variable> sharedVariables, SolutionMapping sm) {
-            this.bindings = new ArrayList<>(sharedVariables.size());
             this.solutionMapping = sm;
-            for (Variable variable : sharedVariables) {
-                bindings.add(sm.getTermForVariable(variable));
+            this.sharedVariables = sharedVariables;
+            int hc = 13;
+            for(Variable variable : sharedVariables) {
+                hc += sm.getTermForVariable(variable).hashCode();
             }
+            hashCode = hc;
         }
 
         public SolutionMapping getSolutionMapping() {
@@ -74,7 +80,7 @@ public class MinusEvaluator {
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(bindings);
+            return hashCode;
         }
 
         @Override
@@ -86,7 +92,12 @@ public class MinusEvaluator {
                 return false;
             }
             Key other = (Key) obj;
-            return bindings.equals(other.bindings);
+            for(Variable variable : sharedVariables) {
+                if(!this.solutionMapping.getTermForVariable(variable).equals(other.solutionMapping.getTermForVariable(variable))) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
