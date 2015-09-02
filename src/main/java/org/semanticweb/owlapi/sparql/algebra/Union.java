@@ -50,10 +50,10 @@ public class Union extends GraphPatternAlgebraExpression<SolutionSequence> {
         List<Variable> variables = new ArrayList<>();
         variables.addAll(leftSeq.getVariableList());
         variables.addAll(rightSeq.getVariableList());
-        List<SolutionMapping> mappings = new ArrayList<>();
+        ImmutableList.Builder<SolutionMapping> mappings = ImmutableList.builder();
         mappings.addAll(leftSeq.getSolutionMappings());
         mappings.addAll(rightSeq.getSolutionMappings());
-        return new SolutionSequence(variables, ImmutableList.copyOf(mappings));
+        return new SolutionSequence(variables, mappings.build());
     }
 
     @Override
