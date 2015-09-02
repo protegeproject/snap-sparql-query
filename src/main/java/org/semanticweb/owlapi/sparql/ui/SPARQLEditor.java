@@ -147,6 +147,7 @@ public class SPARQLEditor extends JTextPane {
 
 
         StyledDocument styledDocument = getStyledDocument();
+        ((AbstractDocument) styledDocument).setDocumentFilter(new NewLineDocumentFilter());
 
         sparqlKeywordStyle = styledDocument.addStyle("keyword", null);
         StyleConstants.setForeground(sparqlKeywordStyle, new Color(170, 13, 145));
