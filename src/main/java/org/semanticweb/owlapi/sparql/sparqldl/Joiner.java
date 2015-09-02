@@ -2,6 +2,7 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 
 import com.google.common.base.*;
 import com.google.common.collect.*;
+import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
@@ -65,18 +66,32 @@ public class Joiner {
     }
 
     public List<SolutionMapping> getJoin() {
-        List<SolutionMapping> result = new ArrayList<>(leftSolutionSequence.size());
-        for (SolutionMapping left : leftSolutionSequence) {
-            for (SolutionMapping right : rightSolutionSequence) {
-                if (compatibilityChecker.isCompatible(left, right)) {
-                    ImmutableMap.Builder<Variable, RDFTerm> combined = ImmutableMap.builder();
-                    combined.putAll(left.asMap());
-                    combined.putAll(right.asMap());
-                    SolutionMapping join = new SolutionMapping(combined.build());
-                    result.add(join);
-                }
+        final List<SolutionMapping> smallerSequence, largerSequence;
+        if(rightSolutionSequence.size() < leftSolutionSequence.size()) {
+            smallerSequence = rightSolutionSequence;
+            largerSequence = leftSolutionSequence;
+        }
+        else {
+            smallerSequence = leftSolutionSequence;
+            largerSequence = rightSolutionSequence;
+        }
+
+        ImmutableList<Variable> sharedVariables = ImmutableList.copyOf(compatibilityChecker.getVariables());
+        Multimap<CompatibilityKey, SolutionMapping> smallerMap = ArrayListMultimap.create(smallerSequence.size(), 1);
+        smallerSequence.stream()
+                .map(sm -> new CompatibilityKey(sharedVariables, sm))
+                .forEach(key -> smallerMap.put(key, key.getSolutionMapping()));
+        ImmutableList.Builder<SolutionMapping> result = ImmutableList.builder();
+        for (SolutionMapping larger : largerSequence) {
+            CompatibilityKey key = new CompatibilityKey(sharedVariables, larger);
+            for(SolutionMapping compatibleSolution : smallerMap.get(key)) {
+                HashMap<Variable, RDFTerm> combined = new HashMap<>();
+                combined.putAll(larger.asMap());
+                combined.putAll(compatibleSolution.asMap());
+                SolutionMapping join = new SolutionMapping(ImmutableMap.copyOf(combined));
+                result.add(join);
             }
         }
-        return result;
+        return result.build();
     }
 }
