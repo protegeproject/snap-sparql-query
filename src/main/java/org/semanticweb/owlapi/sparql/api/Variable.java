@@ -86,7 +86,7 @@ public abstract class Variable implements Atomic, HasIdentifier, HasVariables, H
 
     @Override
     final public int hashCode() {
-        return Objects.hashCode(getName());
+        return variableName.hashCode();
     }
 
     public static Variable create(String name, PrimitiveType entityType) {
