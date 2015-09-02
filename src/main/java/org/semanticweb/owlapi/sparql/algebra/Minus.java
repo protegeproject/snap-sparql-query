@@ -3,9 +3,10 @@ package org.semanticweb.owlapi.sparql.algebra;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.MinusEvaluator;
 
-import java.io.PrintWriter;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -48,8 +49,9 @@ public class Minus extends GraphPatternAlgebraExpression<SolutionSequence> {
         SolutionSequence leftSeq = left.evaluate(context);
         SolutionSequence rightSeq = right.evaluate(context);
         Set<Variable> sharedVariables = left.getSharedVariables(right);
-        org.semanticweb.owlapi.sparql.sparqldl.Minus minus = new org.semanticweb.owlapi.sparql.sparqldl.Minus(leftSeq.getSolutionMappings(), rightSeq.getSolutionMappings(), sharedVariables);
-        return new SolutionSequence(leftSeq.getVariableList(), ImmutableList.copyOf(minus.getMinus()));
+        MinusEvaluator minusEvaluator = new MinusEvaluator(leftSeq.getSolutionMappings(), rightSeq.getSolutionMappings(), sharedVariables);
+        ImmutableList<SolutionMapping> minusResult = minusEvaluator.getMinus();
+        return new SolutionSequence(leftSeq.getVariableList(), minusResult);
     }
 
     @Override
