@@ -43,6 +43,7 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
+import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -51,6 +52,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraPrettyPrinter;
 import org.semanticweb.owlapi.sparql.api.Axiom;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
@@ -58,6 +60,7 @@ import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
+import org.semanticweb.owlapi.sparql.reasoner.SPARQLAssertedReasoner;
 import org.semanticweb.owlapi.sparql.sparqldl.SPARQLDLQueryEngine;
 import org.semanticweb.owlapi.sparql.syntax.ConstructQuery;
 import org.semanticweb.owlapi.sparql.syntax.Query;
@@ -93,12 +96,23 @@ public class TestParser {
     public static void main(String[] args) throws Exception {
         try {
             OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-            File file = new File(args[0]);
-            manager.addIRIMapper(new AutoIRIMapper(file.getParentFile(), false));
-            final OWLOntology rootOntology = manager.loadOntologyFromOntologyDocument(IRI.create(file));
+
+            String location = args[0];
+            IRI iri;
+            if(location.startsWith("http://")) {
+                iri = IRI.create(args[0]);
+            }
+            else {
+                File file = new File(location);
+                manager.addIRIMapper(new AutoIRIMapper(file.getParentFile(), false));
+                iri = IRI.create(file);
+            }
+            final OWLOntology rootOntology = manager.loadOntologyFromOntologyDocument(iri);
             System.out.println("Loaded ontology: " + rootOntology);
             System.out.println("Creating reasoner...");
-            reasoner = new Reasoner(rootOntology);
+            Configuration configuration = new Configuration();
+            reasoner = new Reasoner(configuration, rootOntology);
+//            reasoner = new SPARQLAssertedReasoner(rootOntology);
             System.out.println("    .... done");
             System.out.println("Precomputing class hierarchy...");
             reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);

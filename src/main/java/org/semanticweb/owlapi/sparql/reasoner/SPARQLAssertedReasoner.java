@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.reasoner.impl.*;
 import org.semanticweb.owlapi.util.Version;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Author: Matthew Horridge<br>
@@ -102,7 +103,7 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
     }
 
     public boolean isEntailmentCheckingSupported(AxiomType<?> axiomType) {
-        return false;
+        return true;
     }
 
     public Node<OWLClass> getTopClassNode() {
@@ -114,76 +115,79 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
     }
 
     public NodeSet<OWLClass> getSubClasses(OWLClassExpression owlClassExpression, boolean b) throws ReasonerInterruptedException, TimeOutException, FreshEntitiesException, InconsistentOntologyException, ClassExpressionNotInProfileException {
+        Set<OWLClassExpression> result = getSubClasses(owlClassExpression);
+        return toNodeSet(result);
+    }
+
+    private Set<OWLClassExpression> getSubClasses(OWLClassExpression owlClassExpression) {
+        Set<OWLClassExpression> result = new HashSet<>();
         if (owlClassExpression.isAnonymous()) {
-            return EMPTY_CLASS_NODE_SET;
-        }
-        OWLClass cls = owlClassExpression.asOWLClass();
-        Queue<OWLClass> queue = new LinkedList<OWLClass>();
-        queue.add(cls);
-        Set<OWLClassExpression> result = new HashSet<OWLClassExpression>();
-        if(owlClassExpression.isOWLThing()) {
-            result.addAll(rootOntology.getClassesInSignature(true));
+            result = Collections.emptySet();
         }
         else {
-            while(!queue.isEmpty()) {
-                OWLClass curCls = queue.poll();
-                result.add(curCls);
-                Set<OWLClassExpression> curClsSubs = curCls.getSubClasses(getRootOntology().getImportsClosure());
-                for(OWLClassExpression curClsSub : curClsSubs) {
-                    if (!curClsSub.isAnonymous()) {
-                        if(!result.contains(curClsSub.asOWLClass())) {
-                            queue.add(curClsSub.asOWLClass());
+            OWLClass cls = owlClassExpression.asOWLClass();
+            Queue<OWLClass> queue = new LinkedList<OWLClass>();
+            queue.add(cls);
+            if(owlClassExpression.isOWLThing()) {
+                result.addAll(rootOntology.getClassesInSignature(true));
+            }
+            else {
+                while(!queue.isEmpty()) {
+                    OWLClass curCls = queue.poll();
+                    result.add(curCls);
+                    Set<OWLClassExpression> curClsSubs = curCls.getSubClasses(getRootOntology().getImportsClosure());
+                    for(OWLClassExpression curClsSub : curClsSubs) {
+                        if (!curClsSub.isAnonymous()) {
+                            if(!result.contains(curClsSub.asOWLClass())) {
+                                queue.add(curClsSub.asOWLClass());
+                            }
                         }
                     }
                 }
             }
         }
-
         result.add(rootOntology.getOWLOntologyManager().getOWLDataFactory().getOWLNothing());
-        return toNodeSet(result);
+        return result;
     }
 
-    private OWLClassNodeSet toNodeSet(Set<OWLClassExpression> clses) {
+    private static OWLClassNodeSet toNodeSet(Set<? extends OWLClassExpression> clses) {
         OWLClassNodeSet ns = new OWLClassNodeSet();
-        for(OWLClassExpression ce : clses) {
-            if(!ce.isAnonymous()) {
-                ns.addEntity(ce.asOWLClass());
-            }
-        }
+        clses.stream()
+                .filter(c -> !c.isAnonymous())
+                .forEach(c -> ns.addEntity(c.asOWLClass()));
         return ns;
     }
 
-//    private NodeSet<OWLClass> toNodeSet(Set<OWLClass> result) {
-//        Set<Node<OWLClass>> nodes = new HashSet<Node<OWLClass>>(result.size());
-//        for (OWLClass cls : result) {
-//            OWLClassNode classNode = new OWLClassNode(cls);
-//            nodes.add(classNode);
-//        }
-//        return new OWLClassNodeSet(nodes);
-//    }
 
     public NodeSet<OWLClass> getSuperClasses(OWLClassExpression owlClassExpression, boolean b) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+        Set<OWLClass> result = getSuperClasses(owlClassExpression);
+        return toNodeSet(result);
+    }
+
+    private Set<OWLClass> getSuperClasses(OWLClassExpression owlClassExpression) {
+        Set<OWLClass> result = new HashSet<>();
         if (owlClassExpression.isAnonymous()) {
-            return EMPTY_CLASS_NODE_SET;
+            result = Collections.emptySet();
         }
-        OWLClass cls = owlClassExpression.asOWLClass();
-        Queue<OWLClass> queue = new LinkedList<OWLClass>();
-        queue.add(cls);
-        Set<OWLClassExpression> result = new HashSet<OWLClassExpression>();
-        while(!queue.isEmpty()) {
-            OWLClass curCls = queue.poll();
-            result.add(curCls);
-            Set<OWLClassExpression> curClsSupers = curCls.getSuperClasses(getRootOntology().getImportsClosure());
-            for(OWLClassExpression curClsSuper : curClsSupers) {
-                if (!curClsSuper.isAnonymous()) {
-                    if(!result.contains(curClsSuper.asOWLClass())) {
-                        queue.add(curClsSuper.asOWLClass());
+        else {
+            OWLClass cls = owlClassExpression.asOWLClass();
+            Queue<OWLClass> queue = new LinkedList<>();
+            queue.add(cls);
+            while(!queue.isEmpty()) {
+                OWLClass curCls = queue.poll();
+                result.add(curCls);
+                Set<OWLClassExpression> curClsSupers = curCls.getSuperClasses(getRootOntology().getImportsClosure());
+                for(OWLClassExpression curClsSuper : curClsSupers) {
+                    if (!curClsSuper.isAnonymous()) {
+                        if(!result.contains(curClsSuper.asOWLClass())) {
+                            queue.add(curClsSuper.asOWLClass());
+                        }
                     }
                 }
             }
         }
         result.add(rootOntology.getOWLOntologyManager().getOWLDataFactory().getOWLThing());
-        return toNodeSet(result);
+        return result;
     }
 
     public Node<OWLClass> getEquivalentClasses(OWLClassExpression owlClassExpression) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
@@ -202,9 +206,6 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
     }
 
     public NodeSet<OWLClass> getDisjointClasses(OWLClassExpression owlClassExpression) throws ReasonerInterruptedException, TimeOutException, FreshEntitiesException, InconsistentOntologyException {
-        if (owlClassExpression.isAnonymous()) {
-            return EMPTY_CLASS_NODE_SET;
-        }
         if (owlClassExpression.isAnonymous()) {
             return EMPTY_CLASS_NODE_SET;
         }
@@ -278,12 +279,38 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
     }
 
     public NodeSet<OWLClass> getTypes(OWLNamedIndividual individual, boolean b) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
-
-        return null;
+        Set<OWLClass> clses = rootOntology.getImportsClosure().stream()
+                .map(o -> o.getClassAssertionAxioms(individual))
+                .flatMap(Collection::stream)
+                .filter(ax -> !ax.getClassExpression().isAnonymous())
+                .map(ax -> ax.getClassExpression().asOWLClass())
+                .map(c -> getSuperClasses(c))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+        return toNodeSet(clses);
     }
 
-    public NodeSet<OWLNamedIndividual> getInstances(OWLClassExpression owlClassExpression, boolean b) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
-        return null;
+    public NodeSet<OWLNamedIndividual> getInstances(OWLClassExpression ce, boolean b) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+        if(ce.isOWLThing()) {
+            Set<Node<OWLNamedIndividual>> set = rootOntology.getImportsClosure().stream()
+                    .map(OWLOntology::getIndividualsInSignature)
+                    .flatMap(Collection::stream)
+                    .map(OWLNamedIndividualNode::new)
+                    .collect(Collectors.toSet());
+            return new OWLNamedIndividualNodeSet(set);
+        }
+        OWLNamedIndividualNodeSet ns = new OWLNamedIndividualNodeSet();
+        getSubClasses(ce).stream()
+                .filter(c -> !c.isOWLNothing())
+                .forEach(c -> {
+                    rootOntology.getImportsClosure().stream()
+                            .map(o -> o.getClassAssertionAxioms(c))
+                            .flatMap(Collection::stream)
+                            .map(OWLClassAssertionAxiom::getIndividual)
+                            .filter(OWLIndividual::isNamed)
+                            .forEach(i -> ns.addEntity(i.asOWLNamedIndividual()));
+                });
+        return ns;
     }
 
     public NodeSet<OWLNamedIndividual> getObjectPropertyValues(OWLNamedIndividual individual, OWLObjectPropertyExpression propertyExpression) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
@@ -311,7 +338,7 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
                 }
             }
         }
-        return new HashSet<OWLLiteral>(tempResult);
+        return new HashSet<>(tempResult);
     }
 
     public Node<OWLNamedIndividual> getSameIndividuals(OWLNamedIndividual individual) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
