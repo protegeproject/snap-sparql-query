@@ -83,7 +83,7 @@ public class SPARQLParserImpl {
     public SelectQuery parseSelectQuery() {
         parsePrologue();
         SelectClause selectClause = parseSelectClause();
-        GroupPattern groupPattern = parseWhereClause();
+        GroupPattern groupPattern = parseWhereClause(false);
         SolutionModifier solutionModifier = parseSolutionModifier();
         tokenizer.consume(EOFTokenType.get());
         SelectQuery selectQuery = new SelectQuery(tokenizer.getPrefixManager(), selectClause, groupPattern, solutionModifier);
@@ -94,7 +94,7 @@ public class SPARQLParserImpl {
     public ConstructQuery parseConstructQuery() {
         parsePrologue();
         ConstructTemplate constructTemplate = parseConstructClause();
-        GroupPattern groupPattern = parseWhereClause();
+        GroupPattern groupPattern = parseWhereClause(false);
         SolutionModifier solutionModifier = parseSolutionModifier();
         tokenizer.consume(EOFTokenType.get());
         return new ConstructQuery(tokenizer.getPrefixManager(), constructTemplate, groupPattern, solutionModifier);
@@ -110,7 +110,7 @@ public class SPARQLParserImpl {
 
     private ConstructTemplate parseConstructTemplate() {
         tokenizer.consume(OPEN_BRACE);
-        TriplesBlockPattern triplesBlockPattern = parseTriplesBlock();
+        TriplesBlockPattern triplesBlockPattern = parseTriplesBlock(true);
         tokenizer.consume(CLOSE_BRACE);
         return new ConstructTemplate(triplesBlockPattern.getAxioms());
     }
@@ -195,12 +195,12 @@ public class SPARQLParserImpl {
     }
 
 
-    public GroupPattern parseWhereClause() {
+    public GroupPattern parseWhereClause(boolean allowFreshDeclarations) {
         tokenizer.consume(WHERE);
-        return parseGroupGraphPattern();
+        return parseGroupGraphPattern(allowFreshDeclarations);
     }
 
-    private GroupPattern parseGroupGraphPattern() {
+    private GroupPattern parseGroupGraphPattern(boolean allowFreshDeclarations) {
 
         ImmutableList.Builder<Pattern> patternBuilder = ImmutableList.builder();
 
@@ -211,7 +211,7 @@ public class SPARQLParserImpl {
 
         tokenizer.getVariableManager().pushVariableTypeScope();
 
-        TriplesBlockPattern triplesBlockPattern1 = parseTriplesBlock();
+        TriplesBlockPattern triplesBlockPattern1 = parseTriplesBlock(allowFreshDeclarations);
         if (!triplesBlockPattern1.isEmpty()) {
             patternBuilder.add(triplesBlockPattern1);
         }
@@ -224,7 +224,7 @@ public class SPARQLParserImpl {
                 if(peek(DOT)) {
                     tokenizer.consume(DOT);
                 }
-                TriplesBlockPattern triplesBlockPattern2 = parseTriplesBlock();
+                TriplesBlockPattern triplesBlockPattern2 = parseTriplesBlock(allowFreshDeclarations);
                 if(!triplesBlockPattern2.isEmpty()) {
                     patternBuilder.add(triplesBlockPattern2);
                 }
@@ -418,7 +418,7 @@ public class SPARQLParserImpl {
         }
     }
 
-    public TriplesBlockPattern parseTriplesBlock() {
+    public TriplesBlockPattern parseTriplesBlock(boolean allowFreshDeclarations) {
         TriplesBlockPattern.Builder builder = TriplesBlockPattern.builder();
         while (true) {
             if (peekUntypedVariable() != null) {
@@ -440,6 +440,52 @@ public class SPARQLParserImpl {
             else if (peekTypedVariable(PrimitiveType.NAMED_INDIVIDUAL) != null || peek(IndividualIRITokenType.get())) {
                 SPARQLToken subjectToken = tokenizer.consume();
                 parseIndividualNodePropertyList(subjectToken, builder);
+            }
+            else if (peekTypedVariable(PrimitiveType.ANNOTATION_PROPERTY) != null || peek(AnnotationPropertyIRITokenType.get())) {
+                SPARQLToken token = tokenizer.consume();
+                parseAnnotationPropertyNode(token, builder);
+            }
+            else if (allowFreshDeclarations && peek(UntypedIRITokenType.get())) {
+                // Should be allowed in construct queries
+                SPARQLToken token = tokenizer.peek(UntypedIRITokenType.get());
+                try {
+                    IRI iri = getIRIFromToken(token);
+                    tokenizer.consume();
+                    tokenizer.consume(RDF_TYPE);
+                    if(tokenizer.peek(OWL_CLASS) != null) {
+                        tokenizer.consume();
+                        builder.add(new Declaration(new NamedClass(iri)));
+                        tokenizer.registerType(iri, ClassIRITokenType.get());
+                    }
+                    else if(tokenizer.peek(OWL_OBJECT_PROPERTY) != null) {
+                        tokenizer.consume();
+                        builder.add(new Declaration(new ObjectProperty(iri)));
+                        tokenizer.registerType(iri, ObjectPropertyIRITokenType.get());
+                    }
+                    else if(tokenizer.peek(OWL_DATA_PROPERTY) != null) {
+                        tokenizer.consume();
+                        builder.add(new Declaration(new ObjectProperty(iri)));
+                        tokenizer.registerType(iri, DataPropertyIRITokenType.get());
+                    }
+                    else if(tokenizer.peek(OWL_ANNOTATION_PROPERTY) != null) {
+                        tokenizer.consume();
+                        builder.add(new Declaration(new AnnotationProperty(iri)));
+                        tokenizer.registerType(iri, AnnotationPropertyIRITokenType.get());
+                    }
+                    else if(tokenizer.peek(OWL_NAMED_INDIVIDUAL) != null) {
+                        tokenizer.consume();
+                        builder.add(new Declaration(new NamedIndividual(iri)));
+                        tokenizer.registerType(iri, IndividualIRITokenType.get());
+                    }
+                    else if(tokenizer.peek(OWL_DATATYPE) != null) {
+                        tokenizer.consume();
+                        builder.add(new Declaration(new Datatype(iri)));
+                        tokenizer.registerType(iri, DataPropertyIRITokenType.get());
+                    }
+                } catch (RuntimeException e) {
+                    tokenizer.raiseError();
+                }
+
             }
 
             // Carry on if we see a dot because we expect further triples
@@ -480,7 +526,7 @@ public class SPARQLParserImpl {
         ImmutableList.Builder<Pattern> patternsBuilder = ImmutableList.builder();
         // GRAMMAR:
         // 	GroupGraphPattern ( 'UNION' GroupGraphPattern )*
-        GroupPattern groupPattern = parseGroupGraphPattern();
+        GroupPattern groupPattern = parseGroupGraphPattern(false);
         patternsBuilder.add(groupPattern);
         while(peek(UNION)) {
             UnionPattern unionPattern = parseUnionGraphPattern();
@@ -492,20 +538,20 @@ public class SPARQLParserImpl {
 
     private UnionPattern parseUnionGraphPattern() {
         tokenizer.consume(UNION);
-        GroupPattern groupPattern = parseGroupGraphPattern();
+        GroupPattern groupPattern = parseGroupGraphPattern(false);
         return new UnionPattern(groupPattern);
     }
 
     private MinusPattern parseMinusGraphPattern() {
         tokenizer.consume(MINUS_KW);
-        GroupPattern groupPattern = parseGroupGraphPattern();
+        GroupPattern groupPattern = parseGroupGraphPattern(false);
         return new MinusPattern(groupPattern);
     }
 
 
     private OptionalPattern parseOptionalGraphPattern() {
         tokenizer.consume(OPTIONAL_KW);
-        GroupPattern groupPattern = parseGroupGraphPattern();
+        GroupPattern groupPattern = parseGroupGraphPattern(false);
         return new OptionalPattern(groupPattern);
     }
 
@@ -593,6 +639,42 @@ public class SPARQLParserImpl {
                 else {
                     tokenizer.raiseError();
                 }
+            }
+            else {
+                tokenizer.raiseError();
+            }
+            if (peek(SEMI_COLON)) {
+                tokenizer.consume();
+            }
+            else {
+                break;
+            }
+        }
+    }
+
+    /**
+     * Parses a node that is an annotation property IRI or an annotation property variable. Possible predicates are
+     * annotation property IRI, annotation property variable, rdfs:subPropertyOf, rdfs:domain and rdfs:range
+     * @param subjectToken The node
+     */
+    private void parseAnnotationPropertyNode(SPARQLToken subjectToken, TriplesBlockPattern.Builder builder) {
+        while (true) {
+            if (peek(AnnotationPropertyIRITokenType.get()) || peekTypedVariable(PrimitiveType.ANNOTATION_PROPERTY) != null) {
+                parseAnnotationAssertions(subjectToken, builder);
+            }
+            else if (peek(VariableTokenType.get())) {
+                tokenizer.getVariableManager().registerVariable(new UntypedVariable(tokenizer.peek().getImage()), PrimitiveType.ANNOTATION_PROPERTY);
+                parseAnnotationAssertions(subjectToken, builder);
+            }
+            else if (peek(RDFS_SUB_PROPERTY_OF)) {
+//                parseAnnotationSubPropertyOf(subjectToken, builder);
+                tokenizer.raiseError();
+            }
+            else if (peek(RDFS_DOMAIN)) {
+                tokenizer.raiseError();
+            }
+            else if (peek(RDFS_RANGE)) {
+                tokenizer.raiseError();
             }
             else {
                 tokenizer.raiseError();
@@ -1256,11 +1338,6 @@ public class SPARQLParserImpl {
             SPARQLToken token = tokenizer.consume();
             result = new NamedClass(getIRIFromToken(token));
         }
-        // TODO: Consider supporting this in CONSTRUCT queries
-//        else if (peek(UntypedIRITokenType.get())) {
-//            SPARQLToken token = tokenizer.consume();
-//            result = new NamedClass(getIRIFromToken(token));
-//        }
         else {
             tokenizer.raiseError();
         }

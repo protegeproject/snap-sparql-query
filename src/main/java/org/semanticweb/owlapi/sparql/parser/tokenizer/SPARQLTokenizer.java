@@ -39,6 +39,7 @@
 
 package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -85,4 +86,6 @@ public interface SPARQLTokenizer {
     boolean hasMoreTokens();
 
     void throwParseError();
+
+    void registerType(IRI iri, EntityIRITokenType type);
 }

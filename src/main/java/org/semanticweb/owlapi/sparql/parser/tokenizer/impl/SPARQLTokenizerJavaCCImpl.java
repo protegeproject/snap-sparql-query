@@ -39,6 +39,8 @@
 
 package org.semanticweb.owlapi.sparql.parser.tokenizer.impl;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
@@ -565,6 +567,14 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
 //        }
 //    }
 
+    private Multimap<IRI, EntityIRITokenType> additionalTypes = HashMultimap.create();
+
+    @Override
+    public void registerType(IRI iri, EntityIRITokenType type) {
+        System.out.println("Registering additional type: "+ type + " for " + iri);
+        additionalTypes.put(iri, type);
+    }
+
     private Collection<TokenType> getIRITypes(String image, int kind) {
         IRI iri = getIRI(image, kind);
         Collection<TokenType> types = new HashSet<TokenType>();
@@ -574,6 +584,7 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
                 types.add(EntityIRITokenType.get(type));
             }
         }
+        types.addAll(additionalTypes.get(iri));
         if(iri.equals(OWLRDFVocabulary.OWL_THING.getIRI()) || iri.equals(OWLRDFVocabulary.OWL_NOTHING.getIRI())) {
             types.add(ClassIRITokenType.get());
         }

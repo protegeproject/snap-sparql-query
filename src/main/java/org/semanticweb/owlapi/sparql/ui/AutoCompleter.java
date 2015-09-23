@@ -39,6 +39,7 @@
 
 package org.semanticweb.owlapi.sparql.ui;
 
+import com.google.common.collect.Sets;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.api.Variable;
@@ -175,19 +176,30 @@ public class AutoCompleter {
     }
 
     private static Set<? extends OWLEntity> getSignatureOfType(EntityType<?> et, OWLOntology o) {
+        Set<OWLEntity> result = new HashSet<>();
         if (et == EntityType.CLASS) {
-            return o.getClassesInSignature();
+            OWLDataFactory df = o.getOWLOntologyManager().getOWLDataFactory();
+            return Sets.union(o.getClassesInSignature(true), Collections.singleton(df.getOWLThing()));
         } else if (et == EntityType.OBJECT_PROPERTY) {
-            return o.getObjectPropertiesInSignature();
+            return o.getObjectPropertiesInSignature(true);
         } else if (et == EntityType.DATA_PROPERTY) {
-            return o.getDataPropertiesInSignature();
+            return o.getDataPropertiesInSignature(true);
         } else if (et == EntityType.ANNOTATION_PROPERTY) {
-            return o.getAnnotationPropertiesInSignature();
+            Set<OWLAnnotationProperty> builtIns = getBuiltInAnnotationProperties(o);
+            return Sets.union(o.getAnnotationPropertiesInSignature(), builtIns);
         } else if (et == EntityType.NAMED_INDIVIDUAL) {
             return o.getIndividualsInSignature();
         } else {
             return o.getDatatypesInSignature();
         }
+    }
+
+    private static Set<OWLAnnotationProperty> getBuiltInAnnotationProperties(OWLOntology o) {
+        Set<OWLAnnotationProperty> builtIns = new HashSet<>();
+        for(IRI iri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS) {
+            builtIns.add(o.getOWLOntologyManager().getOWLDataFactory().getOWLAnnotationProperty(iri));
+        }
+        return builtIns;
     }
 
     private static String renderEntity(PrefixManager pm, OWLEntity entity) {
