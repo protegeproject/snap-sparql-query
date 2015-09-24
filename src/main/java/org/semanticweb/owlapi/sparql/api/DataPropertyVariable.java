@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 
 import java.util.Collection;
 
@@ -45,5 +47,10 @@ public class DataPropertyVariable extends AbstractVariable implements AtomicData
         else {
             return Optional.absent();
         }
+    }
+
+    @Override
+    public OWLDataPropertyExpression toOWLObject(OWLDataFactory df) {
+        throw new UnboundVariableTranslationException();
     }
 }

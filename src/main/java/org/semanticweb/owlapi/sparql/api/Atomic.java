@@ -1,6 +1,9 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import java.io.Serializable;
 
@@ -10,8 +13,8 @@ import java.io.Serializable;
  * Bio-Medical Informatics Research Group<br>
  * Date: 26/07/2012
  */
-public interface Atomic extends Term, Expression, Serializable, HasCollectVariables, HasBind {
+public interface Atomic extends Term, Expression, Serializable, HasCollectVariables, HasBind, HasToOWLObject {
 
-//    @Override
-//    Optional<? extends Atomic> bind(SolutionMapping sm);
+    @Override
+    OWLObject toOWLObject(OWLDataFactory df);
 }

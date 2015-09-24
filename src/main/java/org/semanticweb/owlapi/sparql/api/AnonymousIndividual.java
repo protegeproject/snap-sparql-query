@@ -1,6 +1,9 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -147,5 +150,10 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
     @Override
     public Optional<AnonymousIndividual> bind(SolutionMapping sm) {
         return Optional.of(this);
+    }
+
+    @Override
+    public OWLAnonymousIndividual toOWLObject(OWLDataFactory df) {
+        return df.getOWLAnonymousIndividual(getIdentifier());
     }
 }

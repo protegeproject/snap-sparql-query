@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Set;
 
@@ -12,12 +14,22 @@ import java.util.Set;
  */
 public class InverseObjectProperties extends NaryObjectPropertyAxiom implements Axiom {
 
+    private final ObjectPropertyExpression left;
+
+    private final ObjectPropertyExpression right;
+
     public InverseObjectProperties(ObjectPropertyExpression left, ObjectPropertyExpression right) {
         super(left, right);
+        this.left = left;
+        this.right = right;
     }
 
-    public InverseObjectProperties(Set<ObjectPropertyExpression> propertyExpressions) {
-        super(propertyExpressions);
+    public ObjectPropertyExpression getLeft() {
+        return left;
+    }
+
+    public ObjectPropertyExpression getRight() {
+        return right;
     }
 
     public <R, E extends Throwable> R accept(AxiomVisitor<R, E> visitor) throws E {
@@ -47,10 +59,22 @@ public class InverseObjectProperties extends NaryObjectPropertyAxiom implements 
 
     @Override
     public Optional<InverseObjectProperties> bind(SolutionMapping sm) {
-        Optional<Set<ObjectPropertyExpression>> boundPropertyExpressions = getBoundPropertyExpressions(sm);
-        if(!boundPropertyExpressions.isPresent()) {
+        Optional<? extends ObjectPropertyExpression> boundLeft = getLeft().bind(sm);
+        if(!boundLeft.isPresent()) {
             return Optional.absent();
         }
-        return Optional.of(new InverseObjectProperties(boundPropertyExpressions.get()));
+        Optional<? extends ObjectPropertyExpression> boundRight = getRight().bind(sm);
+        if(!boundRight.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new InverseObjectProperties(boundLeft.get(), boundRight.get()));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLInverseObjectPropertiesAxiom(
+                left.toOWLObject(df),
+                right.toOWLObject(df)
+        );
     }
 }

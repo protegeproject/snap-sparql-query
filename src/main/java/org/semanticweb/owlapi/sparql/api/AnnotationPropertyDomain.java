@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Collection;
 
@@ -71,5 +73,13 @@ public class AnnotationPropertyDomain implements Axiom {
             return Optional.absent();
         }
         return Optional.of(new AnnotationPropertyDomain(property.get(), domain.get()));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLAnnotationPropertyDomainAxiom(
+                getProperty().toOWLObject(df),
+                getDomain().toOWLObject(df)
+        );
     }
 }

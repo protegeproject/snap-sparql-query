@@ -1,8 +1,11 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Author: Matthew Horridge<br>
@@ -35,10 +38,10 @@ public class EquivalentClasses extends NaryClassAxiom implements ClassAxiom {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == this) {
+        if (obj == this) {
             return true;
         }
-        if(!(obj instanceof EquivalentClasses)) {
+        if (!(obj instanceof EquivalentClasses)) {
             return false;
         }
         EquivalentClasses other = (EquivalentClasses) obj;
@@ -48,9 +51,17 @@ public class EquivalentClasses extends NaryClassAxiom implements ClassAxiom {
     @Override
     public Optional<EquivalentClasses> bind(SolutionMapping sm) {
         Optional<Set<ClassExpression>> boundClassExpressions = getBoundClassExpressions(sm);
-        if(!boundClassExpressions.isPresent()) {
+        if (!boundClassExpressions.isPresent()) {
             return Optional.absent();
         }
         return Optional.of(new EquivalentClasses(boundClassExpressions.get()));
+    }
+
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLEquivalentClassesAxiom(
+                getClassExpressions().stream()
+                        .map(ce -> ce.toOWLObject(df))
+                        .collect(Collectors.toSet())
+        );
     }
 }

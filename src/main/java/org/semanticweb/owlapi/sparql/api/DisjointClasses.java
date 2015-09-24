@@ -2,15 +2,14 @@ package org.semanticweb.owlapi.sparql.api;
 
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Author: Matthew Horridge<br>
- * Stanford University<br>
- * Bio-Medical Informatics Research Group<br>
- * Date: 26/07/2012
+ * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 26/07/2012
  */
 public class DisjointClasses extends NaryClassAxiom implements ClassAxiom {
 
@@ -37,10 +36,10 @@ public class DisjointClasses extends NaryClassAxiom implements ClassAxiom {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == this) {
+        if (obj == this) {
             return true;
         }
-        if(!(obj instanceof DisjointClasses)) {
+        if (!(obj instanceof DisjointClasses)) {
             return false;
         }
         DisjointClasses other = (DisjointClasses) obj;
@@ -50,9 +49,18 @@ public class DisjointClasses extends NaryClassAxiom implements ClassAxiom {
     @Override
     public Optional<DisjointClasses> bind(SolutionMapping sm) {
         Optional<Set<ClassExpression>> boundClassExpressions = getBoundClassExpressions(sm);
-        if(!boundClassExpressions.isPresent()) {
+        if (!boundClassExpressions.isPresent()) {
             return Optional.absent();
         }
         return Optional.of(new DisjointClasses(boundClassExpressions.get()));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLDisjointClassesAxiom(
+                getClassExpressions().stream()
+                        .map(ce -> ce.toOWLObject(df))
+                        .collect(Collectors.toSet())
+        );
     }
 }

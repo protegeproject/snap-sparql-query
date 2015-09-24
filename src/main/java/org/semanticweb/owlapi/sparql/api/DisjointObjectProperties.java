@@ -1,8 +1,12 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDisjointObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Author: Matthew Horridge<br>
@@ -52,5 +56,14 @@ public class DisjointObjectProperties extends NaryObjectPropertyAxiom implements
             return Optional.absent();
         }
         return Optional.of(new DisjointObjectProperties(boundPropertyExpressions.get()));
+    }
+
+    @Override
+    public OWLDisjointObjectPropertiesAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLDisjointObjectPropertiesAxiom(
+                getObjectPropertyExpressions().stream()
+                        .map(p -> p.toOWLObject(df))
+                        .collect(Collectors.toSet())
+        );
     }
 }

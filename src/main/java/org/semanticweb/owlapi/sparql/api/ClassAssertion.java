@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Collection;
 
@@ -80,5 +82,13 @@ public class ClassAssertion implements Axiom, HasClassExpression, HasIndividual 
                 .addValue(classExpression)
                 .addValue(individual)
                 .toString();
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLClassAssertionAxiom(
+                getClassExpression().toOWLObject(df),
+                getIndividual().toOWLObject(df)
+        );
     }
 }

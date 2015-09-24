@@ -5,6 +5,8 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
@@ -260,4 +262,8 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
         return Optional.of(this);
     }
 
+    @Override
+    public OWLDatatype toOWLObject(OWLDataFactory df) {
+        return df.getOWLDatatype(getIRI());
+    }
 }

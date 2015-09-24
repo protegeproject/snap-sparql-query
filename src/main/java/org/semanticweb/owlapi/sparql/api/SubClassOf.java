@@ -1,8 +1,9 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.*;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.*;
 
@@ -81,6 +82,13 @@ public class SubClassOf implements ClassAxiom {
         superClass.collectVariables(variables);
     }
 
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLSubClassOfAxiom(
+                subClass.toOWLObject(df),
+                superClass.toOWLObject(df)
+        );
+    }
 
     @Override
     public String toString() {

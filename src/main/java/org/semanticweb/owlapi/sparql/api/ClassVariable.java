@@ -2,6 +2,9 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import java.util.Collection;
 
@@ -55,6 +58,10 @@ public class ClassVariable extends AbstractVariable implements AtomicClass {
         else {
             return Optional.absent();
         }
+    }
 
+    @Override
+    public OWLClass toOWLObject(OWLDataFactory df) {
+        throw new UnboundVariableTranslationException();
     }
 }

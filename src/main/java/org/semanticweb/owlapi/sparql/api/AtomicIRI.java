@@ -3,6 +3,8 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -140,5 +142,10 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     @Override
     public Optional<AtomicIRI> bind(SolutionMapping sm) {
         return Optional.of(this);
+    }
+
+    @Override
+    public IRI toOWLObject(OWLDataFactory df) {
+        return getIRI();
     }
 }

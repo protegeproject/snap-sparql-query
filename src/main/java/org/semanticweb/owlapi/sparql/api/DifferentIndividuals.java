@@ -1,11 +1,14 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Author: Matthew Horridge<br>
@@ -59,5 +62,14 @@ public class DifferentIndividuals implements Axiom, HasIndividuals {
             }
         }
         return Optional.of(new DifferentIndividuals(boundIndividuals));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLDifferentIndividualsAxiom(
+                individuals.stream()
+                .map(i -> i.toOWLObject(df))
+                .collect(Collectors.toSet())
+        );
     }
 }

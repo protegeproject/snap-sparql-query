@@ -1,8 +1,13 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Author: Matthew Horridge<br>
@@ -52,5 +57,14 @@ public class EquivalentDataProperties extends NaryDataPropertyAxiom {
             return Optional.absent();
         }
         return Optional.of(new EquivalentDataProperties(boundDataProperties.get()));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLEquivalentDataPropertiesAxiom(
+                getDataProperties().stream()
+                .map(p -> p.toOWLObject(df))
+                .collect(toSet())
+        );
     }
 }

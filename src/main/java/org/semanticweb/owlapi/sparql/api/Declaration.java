@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Collection;
 
@@ -73,5 +75,15 @@ public class Declaration implements Axiom {
             return Optional.absent();
         }
         return Optional.of(new Declaration((Atomic) o));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        if(atomic instanceof Entity) {
+            return df.getOWLDeclarationAxiom(
+                    ((Entity) getAtomic()).toOWLObject(df)
+            );
+        }
+        throw new UnboundVariableTranslationException();
     }
 }

@@ -3,6 +3,9 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.text.html.Option;
 import java.util.Collection;
@@ -62,5 +65,9 @@ public class UntypedVariable extends AbstractVariable  {
             return Optional.of((AnonymousIndividual) t);
         }
         return Optional.absent();
+    }
+
+    public OWLObject toOWLObject(OWLDataFactory df) {
+        throw new UnboundVariableTranslationException();
     }
 }

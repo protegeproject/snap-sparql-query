@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLIndividual;
 
 import java.util.Collection;
 
@@ -45,5 +47,10 @@ public class IndividualVariable extends AbstractVariable implements AtomicIndivi
         else {
             return Optional.absent();
         }
+    }
+
+    @Override
+    public OWLIndividual toOWLObject(OWLDataFactory df) {
+        throw new UnboundVariableTranslationException();
     }
 }

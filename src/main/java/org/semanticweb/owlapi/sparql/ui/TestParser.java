@@ -43,16 +43,14 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
+import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.io.WriterDocumentTarget;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraPrettyPrinter;
 import org.semanticweb.owlapi.sparql.api.Axiom;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
@@ -60,11 +58,9 @@ import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
-import org.semanticweb.owlapi.sparql.reasoner.SPARQLAssertedReasoner;
 import org.semanticweb.owlapi.sparql.sparqldl.SPARQLDLQueryEngine;
 import org.semanticweb.owlapi.sparql.syntax.ConstructQuery;
 import org.semanticweb.owlapi.sparql.syntax.Query;
-import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 
 import javax.swing.*;
@@ -73,10 +69,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringReader;
+import java.io.*;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
 
@@ -97,16 +93,32 @@ public class TestParser {
         try {
             OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 
-            String location = args[0];
             IRI iri;
-            if(location.startsWith("http://")) {
-                iri = IRI.create(args[0]);
+
+            if(args.length == 0) {
+                FileDialog chooser = new FileDialog(new Frame());
+                chooser.setTitle("Select ontology");
+                chooser.setVisible(true);
+                if(chooser.getFile() == null) {
+                    System.exit(0);
+                }
+                File theFile = new File(new File(chooser.getDirectory()), chooser.getFile());
+
+                iri = IRI.create(theFile);
             }
             else {
-                File file = new File(location);
-                manager.addIRIMapper(new AutoIRIMapper(file.getParentFile(), false));
-                iri = IRI.create(file);
+                String location = args[0];
+                if(location.startsWith("http://")) {
+                    iri = IRI.create(args[0]);
+                }
+                else {
+                    File file = new File(location);
+                    manager.addIRIMapper(new AutoIRIMapper(file.getParentFile(), false));
+                    iri = IRI.create(file);
+                }
+
             }
+
             final OWLOntology rootOntology = manager.loadOntologyFromOntologyDocument(iri);
             System.out.println("Loaded ontology: " + rootOntology);
             System.out.println("Creating reasoner...");
@@ -169,20 +181,39 @@ public class TestParser {
 
         if (query instanceof ConstructQuery) {
             ConstructQuery constructQuery = (ConstructQuery) query;
-            int count = 0;
+            Set<OWLAxiom> axioms = new HashSet<>();
             for (SolutionMapping sm : result.getSolutionSequence().getSolutionMappings()) {
                 for(Axiom ax : constructQuery.getConstructTemplate().getAxioms()) {
                     Optional<? extends Axiom> boundAxiom = ax.bind(sm);
                     if(boundAxiom.isPresent()) {
-                        System.out.println(boundAxiom);
+                        Axiom boundAx = boundAxiom.get();
+                        OWLDataFactory df = ontology.getOWLOntologyManager().getOWLDataFactory();
+                        OWLAxiom owlAxiom = boundAx.toOWLObject(df);
+                        axioms.add(owlAxiom);
                     }
-                    count++;
-
                 }
-                if(count > 100) {
-                    break;
-                }
-
+            }
+            try {
+                OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+                OWLOntology constructedOntology = manager.createOntology(axioms);
+                TurtleOntologyFormat ontologyFormat = new TurtleOntologyFormat();
+                ontologyFormat.copyPrefixesFrom(query.getPrefixManager());
+                manager.setOntologyFormat(constructedOntology, ontologyFormat);
+                StringWriter sw = new StringWriter();
+                manager.saveOntology(constructedOntology, new WriterDocumentTarget(sw));
+                JTextPane textPane = new JTextPane();
+                textPane.setFont(new Font("menlo", Font.PLAIN, 12));
+                textPane.setText(sw.toString());
+                JScrollPane scrollPane = new JScrollPane(textPane);
+                scrollPane.setSize(400, 400);
+                JFrame frame = new JFrame("Constructed ontology");
+                frame.setContentPane(scrollPane);
+                frame.pack();
+                frame.setVisible(true);
+            } catch (OWLOntologyCreationException e) {
+                e.printStackTrace();
+            } catch (OWLOntologyStorageException e) {
+                e.printStackTrace();
             }
         }
 

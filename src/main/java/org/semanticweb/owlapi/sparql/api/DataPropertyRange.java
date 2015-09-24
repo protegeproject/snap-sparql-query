@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Collection;
 
@@ -73,6 +75,13 @@ public class DataPropertyRange implements Axiom, HasProperty<DataPropertyExpress
         return Optional.of(
                 new DataPropertyRange(property.get(), dataRange.get())
         );
+    }
 
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLDataPropertyRangeAxiom(
+                getProperty().toOWLObject(df),
+                getRange().toOWLObject(df)
+        );
     }
 }

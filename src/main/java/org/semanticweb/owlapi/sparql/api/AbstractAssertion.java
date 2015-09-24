@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Bio-Medical Informatics Research Group<br>
  * Date: 26/07/2012
  */
-public abstract class AbstractAssertion<S extends Visitable & HasCollectVariables, P extends Visitable & HasCollectVariables, O extends Visitable & HasCollectVariables> implements Assertion<S, P, O>{
+public abstract class AbstractAssertion<S extends Visitable & HasCollectVariables & HasToOWLObject, P extends Visitable & HasCollectVariables & HasToOWLObject, O extends Visitable & HasCollectVariables & HasToOWLObject> implements Assertion<S, P, O>{
 
     private S subject;
     

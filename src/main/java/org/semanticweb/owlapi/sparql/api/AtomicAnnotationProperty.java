@@ -1,6 +1,9 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Author: Matthew Horridge<br>
@@ -12,4 +15,7 @@ public interface AtomicAnnotationProperty extends AtomicProperty {
 
     @Override
     Optional<? extends AtomicAnnotationProperty> bind(SolutionMapping sm);
+
+    @Override
+    OWLAnnotationProperty toOWLObject(OWLDataFactory df);
 }

@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Collection;
 
@@ -65,5 +67,13 @@ public class SubAnnotationPropertyOf implements Axiom, HasSubProperty<AtomicAnno
         Optional<? extends AtomicAnnotationProperty> subProperty = this.subProperty.bind(sm);
         Optional<? extends AtomicAnnotationProperty> superProperty = this.superProperty.bind(sm);
         return Optional.of(new SubAnnotationPropertyOf(subProperty.get(), superProperty.get()));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLSubAnnotationPropertyOfAxiom(
+                getSubProperty().toOWLObject(df),
+                getSuperProperty().toOWLObject(df)
+        );
     }
 }

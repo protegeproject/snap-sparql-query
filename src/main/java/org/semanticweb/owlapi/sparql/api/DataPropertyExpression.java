@@ -1,6 +1,9 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
+import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Author: Matthew Horridge<br>
@@ -8,7 +11,10 @@ import com.google.common.base.Optional;
  * Bio-Medical Informatics Research Group<br>
  * Date: 26/07/2012
  */
-public interface DataPropertyExpression extends Visitable, HasCollectVariables, HasBind {
+public interface DataPropertyExpression extends Visitable, HasCollectVariables, HasBind, HasToOWLObject {
     @Override
     Optional<? extends DataPropertyExpression> bind(SolutionMapping sm);
+
+    @Override
+    OWLDataPropertyExpression toOWLObject(OWLDataFactory df);
 }

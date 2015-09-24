@@ -2,6 +2,9 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import java.math.BigDecimal;
@@ -385,5 +388,10 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     @Override
     public Optional<Literal> bind(SolutionMapping sm) {
         return Optional.of(this);
+    }
+
+    @Override
+    public OWLLiteral toOWLObject(OWLDataFactory df) {
+        return df.getOWLLiteral(lexicalForm, datatype.toOWLObject(df));
     }
 }

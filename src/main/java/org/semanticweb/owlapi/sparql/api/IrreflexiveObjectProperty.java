@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 /**
  * Author: Matthew Horridge<br>
@@ -46,5 +48,10 @@ public class IrreflexiveObjectProperty extends ObjectPropertyCharacteristic {
             return Optional.absent();
         }
         return Optional.of(new IrreflexiveObjectProperty(property.get()));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLIrreflexiveObjectPropertyAxiom(getProperty().toOWLObject(df));
     }
 }

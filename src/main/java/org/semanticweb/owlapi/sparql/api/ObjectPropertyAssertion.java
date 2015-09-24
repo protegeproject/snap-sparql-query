@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 /**
  * Author: Matthew Horridge<br>
@@ -72,6 +74,15 @@ public class ObjectPropertyAssertion extends AbstractAssertion<AtomicIndividual,
                         subject.get(),
                         object.get()
                 )
+        );
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLObjectPropertyAssertionAxiom(
+                getProperty().toOWLObject(df),
+                getSubject().toOWLObject(df),
+                getObject().toOWLObject(df)
         );
     }
 }

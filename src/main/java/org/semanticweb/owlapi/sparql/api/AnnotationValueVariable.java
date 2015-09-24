@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Collection;
 
@@ -50,5 +52,10 @@ public class AnnotationValueVariable extends AbstractVariable implements Annotat
     @Override
     public <R, E extends Throwable> R accept(Visitor<R, E> visitor) throws E {
         return visitor.visit(this);
+    }
+
+    @Override
+    public OWLAnnotationValue toOWLObject(OWLDataFactory df) {
+        throw new UnboundVariableTranslationException();
     }
 }

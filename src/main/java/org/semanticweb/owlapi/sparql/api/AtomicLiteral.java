@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLLiteral;
 
 /**
  * Author: Matthew Horridge<br>
@@ -12,4 +14,7 @@ public interface AtomicLiteral extends Atomic, AnnotationValue {
 
     @Override
     Optional<? extends AtomicLiteral> bind(SolutionMapping sm);
+
+    @Override
+    OWLLiteral toOWLObject(OWLDataFactory df);
 }

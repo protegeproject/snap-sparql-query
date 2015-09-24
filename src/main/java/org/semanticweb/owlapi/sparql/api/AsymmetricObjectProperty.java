@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 /**
  * Author: Matthew Horridge<br>
@@ -47,5 +49,12 @@ public class AsymmetricObjectProperty extends ObjectPropertyCharacteristic {
             return Optional.absent();
         }
         return Optional.of(new AsymmetricObjectProperty(boundProperty.get()));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLAsymmetricObjectPropertyAxiom(
+                getProperty().toOWLObject(df)
+        );
     }
 }

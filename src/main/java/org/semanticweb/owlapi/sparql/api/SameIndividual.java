@@ -1,6 +1,8 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -78,5 +80,14 @@ public class SameIndividual implements Axiom, HasIndividuals {
             }
         }
         return Optional.of(new SameIndividual(boundIndividuals));
+    }
+
+    @Override
+    public OWLAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLSameIndividualAxiom(
+                getIndividuals().stream()
+                .map(i -> i.toOWLObject(df))
+                .collect(toSet())
+        );
     }
 }

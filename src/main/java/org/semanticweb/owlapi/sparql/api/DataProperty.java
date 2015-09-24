@@ -3,6 +3,9 @@ package org.semanticweb.owlapi.sparql.api;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Author: Matthew Horridge<br>
@@ -57,5 +60,10 @@ public class DataProperty extends AbstractEntity implements DataPropertyExpressi
     @Override
     public Optional<DataProperty> bind(SolutionMapping sm) {
         return Optional.of(this);
+    }
+
+    @Override
+    public OWLDataProperty toOWLObject(OWLDataFactory df) {
+        return df.getOWLDataProperty(getIRI());
     }
 }

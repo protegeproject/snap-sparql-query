@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import java.util.Collection;
 
@@ -45,5 +47,10 @@ public class AnnotationPropertyVariable extends AbstractVariable implements Atom
         else {
             return Optional.absent();
         }
+    }
+
+    @Override
+    public OWLAnnotationProperty toOWLObject(OWLDataFactory df) {
+        throw new UnboundVariableTranslationException();
     }
 }

@@ -1,16 +1,17 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * Author: Matthew Horridge<br>
- * Stanford University<br>
- * Bio-Medical Informatics Research Group<br>
- * Date: 26/07/2012
+ * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 26/07/2012
  */
 public class EquivalentObjectProperties extends NaryObjectPropertyAxiom {
 
@@ -37,10 +38,10 @@ public class EquivalentObjectProperties extends NaryObjectPropertyAxiom {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == this) {
+        if (obj == this) {
             return true;
         }
-        if(!(obj instanceof EquivalentObjectProperties)) {
+        if (!(obj instanceof EquivalentObjectProperties)) {
             return false;
         }
         EquivalentObjectProperties other = (EquivalentObjectProperties) obj;
@@ -51,5 +52,14 @@ public class EquivalentObjectProperties extends NaryObjectPropertyAxiom {
     public Optional<EquivalentObjectProperties> bind(SolutionMapping sm) {
         Optional<Set<ObjectPropertyExpression>> boundPropertyExpressions = getBoundPropertyExpressions(sm);
         return Optional.of(new EquivalentObjectProperties(boundPropertyExpressions.get()));
+    }
+
+    @Override
+    public OWLEquivalentObjectPropertiesAxiom toOWLObject(OWLDataFactory df) {
+        return df.getOWLEquivalentObjectPropertiesAxiom(
+                getObjectPropertyExpressions().stream()
+                        .map(p -> p.toOWLObject(df))
+                        .collect(Collectors.toSet())
+        );
     }
 }

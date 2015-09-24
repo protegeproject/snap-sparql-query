@@ -2,6 +2,9 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 /**
  * Author: Matthew Horridge<br>
@@ -64,5 +67,10 @@ public class NamedIndividual extends AbstractEntity implements Entity, AtomicInd
     @Override
     public Optional<NamedIndividual> bind(SolutionMapping sm) {
         return Optional.of(this);
+    }
+
+    @Override
+    public OWLNamedIndividual toOWLObject(OWLDataFactory df) {
+        return df.getOWLNamedIndividual(getIRI());
     }
 }

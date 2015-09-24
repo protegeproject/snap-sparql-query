@@ -3,6 +3,9 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Author: Matthew Horridge<br>
@@ -50,5 +53,10 @@ public class NamedClass extends AbstractEntity implements Entity, AtomicClass {
     @Override
     public Optional<NamedClass> bind(SolutionMapping sm) {
         return Optional.of(this);
+    }
+
+    @Override
+    public OWLClass toOWLObject(OWLDataFactory df) {
+        return df.getOWLClass(getIRI());
     }
 }
