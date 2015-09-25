@@ -44,11 +44,16 @@ public class Filter extends GraphPatternAlgebraExpression<SolutionSequence> {
         SolutionSequence sequence = algebraExpression.evaluate(context);
         List<SolutionMapping> filteredList = new ArrayList<>();
         for(SolutionMapping sm : sequence.getSolutionMappings()) {
+            boolean passedFilter = true;
             for(Expression expression : expressions) {
                 EvaluationResult evaluate = expression.evaluateAsEffectiveBooleanValue(sm);
-                if(evaluate.isTrue()) {
-                    filteredList.add(sm);
+                if(evaluate.isFalse() || evaluate.isError()) {
+                    passedFilter = false;
+                    break;
                 }
+            }
+            if(passedFilter) {
+                filteredList.add(sm);
             }
         }
         return new SolutionSequence(sequence.getVariableList(), ImmutableList.copyOf(filteredList));
