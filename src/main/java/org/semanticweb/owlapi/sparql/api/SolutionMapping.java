@@ -8,6 +8,8 @@ import org.semanticweb.owlapi.model.IRI;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -22,18 +24,18 @@ public class SolutionMapping {
 
     private static SolutionMapping emptyMapping = new SolutionMapping();
 
-    private final ImmutableMap<Variable, RDFTerm> map;
+    private final Map<Variable, RDFTerm> map;
 
     public static SolutionMapping emptyMapping() {
         return emptyMapping;
     }
 
     public SolutionMapping() {
-        map = ImmutableMap.of();
+        map = new HashMap<>(0);
     }
 
     public SolutionMapping(ImmutableMap<Variable, RDFTerm> map) {
-        this.map = map;
+        this.map = new HashMap<>(checkNotNull(map));
     }
 
     public boolean isMapped(Variable variable) {
@@ -47,7 +49,7 @@ public class SolutionMapping {
     }
 
     public ImmutableMap<Variable, RDFTerm> asMap() {
-        return map;
+        return ImmutableMap.copyOf(map);
     }
 
     public Optional<RDFTerm> getTermForVariable(Variable variable) {

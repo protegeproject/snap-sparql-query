@@ -70,7 +70,7 @@ public class AutoCompleter {
     public static final int DEFAULT_MAX_ENTRIES = 100;
     public static final int POPUP_WIDTH = 350;
     public static final int POPUP_HEIGHT = 300;
-    public static final int TYPE_LIMIT = 100;
+    public static final int TYPE_LIMIT = 1000;
     private JTextComponent textComponent;
     private Set<String> wordDelimeters;
     private AutoCompleterMatcher matcher;

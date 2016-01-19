@@ -109,7 +109,7 @@ public class AtomicIRI_TestCase {
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(atomicIRI.evaluateAsSimpleLiteral(sm).isError(), is(true));
+        assertThat(atomicIRI.evaluateAsSimpleLiteral(sm).isError(), is(false));
     }
 
     @Test

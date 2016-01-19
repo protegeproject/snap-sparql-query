@@ -81,12 +81,12 @@ public abstract class Variable implements Atomic, HasIdentifier, HasVariables, H
             return false;
         }
         Variable other = (Variable) obj;
-        return this.variableName.equals(other.variableName);
+        return this.getName().equals(other.getName());
     }
 
     @Override
     final public int hashCode() {
-        return variableName.hashCode();
+        return getName().hashCode();
     }
 
     public static Variable create(String name, PrimitiveType entityType) {

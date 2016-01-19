@@ -47,6 +47,7 @@ import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
 import org.semanticweb.owlapi.io.WriterDocumentTarget;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.InferenceType;
@@ -196,9 +197,9 @@ public class TestParser {
             try {
                 OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
                 OWLOntology constructedOntology = manager.createOntology(axioms);
-                TurtleOntologyFormat ontologyFormat = new TurtleOntologyFormat();
-                ontologyFormat.copyPrefixesFrom(query.getPrefixManager());
-                manager.setOntologyFormat(constructedOntology, ontologyFormat);
+                TurtleDocumentFormat documentFormat = new TurtleDocumentFormat();
+                documentFormat.copyPrefixesFrom(query.getPrefixManager());
+                manager.setOntologyFormat(constructedOntology, documentFormat);
                 StringWriter sw = new StringWriter();
                 manager.saveOntology(constructedOntology, new WriterDocumentTarget(sw));
                 JTextPane textPane = new JTextPane();
@@ -210,9 +211,7 @@ public class TestParser {
                 frame.setContentPane(scrollPane);
                 frame.pack();
                 frame.setVisible(true);
-            } catch (OWLOntologyCreationException e) {
-                e.printStackTrace();
-            } catch (OWLOntologyStorageException e) {
+            } catch (OWLOntologyCreationException | OWLOntologyStorageException e) {
                 e.printStackTrace();
             }
         }

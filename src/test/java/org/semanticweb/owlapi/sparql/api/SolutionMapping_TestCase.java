@@ -1,19 +1,13 @@
 
 package org.semanticweb.owlapi.sparql.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import jpaul.Constraints.Var;
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -84,6 +78,7 @@ public class SolutionMapping_TestCase {
     @Test
     public void shouldReturn_false_For_isMapped() {
         Variable otherVariable = mock(Variable.class);
+        when(otherVariable.getName()).thenReturn("OtherVariable");
         assertThat(solutionMapping.isMapped(otherVariable), is(false));
     }
 

@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.sparql.api.Variable;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AggregationEvaluation_TestCase {
@@ -28,6 +29,8 @@ public class AggregationEvaluation_TestCase {
 
     @Before
     public void setUp() {
+
+        when(variable.getName()).thenReturn("x");
         aggregationEvaluation = new AggregationEvaluation(groupKey, variable, evaluationResult);
     }
 

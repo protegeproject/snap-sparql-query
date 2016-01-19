@@ -3,6 +3,7 @@ package org.semanticweb.owlapi.sparql.reasoner;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.*;
 import org.semanticweb.owlapi.reasoner.impl.*;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.Version;
 
 import java.util.*;
@@ -135,7 +136,7 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
                 while(!queue.isEmpty()) {
                     OWLClass curCls = queue.poll();
                     result.add(curCls);
-                    Set<OWLClassExpression> curClsSubs = curCls.getSubClasses(getRootOntology().getImportsClosure());
+                    Collection<OWLClassExpression> curClsSubs = EntitySearcher.getSubClasses(curCls, getRootOntology().getImportsClosure());
                     for(OWLClassExpression curClsSub : curClsSubs) {
                         if (!curClsSub.isAnonymous()) {
                             if(!result.contains(curClsSub.asOWLClass())) {
@@ -150,7 +151,7 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
         return result;
     }
 
-    private static OWLClassNodeSet toNodeSet(Set<? extends OWLClassExpression> clses) {
+    private static OWLClassNodeSet toNodeSet(Collection<? extends OWLClassExpression> clses) {
         OWLClassNodeSet ns = new OWLClassNodeSet();
         clses.stream()
                 .filter(c -> !c.isAnonymous())
@@ -176,7 +177,7 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
             while(!queue.isEmpty()) {
                 OWLClass curCls = queue.poll();
                 result.add(curCls);
-                Set<OWLClassExpression> curClsSupers = curCls.getSuperClasses(getRootOntology().getImportsClosure());
+                Collection<OWLClassExpression> curClsSupers = EntitySearcher.getSuperClasses(curCls, getRootOntology().getImportsClosure());
                 for(OWLClassExpression curClsSuper : curClsSupers) {
                     if (!curClsSuper.isAnonymous()) {
                         if(!result.contains(curClsSuper.asOWLClass())) {
@@ -196,7 +197,7 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
         }
         OWLClass cls = owlClassExpression.asOWLClass();
         OWLClassNode node = new OWLClassNode();
-        Set<OWLClassExpression> result = cls.getEquivalentClasses(getRootOntology().getImportsClosure());
+        Collection<OWLClassExpression> result = EntitySearcher.getEquivalentClasses(cls, getRootOntology().getImportsClosure());
         for(OWLClassExpression ce : result) {
             if(!ce.isAnonymous()) {
                 result.add(ce.asOWLClass());
@@ -210,7 +211,7 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
             return EMPTY_CLASS_NODE_SET;
         }
         OWLClass cls = owlClassExpression.asOWLClass();
-        Set<OWLClassExpression> result = cls.getEquivalentClasses(getRootOntology().getImportsClosure());
+        Collection<OWLClassExpression> result = EntitySearcher.getEquivalentClasses(cls, getRootOntology().getImportsClosure());
         return toNodeSet(result);
     }
 
