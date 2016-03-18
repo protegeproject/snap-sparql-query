@@ -104,6 +104,17 @@ public class SPARQLEditor extends JTextPane {
 
     private final Logger logger = LoggerFactory.getLogger(SPARQLEditor.class);
 
+    public static final String SAMPLE_QUERY = "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" +
+            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+            "\n" +
+            "SELECT ?x (STR(?lab) AS ?label) WHERE {\n" +
+            "\t?x rdf:type owl:Class .\n" +
+            "\tOPTIONAL {?x rdfs:label ?lab}\n" +
+            "}\n" +
+            "ORDER BY ?label";
+
+
 
     public SPARQLEditor(OWLOntologyProvider ontologyProvider) {
         this.ontologyProvider = ontologyProvider;
@@ -186,6 +197,9 @@ public class SPARQLEditor extends JTextPane {
         });
     }
 
+    public void insertSampleQuery() {
+        setText(SAMPLE_QUERY);
+    }
 
     public void setErrorMessageProvider(ErrorMessageProvider errorMessageProvider) {
         this.errorMessageProvider = errorMessageProvider;
