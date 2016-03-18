@@ -221,7 +221,7 @@ public class SPARQLEditor extends JTextPane {
             errorEnd = -1;
             setToolTipText("");
             OWLOntology rootOntology = ontologyProvider.getOntology();
-            StringReader reader = new StringReader(getText());
+            StringReader reader = new StringReader(getTextFromDocument());
             SPARQLTokenizer tokenizer = new SPARQLTokenizerJavaCCImpl(rootOntology, reader);
             SPARQLParserImpl parser = new SPARQLParserImpl(tokenizer);
             parser.parseQuery();
@@ -237,6 +237,15 @@ public class SPARQLEditor extends JTextPane {
             errorStart = tokenPosition.getStart();
             errorEnd = tokenPosition.getEnd();
             repaint();
+        }
+    }
+
+    private String getTextFromDocument() {
+        try {
+            return getDocument().getText(0, getDocument().getLength());
+        } catch (BadLocationException e) {
+            logger.warn("BadLocationException when retrieving text from document");
+            throw new RuntimeException(e);
         }
     }
 
@@ -285,7 +294,7 @@ public class SPARQLEditor extends JTextPane {
 
     private SPARQLTokenizerJavaCCImpl createTokenizer() {
         OWLOntology rootOntology = ontologyProvider.getOntology();
-        return new SPARQLTokenizerJavaCCImpl(rootOntology, new StringReader(getText()));
+        return new SPARQLTokenizerJavaCCImpl(rootOntology, new StringReader(getTextFromDocument()));
     }
 
 
@@ -344,7 +353,7 @@ public class SPARQLEditor extends JTextPane {
                 }
             }
             catch (BadLocationException e) {
-                logger.warn("Bad location when painting error marker. ErrorMarkerStart: {}, ErrorMarkerEnd: {}", errorStart, errorEnd);
+                logger.warn("BadLocationException when painting error marker. ErrorMarkerStart: {}, ErrorMarkerEnd: {}", errorStart, errorEnd);
             }
         }
     }
@@ -370,7 +379,7 @@ public class SPARQLEditor extends JTextPane {
                         break;
                     }
                 } catch (BadLocationException e) {
-                    logger.warn("Bad location when toggling comment. Start: {} Length: {}: ", i + 1, 1);
+                    logger.warn("BadLocationException when toggling comment. Start: {} Length: {}: ", i + 1, 1);
                 }
             }
         }

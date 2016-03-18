@@ -59,6 +59,7 @@ import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.SPARQLTokenizer;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
+import org.semanticweb.owlapi.sparql.reasoner.SPARQLAssertedReasoner;
 import org.semanticweb.owlapi.sparql.sparqldl.SPARQLDLQueryEngine;
 import org.semanticweb.owlapi.sparql.syntax.ConstructQuery;
 import org.semanticweb.owlapi.sparql.syntax.Query;
@@ -124,8 +125,8 @@ public class TestParser {
             System.out.println("Loaded ontology: " + rootOntology);
             System.out.println("Creating reasoner...");
             Configuration configuration = new Configuration();
-            reasoner = new Reasoner(configuration, rootOntology);
-//            reasoner = new SPARQLAssertedReasoner(rootOntology);
+//            reasoner = new Reasoner(configuration, rootOntology);
+            reasoner = new SPARQLAssertedReasoner(rootOntology);
             System.out.println("    .... done");
             System.out.println("Precomputing class hierarchy...");
             reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
