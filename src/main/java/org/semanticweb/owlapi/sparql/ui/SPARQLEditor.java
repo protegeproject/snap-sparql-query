@@ -39,17 +39,15 @@
 
 package org.semanticweb.owlapi.sparql.ui;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import de.derivo.sparqldlapi.Var;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.parser.SPARQLParserImpl;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCCImpl;
-import org.semanticweb.owlapi.sparql.syntax.SelectClause;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -103,6 +101,8 @@ public class SPARQLEditor extends JTextPane {
     private final OWLOntologyProvider ontologyProvider;
 
     private ErrorMessageProvider errorMessageProvider = new DefaultErrorMessageProvider();
+
+    private final Logger logger = LoggerFactory.getLogger(SPARQLEditor.class);
 
 
     public SPARQLEditor(OWLOntologyProvider ontologyProvider) {
@@ -331,18 +331,20 @@ public class SPARQLEditor extends JTextPane {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(errorStart != errorEnd && errorStart != -1 && errorEnd != -1) {
+        if(errorStart < errorEnd && errorStart != -1 && errorEnd != -1) {
             try {
                 Rectangle startRect = modelToView(errorStart);
                 Rectangle endRect = modelToView(errorEnd);
-                Color old = g.getColor();
-                g.setColor(Color.RED);
-                g.drawLine(startRect.x, startRect.y + startRect.height, endRect.x + endRect.width, endRect.y + endRect.height);
-                g.drawLine(startRect.x, startRect.y + startRect.height + 2, endRect.x + endRect.width, endRect.y + endRect.height + 2);
-                g.setColor(old);
+                if (startRect != null && endRect != null) {
+                    Color old = g.getColor();
+                    g.setColor(Color.RED);
+                    g.drawLine(startRect.x, startRect.y + startRect.height, endRect.x + endRect.width, endRect.y + endRect.height);
+                    g.drawLine(startRect.x, startRect.y + startRect.height + 2, endRect.x + endRect.width, endRect.y + endRect.height + 2);
+                    g.setColor(old);
+                }
             }
             catch (BadLocationException e) {
-                e.printStackTrace();
+                logger.warn("Bad location when painting error marker. ErrorMarkerStart: {}, ErrorMarkerEnd: {}", errorStart, errorEnd);
             }
         }
     }
@@ -368,7 +370,7 @@ public class SPARQLEditor extends JTextPane {
                         break;
                     }
                 } catch (BadLocationException e) {
-                    e.printStackTrace();
+                    logger.warn("Bad location when toggling comment. Start: {} Length: {}: ", i + 1, 1);
                 }
             }
         }
