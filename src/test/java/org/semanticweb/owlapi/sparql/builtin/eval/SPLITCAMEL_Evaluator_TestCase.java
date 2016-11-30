@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.semanticweb.owlapi.sparql.api.Datatype;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
