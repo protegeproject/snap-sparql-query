@@ -103,9 +103,7 @@ public class SPARQLParserImpl {
 
     private ConstructTemplate parseConstructClause() {
         tokenizer.consume(CONSTRUCT);
-        ConstructTemplate constructTemplate;
-        constructTemplate = parseConstructTemplate();
-        return constructTemplate;
+        return parseConstructTemplate();
     }
 
     private ConstructTemplate parseConstructTemplate() {
@@ -1251,6 +1249,9 @@ public class SPARQLParserImpl {
             subject = new IRIVariable(subjectToken.getImage());
         }
         else if(isVariableOfTypeOrIndirectType(subjectToken, PrimitiveType.NAMED_INDIVIDUAL)) {
+            subject = new IRIVariable(subjectToken.getImage());
+        }
+        else if(subjectToken.hasTokenType(VariableTokenType.get())) {
             subject = new IRIVariable(subjectToken.getImage());
         }
         else {
