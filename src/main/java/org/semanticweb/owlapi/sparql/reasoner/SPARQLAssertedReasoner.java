@@ -200,7 +200,7 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
         Collection<OWLClassExpression> result = EntitySearcher.getEquivalentClasses(cls, getRootOntology().getImportsClosure());
         for(OWLClassExpression ce : result) {
             if(!ce.isAnonymous()) {
-                result.add(ce.asOWLClass());
+                node.add(ce.asOWLClass());
             }
         }
         return node;
