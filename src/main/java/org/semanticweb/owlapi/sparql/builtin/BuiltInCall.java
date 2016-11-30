@@ -425,6 +425,13 @@ public enum BuiltInCall {
             new SAMPLE_Evaluator(),
             Term(),
             argList(RDF_TERM)
+    ),
+
+    SPLITCAMEL(
+            SIMPLE,
+            new SPLITCAMEL_Evaluator(),
+            Literal(),
+            argList(LITERAL)
     );
 
     // @formatter:on
@@ -437,7 +444,7 @@ public enum BuiltInCall {
 
     private final BuiltInCallEvaluator evaluator;
 
-    private BuiltInCall(BuiltInCallType type,
+    BuiltInCall(BuiltInCallType type,
                         BuiltInCallEvaluator evaluator,
                         ReturnType returnType,
                         ArgList... argLists) {
@@ -451,7 +458,7 @@ public enum BuiltInCall {
         this.argLists = builder.build();
     }
 
-    private BuiltInCall(BuiltInCallType type,
+    BuiltInCall(BuiltInCallType type,
                         BuiltInCallEvaluator evaluator, ReturnType returnType, Arg... args) {
         this.type = type;
         this.evaluator = evaluator;

@@ -230,7 +230,7 @@ TOKEN: {
                     "YEAR" | "MONTH" | "DAY" | "HOURS" | "MINUTES" | "SECONDS" | "TIMEZONE" | "TZ" | "NOW" |
                     "MD5" | "SHA1" | "SHA256" | "SHA384" | "SHA512" | "COALESCE" | "IF" | "STRLANG" | "STRDT" |
                     "SAMETERM" | "ISIRI" | "ISURI" | "ISBLANK" | "ISLITERAL" | "ISNUMERIC" | "REGEX" | "UUID" |
-                    "STRUUID" | "SUM" | "COUNT" | "MIN" | "MAX" | "AVG" | "SAMPLE">
+                    "STRUUID" | "SUM" | "COUNT" | "MIN" | "MAX" | "AVG" | "SAMPLE" | "SPLITCAMEL">
 }
 
 
