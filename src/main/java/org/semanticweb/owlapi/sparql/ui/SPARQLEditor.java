@@ -228,6 +228,11 @@ public class SPARQLEditor extends JTextPane {
         }
     }
 
+    @Override
+    public void copy() {
+        copyRichTextToClipboard();
+    }
+
     public void insertSampleQuery() {
         setText(SAMPLE_QUERY);
     }
@@ -293,14 +298,7 @@ public class SPARQLEditor extends JTextPane {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public TransferHandler getTransferHandler() {
-        TransferHandler transferHandler = super.getTransferHandler();
-        System.out.println(transferHandler);
-        return transferHandler;
-    }
-
+    
     private void performHighlightingInSeparateThread() {
         final Thread t = new Thread(new Runnable() {
             public void run() {
