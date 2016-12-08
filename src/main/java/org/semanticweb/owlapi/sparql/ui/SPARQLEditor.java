@@ -192,16 +192,20 @@ public class SPARQLEditor extends JTextPane {
         defaultStyle = styledDocument.addStyle("default", null);
         StyleConstants.setForeground(defaultStyle, Color.BLACK);
 
+
+        JPopupMenu popup = new JPopupMenu();
         final String toggleCommentKey = "toggle-comment";
         getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), toggleCommentKey);
-        getActionMap().put(toggleCommentKey, new AbstractAction() {
+        AbstractAction toggleCommentAction = new AbstractAction("Toggle comment") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 toggleComment();
             }
-        });
-        JPopupMenu popup = new JPopupMenu();
+        };
+        getActionMap().put(toggleCommentKey, toggleCommentAction);
+        popup.add(toggleCommentAction);
+        popup.addSeparator();
         popup.add(new AbstractAction("Copy as Rich Text") {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -298,7 +302,7 @@ public class SPARQLEditor extends JTextPane {
             throw new RuntimeException(e);
         }
     }
-    
+
     private void performHighlightingInSeparateThread() {
         final Thread t = new Thread(new Runnable() {
             public void run() {
