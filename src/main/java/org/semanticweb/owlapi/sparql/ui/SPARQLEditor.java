@@ -49,16 +49,22 @@ import org.semanticweb.owlapi.sparql.parser.tokenizer.impl.SPARQLTokenizerJavaCC
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.activation.DataHandler;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.rtf.RTFEditorKit;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.StringReader;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -195,6 +201,31 @@ public class SPARQLEditor extends JTextPane {
                 toggleComment();
             }
         });
+        JPopupMenu popup = new JPopupMenu();
+        popup.add(new AbstractAction("Copy as Rich Text") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                copyRichTextToClipboard();
+            }
+        });
+        setComponentPopupMenu(popup);
+
+    }
+
+    private void copyRichTextToClipboard() {
+        RTFEditorKit editorKit = new RTFEditorKit();
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            editorKit.write(baos, getDocument(), 0, getDocument().getLength());
+            DataHandler dataHandler = new DataHandler(
+                    new DataInputStream(new ByteArrayInputStream(baos.toByteArray())),
+                    editorKit.getContentType());
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                    dataHandler,null
+            );
+        } catch (IOException | BadLocationException ex) {
+            logger.warn("A problem occurred when copying text to the clipboard: {}", ex.getMessage(), ex);
+        }
     }
 
     public void insertSampleQuery() {
@@ -261,6 +292,13 @@ public class SPARQLEditor extends JTextPane {
             logger.warn("BadLocationException when retrieving text from document");
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public TransferHandler getTransferHandler() {
+        TransferHandler transferHandler = super.getTransferHandler();
+        System.out.println(transferHandler);
+        return transferHandler;
     }
 
     private void performHighlightingInSeparateThread() {
