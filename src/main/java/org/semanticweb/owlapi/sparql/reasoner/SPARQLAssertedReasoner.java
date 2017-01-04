@@ -91,7 +91,7 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
     }
 
     public boolean isEntailed(OWLAxiom axiom) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException {
-        return getRootOntology().containsAxiom(axiom, true);
+        return getRootOntology().containsAxiom(axiom);
     }
 
     public boolean isEntailed(Set<? extends OWLAxiom> owlAxioms) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException {
