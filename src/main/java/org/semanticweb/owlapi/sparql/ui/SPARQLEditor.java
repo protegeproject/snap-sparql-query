@@ -50,18 +50,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.activation.DataHandler;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
-import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.rtf.RTFEditorKit;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
@@ -225,8 +222,7 @@ public class SPARQLEditor extends JTextPane {
                     new DataInputStream(new ByteArrayInputStream(baos.toByteArray())),
                     editorKit.getContentType());
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
-                    dataHandler,null
-            );
+                    dataHandler,null);
         } catch (IOException | BadLocationException ex) {
             logger.warn("A problem occurred when copying text to the clipboard: {}", ex.getMessage(), ex);
         }
