@@ -40,6 +40,7 @@
 package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.collect.ImmutableSet;
+import org.apache.commons.lang.StringUtils;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
@@ -137,26 +138,26 @@ public class SPARQLEditor extends JTextPane {
         });
 
         ImmutableSet.Builder<String> sparqlKeywords = ImmutableSet.builder();
-        sparqlKeywords.add(SPARQLTerminal.AS.getImage());
-        sparqlKeywords.add(SPARQLTerminal.FILTER.getImage());
-        sparqlKeywords.add(SPARQLTerminal.BASE.getImage());
-        sparqlKeywords.add(SPARQLTerminal.BIND.getImage());
-        sparqlKeywords.add(SPARQLTerminal.ASTERISK.getImage());
-        sparqlKeywords.add(SPARQLTerminal.DISTINCT.getImage());
-        sparqlKeywords.add(SPARQLTerminal.DOT.getImage());
-        sparqlKeywords.add(SPARQLTerminal.PREFIX.getImage());
-        sparqlKeywords.add(SPARQLTerminal.REDUCED.getImage());
-        sparqlKeywords.add(SPARQLTerminal.SELECT.getImage());
-        sparqlKeywords.add(SPARQLTerminal.CONSTRUCT.getImage());
-        sparqlKeywords.add(SPARQLTerminal.UNION.getImage());
-        sparqlKeywords.add(SPARQLTerminal.WHERE.getImage());
-        sparqlKeywords.add(SPARQLTerminal.GROUP.getImage());
-        sparqlKeywords.add(SPARQLTerminal.ORDER.getImage());
-        sparqlKeywords.add(SPARQLTerminal.BY.getImage());
-        sparqlKeywords.add(SPARQLTerminal.ASC.getImage());
-        sparqlKeywords.add(SPARQLTerminal.DESC.getImage());
-        sparqlKeywords.add(SPARQLTerminal.MINUS_KW.getImage());
-        sparqlKeywords.add(SPARQLTerminal.OPTIONAL_KW.getImage());
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.AS);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.FILTER);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.BASE);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.BIND);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.ASTERISK);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.DISTINCT);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.DOT);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.PREFIX);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.REDUCED);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.SELECT);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.CONSTRUCT);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.UNION);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.WHERE);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.GROUP);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.ORDER);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.BY);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.ASC);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.DESC);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.MINUS_KW);
+        addSparqlKeyword(sparqlKeywords, SPARQLTerminal.OPTIONAL_KW);
         this.sparqlKeywords = sparqlKeywords.build();
 
 
@@ -211,6 +212,13 @@ public class SPARQLEditor extends JTextPane {
         });
         setComponentPopupMenu(popup);
 
+    }
+
+    private static void addSparqlKeyword(ImmutableSet.Builder<String> sparqlKeywords, SPARQLTerminal terminal) {
+        String img = terminal.getImage();
+        sparqlKeywords.add(img);
+        sparqlKeywords.add(img.toLowerCase());
+        sparqlKeywords.add(StringUtils.capitalize(img.toLowerCase()));
     }
 
     private void copyRichTextToClipboard() {
@@ -357,7 +365,7 @@ public class SPARQLEditor extends JTextPane {
 
             }
             else if(type instanceof BuiltInCallTokenType) {
-                BuiltInCall call = BuiltInCall.valueOf(token.getImage());
+                BuiltInCall call = BuiltInCall.valueOf(token.getImage().toUpperCase());
                 if (call.isSupported()) {
                     return builtInStyle;
                 }

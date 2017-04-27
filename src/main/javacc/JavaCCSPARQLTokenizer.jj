@@ -29,74 +29,74 @@ SKIP: {
     <" "|"\t"|"\n"|"\r">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <AS: "AS">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <BASE: "BASE">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <PREFIX: "PREFIX">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <SELECT: "SELECT">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <CONSTRUCT: "CONSTRUCT">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <WHERE: "WHERE">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <FROM: "FROM">
 }
 
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <DISTINCT: "DISTINCT">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <REDUCED: "REDUCED">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <UNION: "UNION">
 }
 
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <NAMED: "NAMED">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <ORDER: "ORDER">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <GROUP: "GROUP">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <BY: "BY">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <ASC: "ASC">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <DESC: "DESC">
 }
 
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <A: "a">
 }
 
@@ -104,11 +104,11 @@ TOKEN: {
     <ASTERISK: "*">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <TRUE: "true">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <FALSE: "false">
 }
 
@@ -145,17 +145,17 @@ TOKEN: {
     <DOUBLE_CARET: "^^">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <FILTER: "FILTER">
 }
 
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <HAVING: "HAVING">
 }
 
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <BIND: "BIND">
 }
 
@@ -208,7 +208,7 @@ TOKEN: {
 }
 
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <OPTIONAL_KW: "OPTIONAL">
 }
 
@@ -217,13 +217,13 @@ TOKEN: {
     <DIVIDE: "/">
 }
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <MINUS_KW: "MINUS">
 }
 
 
 
-TOKEN: {
+TOKEN [IGNORE_CASE]: {
     <BUILT_IN_CALL: "STR" | "LANG" | "LANGMATCHES" | "DATATYPE" | "BOUND" | "IRI" | "URI" | "BNODE" | "RAND" |
                     "ABS" | "CEIL" | "FLOOR" | "ROUND" | "CONCAT" | "SUBSTR" | "STRLEN" | "REPLACE" | "UCASE" |
                     "LCASE" | "ENCODE_FOR_URI" | "CONTAINS" | "STRSTARTS" | "STRENDS" | "STRBEFORE" | "STRAFTER" |
