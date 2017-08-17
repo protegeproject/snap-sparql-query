@@ -30,6 +30,6 @@ public class REGEX_Evaluator implements BuiltInCallEvaluator {
             return patternResult;
         }
         Pattern patternPattern = Pattern.compile(patternResult.asSimpleLiteral());
-        return EvaluationResult.getBoolean(patternPattern.matcher(matchResult.asLiteral().getLexicalForm()).matches());
+        return EvaluationResult.getBoolean(patternPattern.matcher(matchResult.asLiteral().getLexicalForm()).find());
     }
 }
