@@ -143,7 +143,7 @@ public class BgpTranslator {
                 }
 
                 public QueryAtom visit(AnnotationProperty property) {
-                    return getAtom(QueryAtomType.ANNOTATION, property);
+                    return getAtom(QueryAtomType.ANNOTATION_PROPERTY, property);
                 }
 
                 @Override
@@ -168,7 +168,7 @@ public class BgpTranslator {
 
                 @Override
                 public QueryAtom visit(AnnotationPropertyVariable variable) throws RuntimeException {
-                    return getAtom(QueryAtomType.ANNOTATION, variable);
+                    return getAtom(QueryAtomType.ANNOTATION_PROPERTY, variable);
                 }
 
                 @Override
