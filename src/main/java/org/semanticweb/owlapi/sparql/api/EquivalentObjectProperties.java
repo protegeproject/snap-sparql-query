@@ -33,7 +33,7 @@ public class EquivalentObjectProperties extends NaryObjectPropertyAxiom {
 
     @Override
     public int hashCode() {
-        return EquivalentObjectProperties.class.getSimpleName().hashCode() + getObjectPropertyExpressions().hashCode();
+        return getObjectPropertyExpressions().hashCode();
     }
 
     @Override

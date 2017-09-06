@@ -25,7 +25,7 @@ public class DataProperty extends AbstractEntity implements DataPropertyExpressi
 
     @Override
     public int hashCode() {
-        return DataProperty.class.getSimpleName().hashCode() + getIRI().hashCode();
+        return getIRI().hashCode();
     }
 
     public boolean equals(Object obj) {

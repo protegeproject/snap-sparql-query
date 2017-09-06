@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -65,7 +67,7 @@ public class OrExpression extends BinaryExpression implements Expression {
 
     @Override
     public int hashCode() {
-        return OrExpression.class.getSimpleName().hashCode() + getLeft().hashCode() + getRight().hashCode();
+        return Objects.hashCode(getLeft().hashCode(), getRight().hashCode());
     }
 
     @Override

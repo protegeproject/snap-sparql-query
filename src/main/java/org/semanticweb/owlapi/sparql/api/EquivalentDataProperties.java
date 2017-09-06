@@ -35,7 +35,7 @@ public class EquivalentDataProperties extends NaryDataPropertyAxiom {
 
     @Override
     public int hashCode() {
-        return EquivalentDataProperties.class.getSimpleName().hashCode() + getDataProperties().hashCode();
+        return getDataProperties().hashCode();
     }
 
     @Override

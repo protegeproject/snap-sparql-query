@@ -1,13 +1,12 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.*;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.GroupCondition;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
-import java.io.PrintWriter;
+import java.util.Optional;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 22/06/15
@@ -18,7 +17,7 @@ public class Group extends GraphPatternAlgebraExpression<GroupEvaluation> {
 
     private GraphPatternAlgebraExpression<SolutionSequence> pattern;
 
-    private Optional<GroupEvaluation> lastEvaluation = Optional.absent();
+    private Optional<GroupEvaluation> lastEvaluation = Optional.empty();
 
     public Group(ImmutableList<GroupCondition> expressionList, GraphPatternAlgebraExpression<SolutionSequence> pattern) {
         this.expressionList = expressionList;

@@ -31,7 +31,7 @@ public class AnnotationAssertion extends AbstractAssertion<AnnotationSubject, At
 
     @Override
     public int hashCode() {
-        return AnnotationAssertion.class.getSimpleName().hashCode() + getProperty().hashCode() * 17 + getSubject().hashCode() * 13 + getObject().hashCode() * 5;
+        return Objects.hashCode(getProperty(), getSubject(), getObject());
     }
 
     @Override

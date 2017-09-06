@@ -68,7 +68,7 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
 
     @Override
     public int hashCode() {
-        return AtomicIRI.class.getSimpleName().hashCode() + iri.hashCode();
+        return iri.hashCode();
     }
 
     public boolean equals(Object obj) {

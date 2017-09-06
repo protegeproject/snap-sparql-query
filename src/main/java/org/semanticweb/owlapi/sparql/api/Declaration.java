@@ -36,7 +36,7 @@ public class Declaration implements Axiom {
 
     @Override
     public int hashCode() {
-        return Declaration.class.getSimpleName().hashCode() + atomic.hashCode();
+        return atomic.hashCode();
     }
 
     @Override

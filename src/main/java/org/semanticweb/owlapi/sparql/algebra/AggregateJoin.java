@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
+import javax.swing.*;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,9 +51,10 @@ public class AggregateJoin extends GraphPatternAlgebraExpression<SolutionSequenc
             }
         }
         ImmutableList.Builder<SolutionMapping> builder = ImmutableList.builder();
-        for(GroupKey key : table.rowKeySet()) {
+        Set<GroupKey> groupKeys = table.rowKeySet();
+        for(GroupKey key : groupKeys) {
             ImmutableMap.Builder<Variable, RDFTerm> termMap = ImmutableMap.builder();
-            for(Variable variable : table.columnKeySet()) {
+            for(Variable variable : variables) {
                 EvaluationResult result = table.get(key, variable);
                 if (!result.isError()) {
                     termMap.put(variable, result.getResult());

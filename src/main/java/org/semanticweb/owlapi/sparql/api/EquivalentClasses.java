@@ -33,7 +33,7 @@ public class EquivalentClasses extends NaryClassAxiom implements ClassAxiom {
 
     @Override
     public int hashCode() {
-        return EquivalentClasses.class.getSimpleName().hashCode() + getClassExpressions().hashCode();
+        return getClassExpressions().hashCode();
     }
 
     @Override

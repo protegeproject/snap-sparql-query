@@ -42,7 +42,7 @@ public class ClassAssertion implements Axiom, HasClassExpression, HasIndividual 
 
     @Override
     public int hashCode() {
-        return ClassAssertion.class.getSimpleName().hashCode() + classExpression.hashCode();
+        return Objects.hashCode(classExpression, individual);
     }
 
     public boolean equals(Object obj) {

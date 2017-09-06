@@ -26,7 +26,7 @@ public class InverseFunctionalObjectProperty extends ObjectPropertyCharacteristi
 
     @Override
     public int hashCode() {
-        return InverseFunctionalObjectProperty.class.getSimpleName().hashCode() + getProperty().hashCode();
+        return getProperty().hashCode();
     }
 
     @Override

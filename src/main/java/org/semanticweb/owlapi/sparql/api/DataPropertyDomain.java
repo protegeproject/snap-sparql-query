@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -41,7 +42,7 @@ public class DataPropertyDomain implements Axiom, HasProperty<DataPropertyExpres
 
     @Override
     public int hashCode() {
-        return DataPropertyDomain.class.getSimpleName().hashCode() + property.hashCode() + domain.hashCode();
+        return Objects.hashCode(property, domain);
     }
 
     public boolean equals(Object obj) {

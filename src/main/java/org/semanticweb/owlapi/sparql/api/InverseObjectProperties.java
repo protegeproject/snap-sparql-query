@@ -42,7 +42,7 @@ public class InverseObjectProperties extends NaryObjectPropertyAxiom implements 
 
     @Override
     public int hashCode() {
-        return InverseObjectProperties.class.getSimpleName().hashCode() + getObjectPropertyExpressions().hashCode();
+        return getObjectPropertyExpressions().hashCode();
     }
 
     @Override

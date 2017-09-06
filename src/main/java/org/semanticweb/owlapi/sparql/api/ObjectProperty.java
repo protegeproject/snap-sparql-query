@@ -29,7 +29,7 @@ public class ObjectProperty extends AbstractEntity implements Entity, AtomicObje
 
     @Override
     public int hashCode() {
-        return ObjectProperty.class.getSimpleName().hashCode() + getIRI().hashCode();
+        return getIRI().hashCode();
     }
 
     @Override

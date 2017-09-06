@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
@@ -348,7 +349,7 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
 
     @Override
     public int hashCode() {
-        return Literal.class.getSimpleName().hashCode() + datatype.hashCode() + lexicalForm.hashCode() + langTag.hashCode();
+        return Objects.hashCode(datatype.hashCode(), lexicalForm.hashCode(), langTag.hashCode());
     }
 
 

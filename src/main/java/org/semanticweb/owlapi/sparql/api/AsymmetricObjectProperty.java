@@ -27,7 +27,7 @@ public class AsymmetricObjectProperty extends ObjectPropertyCharacteristic {
 
     @Override
     public int hashCode() {
-        return AsymmetricObjectProperty.class.getSimpleName().hashCode() + getProperty().hashCode();
+        return getProperty().hashCode();
     }
 
     @Override

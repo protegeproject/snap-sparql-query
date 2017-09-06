@@ -92,7 +92,7 @@ public class NotExpression implements Expression {
 
     @Override
     public int hashCode() {
-        return NotExpression.class.getSimpleName().hashCode() + expression.hashCode();
+        return expression.hashCode();
     }
 
     @Override

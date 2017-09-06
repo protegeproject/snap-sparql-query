@@ -31,7 +31,7 @@ public class DisjointClasses extends NaryClassAxiom implements ClassAxiom {
 
     @Override
     public int hashCode() {
-        return DisjointClasses.class.getSimpleName().hashCode() + getClassExpressions().hashCode();
+        return getClassExpressions().hashCode();
     }
 
     @Override

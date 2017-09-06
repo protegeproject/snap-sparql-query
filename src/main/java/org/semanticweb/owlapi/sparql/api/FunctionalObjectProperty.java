@@ -26,7 +26,7 @@ public class FunctionalObjectProperty extends ObjectPropertyCharacteristic imple
 
     @Override
     public int hashCode() {
-        return FunctionalObjectProperty.class.getSimpleName().hashCode() + getProperty().hashCode();
+        return getProperty().hashCode();
     }
 
     @Override

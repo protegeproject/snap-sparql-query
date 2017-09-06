@@ -26,7 +26,7 @@ public class TransitiveObjectProperty extends ObjectPropertyCharacteristic {
 
     @Override
     public int hashCode() {
-        return TransitiveObjectProperty.class.getSimpleName().hashCode() + getProperty().hashCode();
+        return getProperty().hashCode();
     }
 
     @Override

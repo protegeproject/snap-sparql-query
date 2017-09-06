@@ -43,7 +43,6 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
-import org.coode.owlapi.turtle.TurtleOntologyFormat;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;

@@ -61,7 +61,7 @@ public class SubClassOf implements ClassAxiom {
 
     @Override
     public int hashCode() {
-        return SubClassOf.class.getSimpleName().hashCode() + subClass.hashCode() * 13 + superClass.hashCode();
+        return Objects.hashCode(subClass.hashCode(), superClass.hashCode());
     }
 
     @Override

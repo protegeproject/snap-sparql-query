@@ -29,7 +29,7 @@ public class NamedIndividual extends AbstractEntity implements Entity, AtomicInd
 
     @Override
     public int hashCode() {
-        return NamedIndividual.class.getSimpleName().hashCode() + getIRI().hashCode();
+        return getIRI().hashCode();
     }
 
     @Override

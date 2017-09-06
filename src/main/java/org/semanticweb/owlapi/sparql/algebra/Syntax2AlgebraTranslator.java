@@ -40,8 +40,9 @@ public class Syntax2AlgebraTranslator {
 
             E = new ArrayList<>();
 
-            if(solutionModifier.getGroupClause().isPresent()) {
-                ImmutableList<GroupCondition> groupConditions = solutionModifier.getGroupClause().get().getGroupConditions();
+            Optional<GroupClause> groupClause = solutionModifier.getGroupClause();
+            if(groupClause.isPresent()) {
+                ImmutableList<GroupCondition> groupConditions = groupClause.get().getGroupConditions();
                 X = new Group(groupConditions, X);
             }
             else {

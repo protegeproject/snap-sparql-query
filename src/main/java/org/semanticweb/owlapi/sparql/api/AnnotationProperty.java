@@ -25,7 +25,7 @@ public class AnnotationProperty extends AbstractEntity implements AtomicAnnotati
 
     @Override
     public int hashCode() {
-        return AnnotationProperty.class.getSimpleName().hashCode() + getIRI().hashCode();
+        return getIRI().hashCode();
     }
 
     @Override

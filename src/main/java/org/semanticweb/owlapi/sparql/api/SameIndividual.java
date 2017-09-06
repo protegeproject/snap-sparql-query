@@ -45,7 +45,7 @@ public class SameIndividual implements Axiom, HasIndividuals {
 
     @Override
     public int hashCode() {
-        return SameIndividual.class.getSimpleName().hashCode() + individuals.hashCode();
+        return individuals.hashCode();
     }
 
     @Override

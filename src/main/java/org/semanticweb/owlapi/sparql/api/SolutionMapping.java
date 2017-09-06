@@ -31,7 +31,7 @@ public class SolutionMapping {
     }
 
     public SolutionMapping() {
-        map = new HashMap<>(0);
+        map = new HashMap<>(3);
     }
 
     public SolutionMapping(ImmutableMap<Variable, RDFTerm> map) {

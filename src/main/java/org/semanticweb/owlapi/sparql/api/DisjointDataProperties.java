@@ -34,7 +34,7 @@ public class DisjointDataProperties extends NaryDataPropertyAxiom implements Axi
 
     @Override
     public int hashCode() {
-        return DisjointDataProperties.class.getSimpleName().hashCode() + getDataProperties().hashCode();
+        return getDataProperties().hashCode();
     }
 
     @Override

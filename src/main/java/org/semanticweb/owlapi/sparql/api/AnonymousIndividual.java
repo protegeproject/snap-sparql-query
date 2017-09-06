@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -101,7 +102,7 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
 
     @Override
     public int hashCode() {
-        return AnonymousIndividual.class.getSimpleName().hashCode() + id.hashCode();
+        return id.hashCode();
     }
 
     @Override

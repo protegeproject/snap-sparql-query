@@ -34,7 +34,7 @@ public class DisjointObjectProperties extends NaryObjectPropertyAxiom implements
 
     @Override
     public int hashCode() {
-        return DisjointObjectProperties.class.getSimpleName().hashCode() + getObjectPropertyExpressions().hashCode();
+        return getObjectPropertyExpressions().hashCode();
     }
 
     @Override

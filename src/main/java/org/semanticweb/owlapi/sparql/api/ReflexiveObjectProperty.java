@@ -26,7 +26,7 @@ public class ReflexiveObjectProperty extends ObjectPropertyCharacteristic {
 
     @Override
     public int hashCode() {
-        return ReflexiveObjectProperty.class.getSimpleName().hashCode() + getProperty().hashCode();
+        return getProperty().hashCode();
     }
 
     @Override

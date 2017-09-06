@@ -34,7 +34,7 @@ public class FunctionalDataProperty implements Axiom, HasProperty<DataPropertyEx
 
     @Override
     public int hashCode() {
-        return FunctionalDataProperty.class.getSimpleName().hashCode() + getProperty().hashCode();
+        return getProperty().hashCode();
     }
 
     @Override

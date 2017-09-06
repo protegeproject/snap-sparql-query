@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -41,7 +42,7 @@ public class DataPropertyRange implements Axiom, HasProperty<DataPropertyExpress
 
     @Override
     public int hashCode() {
-        return DataPropertyRange.class.getSimpleName().hashCode() + property.hashCode() + dataRange.hashCode();
+        return Objects.hashCode(property, dataRange);
     }
 
     @Override

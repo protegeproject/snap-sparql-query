@@ -27,9 +27,14 @@ public class BgpEvaluator {
 
     private OWLReasoner reasoner;
 
-    public BgpEvaluator(OWLReasoner reasoner, Cache<Bgp, SolutionSequence> cache) {
+    private QueryEngine queryEngine;
+
+    public BgpEvaluator(OWLReasoner reasoner,
+                        Cache<Bgp, SolutionSequence> cache,
+                        QueryEngine queryEngine) {
         this.reasoner = reasoner;
         this.cache = cache;
+        this.queryEngine = queryEngine;
     }
 
     public SolutionSequence evaluate(Bgp bgp) {
@@ -40,12 +45,10 @@ public class BgpEvaluator {
         }
         try {
             OWLOntology rootOntology = reasoner.getRootOntology();
-            OWLOntologyManager manager = rootOntology.getOWLOntologyManager();
             BgpTranslator bgpTranslator = new BgpTranslator(reasoner.getRootOntology().getOWLOntologyManager().getOWLDataFactory());
             Query query = bgpTranslator.translate(bgp);
-            QueryEngine posQE = QueryEngine.create(manager, reasoner);
-            ((QueryEngineImpl) posQE).setPerformArgumentChecking(false);
-            QueryResult result = posQE.execute(query);
+            ((QueryEngineImpl) queryEngine).setPerformArgumentChecking(false);
+            QueryResult result = queryEngine.execute(query);
             ResultTranslator resultTranslator = new ResultTranslator(new SolutionMappingTranslator(), bgp.getVariables());
             ImmutableList<SolutionMapping> solutionMappings = resultTranslator.translateResult(result);
             SolutionSequence sequence = new SolutionSequence(new ArrayList<>(bgp.getVariables()), solutionMappings);

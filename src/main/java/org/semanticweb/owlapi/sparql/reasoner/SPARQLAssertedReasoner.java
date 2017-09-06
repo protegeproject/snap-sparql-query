@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.reasoner.impl.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.Version;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -82,19 +83,20 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
         return true;
     }
 
-    public boolean isSatisfiable(OWLClassExpression owlClassExpression) throws ReasonerInterruptedException, TimeOutException, ClassExpressionNotInProfileException, FreshEntitiesException, InconsistentOntologyException {
+    public boolean isSatisfiable(@Nonnull OWLClassExpression owlClassExpression) throws ReasonerInterruptedException, TimeOutException, ClassExpressionNotInProfileException, FreshEntitiesException, InconsistentOntologyException {
         return true;
     }
 
+    @Nonnull
     public Node<OWLClass> getUnsatisfiableClasses() throws ReasonerInterruptedException, TimeOutException, InconsistentOntologyException {
         return OWLClassNode.getBottomNode();
     }
 
-    public boolean isEntailed(OWLAxiom axiom) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException {
+    public boolean isEntailed(@Nonnull OWLAxiom axiom) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException {
         return getRootOntology().containsAxiom(axiom);
     }
 
-    public boolean isEntailed(Set<? extends OWLAxiom> owlAxioms) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException {
+    public boolean isEntailed(@Nonnull Set<? extends OWLAxiom> owlAxioms) throws ReasonerInterruptedException, UnsupportedEntailmentTypeException, TimeOutException, AxiomNotInProfileException, FreshEntitiesException, InconsistentOntologyException {
         for (OWLAxiom axiom : owlAxioms) {
             if (!isEntailed(axiom)) {
                 return false;
@@ -103,19 +105,22 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
         return true;
     }
 
-    public boolean isEntailmentCheckingSupported(AxiomType<?> axiomType) {
+    public boolean isEntailmentCheckingSupported(@Nonnull AxiomType<?> axiomType) {
         return true;
     }
 
+    @Nonnull
     public Node<OWLClass> getTopClassNode() {
         return OWLClassNode.getTopNode();
     }
 
+    @Nonnull
     public Node<OWLClass> getBottomClassNode() {
         return OWLClassNode.getBottomNode();
     }
 
-    public NodeSet<OWLClass> getSubClasses(OWLClassExpression owlClassExpression, boolean b) throws ReasonerInterruptedException, TimeOutException, FreshEntitiesException, InconsistentOntologyException, ClassExpressionNotInProfileException {
+    @Nonnull
+    public NodeSet<OWLClass> getSubClasses(@Nonnull OWLClassExpression owlClassExpression, boolean b) throws ReasonerInterruptedException, TimeOutException, FreshEntitiesException, InconsistentOntologyException, ClassExpressionNotInProfileException {
         Set<OWLClassExpression> result = getSubClasses(owlClassExpression);
         return toNodeSet(result);
     }
@@ -160,7 +165,8 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
     }
 
 
-    public NodeSet<OWLClass> getSuperClasses(OWLClassExpression owlClassExpression, boolean b) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+    @Nonnull
+    public NodeSet<OWLClass> getSuperClasses(@Nonnull OWLClassExpression owlClassExpression, boolean b) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
         Set<OWLClass> result = getSuperClasses(owlClassExpression);
         return toNodeSet(result);
     }
@@ -191,22 +197,25 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
         return result;
     }
 
-    public Node<OWLClass> getEquivalentClasses(OWLClassExpression owlClassExpression) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
-        if (owlClassExpression.isAnonymous()) {
-            return EMPTY_CLASS_NODE;
-        }
-        OWLClass cls = owlClassExpression.asOWLClass();
-        OWLClassNode node = new OWLClassNode();
-        Collection<OWLClassExpression> result = EntitySearcher.getEquivalentClasses(cls, getRootOntology().getImportsClosure());
-        for(OWLClassExpression ce : result) {
-            if(!ce.isAnonymous()) {
-                node.add(ce.asOWLClass());
-            }
-        }
-        return node;
+    @Nonnull
+    public Node<OWLClass> getEquivalentClasses(@Nonnull OWLClassExpression owlClassExpression) throws InconsistentOntologyException, ClassExpressionNotInProfileException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+//        if (owlClassExpression.isAnonymous()) {
+//            return EMPTY_CLASS_NODE;
+//        }
+//        OWLClass cls = owlClassExpression.asOWLClass();
+//        OWLClassNode node = new OWLClassNode();
+//        Collection<OWLClassExpression> result = EntitySearcher.getEquivalentClasses(cls, getRootOntology().getImportsClosure());
+//        for(OWLClassExpression ce : result) {
+//            if(!ce.isAnonymous() && !node.equals(owlClassExpression)) {
+//                node.add(ce.asOWLClass());
+//            }
+//        }
+//        return node;
+        return EMPTY_CLASS_NODE;
     }
 
-    public NodeSet<OWLClass> getDisjointClasses(OWLClassExpression owlClassExpression) throws ReasonerInterruptedException, TimeOutException, FreshEntitiesException, InconsistentOntologyException {
+    @Nonnull
+    public NodeSet<OWLClass> getDisjointClasses(@Nonnull OWLClassExpression owlClassExpression) throws ReasonerInterruptedException, TimeOutException, FreshEntitiesException, InconsistentOntologyException {
         if (owlClassExpression.isAnonymous()) {
             return EMPTY_CLASS_NODE_SET;
         }
@@ -215,15 +224,18 @@ public class SPARQLAssertedReasoner implements OWLReasoner {
         return toNodeSet(result);
     }
 
+    @Nonnull
     public Node<OWLObjectPropertyExpression> getTopObjectPropertyNode() {
         return OWLObjectPropertyNode.getTopNode();
     }
 
+    @Nonnull
     public Node<OWLObjectPropertyExpression> getBottomObjectPropertyNode() {
         return OWLObjectPropertyNode.getBottomNode();
     }
 
-    public NodeSet<OWLObjectPropertyExpression> getSubObjectProperties(OWLObjectPropertyExpression propertyExpression, boolean b) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+    @Nonnull
+    public NodeSet<OWLObjectPropertyExpression> getSubObjectProperties(@Nonnull OWLObjectPropertyExpression propertyExpression, boolean b) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
         return null;
     }
 

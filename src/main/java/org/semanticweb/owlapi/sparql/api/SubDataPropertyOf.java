@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -48,7 +49,7 @@ public class SubDataPropertyOf implements Axiom, HasSubProperty<DataPropertyExpr
 
     @Override
     public int hashCode() {
-        return SubDataPropertyOf.class.getSimpleName().hashCode() + subProperty.hashCode() * 13 + superProperty.hashCode();
+        return Objects.hashCode(subProperty.hashCode(), superProperty.hashCode());
     }
 
     @Override

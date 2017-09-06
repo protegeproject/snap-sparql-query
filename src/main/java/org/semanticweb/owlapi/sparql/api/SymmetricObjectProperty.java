@@ -26,7 +26,7 @@ public class SymmetricObjectProperty extends ObjectPropertyCharacteristic {
 
     @Override
     public int hashCode() {
-        return SymmetricObjectProperty.class.getSimpleName().hashCode() + getProperty().hashCode();
+        return getProperty().hashCode();
     }
 
     @Override

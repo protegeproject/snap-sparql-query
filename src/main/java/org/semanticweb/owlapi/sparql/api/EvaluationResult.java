@@ -142,7 +142,7 @@ public class EvaluationResult {
     
     @Override
     public int hashCode() {
-        return EvaluationResult.class.getSimpleName().hashCode() + (result != null ? result.hashCode() : 7);
+        return Objects.hashCode(result, error);
     }
     
     @Override

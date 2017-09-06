@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -70,7 +72,7 @@ public class AndExpression extends BinaryExpression implements Expression {
 
     @Override
     public int hashCode() {
-        return AndExpression.class.getSimpleName().hashCode() + getLeft().hashCode() + getRight().hashCode();
+        return Objects.hashCode(getLeft(), getRight());
     }
 
     @Override

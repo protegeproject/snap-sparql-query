@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -41,7 +42,7 @@ public class ObjectPropertyRange implements Axiom, HasProperty<ObjectPropertyExp
 
     @Override
     public int hashCode() {
-        return ObjectPropertyRange.class.getSimpleName().hashCode() + property.hashCode() + range.hashCode();
+        return Objects.hashCode(property.hashCode(), range.hashCode());
     }
 
     @Override

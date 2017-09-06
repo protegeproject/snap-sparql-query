@@ -26,7 +26,7 @@ public class IrreflexiveObjectProperty extends ObjectPropertyCharacteristic {
 
     @Override
     public int hashCode() {
-        return IrreflexiveObjectProperty.class.getSimpleName().hashCode() + getProperty().hashCode();
+        return getProperty().hashCode();
     }
 
     @Override

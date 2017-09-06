@@ -41,6 +41,7 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import de.derivo.sparqldlapi.QueryEngine;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraExpression;
@@ -67,7 +68,8 @@ public class SPARQLDLQueryEngine {
 
     public SPARQLQueryResult ask(SelectQuery query) {
         AlgebraExpression<SolutionSequence> algebraExpression = query.translate();
-        AlgebraEvaluationContext context = new AlgebraEvaluationContext(new BgpEvaluator(reasoner, cache));
+        QueryEngine queryEngine = QueryEngine.create(reasoner.getRootOntology().getOWLOntologyManager(), reasoner);
+        AlgebraEvaluationContext context = new AlgebraEvaluationContext(new BgpEvaluator(reasoner, cache, queryEngine));
         SolutionSequence solutionSequence = algebraExpression.evaluate(context);
         return new SPARQLQueryResult(query, solutionSequence);
     }
