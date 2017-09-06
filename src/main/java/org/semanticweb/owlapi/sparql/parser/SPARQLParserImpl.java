@@ -1296,7 +1296,13 @@ public class SPARQLParserImpl {
         else {
             prefixName = tokenizer.consume(PrefixNameTokenType.get());
         }
-        SPARQLToken prefix = tokenizer.consume(UntypedIRITokenType.get(), PrologueDeclarationIRITokenType.get());
+        SPARQLToken prefix = tokenizer.consume(UntypedIRITokenType.get(),
+                EntityIRITokenType.get(EntityType.ANNOTATION_PROPERTY),
+                EntityIRITokenType.get(EntityType.DATA_PROPERTY),
+                EntityIRITokenType.get(EntityType.OBJECT_PROPERTY),
+                EntityIRITokenType.get(EntityType.CLASS),
+                EntityIRITokenType.get(EntityType.NAMED_INDIVIDUAL),
+                PrologueDeclarationIRITokenType.get());
         String prefixImage = prefix.getImage();
         String iriString = prefixImage.substring(1, prefixImage.length() - 1);
         tokenizer.registerPrefix(prefixName.getImage(), iriString);
