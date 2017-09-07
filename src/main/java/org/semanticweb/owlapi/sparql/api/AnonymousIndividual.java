@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -156,5 +157,11 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
     @Override
     public OWLAnonymousIndividual toOWLObject(OWLDataFactory df) {
         return df.getOWLAnonymousIndividual(getIdentifier());
+    }
+
+    @Nonnull
+    @Override
+    public java.util.Optional<Variable> asVariable() {
+        return java.util.Optional.empty();
     }
 }

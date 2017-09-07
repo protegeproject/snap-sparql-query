@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIndividual;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -52,5 +53,10 @@ public class IndividualVariable extends AbstractVariable implements AtomicIndivi
     @Override
     public OWLIndividual toOWLObject(OWLDataFactory df) {
         throw new UnboundVariableTranslationException();
+    }
+
+    @Override
+    public boolean isEntityVariable() {
+        return true;
     }
 }

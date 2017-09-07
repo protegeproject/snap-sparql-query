@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
+import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
@@ -394,5 +395,11 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     @Override
     public OWLLiteral toOWLObject(OWLDataFactory df) {
         return df.getOWLLiteral(lexicalForm, datatype.toOWLObject(df));
+    }
+
+    @Nonnull
+    @Override
+    public java.util.Optional<Variable> asVariable() {
+        return java.util.Optional.empty();
     }
 }

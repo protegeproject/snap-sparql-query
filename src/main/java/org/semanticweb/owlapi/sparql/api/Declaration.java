@@ -26,6 +26,14 @@ public class Declaration implements Axiom {
         return atomic;
     }
 
+    public java.util.Optional<Variable> getDeclaredVariable() {
+        return atomic.asVariable();
+    }
+
+    public boolean isEntityVariableDeclaration() {
+        return atomic.asVariable().map(Variable::isEntityVariable).orElse(false);
+    }
+
     public <R, E extends Throwable> R accept(Visitor<R, E> visitor) throws E {
         return visitor.visit(this);
     }

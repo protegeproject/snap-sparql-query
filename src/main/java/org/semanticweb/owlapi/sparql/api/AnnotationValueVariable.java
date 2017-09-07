@@ -58,4 +58,9 @@ public class AnnotationValueVariable extends AbstractVariable implements Annotat
     public OWLAnnotationValue toOWLObject(OWLDataFactory df) {
         throw new UnboundVariableTranslationException();
     }
+
+    @Override
+    public boolean isEntityVariable() {
+        return false;
+    }
 }

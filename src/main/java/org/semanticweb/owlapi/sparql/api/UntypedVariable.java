@@ -70,4 +70,9 @@ public class UntypedVariable extends AbstractVariable  {
     public OWLObject toOWLObject(OWLDataFactory df) {
         throw new UnboundVariableTranslationException();
     }
+
+    @Override
+    public boolean isEntityVariable() {
+        return false;
+    }
 }

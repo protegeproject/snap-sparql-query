@@ -3,6 +3,7 @@ package org.semanticweb.owlapi.sparql.api;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.PrefixManager;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -115,5 +116,10 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
     @Override
     public final AnnotationSubject toAnnotationSubject() {
         return new AtomicIRI(getIRI());
+    }
+    
+    @Nonnull
+    public java.util.Optional<Variable> asVariable() {
+        return java.util.Optional.empty();
     }
 }

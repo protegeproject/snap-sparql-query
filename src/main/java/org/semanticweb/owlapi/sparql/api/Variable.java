@@ -64,6 +64,8 @@ public abstract class Variable implements Atomic, HasIdentifier, HasVariables, H
         return "?" + variableName;
     }
 
+    public abstract boolean isEntityVariable();
+
     public VariableNamePrefix getVariableNamePrefix() {
         return prefix;
     }

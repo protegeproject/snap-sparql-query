@@ -1,14 +1,12 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import org.semanticweb.owlapi.sparql.api.Axiom;
-import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.api.*;
 
-import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
@@ -26,8 +24,8 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public GraphPatternAlgebraExpression<SolutionSequence> getSimplified() {
-        return this;
+    public Bgp getSimplified() {
+        return new Bgp(this.removeRedundantAxiomsTemplates());
     }
 
     public ImmutableSet<Variable> getVariables() {
@@ -55,9 +53,46 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
         return context.evaluateBgp(this);
     }
 
+
+    private ImmutableList<Axiom> removeRedundantAxiomsTemplates() {
+        // Remove declarations of variables e.g.  ?x a owl:AnnotationProperty
+        // where the variable appears in a strongly typed position elsewhere e.g.
+        Set<Variable> nonDeclarationVars = new HashSet<>();
+        List<Declaration> entityVariableDeclarations = new ArrayList<>();
+        List<Axiom> nonEntityVariableDeclarationAxioms = new ArrayList<>();
+        for(Axiom ax : axioms) {
+            if(ax instanceof Declaration) {
+                if (((Declaration) ax).isEntityVariableDeclaration()) {
+                    entityVariableDeclarations.add((Declaration) ax);
+                }
+                else {
+                    nonEntityVariableDeclarationAxioms.add(ax);
+                }
+            }
+            else {
+                nonEntityVariableDeclarationAxioms.add(ax);
+                ax.collectVariables(nonDeclarationVars);
+            }
+        }
+        Set<Axiom> filteredAxioms = new HashSet<>(nonEntityVariableDeclarationAxioms);
+        for(Declaration declaration : entityVariableDeclarations) {
+            if(!declaration.isEntityVariableDeclaration()) {
+                filteredAxioms.add(declaration);
+            }
+            else {
+                Optional<Variable> declVariable = declaration.getAtomic().asVariable();
+                Boolean alsoNonDeclVariable = declVariable.map(nonDeclarationVars::contains).orElse(false);
+                if(!alsoNonDeclVariable) {
+                    filteredAxioms.add(declaration);
+                }
+            }
+        }
+        return ImmutableList.copyOf(filteredAxioms);
+    }
+
     @Override
     public String toString() {
-        return Objects.toStringHelper("BGP")
+        return MoreObjects.toStringHelper("BGP")
                 .addValue(axioms)
                 .toString();
     }
@@ -78,4 +113,6 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
     public int hashCode() {
         return Objects.hashCode(axioms);
     }
+
+
 }

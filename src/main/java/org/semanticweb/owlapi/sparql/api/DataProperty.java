@@ -7,6 +7,8 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObject;
 
+import javax.annotation.Nonnull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -65,5 +67,11 @@ public class DataProperty extends AbstractEntity implements DataPropertyExpressi
     @Override
     public OWLDataProperty toOWLObject(OWLDataFactory df) {
         return df.getOWLDataProperty(getIRI());
+    }
+
+    @Nonnull
+    @Override
+    public java.util.Optional<Variable> asVariable() {
+        return java.util.Optional.empty();
     }
 }

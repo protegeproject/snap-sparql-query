@@ -42,6 +42,7 @@ package org.semanticweb.owlapi.sparql.sparqldl;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import de.derivo.sparqldlapi.QueryEngine;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraExpression;
@@ -50,26 +51,32 @@ import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 28/03/2012
  */
 public class SPARQLDLQueryEngine {
 
-    private OWLReasoner reasoner;
+    private final OWLDataFactory dataFactory;
+
+    private final QueryEngine queryEngine;
 
     private Cache<Bgp, SolutionSequence> cache;
 
-    public SPARQLDLQueryEngine(OWLReasoner reasoner) {
-        this.reasoner = reasoner;
+    public SPARQLDLQueryEngine(@Nonnull OWLDataFactory dataFactory,
+                               @Nonnull QueryEngine queryEngine) {
+        this.dataFactory = checkNotNull(dataFactory);
+        this.queryEngine = checkNotNull(queryEngine);
         cache = CacheBuilder.newBuilder().maximumSize(7).expireAfterWrite(2, TimeUnit.MINUTES).build();
     }
 
     public SPARQLQueryResult ask(SelectQuery query) {
         AlgebraExpression<SolutionSequence> algebraExpression = query.translate();
-        QueryEngine queryEngine = QueryEngine.create(reasoner.getRootOntology().getOWLOntologyManager(), reasoner);
-        AlgebraEvaluationContext context = new AlgebraEvaluationContext(new BgpEvaluator(reasoner, cache, queryEngine));
+        AlgebraEvaluationContext context = new AlgebraEvaluationContext(new BgpEvaluator(dataFactory, cache, queryEngine));
         SolutionSequence solutionSequence = algebraExpression.evaluate(context);
         return new SPARQLQueryResult(query, solutionSequence);
     }

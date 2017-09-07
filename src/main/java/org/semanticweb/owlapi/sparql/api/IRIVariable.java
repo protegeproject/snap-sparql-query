@@ -45,4 +45,9 @@ public class IRIVariable extends AbstractVariable implements AnnotationSubject, 
     public IRI toOWLObject(OWLDataFactory df) {
         throw new UnboundVariableTranslationException();
     }
+
+    @Override
+    public boolean isEntityVariable() {
+        return false;
+    }
 }

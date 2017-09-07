@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -63,5 +64,10 @@ public class ClassVariable extends AbstractVariable implements AtomicClass {
     @Override
     public OWLClass toOWLObject(OWLDataFactory df) {
         throw new UnboundVariableTranslationException();
+    }
+
+    @Override
+    public boolean isEntityVariable() {
+        return true;
     }
 }

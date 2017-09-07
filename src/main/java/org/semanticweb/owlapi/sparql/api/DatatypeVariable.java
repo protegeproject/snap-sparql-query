@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLObject;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -32,6 +33,11 @@ public class DatatypeVariable extends AbstractVariable implements AtomicDatatype
     @Override
     public void collectVariables(Collection<Variable> variables) {
         variables.add(this);
+    }
+
+    @Override
+    public boolean isEntityVariable() {
+        return true;
     }
 
     @Override

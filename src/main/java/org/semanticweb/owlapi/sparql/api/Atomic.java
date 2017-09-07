@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 /**
@@ -17,4 +18,7 @@ public interface Atomic extends Term, Expression, Serializable, HasCollectVariab
 
     @Override
     OWLObject toOWLObject(OWLDataFactory df);
+
+    @Nonnull
+    java.util.Optional<Variable> asVariable();
 }

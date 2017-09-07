@@ -58,4 +58,9 @@ public class LiteralVariable extends AbstractVariable implements AtomicLiteral {
     public OWLLiteral toOWLObject(OWLDataFactory df) {
         throw new UnboundVariableTranslationException();
     }
+
+    @Override
+    public boolean isEntityVariable() {
+        return false;
+    }
 }

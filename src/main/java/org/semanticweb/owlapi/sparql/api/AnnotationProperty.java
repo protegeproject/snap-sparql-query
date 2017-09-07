@@ -7,6 +7,8 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
+import javax.annotation.Nonnull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -66,5 +68,11 @@ public class AnnotationProperty extends AbstractEntity implements AtomicAnnotati
     @Override
     public OWLAnnotationProperty toOWLObject(OWLDataFactory df) {
         return df.getOWLAnnotationProperty(getIRI());
+    }
+
+    @Nonnull
+    @Override
+    public java.util.Optional<Variable> asVariable() {
+        return java.util.Optional.empty();
     }
 }

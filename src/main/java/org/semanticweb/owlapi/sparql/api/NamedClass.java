@@ -7,6 +7,8 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 
+import javax.annotation.Nonnull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -58,5 +60,11 @@ public class NamedClass extends AbstractEntity implements Entity, AtomicClass {
     @Override
     public OWLClass toOWLObject(OWLDataFactory df) {
         return df.getOWLClass(getIRI());
+    }
+
+    @Nonnull
+    @Override
+    public java.util.Optional<Variable> asVariable() {
+        return java.util.Optional.empty();
     }
 }

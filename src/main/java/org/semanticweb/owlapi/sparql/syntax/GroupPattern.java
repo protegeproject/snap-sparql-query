@@ -130,6 +130,8 @@ public class GroupPattern extends Pattern {
         return Optional.absent();
     }
 
+
+
 //    /**
 //     * Places filters at the end and collapses adjacent triple patterns
 //     * @return A fresh group pattern that is a simplified form of this pattern.

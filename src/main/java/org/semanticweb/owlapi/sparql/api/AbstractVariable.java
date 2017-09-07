@@ -2,6 +2,8 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Optional;
 
+import javax.annotation.Nonnull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -147,5 +149,11 @@ public abstract class AbstractVariable extends Variable {
             return EvaluationResult.getError();
         }
         return term.get().evaluateAsIRI(sm);
+    }
+
+    @Nonnull
+    @Override
+    public final java.util.Optional<Variable> asVariable() {
+        return java.util.Optional.of(this);
     }
 }

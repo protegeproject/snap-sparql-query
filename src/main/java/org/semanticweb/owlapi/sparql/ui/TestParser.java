@@ -43,6 +43,7 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
+import de.derivo.sparqldlapi.QueryEngine;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -130,7 +131,8 @@ public class TestParser {
             System.out.println("Precomputing class hierarchy...");
             reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
             System.out.println("    .... done");
-            queryEngine = new SPARQLDLQueryEngine(reasoner);
+            QueryEngine qe = QueryEngine.create(manager, reasoner);
+            queryEngine = new SPARQLDLQueryEngine(manager.getOWLDataFactory(), qe);
 
             JFrame f = new JFrame();
             final JTextComponent textArea = new SPARQLEditor(new OWLOntologyProvider() {

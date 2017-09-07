@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -52,5 +53,10 @@ public class AnnotationPropertyVariable extends AbstractVariable implements Atom
     @Override
     public OWLAnnotationProperty toOWLObject(OWLDataFactory df) {
         throw new UnboundVariableTranslationException();
+    }
+
+    @Override
+    public boolean isEntityVariable() {
+        return true;
     }
 }
