@@ -71,7 +71,11 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
             }
             else {
                 nonEntityVariableDeclarationAxioms.add(ax);
-                ax.collectVariables(nonDeclarationVars);
+                Set<Variable> variables = new HashSet<>();
+                ax.collectVariables(variables);
+                variables.stream()
+                        .filter(Variable::isEntityVariable)
+                        .forEach(nonDeclarationVars::add);
             }
         }
         Set<Axiom> filteredAxioms = new HashSet<>(nonEntityVariableDeclarationAxioms);
