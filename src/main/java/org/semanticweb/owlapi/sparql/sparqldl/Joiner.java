@@ -1,8 +1,6 @@
 package org.semanticweb.owlapi.sparql.sparqldl;
 
-import com.google.common.base.*;
 import com.google.common.collect.*;
-import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
@@ -44,13 +42,13 @@ public class Joiner {
                 // NB ImmutableMap.Builder doesn't let us have multiple entries
                 HashMap<Variable, RDFTerm> combined = new HashMap<>();
                 for(Variable leftVariable : left.getVariables()) {
-                    com.google.common.base.Optional<RDFTerm> leftTerm = left.getTermForVariable(leftVariable);
+                    Optional<RDFTerm> leftTerm = left.getTermForVariable(leftVariable);
                     if (leftTerm.isPresent()) {
                         combined.put(leftVariable, leftTerm.get());
                     }
                 }
                 for(Variable rightVariable : right.getVariables()) {
-                    com.google.common.base.Optional<RDFTerm> rightTerm = right.getTermForVariable(rightVariable);
+                    Optional<RDFTerm> rightTerm = right.getTermForVariable(rightVariable);
                     if (rightTerm.isPresent()) {
                         combined.put(rightVariable, rightTerm.get());
                     }

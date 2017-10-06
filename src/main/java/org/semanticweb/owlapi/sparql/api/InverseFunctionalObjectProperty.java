@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -45,7 +45,7 @@ public class InverseFunctionalObjectProperty extends ObjectPropertyCharacteristi
     public Optional<InverseFunctionalObjectProperty> bind(SolutionMapping sm) {
         Optional<? extends ObjectPropertyExpression> property = getProperty().bind(sm);
         if(!property.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new InverseFunctionalObjectProperty(property.get()));
     }

@@ -1,12 +1,10 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLObject;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -47,12 +45,12 @@ public class DatatypeVariable extends AbstractVariable implements AtomicDatatype
 
     @Override
     public Optional<Datatype> bind(SolutionMapping sm) {
-        Optional<AtomicIRI> term = sm.getIRIForVariable(this);
+        java.util.Optional<AtomicIRI> term = sm.getIRIForVariable(this);
         if(term.isPresent()) {
             return Optional.of(new Datatype(term.get().getIRI()));
         }
         else {
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 

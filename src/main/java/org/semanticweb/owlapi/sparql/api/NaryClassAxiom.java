@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -43,7 +43,7 @@ public abstract class NaryClassAxiom implements HasClassExpressions, HasCollectV
         for(ClassExpression ce : result) {
             Optional<? extends ClassExpression> boundCe = ce.bind(sm);
             if(!boundCe.isPresent()) {
-                return Optional.absent();
+                return Optional.empty();
             }
             else {
                 result.add(boundCe.get());

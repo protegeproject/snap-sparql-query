@@ -1,12 +1,11 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * Author: Matthew Horridge<br>
@@ -20,5 +19,5 @@ public interface Atomic extends Term, Expression, Serializable, HasCollectVariab
     OWLObject toOWLObject(OWLDataFactory df);
 
     @Nonnull
-    java.util.Optional<Variable> asVariable();
+    Optional<Variable> asVariable();
 }

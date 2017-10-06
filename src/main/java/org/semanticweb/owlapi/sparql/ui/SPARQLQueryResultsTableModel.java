@@ -39,7 +39,7 @@
 
 package org.semanticweb.owlapi.sparql.ui;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
@@ -92,7 +92,7 @@ public class SPARQLQueryResultsTableModel extends AbstractTableModel {
         Variable variable = indexVariableMap.get(columnIndex);
         if (variable != null) {
             Optional<RDFTerm> termForVariable = binding.getTermForVariable(variable);
-            return termForVariable.orNull();
+            return termForVariable.orElse(null);
         }
         else {
             return null;

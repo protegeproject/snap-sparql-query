@@ -39,7 +39,7 @@
 
 package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.sparql.api.PrimitiveType;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 
@@ -98,6 +98,6 @@ public class VariableManager {
                 return variableType;
             }
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 }

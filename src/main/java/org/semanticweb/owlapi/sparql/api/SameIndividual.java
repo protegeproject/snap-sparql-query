@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -73,7 +73,7 @@ public class SameIndividual implements Axiom, HasIndividuals {
         for(AtomicIndividual individual : individuals) {
             Optional<? extends AtomicIndividual> boundIndividual = individual.bind(sm);
             if(!boundIndividual.isPresent()) {
-                return Optional.absent();
+                return Optional.empty();
             }
             else {
                 boundIndividuals.add(boundIndividual.get());

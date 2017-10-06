@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -76,11 +76,11 @@ public class Declaration implements Axiom {
     public Optional<Declaration> bind(SolutionMapping sm) {
         Optional<?> atomic = this.atomic.bind(sm);
         if(!atomic.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Object o = atomic.get();
         if(!(o instanceof Atomic)) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new Declaration((Atomic) o));
     }

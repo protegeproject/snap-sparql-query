@@ -1,7 +1,7 @@
 
 package org.semanticweb.owlapi.sparql.sparqldl;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import de.derivo.sparqldlapi.QueryArgument;
 import de.derivo.sparqldlapi.QueryBinding;
 import de.derivo.sparqldlapi.Var;

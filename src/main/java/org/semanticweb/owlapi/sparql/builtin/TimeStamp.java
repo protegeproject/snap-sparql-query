@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.builtin;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,7 +37,7 @@ public class Timestamp {
             Date date = formatter.parse(dateTime);
             return Optional.of(new Timestamp(date.getTime()));
         } catch (ParseException e) {
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 

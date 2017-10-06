@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -66,11 +66,11 @@ public class ClassAssertion implements Axiom, HasClassExpression, HasIndividual 
     public Optional<ClassAssertion> bind(SolutionMapping sm) {
         Optional<? extends ClassExpression> ce = classExpression.bind(sm);
         if(!ce.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Optional<? extends AtomicIndividual> ind = individual.bind(sm);
         if(!ind.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new ClassAssertion(ce.get(), ind.get()));
     }

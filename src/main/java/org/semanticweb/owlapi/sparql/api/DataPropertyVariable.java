@@ -1,11 +1,10 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -41,12 +40,12 @@ public class DataPropertyVariable extends AbstractVariable implements AtomicData
 
     @Override
     public Optional<? extends AtomicDataProperty> bind(SolutionMapping sm) {
-        Optional<AtomicIRI> term = sm.getIRIForVariable(this);
+        java.util.Optional<AtomicIRI> term = sm.getIRIForVariable(this);
         if(term.isPresent()) {
             return Optional.of(new DataProperty(term.get().getIRI()));
         }
         else {
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 

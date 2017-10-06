@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -54,7 +54,7 @@ public class EquivalentDataProperties extends NaryDataPropertyAxiom {
     public Optional<EquivalentDataProperties> bind(SolutionMapping sm) {
         Optional<Set<DataPropertyExpression>> boundDataProperties = getBoundDataProperties(sm);
         if(!boundDataProperties.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new EquivalentDataProperties(boundDataProperties.get()));
     }

@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -46,7 +46,7 @@ public abstract class NaryObjectPropertyAxiom implements Axiom, HasObjectPropert
         for(ObjectPropertyExpression propertyExpression : propertyExpressions) {
             Optional<? extends ObjectPropertyExpression> boundPropertyExpression = propertyExpression.bind(sm);
             if(!boundPropertyExpression.isPresent()) {
-                return Optional.absent();
+                return Optional.empty();
             }
             else {
                 result.add(propertyExpression);

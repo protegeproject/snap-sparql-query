@@ -1,7 +1,6 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import com.google.common.base.*;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.*;
@@ -9,7 +8,10 @@ import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.sparqldl.OrderByComparator;
 import org.semanticweb.owlapi.sparql.syntax.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 24/06/15
@@ -75,7 +77,7 @@ public class Syntax2AlgebraTranslator {
 
             // HAVING(X)
             ImmutableList.Builder<HavingCondition> rewrittenHavingConditions = ImmutableList.builder();
-            Optional<HavingClause> havingClause = solutionModifier.getHavingClause();
+            java.util.Optional<HavingClause> havingClause = solutionModifier.getHavingClause();
             if(havingClause.isPresent()) {
                 for(HavingCondition havingCondition : havingClause.get().getConditions()) {
                     Expression expression = havingCondition.getExpression();
@@ -146,7 +148,7 @@ public class Syntax2AlgebraTranslator {
 
 
         AlgebraExpression M = new ToList(X);
-        com.google.common.base.Optional<OrderClause> orderClause = solutionModifier.getOrderClause();
+        Optional<OrderClause> orderClause = solutionModifier.getOrderClause();
         if(orderClause.isPresent()) {
             M = new OrderBy(M, new OrderByComparator(orderClause.get().getOrderConditions()));
         }

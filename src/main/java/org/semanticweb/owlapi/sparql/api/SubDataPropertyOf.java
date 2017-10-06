@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -74,11 +74,11 @@ public class SubDataPropertyOf implements Axiom, HasSubProperty<DataPropertyExpr
     public Optional<SubDataPropertyOf> bind(SolutionMapping sm) {
         Optional<? extends DataPropertyExpression> subProperty = this.subProperty.bind(sm);
         if(!subProperty.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Optional<? extends DataPropertyExpression> superProperty = this.superProperty.bind(sm);
         if(!superProperty.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new SubDataPropertyOf(subProperty.get(), superProperty.get()));
     }

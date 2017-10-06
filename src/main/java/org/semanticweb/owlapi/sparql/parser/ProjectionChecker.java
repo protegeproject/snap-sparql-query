@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.parser;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.GroupClause;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
@@ -64,6 +64,6 @@ public class ProjectionChecker {
             }
             processedVariables.add(item.getVariable());
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 }

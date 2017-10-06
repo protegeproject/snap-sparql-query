@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -67,11 +67,11 @@ public class ObjectPropertyDomain implements Axiom, HasDomain<ClassExpression>, 
     public Optional<ObjectPropertyDomain> bind(SolutionMapping sm) {
         Optional<? extends ObjectPropertyExpression> boundProperty = property.bind(sm);
         if(!boundProperty.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Optional<? extends ClassExpression> boundDomain = domain.bind(sm);
         if(!boundDomain.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new ObjectPropertyDomain(boundProperty.get(), boundDomain.get()));
     }

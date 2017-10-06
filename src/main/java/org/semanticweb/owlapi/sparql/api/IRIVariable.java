@@ -1,11 +1,10 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLObject;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 24/06/15

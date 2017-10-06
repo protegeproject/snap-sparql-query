@@ -39,7 +39,7 @@
 
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.sparql.syntax.OrderClause;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -54,7 +54,7 @@ public class SolutionModifier {
 
     private final Optional<GroupClause> groupClause;
 
-    private final Optional<HavingClause> havingClause;
+    private final java.util.Optional<HavingClause> havingClause;
 
     private final Optional<OrderClause> orderClause;
 
@@ -69,7 +69,7 @@ public class SolutionModifier {
     }
 
 
-    public Optional<HavingClause> getHavingClause() {
+    public java.util.Optional<HavingClause> getHavingClause() {
         return havingClause;
     }
 

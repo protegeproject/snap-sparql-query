@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.sparql.api.PrimitiveType;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 
@@ -21,6 +21,6 @@ public class VariableTypeManager {
     }
 
     public Optional<PrimitiveType> getVariableType(UntypedVariable variable) {
-        return Optional.fromNullable(typeMap.get(variable));
+        return Optional.ofNullable(typeMap.get(variable));
     }
 }

@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -60,15 +60,15 @@ public class AnnotationAssertion extends AbstractAssertion<AnnotationSubject, At
     public Optional<AnnotationAssertion> bind(SolutionMapping sm) {
         Optional<? extends AtomicAnnotationProperty> property = getProperty().bind(sm);
         if(!property.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Optional<? extends AnnotationSubject> subject = getSubject().bind(sm);
         if(!subject.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Optional<? extends AnnotationValue> value = getObject().bind(sm);
         if(!value.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(
                 new AnnotationAssertion(

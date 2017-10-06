@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.syntax;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.algebra.*;
 import org.semanticweb.owlapi.sparql.api.Axiom;
@@ -69,7 +69,7 @@ public class GroupPattern extends Pattern {
 
     private List<Pattern> getCollapsedNonFilterPatterns() {
         ImmutableList.Builder<Pattern> collapsedPatterns = ImmutableList.builder();
-        Optional<TriplesBlockPattern> lastTriplesBlockPattern = Optional.absent();
+        Optional<TriplesBlockPattern> lastTriplesBlockPattern = Optional.empty();
         for(Pattern pattern : getNonFilterPatterns()) {
             if(pattern instanceof TriplesBlockPattern) {
                 if(lastTriplesBlockPattern.isPresent()) {
@@ -85,7 +85,7 @@ public class GroupPattern extends Pattern {
             else {
                 if(lastTriplesBlockPattern.isPresent()) {
                     collapsedPatterns.add(lastTriplesBlockPattern.get());
-                    lastTriplesBlockPattern = Optional.absent();
+                    lastTriplesBlockPattern = Optional.empty();
                 }
                 collapsedPatterns.add(pattern);
             }
@@ -107,27 +107,27 @@ public class GroupPattern extends Pattern {
 
     @Override
     public Optional<FilterPattern> asFilterPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<MinusPattern> asMinusPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<BindPattern> asBindPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<OptionalPattern> asOptionalPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<UnionPattern> asUnionPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
 
@@ -156,7 +156,7 @@ public class GroupPattern extends Pattern {
 //
 //        // Collapse adjacent triple blocks
 //        ImmutableList.Builder<Pattern> collapsedPatterns = ImmutableList.builder();
-//        Optional<TriplesBlockPattern> lastTriplesBlockPattern = Optional.absent();
+//        Optional<TriplesBlockPattern> lastTriplesBlockPattern = Optional.empty();
 //
 //        for(Pattern simplifiedPattern : simplifiedPatterns) {
 //            if(simplifiedPattern instanceof TriplesBlockPattern) {
@@ -173,7 +173,7 @@ public class GroupPattern extends Pattern {
 //            else {
 //                if(lastTriplesBlockPattern.isPresent()) {
 //                    collapsedPatterns.add(lastTriplesBlockPattern.get());
-//                    lastTriplesBlockPattern = Optional.absent();
+//                    lastTriplesBlockPattern = Optional.empty();
 //                }
 //                collapsedPatterns.add(simplifiedPattern);
 //            }

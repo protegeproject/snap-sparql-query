@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -52,7 +52,7 @@ public class UntypedVariable extends AbstractVariable  {
     public Optional<Atomic> bind(SolutionMapping sm) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         RDFTerm t = term.get();
         if(t instanceof Literal) {
@@ -64,7 +64,7 @@ public class UntypedVariable extends AbstractVariable  {
         else if(t instanceof AnonymousIndividual) {
             return Optional.of((AnonymousIndividual) t);
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public OWLObject toOWLObject(OWLDataFactory df) {

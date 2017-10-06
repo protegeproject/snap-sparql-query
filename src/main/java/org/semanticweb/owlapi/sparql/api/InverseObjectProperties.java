@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -61,11 +61,11 @@ public class InverseObjectProperties extends NaryObjectPropertyAxiom implements 
     public Optional<InverseObjectProperties> bind(SolutionMapping sm) {
         Optional<? extends ObjectPropertyExpression> boundLeft = getLeft().bind(sm);
         if(!boundLeft.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Optional<? extends ObjectPropertyExpression> boundRight = getRight().bind(sm);
         if(!boundRight.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new InverseObjectProperties(boundLeft.get(), boundRight.get()));
     }

@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -53,7 +53,7 @@ public class DisjointDataProperties extends NaryDataPropertyAxiom implements Axi
     public Optional<DisjointDataProperties> bind(SolutionMapping sm) {
         Optional<Set<DataPropertyExpression>> boundDataProperties = getBoundDataProperties(sm);
         if(!boundDataProperties.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new DisjointDataProperties(boundDataProperties.get()));
     }

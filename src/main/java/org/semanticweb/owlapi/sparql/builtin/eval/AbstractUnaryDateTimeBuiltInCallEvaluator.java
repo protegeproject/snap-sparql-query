@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;

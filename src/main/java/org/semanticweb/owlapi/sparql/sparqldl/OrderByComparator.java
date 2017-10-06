@@ -39,12 +39,12 @@
 
 package org.semanticweb.owlapi.sparql.sparqldl;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.*;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.base.Objects.toStringHelper;
 

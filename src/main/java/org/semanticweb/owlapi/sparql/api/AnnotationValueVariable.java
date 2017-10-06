@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -25,7 +25,7 @@ public class AnnotationValueVariable extends AbstractVariable implements Annotat
     public Optional<? extends AnnotationValue> bind(SolutionMapping sm) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         if(term.get() instanceof Literal) {
             return Optional.of((Literal) term.get());
@@ -36,7 +36,7 @@ public class AnnotationValueVariable extends AbstractVariable implements Annotat
         else if(term.get() instanceof AnonymousIndividual) {
             return Optional.of((AnonymousIndividual) term.get());
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override

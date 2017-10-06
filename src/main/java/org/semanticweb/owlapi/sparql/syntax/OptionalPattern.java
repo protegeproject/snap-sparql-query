@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.syntax;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.sparql.algebra.GraphPatternAlgebraExpression;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
@@ -30,17 +30,17 @@ public class OptionalPattern extends Pattern {
 
     @Override
     public Optional<FilterPattern> asFilterPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<MinusPattern> asMinusPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<BindPattern> asBindPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class OptionalPattern extends Pattern {
 
     @Override
     public Optional<UnionPattern> asUnionPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override

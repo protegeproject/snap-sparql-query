@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -50,11 +50,11 @@ public class SubClassOf implements ClassAxiom {
     public Optional<SubClassOf> bind(SolutionMapping sm) {
         Optional<? extends ClassExpression> boundSub = subClass.bind(sm);
         if(!boundSub.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Optional<? extends ClassExpression> boundSuper = superClass.bind(sm);
         if(!boundSuper.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new SubClassOf(boundSub.get(), boundSuper.get()));
     }

@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.parser;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.IRI;
@@ -242,21 +242,21 @@ public class SPARQLParserImpl {
             groupClause = Optional.of(parseGroupClause());
         }
         else {
-            groupClause = Optional.absent();
+            groupClause = Optional.empty();
         }
         Optional<HavingClause> havingClause;
         if(peek(HAVING)) {
             havingClause = Optional.of(parseHavingClause());
         }
         else {
-            havingClause = Optional.absent();
+            havingClause = Optional.empty();
         }
         final Optional<OrderClause> orderClause;
         if (peek(ORDER)) {
             orderClause = Optional.of(parseOrderByClause());
         }
         else {
-            orderClause = Optional.absent();
+            orderClause = Optional.empty();
         }
         return new SolutionModifier(groupClause, havingClause, orderClause);
     }
@@ -367,7 +367,7 @@ public class SPARQLParserImpl {
             optionalVariable = Optional.of(variable);
         }
         else {
-            optionalVariable = Optional.absent();
+            optionalVariable = Optional.empty();
         }
         tokenizer.consume(CLOSE_PAR);
         return new GroupConditionExpressionAs(expr, optionalVariable);
@@ -517,7 +517,7 @@ public class SPARQLParserImpl {
         }
 
 
-        return Optional.absent();
+        return Optional.empty();
     }
 
     private Pattern parseGroupGraphPatternOrUnion() {

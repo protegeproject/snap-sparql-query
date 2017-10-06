@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -67,11 +67,11 @@ public class DataPropertyRange implements Axiom, HasProperty<DataPropertyExpress
     public Optional<DataPropertyRange> bind(SolutionMapping sm) {
         Optional<? extends DataPropertyExpression> property = this.property.bind(sm);
         if(!property.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Optional<? extends DataRange> dataRange = this.dataRange.bind(sm);
         if(!dataRange.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(
                 new DataPropertyRange(property.get(), dataRange.get())

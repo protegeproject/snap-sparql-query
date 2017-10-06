@@ -22,7 +22,7 @@ public class GroupClause {
     public ImmutableList<UntypedVariable> getGroupVariables() {
         ImmutableList.Builder<UntypedVariable> builder = ImmutableList.builder();
         for(GroupCondition condition : groupConditions) {
-            builder.addAll(condition.getGroupConditionVariable().asSet());
+            condition.getGroupConditionVariable().ifPresent(builder::add);
         }
         return builder.build();
     }

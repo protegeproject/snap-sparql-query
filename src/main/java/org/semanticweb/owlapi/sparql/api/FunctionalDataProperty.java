@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -58,7 +58,7 @@ public class FunctionalDataProperty implements Axiom, HasProperty<DataPropertyEx
     public Optional<FunctionalDataProperty> bind(SolutionMapping sm) {
         Optional<? extends DataPropertyExpression> property = dataPropertyExpression.bind(sm);
         if(!property.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new FunctionalDataProperty(property.get()));
     }

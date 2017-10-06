@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
@@ -45,7 +45,7 @@ public class ReflexiveObjectProperty extends ObjectPropertyCharacteristic {
     public Optional<ReflexiveObjectProperty> bind(SolutionMapping sm) {
         Optional<? extends ObjectPropertyExpression> boundProperty = getProperty().bind(sm);
         if(!boundProperty.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(new ReflexiveObjectProperty(boundProperty.get()));
     }

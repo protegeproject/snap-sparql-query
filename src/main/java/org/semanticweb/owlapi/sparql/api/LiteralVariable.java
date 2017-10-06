@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLLiteral;
@@ -50,7 +50,7 @@ public class LiteralVariable extends AbstractVariable implements AtomicLiteral {
             return Optional.of((Literal) term.get());
         }
         else {
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 

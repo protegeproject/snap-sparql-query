@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -46,7 +46,7 @@ public abstract class NaryDataPropertyAxiom implements HasDataPropertyExpression
         for(DataPropertyExpression property : propertyExpressions) {
             Optional<? extends DataPropertyExpression> boundProperty = property.bind(sm);
             if(!boundProperty.isPresent()) {
-                return Optional.absent();
+                return Optional.empty();
             }
             else {
                 boundProperties.add(boundProperty.get());

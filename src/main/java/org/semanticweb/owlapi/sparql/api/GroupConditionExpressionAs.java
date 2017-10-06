@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 22/06/15

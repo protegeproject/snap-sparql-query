@@ -41,7 +41,7 @@ package org.semanticweb.owlapi.sparql.ui;
 
 //import org.semanticweb.HermiT.Reasoner;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.base.Stopwatch;
 import de.derivo.sparqldlapi.QueryEngine;
 import org.semanticweb.HermiT.Configuration;

@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.syntax;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.algebra.Bgp;
 import org.semanticweb.owlapi.sparql.algebra.GraphPatternAlgebraExpression;
@@ -63,27 +63,27 @@ public class TriplesBlockPattern extends Pattern {
 
     @Override
     public Optional<FilterPattern> asFilterPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<MinusPattern> asMinusPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<BindPattern> asBindPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<OptionalPattern> asOptionalPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
     public Optional<UnionPattern> asUnionPattern() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
