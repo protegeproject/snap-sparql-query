@@ -10,35 +10,46 @@ import java.util.Comparator;
  */
 public class TermComparator implements Comparator<RDFTerm> {
 
+    private static final int BEFORE = -1;
+
+    private static final int AFTER = 1;
+
+    private static final int SAME = 0;
+
     public int compare(RDFTerm o1, RDFTerm o2) {
+//        Blank nodes
+//        IRIs
+//        RDF literals
+
         // Anonymous individuals
         if(o1 instanceof AnonymousIndividual) {
             if(o2 instanceof AnonymousIndividual) {
                 return ((AnonymousIndividual) o1).getIdentifier().compareTo(((AnonymousIndividual) o2).getIdentifier());
             }
             else {
-                return -1;
+                // Blank nodes come first
+                return BEFORE;
             }
         }
         // IRIs
         else if(o1 instanceof AtomicIRI) {
             if(o2 instanceof AnonymousIndividual) {
-                return 1;
+                return AFTER;
             }
             else if(o2 instanceof AtomicIRI) {
                 return ((AtomicIRI) o1).getIRI().compareTo(((AtomicIRI) o2).getIRI());
             }
             else {
-                return -1;
+                return BEFORE;
             }
             
         }
         else if(o1 instanceof Literal) {
             if(o2 instanceof AnonymousIndividual) {
-                return -1;
+                return AFTER;
             }
             else if(o2 instanceof AtomicIRI) {
-                return -1;
+                return AFTER;
             }
             else if(o2 instanceof Literal) {
                 int diff;
@@ -49,10 +60,10 @@ public class TermComparator implements Comparator<RDFTerm> {
                         double d1 = Double.parseDouble(l1.getLexicalForm());
                         double d2 = Double.parseDouble(l2.getLexicalForm());
                         if(d1 < d2) {
-                            return -1;
+                            return BEFORE;
                         }
                         else if(d1 > d2) {
-                            return 1;
+                            return AFTER;
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -60,7 +71,7 @@ public class TermComparator implements Comparator<RDFTerm> {
                 }
 
                 diff = l1.getLexicalForm().compareTo(l2.getLexicalForm());
-                if(diff != 0) {
+                if(diff != SAME) {
                     return diff;
                 }
                 else {
@@ -68,9 +79,9 @@ public class TermComparator implements Comparator<RDFTerm> {
                 }
             }
             else {
-                return 0;
+                return SAME;
             }
         }
-        return 0;
+        return SAME;
     }
 }
