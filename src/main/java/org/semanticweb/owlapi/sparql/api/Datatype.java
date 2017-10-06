@@ -228,7 +228,7 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
     }
 
     public boolean isNumeric() {
-        return NUMERIC_TYPES.contains(this);
+        return !isXSDString() && !isRDFPlainLiteral() && NUMERIC_TYPES.contains(this);
     }
 
     public boolean isXSDDateTime() {
@@ -237,7 +237,7 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getIRI());
+        return getIRI().hashCode();
     }
 
     @Override
