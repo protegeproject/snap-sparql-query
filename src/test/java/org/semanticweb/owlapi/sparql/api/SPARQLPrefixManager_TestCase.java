@@ -16,7 +16,7 @@ public class SPARQLPrefixManager_TestCase {
 
     @Before
     public void setUp() throws Exception {
-        pm = new SPARQLPrefixManager();
+        pm = SPARQLPrefixManager.create();
         pm.setPrefix(":", "http://www.stuff.com/");
         pm.setPrefix("prefixA:", "http://other.org/prefixes/");
         pm.setPrefix("prefixB:", "http://other.com/prefixes/");

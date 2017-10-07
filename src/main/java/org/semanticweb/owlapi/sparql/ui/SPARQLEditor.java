@@ -308,15 +308,13 @@ public class SPARQLEditor extends JTextPane {
     }
 
     private void performHighlightingInSeparateThread() {
-        final Thread t = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    // Not critical
-                }
-                performHighlighting();
+        final Thread t = new Thread(() -> {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                // Not critical
             }
+            performHighlighting();
         });
         t.start();
     }

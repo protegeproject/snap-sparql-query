@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.vocab.Namespaces;
 
 import javax.annotation.Nonnull;
 import java.util.Comparator;
@@ -32,6 +33,23 @@ public class SPARQLPrefixManager {
     private final Map<String, String> prefixName2PrefixMap = new HashMap<>();
 
     private final Map<String, String> prefix2PrefixNameMap = new TreeMap<>(c);
+
+    private SPARQLPrefixManager() {
+    }
+
+    public static SPARQLPrefixManager create() {
+        return new SPARQLPrefixManager();
+    }
+
+    public static SPARQLPrefixManager createWithDefaultPrefixes() {
+        SPARQLPrefixManager pm = new SPARQLPrefixManager();
+        pm.setPrefix("owl:", Namespaces.OWL.toString());
+        pm.setPrefix("rdfs:", Namespaces.RDFS.toString());
+        pm.setPrefix("rdf:", Namespaces.RDF.toString());
+        pm.setPrefix("xsd:", Namespaces.XSD.toString());
+        pm.setPrefix("xml:", Namespaces.XML.toString());
+        return pm;
+    }
 
     /**
      * Sets the mapping from the specified prefix name to the specified prefix.

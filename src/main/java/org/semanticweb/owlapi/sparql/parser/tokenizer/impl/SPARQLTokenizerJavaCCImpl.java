@@ -42,9 +42,9 @@ package org.semanticweb.owlapi.sparql.parser.tokenizer.impl;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.sparql.api.SPARQLPrefixManager;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -74,7 +74,7 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
 
     private OWLOntology rootOntology;
 
-    private SPARQLPrefixManager prefixManager = new SPARQLPrefixManager();
+    private SPARQLPrefixManager prefixManager = SPARQLPrefixManager.createWithDefaultPrefixes();
     
     private VariableManager variableManager = new VariableManager();
     
@@ -581,7 +581,7 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
         Collection<TokenType> types = new HashSet<TokenType>();
         for(EntityType<?> type : EntityType.values()) {
             OWLEntity entity = getOWLDataFactory().getOWLEntity(type, iri);
-            if(rootOntology.containsEntityInSignature(entity, true)) {
+            if(rootOntology.containsEntityInSignature(entity, Imports.INCLUDED)) {
                 types.add(EntityIRITokenType.get(type));
             }
         }
@@ -633,7 +633,6 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
         int endOfPrefix = image.indexOf(":") + 1;
         String prefix = image.substring(0, endOfPrefix);
         if (!prefixManager.containsPrefixMapping(prefix)) {
-//            throw new RuntimeException("Undeclared Prefix: " + prefix);
             return IRI.create(image);
         }
         return prefixManager.getIRI(image);

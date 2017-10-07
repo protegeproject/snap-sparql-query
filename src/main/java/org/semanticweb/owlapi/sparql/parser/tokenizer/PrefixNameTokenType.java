@@ -39,6 +39,8 @@
 
 package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -59,5 +61,12 @@ public class PrefixNameTokenType extends TokenType {
     @Override
     public <R, E extends Throwable> R accept(TokenTypeVisitor<R, E> visitor) throws E {
         return visitor.visit(this);
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper("PrefixNameTokenType")
+                .toString();
     }
 }

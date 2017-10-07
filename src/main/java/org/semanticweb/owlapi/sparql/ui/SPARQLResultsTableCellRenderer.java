@@ -60,7 +60,7 @@ import java.awt.*;
  */
 public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
 
-    private SPARQLPrefixManager pm = new SPARQLPrefixManager();
+    private SPARQLPrefixManager pm = SPARQLPrefixManager.createWithDefaultPrefixes();
 
     public void setPrefixManager(SPARQLPrefixManager pm) {
         this.pm = pm;
