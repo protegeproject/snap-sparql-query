@@ -219,6 +219,7 @@ public class TestParser {
         }
 
         SPARQLResultsTable table = new SPARQLResultsTable();
+        table.setGridColor(new Color(240, 240, 240));
         table.setPrefixManager(query.getPrefixManager());
         JFrame f = new JFrame();
         JPanel panel = new JPanel(new BorderLayout());
