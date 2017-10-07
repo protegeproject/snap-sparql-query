@@ -11,6 +11,8 @@ import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import javax.annotation.Nonnull;
+
 /**
  * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 26/07/2012
  */
@@ -124,7 +126,7 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
 
     private final Optional<OWL2Datatype> owl2Datatype;
 
-    public Datatype(IRI iri) {
+    public Datatype(@Nonnull IRI iri) {
         super(iri);
         owl2Datatype = Optional.empty();
     }

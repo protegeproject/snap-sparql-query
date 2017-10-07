@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
  */
 public class DataProperty extends AbstractEntity implements DataPropertyExpression, AtomicDataProperty {
 
-    public DataProperty(IRI iri) {
+    public DataProperty(@Nonnull IRI iri) {
         super(iri);
     }
 

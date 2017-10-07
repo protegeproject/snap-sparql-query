@@ -1,13 +1,16 @@
 package org.semanticweb.owlapi.sparql.api;
 
 
-import java.util.Optional;
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
+
+import org.semanticweb.owlapi.model.IRI;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -17,7 +20,7 @@ import javax.annotation.Nonnull;
  */
 public class NamedClass extends AbstractEntity implements Entity, AtomicClass {
 
-    public NamedClass(IRI iri) {
+    public NamedClass(@Nonnull IRI iri) {
         super(iri);
     }
 
@@ -42,9 +45,12 @@ public class NamedClass extends AbstractEntity implements Entity, AtomicClass {
         return other.getIRI().equals(this.getIRI());
     }
 
+
     @Override
     public String toString() {
-        return String.format("NamedClass(%s)", getIRI());
+        return toStringHelper("NamedClass")
+                .addValue(getIRI())
+                .toString();
     }
 
     @Override

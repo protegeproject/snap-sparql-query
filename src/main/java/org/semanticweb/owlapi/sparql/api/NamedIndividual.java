@@ -6,6 +6,8 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
+import javax.annotation.Nonnull;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -14,7 +16,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
  */
 public class NamedIndividual extends AbstractEntity implements Entity, AtomicIndividual {
 
-    public NamedIndividual(IRI iri) {
+    public NamedIndividual(@Nonnull IRI iri) {
         super(iri);
     }
 

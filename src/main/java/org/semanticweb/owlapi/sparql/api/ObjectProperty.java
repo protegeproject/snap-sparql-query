@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
  */
 public class ObjectProperty extends AbstractEntity implements Entity, AtomicObjectProperty {
 
-    public ObjectProperty(IRI iri) {
+    public ObjectProperty(@Nonnull IRI iri) {
         super(iri);
     }
 

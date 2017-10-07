@@ -20,7 +20,7 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
 
     private IRI iri;
 
-    public AbstractEntity(IRI iri) {
+    public AbstractEntity(@Nonnull IRI iri) {
         this.iri = checkNotNull(iri);
     }
 

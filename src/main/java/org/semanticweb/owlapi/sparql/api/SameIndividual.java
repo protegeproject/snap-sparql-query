@@ -22,7 +22,7 @@ public class SameIndividual implements Axiom, HasIndividuals {
     private Set<AtomicIndividual> individuals;
 
     public SameIndividual(AtomicIndividual left, AtomicIndividual right) {
-        individuals = new HashSet<AtomicIndividual>(2);
+        individuals = new HashSet<>(2);
         individuals.add(left);
         individuals.add(right);
     }
@@ -36,7 +36,7 @@ public class SameIndividual implements Axiom, HasIndividuals {
     }
 
     public SameIndividual(Set<AtomicIndividual> individuals) {
-        this.individuals = new HashSet<AtomicIndividual>(individuals);
+        this.individuals = new HashSet<>(individuals);
     }
 
     public Set<AtomicIndividual> getIndividuals() {
