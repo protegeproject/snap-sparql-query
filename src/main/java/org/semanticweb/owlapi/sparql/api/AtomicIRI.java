@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -130,7 +132,7 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
 
     @Override
     public String toString() {
-        return Objects.toStringHelper("AtomicIRI")
+        return toStringHelper("AtomicIRI")
                 .addValue(iri)
                 .toString();
     }

@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -56,7 +57,7 @@ public class Minus extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper("MINUS")
+        return MoreObjects.toStringHelper("MINUS")
                 .addValue(left)
                 .addValue(right)
                 .toString();

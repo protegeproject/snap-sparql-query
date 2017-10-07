@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -9,6 +10,8 @@ import org.semanticweb.owlapi.sparql.api.Variable;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
@@ -58,7 +61,7 @@ public class Union extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper("Union")
+        return toStringHelper("Union")
                 .addValue(left)
                 .addValue(right)
                 .toString();

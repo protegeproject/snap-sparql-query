@@ -8,6 +8,8 @@ import org.semanticweb.owlapi.sparql.api.*;
 
 import java.util.*;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
  */
@@ -96,7 +98,7 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper("BGP")
+        return toStringHelper("BGP")
                 .addValue(axioms)
                 .toString();
     }

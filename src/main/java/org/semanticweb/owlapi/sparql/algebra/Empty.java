@@ -1,10 +1,13 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.Variable;
 
 import java.io.PrintWriter;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15
@@ -32,7 +35,7 @@ public class Empty extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper("Empty")
+        return toStringHelper("Empty")
                 .toString();
     }
 

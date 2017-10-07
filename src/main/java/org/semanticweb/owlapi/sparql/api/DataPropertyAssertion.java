@@ -1,9 +1,12 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Author: Matthew Horridge<br>
@@ -45,7 +48,7 @@ public class DataPropertyAssertion extends AbstractAssertion<AtomicIndividual, D
 
     @Override
     public String toString() {
-        return Objects.toStringHelper("DataPropertyAssertion")
+        return toStringHelper("DataPropertyAssertion")
                 .addValue(getProperty())
                 .addValue(getSubject())
                 .addValue(getObject())

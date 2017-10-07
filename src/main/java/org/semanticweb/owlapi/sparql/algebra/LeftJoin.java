@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 08/06/15
@@ -80,7 +83,7 @@ public class LeftJoin extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper("LeftJoin")
+        return toStringHelper("LeftJoin")
                 .addValue(left)
                 .addValue(right)
                 .addValue(expression)
