@@ -10,5 +10,5 @@ import org.semanticweb.owlapi.model.PrefixManager;
  */
 public interface HasPrefixedName {
 
-    String getPrefixedName(PrefixManager pm);
+    String getPrefixedName(SPARQLPrefixManager pm);
 }

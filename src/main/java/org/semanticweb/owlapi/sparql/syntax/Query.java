@@ -3,6 +3,7 @@ package org.semanticweb.owlapi.sparql.syntax;
 import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraExpression;
 import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
+import org.semanticweb.owlapi.sparql.api.SPARQLPrefixManager;
 import org.semanticweb.owlapi.sparql.api.SolutionModifier;
 
 /**
@@ -10,19 +11,19 @@ import org.semanticweb.owlapi.sparql.api.SolutionModifier;
  */
 public abstract class Query {
 
-    private final PrefixManager prefixManager;
+    private final SPARQLPrefixManager prefixManager;
 
     private final GroupPattern groupPattern;
 
     private final SolutionModifier solutionModifier;
 
-    public Query(PrefixManager prefixManager, GroupPattern groupPattern, SolutionModifier solutionModifier) {
+    public Query(SPARQLPrefixManager prefixManager, GroupPattern groupPattern, SolutionModifier solutionModifier) {
         this.prefixManager = prefixManager;
         this.groupPattern = groupPattern;
         this.solutionModifier = solutionModifier;
     }
 
-    public PrefixManager getPrefixManager() {
+    public SPARQLPrefixManager getPrefixManager() {
         return prefixManager;
     }
 

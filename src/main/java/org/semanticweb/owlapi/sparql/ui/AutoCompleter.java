@@ -41,6 +41,7 @@ package org.semanticweb.owlapi.sparql.ui;
 
 import com.google.common.collect.Sets;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.sparql.api.SPARQLPrefixManager;
 import org.semanticweb.owlapi.sparql.api.UntypedVariable;
 import org.semanticweb.owlapi.sparql.api.Variable;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
@@ -202,13 +203,8 @@ public class AutoCompleter {
         return builtIns;
     }
 
-    private static String renderEntity(PrefixManager pm, OWLEntity entity) {
-        String pn = pm.getPrefixIRI(entity.getIRI());
-        if (pn != null) {
-            return pn;
-        } else {
-            return entity.getIRI().toQuotedString();
-        }
+    private static String renderEntity(SPARQLPrefixManager pm, OWLEntity entity) {
+        return pm.getPrefixedNameOrIri(entity.getIRI());
     }
 
     public void cancel() {
@@ -306,11 +302,11 @@ public class AutoCompleter {
 
         e.getExpectedVocabulary().stream()
                 .map(OWLRDFVocabulary::getIRI)
-                .map(iri -> tokenizer.getPrefixManager().getPrefixIRI(iri))
+                .map(iri -> tokenizer.getPrefixManager().getPrefixedNameOrIri(iri))
                 .forEach(matches::add);
 
 
-        e.getExpectedEntityTypes().stream()
+        e.getExpectedEntityTypes()
                 .forEach(et -> {
                     ontology.getImportsClosure().stream()
                             .map(o -> getSignatureOfType(et, o))

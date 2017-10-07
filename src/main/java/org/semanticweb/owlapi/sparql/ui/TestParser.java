@@ -200,7 +200,7 @@ public class TestParser {
                 OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
                 OWLOntology constructedOntology = manager.createOntology(axioms);
                 TurtleDocumentFormat documentFormat = new TurtleDocumentFormat();
-                documentFormat.copyPrefixesFrom(query.getPrefixManager());
+                documentFormat.copyPrefixesFrom(query.getPrefixManager().asMap());
                 manager.setOntologyFormat(constructedOntology, documentFormat);
                 StringWriter sw = new StringWriter();
                 manager.saveOntology(constructedOntology, new WriterDocumentTarget(sw));

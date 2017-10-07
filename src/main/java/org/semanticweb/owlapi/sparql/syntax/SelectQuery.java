@@ -14,7 +14,7 @@ public class SelectQuery extends Query {
 
     private SelectClause selectClause;
 
-    public SelectQuery(PrefixManager prefixManager, SelectClause selectClause, GroupPattern groupPattern, SolutionModifier solutionModifier) {
+    public SelectQuery(SPARQLPrefixManager prefixManager, SelectClause selectClause, GroupPattern groupPattern, SolutionModifier solutionModifier) {
         super(prefixManager, groupPattern, solutionModifier);
         this.selectClause = selectClause;
     }

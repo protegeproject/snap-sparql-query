@@ -44,6 +44,7 @@ import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.sparql.api.AtomicIRI;
 import org.semanticweb.owlapi.sparql.api.HasPrefixedName;
 import org.semanticweb.owlapi.sparql.api.Literal;
+import org.semanticweb.owlapi.sparql.api.SPARQLPrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import javax.swing.*;
@@ -59,9 +60,9 @@ import java.awt.*;
  */
 public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
 
-    private PrefixManager pm = new DefaultPrefixManager();
+    private SPARQLPrefixManager pm = new SPARQLPrefixManager();
 
-    public void setPrefixManager(PrefixManager pm) {
+    public void setPrefixManager(SPARQLPrefixManager pm) {
         this.pm = pm;
     }
 
@@ -73,12 +74,12 @@ public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer imp
         }
         else if(value instanceof AtomicIRI) {
             AtomicIRI entity = (AtomicIRI) value;
-            String prefixIRI = pm.getPrefixIRI(entity.getIRI());
-            label.setText(prefixIRI == null ? entity.getIRI().toQuotedString() : prefixIRI);
+            String prefixIRI = pm.getPrefixedNameOrIri(entity.getIRI());
+            label.setText(prefixIRI);
         }
         else if(value instanceof IRI) {
-            String prefixIRI = pm.getPrefixIRI((IRI) value);
-            label.setText(prefixIRI == null ? ((IRI) value).toQuotedString() : prefixIRI);
+            String prefixIRI = pm.getPrefixedNameOrIri((IRI) value);
+            label.setText(prefixIRI);
         }
         else if(value instanceof Literal) {
             Literal literal = (Literal) value;
@@ -95,10 +96,7 @@ public class SPARQLResultsTableCellRenderer extends DefaultTableCellRenderer imp
                     }
                 }
                 else {
-                    String prefixIRI = pm.getPrefixIRI(literal.getDatatype().getIRI());
-                    if(prefixIRI == null) {
-                        prefixIRI = literal.getDatatype().getIRI().toQuotedString();
-                    }
+                    String prefixIRI = pm.getPrefixedNameOrIri(literal.getDatatype().getIRI());
                     label.setText(String.format("\"%s\"^^%s", literal.getLexicalForm(), prefixIRI));
                 }
             }

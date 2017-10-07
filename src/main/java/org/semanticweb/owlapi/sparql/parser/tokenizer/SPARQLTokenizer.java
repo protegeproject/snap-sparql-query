@@ -41,6 +41,7 @@ package org.semanticweb.owlapi.sparql.parser.tokenizer;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.sparql.api.SPARQLPrefixManager;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 /**
@@ -55,7 +56,7 @@ public interface SPARQLTokenizer {
 
 //    void registerVariable(String variableName, PrimitiveType variableType);
 
-    PrefixManager getPrefixManager();
+    SPARQLPrefixManager getPrefixManager();
     
 
     void registerPrefix(String prefixName, String prefix);

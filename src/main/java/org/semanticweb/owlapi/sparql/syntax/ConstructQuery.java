@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraExpression;
 import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.algebra.Syntax2AlgebraTranslator;
+import org.semanticweb.owlapi.sparql.api.SPARQLPrefixManager;
 import org.semanticweb.owlapi.sparql.api.SolutionModifier;
 
 /**
@@ -15,7 +16,7 @@ public class ConstructQuery extends Query {
 
     private final ConstructTemplate constructTemplate;
 
-    public ConstructQuery(PrefixManager prefixManager, ConstructTemplate constructTemplate, GroupPattern groupPattern, SolutionModifier solutionModifier) {
+    public ConstructQuery(SPARQLPrefixManager prefixManager, ConstructTemplate constructTemplate, GroupPattern groupPattern, SolutionModifier solutionModifier) {
         super(prefixManager, groupPattern, solutionModifier);
         this.constructTemplate = constructTemplate;
     }

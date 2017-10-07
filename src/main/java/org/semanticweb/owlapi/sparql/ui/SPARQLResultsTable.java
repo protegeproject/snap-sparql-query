@@ -40,6 +40,7 @@
 package org.semanticweb.owlapi.sparql.ui;
 
 import org.semanticweb.owlapi.model.PrefixManager;
+import org.semanticweb.owlapi.sparql.api.SPARQLPrefixManager;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 
 import javax.swing.*;
@@ -70,7 +71,7 @@ public class SPARQLResultsTable extends JTable {
 
 
 
-    public void setPrefixManager(PrefixManager pm) {
+    public void setPrefixManager(SPARQLPrefixManager pm) {
         renderer.setPrefixManager(pm);
     }
 

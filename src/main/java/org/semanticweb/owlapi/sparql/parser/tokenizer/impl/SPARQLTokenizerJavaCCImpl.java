@@ -42,6 +42,7 @@ package org.semanticweb.owlapi.sparql.parser.tokenizer.impl;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.sparql.api.SPARQLPrefixManager;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
@@ -73,7 +74,7 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
 
     private OWLOntology rootOntology;
 
-    private DefaultPrefixManager prefixManager = new DefaultPrefixManager();
+    private SPARQLPrefixManager prefixManager = new SPARQLPrefixManager();
     
     private VariableManager variableManager = new VariableManager();
     
@@ -110,7 +111,7 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
 
     }
 
-    public PrefixManager getPrefixManager() {
+    public SPARQLPrefixManager getPrefixManager() {
         return prefixManager;
     }
 
