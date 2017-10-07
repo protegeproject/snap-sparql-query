@@ -1,6 +1,5 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.MoreObjects;
 import java.util.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -129,7 +128,7 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
         owl2Datatype = Optional.empty();
     }
 
-    private Datatype(OWL2Datatype datatype) {
+    private Datatype(@Nonnull OWL2Datatype datatype) {
         super(datatype.getIRI());
         this.owl2Datatype = Optional.of(datatype);
     }
