@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
@@ -8,6 +9,8 @@ import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
 import javax.annotation.Nonnull;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Author: Matthew Horridge<br>
@@ -45,7 +48,7 @@ public class AnnotationProperty extends AbstractEntity implements AtomicAnnotati
 
     @Override
     public String toString() {
-        return Objects.toStringHelper("AnnotationProperty")
+        return toStringHelper("AnnotationProperty")
                 .addValue(getIRI())
                 .toString();
     }

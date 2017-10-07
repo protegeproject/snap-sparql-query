@@ -1,12 +1,16 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import java.util.Optional;
+
+import com.google.common.base.MoreObjects;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 import javax.annotation.Nonnull;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Author: Matthew Horridge<br>
@@ -24,9 +28,12 @@ public class ObjectProperty extends AbstractEntity implements Entity, AtomicObje
         return visitor.visit(this);
     }
 
+
     @Override
     public String toString() {
-        return "ObjectProperty(<" + getIRI() + ">)";
+        return toStringHelper("ObjectProperty")
+                .addValue(getIRI())
+                .toString();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
@@ -8,6 +9,8 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.annotation.Nonnull;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 /**
  * Author: Matthew Horridge<br>
@@ -49,7 +52,7 @@ public class DataProperty extends AbstractEntity implements DataPropertyExpressi
 
     @Override
     public String toString() {
-        return Objects.toStringHelper("DataProperty")
+        return toStringHelper("DataProperty")
                 .addValue(getIRI())
                 .toString();
     }

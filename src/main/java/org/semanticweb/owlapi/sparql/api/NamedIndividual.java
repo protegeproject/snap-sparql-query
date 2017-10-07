@@ -1,12 +1,16 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import java.util.Optional;
+
+import com.google.common.base.MoreObjects;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import javax.annotation.Nonnull;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -24,9 +28,12 @@ public class NamedIndividual extends AbstractEntity implements Entity, AtomicInd
         return visitor.visit(this);
     }
 
+
     @Override
     public String toString() {
-        return "NamedIndividual(<" + getIRI() + ">)";
+        return toStringHelper("NamedIndividual")
+                .addValue(getIRI())
+                .toString();
     }
 
     @Override

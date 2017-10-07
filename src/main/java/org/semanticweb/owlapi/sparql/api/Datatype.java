@@ -1,17 +1,19 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import java.util.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.annotation.Nonnull;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 
 /**
  * Author: Matthew Horridge<br> Stanford University<br> Bio-Medical Informatics Research Group<br> Date: 26/07/2012
@@ -26,10 +28,6 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
             Datatype datatype = new Datatype(owl2Datatype);
             iriMapBuilder.put(owl2Datatype.getIRI(), datatype);
         }
-
-
-
-
         iri2Datatype = iriMapBuilder.build();
     }
 
@@ -189,9 +187,12 @@ public class Datatype extends AbstractEntity implements AtomicDatatype {
         return visitor.visit(this);
     }
 
+
     @Override
     public String toString() {
-        return "Datatype(" + getIRI() + ")";
+        return toStringHelper("Datatype")
+                .addValue(getIRI())
+                .toString();
     }
 
     public boolean isRDFPlainLiteral() {
