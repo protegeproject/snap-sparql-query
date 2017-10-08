@@ -41,6 +41,11 @@ public enum Relation {
         if(!litLeft.isError() && !litRight.isError()) {
             return evaluateSimpleLiteral(litLeft, litRight);
         }
+        EvaluationResult boolLeft = left.evaluateAsEffectiveBooleanValue(sm);
+        EvaluationResult boolRight = right.evaluateAsEffectiveBooleanValue(sm);
+        if(!boolLeft.isError() && !boolRight.isError()) {
+            return evaluateBoolean(boolLeft, boolRight);
+        }
         return EvaluationResult.getError();
     }
 
@@ -83,6 +88,28 @@ public enum Relation {
                 return EvaluationResult.getBoolean(leftValue.compareTo(rightValue) > 0);
             case GREATER_THAN_OR_EQUAL:
                 return EvaluationResult.getBoolean(leftValue.compareTo(rightValue) >= 0);
+            default:
+                throw new RuntimeException("Unknown enum value");
+        }
+    }
+
+    private EvaluationResult evaluateBoolean(EvaluationResult leftEval, EvaluationResult rightEval) {
+        boolean left = leftEval.isTrue();
+        boolean right = rightEval.isTrue();
+
+        switch (this) {
+            case EQUAL:
+                return EvaluationResult.getBoolean(left == right);
+            case NOT_EQUAL:
+                return EvaluationResult.getBoolean(left != right);
+            case LESS_THAN:
+                return EvaluationResult.getError();
+            case LESS_THAN_OR_EQUAL:
+                return EvaluationResult.getError();
+            case GREATER_THAN:
+                return EvaluationResult.getError();
+            case GREATER_THAN_OR_EQUAL:
+                return EvaluationResult.getError();
             default:
                 throw new RuntimeException("Unknown enum value");
         }

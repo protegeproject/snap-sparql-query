@@ -2,8 +2,11 @@ package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: Matthew Horridge<br>
@@ -19,10 +22,12 @@ public class RelationExpression implements Expression {
 
     private Relation relation;
 
-    public RelationExpression(Expression left, Expression right, Relation relation) {
-        this.left = left;
-        this.right = right;
-        this.relation = relation;
+    public RelationExpression(@Nonnull Expression left,
+                              @Nonnull Expression right,
+                              @Nonnull Relation relation) {
+        this.left = checkNotNull(left);
+        this.right = checkNotNull(right);
+        this.relation = checkNotNull(relation);
     }
 
     public Relation getRelation() {
