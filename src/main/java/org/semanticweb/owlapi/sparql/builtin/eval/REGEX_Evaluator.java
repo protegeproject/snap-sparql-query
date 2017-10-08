@@ -14,6 +14,9 @@ import java.util.regex.Pattern;
  */
 public class REGEX_Evaluator implements BuiltInCallEvaluator {
 
+    private String lastPattern = "";
+    private Pattern patternPattern;
+
     @Override
     public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
         if(args.size() != 2 && args.size() != 3) {
@@ -29,7 +32,11 @@ public class REGEX_Evaluator implements BuiltInCallEvaluator {
         if(patternResult.isError()) {
             return patternResult;
         }
-        Pattern patternPattern = Pattern.compile(patternResult.asSimpleLiteral());
+        String regex = patternResult.asSimpleLiteral();
+        if(!regex.equals(lastPattern)) {
+            lastPattern = regex;
+            patternPattern = Pattern.compile(regex);
+        }
         return EvaluationResult.getBoolean(patternPattern.matcher(matchResult.asLiteral().getLexicalForm()).find());
     }
 }
