@@ -97,7 +97,8 @@ public enum BuiltInCall {
 
     URI(
             SIMPLE,
-            notImplemented(), IRI(),
+            new IRI_Evaluator(),
+            IRI(),
             argList(SIMPLE_LITERAL),
             argList(XSD_STRING),
             argList(SparqlType.IRI)),
