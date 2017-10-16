@@ -335,7 +335,7 @@ public enum BuiltInCall {
 
     ISIRI(
             SIMPLE,
-            notImplemented(),
+            new ISIRI_Evaluator(),
             Boolean(),
             argList(RDF_TERM)),
 
