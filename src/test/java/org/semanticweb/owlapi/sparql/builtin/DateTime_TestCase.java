@@ -31,50 +31,49 @@ public class DateTime_TestCase {
 
     @Test
     public void shouldFormatDatetime() {
-        DateTime ts = parseTimestamp();
+        DateTime ts = parse();
         assertThat(ts.getFormattedDateTime(), is(dateTime));
     }
 
     @SuppressWarnings("ConstantConditions")
-    private DateTime parseTimestamp() {
+    private DateTime parse() {
         Optional<DateTime> timestamp = DateTime.parseDateTime(dateTime);
         return timestamp.orElseThrow(() -> new RuntimeException("Could not parse datetime"));
     }
 
     @Test
     public void shouldGetYear() {
-        DateTime dateTime = parseTimestamp();
+        DateTime dateTime = parse();
         assertThat(dateTime.getYear(), is(2011));
     }
 
     @Test
     public void shouldGetMonth() {
-        DateTime dateTime = parseTimestamp();
+        DateTime dateTime = parse();
         assertThat(dateTime.getMonth(), is(1));
     }
 
     @Test
     public void shouldGetDay() {
-        DateTime dateTime = parseTimestamp();
+        DateTime dateTime = parse();
         assertThat(dateTime.getDay(), is(10));
     }
 
     @Test
     public void shouldGetHour() {
-        DateTime dateTime = parseTimestamp();
+        DateTime dateTime = parse();
         assertThat(dateTime.getHour(), is(14));
     }
 
     @Test
     public void shouldGetMinute() {
-        DateTime dateTime = parseTimestamp();
+        DateTime dateTime = parse();
         assertThat(dateTime.getMinute(), is(45));
     }
 
     @Test
     public void shouldGetSeconds() {
-        DateTime dateTime = parseTimestamp();
+        DateTime dateTime = parse();
         assertThat(dateTime.getSeconds(), is(13.815));
     }
-
 }
