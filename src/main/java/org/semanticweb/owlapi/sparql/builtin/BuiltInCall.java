@@ -131,7 +131,7 @@ public enum BuiltInCall {
 
     FLOOR(
             SIMPLE,
-            notImplemented(),
+            new FLOOR_Evaluator(),
             Numeric(),
             argList(NUMERIC)),
 
