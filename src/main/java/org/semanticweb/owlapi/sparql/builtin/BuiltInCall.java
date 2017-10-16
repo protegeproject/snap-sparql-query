@@ -258,7 +258,7 @@ public enum BuiltInCall {
 
     TZ(
             SIMPLE,
-            notImplemented(),
+            new TZ_Evaluator(),
             SimpleLiteral(),
             argList(XSD_DATE_TIME)),
 
