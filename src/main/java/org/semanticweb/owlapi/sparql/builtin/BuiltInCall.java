@@ -359,7 +359,7 @@ public enum BuiltInCall {
 
     ISNUMERIC(
             SIMPLE,
-            notImplemented(),
+            new ISNUMERIC_Evaluator(),
             Boolean(),
             argList(RDF_TERM)),
 
