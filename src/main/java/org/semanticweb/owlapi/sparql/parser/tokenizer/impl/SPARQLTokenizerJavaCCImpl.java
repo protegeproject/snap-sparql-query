@@ -48,6 +48,7 @@ import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -150,6 +151,7 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
         return currentToken;
     }
 
+    @Nullable
     public SPARQLToken peek(TokenType... tokenTypes) {
         peekedTypes.addAll(Arrays.asList(tokenTypes));
         if(currentToken.hasTokenType(tokenTypes)) {
@@ -160,6 +162,7 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
         }
     }
 
+    @Nullable
     public SPARQLToken peek(SPARQLTerminal terminal) {
         return peek(SPARQLTerminalTokenType.get(terminal));
     }
@@ -318,6 +321,11 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
 
                 @Override
                 public Object visit(CommentTokenType tokenType) throws RuntimeException {
+                    return null;
+                }
+
+                @Override
+                public Object visit(ScalarKeyTokenType tokenType) throws RuntimeException {
                     return null;
                 }
             });
@@ -509,6 +517,8 @@ public class SPARQLTokenizerJavaCCImpl implements SPARQLTokenizer {
                 return wrap(SPARQLTerminal.SELECT);
             case CONSTRUCT:
                 return wrap(SPARQLTerminal.CONSTRUCT);
+            case SCALAR_KEY:
+                return wrap(ScalarKeyTokenType.get());
             case SEMI_COLON:
                 return wrap(SPARQLTerminal.SEMI_COLON);
             case STRING_LITERAL1:

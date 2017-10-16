@@ -39,6 +39,10 @@ public class BuiltInCallExpression implements Expression {
                 .toString();
     }
 
+    /**
+     * Determines if this built in call is an aggregate call
+     * @return true if this call is an aggregate call, otherwise false.
+     */
     public boolean isAggregate() {
         return builtInCall.isAggregate();
     }

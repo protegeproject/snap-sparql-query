@@ -427,6 +427,13 @@ public enum BuiltInCall {
             argList(RDF_TERM)
     ),
 
+    GROUP_CONCAT(
+            AGGREGATE,
+            new GROUP_CONCAT_Evaluator(),
+            SimpleLiteral(),
+            argList(SIMPLE_LITERAL)
+    ),
+
     SPLITCAMEL(
             SIMPLE,
             new SPLITCAMEL_Evaluator(),
@@ -445,21 +452,23 @@ public enum BuiltInCall {
     private final BuiltInCallEvaluator evaluator;
 
     BuiltInCall(BuiltInCallType type,
-                        BuiltInCallEvaluator evaluator,
-                        ReturnType returnType,
-                        ArgList... argLists) {
+                BuiltInCallEvaluator evaluator,
+                ReturnType returnType,
+                ArgList... argLists) {
         this.type = type;
         this.evaluator = evaluator;
         this.returnType = returnType;
         ImmutableList.Builder<ArgList> builder = ImmutableList.builder();
-        for(ArgList argList : argLists) {
+        for (ArgList argList : argLists) {
             builder.add(argList);
         }
         this.argLists = builder.build();
     }
 
     BuiltInCall(BuiltInCallType type,
-                        BuiltInCallEvaluator evaluator, ReturnType returnType, Arg... args) {
+                BuiltInCallEvaluator evaluator,
+                ReturnType returnType,
+                Arg... args) {
         this.type = type;
         this.evaluator = evaluator;
         this.returnType = returnType;

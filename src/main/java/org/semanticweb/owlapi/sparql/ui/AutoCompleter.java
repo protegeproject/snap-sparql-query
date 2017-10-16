@@ -305,7 +305,6 @@ public class AutoCompleter {
                 .map(iri -> tokenizer.getPrefixManager().getPrefixedNameOrIri(iri))
                 .forEach(matches::add);
 
-
         e.getExpectedEntityTypes()
                 .forEach(et -> {
                     ontology.getImportsClosure().stream()
@@ -326,6 +325,11 @@ public class AutoCompleter {
                     .filter(BuiltInCall::isSupported)
                     .map(BuiltInCall::name)
                     .forEach(matches::add);
+        }
+
+        if (e.getExpectedTokenTypes().contains(ScalarKeyTokenType.get())) {
+            // TODO: Factor this out
+            matches.add("SEPARATOR");
         }
 
 

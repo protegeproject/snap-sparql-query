@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.builtin.ArgList;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.builtin.VarArg;
+import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInAggregateCallEvaluator;
 import org.semanticweb.owlapi.sparql.parser.tokenizer.*;
 import org.semanticweb.owlapi.sparql.syntax.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
@@ -1946,6 +1947,14 @@ public class SPARQLParserImpl {
         tokenizer.consume(OPEN_PAR);
         String callName = token.getImage().toUpperCase();
         BuiltInCall builtInCall = BuiltInCall.valueOf(callName);
+        if(builtInCall.isAggregate()) {
+            // DISTINCT?
+            SPARQLToken peek = tokenizer.peek(DISTINCT);
+            if(peek != null) {
+                tokenizer.consume(DISTINCT);
+            }
+        }
+
         List<Integer> argListsSizes = new ArrayList<>();
         VarArg varArg = VarArg.FIXED;
         boolean hasEmptyArgList = false;
@@ -1992,6 +2001,23 @@ public class SPARQLParserImpl {
                     }
                     else {
                         break;
+                    }
+                }
+            }
+            if (builtInCall.isAggregate()) {
+                BuiltInAggregateCallEvaluator aggregateCallEvaluator = (BuiltInAggregateCallEvaluator) builtInCall.getEvaluator();
+                if(!aggregateCallEvaluator.getScalars().isEmpty()) {
+                    Set<String> parsedScalars = new HashSet<>();
+                    if(tokenizer.peek(SEMI_COLON) != null) {
+                        tokenizer.consume(SEMI_COLON);
+                        SPARQLToken nextToken = tokenizer.peek(ScalarKeyTokenType.get());
+                        if(nextToken != null && !parsedScalars.contains(nextToken.getImage())) {
+                            SPARQLToken scalarNameToken = tokenizer.consume(ScalarKeyTokenType.get());
+                            parsedScalars.add(scalarNameToken.getImage());
+                            tokenizer.consume(EQUAL);
+                            SPARQLToken scalarValueToken = tokenizer.consume(StringTokenType.get());
+                        }
+
                     }
                 }
             }

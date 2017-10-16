@@ -4,7 +4,9 @@ import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 23/06/15
@@ -12,4 +14,8 @@ import java.util.List;
 public interface BuiltInAggregateCallEvaluator {
 
     EvaluationResult evaluateAsAggregate(List<Expression> args, SolutionSequence solutionSequence);
+
+    default Set<String> getScalars() {
+        return Collections.emptySet();
+    }
 }

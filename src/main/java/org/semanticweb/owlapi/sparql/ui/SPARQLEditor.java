@@ -368,6 +368,9 @@ public class SPARQLEditor extends JTextPane {
                     return builtInStyle;
                 }
             }
+            else if(type instanceof ScalarKeyTokenType) {
+                return builtInStyle;
+            }
             else if(type instanceof OWLRDFVocabularyTokenType) {
                 return rdfVocabularyStyle;
             }
