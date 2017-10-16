@@ -76,4 +76,16 @@ public class DateTime_TestCase {
         DateTime dateTime = parse();
         assertThat(dateTime.getSeconds(), is(13.815));
     }
+
+    @Test
+    public void shouldGetTz() {
+        DateTime dateTime = parse();
+        assertThat(dateTime.getTz(), is("-05:00"));
+    }
+
+    @Test
+    public void shouldGetUtcTz() {
+        DateTime dateTime = DateTime.parseDateTime("2011-01-10T14:45:13.815Z").get();
+        assertThat(dateTime.getTz(), is("Z"));
+    }
 }

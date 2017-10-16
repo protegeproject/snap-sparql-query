@@ -63,4 +63,8 @@ public class DateTime {
         double fractionSeconds = zonedDateTime.getNano() / 1000.0 / 1000.0 / 1000.0;
         return zonedDateTime.getSecond() + fractionSeconds;
     }
+
+    public String getTz() {
+        return zonedDateTime.getZone().getId();
+    }
 }
