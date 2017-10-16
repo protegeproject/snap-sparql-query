@@ -270,7 +270,7 @@ public enum BuiltInCall {
 
     MD5(
             SIMPLE,
-            notImplemented(),
+            new MD5_Evaluator(),
             SimpleLiteral(),
             argList(STRING_LITERAL),
             argList(XSD_STRING)),
