@@ -347,7 +347,7 @@ public enum BuiltInCall {
 
     ISBLANK(
             SIMPLE,
-            notImplemented(),
+            new ISBLANK_Evaluator(),
             Boolean(),
             argList(RDF_TERM)),
 
