@@ -125,7 +125,7 @@ public enum BuiltInCall {
 
     CEIL(
             SIMPLE,
-            notImplemented(),
+            new CEIL_Evaluator(),
             Numeric(),
             argList(NUMERIC)),
 
