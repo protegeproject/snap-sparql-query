@@ -108,12 +108,7 @@ public class BuiltInCallExpression implements Expression {
     }
 
     public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
-//        if(!builtInCall.getResultType().isStringLiteral()) {
-//            return EvaluationResult.getError();
-//        }
-//        else {
-            return builtInCall.getEvaluator().evaluate(args, sm);
-//        }
+        return builtInCall.getEvaluator().evaluate(args, sm);
     }
 
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {
