@@ -353,7 +353,7 @@ public enum BuiltInCall {
 
     ISLITERAL(
             SIMPLE,
-            notImplemented(),
+            new ISLITERAL_Evaluator(),
             Boolean(),
             argList(RDF_TERM)),
 
