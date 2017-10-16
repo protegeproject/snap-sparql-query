@@ -5,7 +5,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.builtin.Timestamp;
+import org.semanticweb.owlapi.sparql.builtin.DateTime;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 06/06/15
@@ -14,7 +14,7 @@ public abstract class AbstractUnaryDateTimeBuiltInCallEvaluator extends Abstract
 
     @Override
     protected EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm) {
-        Optional<Timestamp> ts = Timestamp.parseDateTime(literal.getLexicalForm());
+        Optional<DateTime> ts = DateTime.parseDateTime(literal.getLexicalForm());
         if(ts.isPresent()) {
             return evaluate(ts.get(), arg, sm);
         }
@@ -23,5 +23,5 @@ public abstract class AbstractUnaryDateTimeBuiltInCallEvaluator extends Abstract
         }
     }
 
-    protected abstract EvaluationResult evaluate(Timestamp timestamp, Expression arg, SolutionMapping sm);
+    protected abstract EvaluationResult evaluate(DateTime dateTime, Expression arg, SolutionMapping sm);
 }
