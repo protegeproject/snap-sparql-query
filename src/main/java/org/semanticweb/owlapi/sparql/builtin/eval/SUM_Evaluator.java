@@ -7,6 +7,7 @@ import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.builtin.BasicNumericType;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -14,8 +15,9 @@ import java.util.List;
  */
 public class SUM_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCallEvaluator {
 
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         return EvaluationResult.getError();
     }
 

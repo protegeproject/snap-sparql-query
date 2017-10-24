@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -41,8 +42,9 @@ public class GROUP_CONCAT_Evaluator implements BuiltInCallEvaluator, BuiltInAggr
         return EvaluationResult.getSimpleLiteral(concat);
     }
 
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         return EvaluationResult.getError();
     }
 

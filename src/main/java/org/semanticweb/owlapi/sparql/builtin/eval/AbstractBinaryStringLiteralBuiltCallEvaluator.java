@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.builtin.LiteralCompatibilityChecker;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -15,8 +16,9 @@ public abstract class AbstractBinaryStringLiteralBuiltCallEvaluator implements B
 
     private LiteralCompatibilityChecker compatibilityChecker = new LiteralCompatibilityChecker();
 
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         if(args.size() != 2) {
             return EvaluationResult.getError();
         }

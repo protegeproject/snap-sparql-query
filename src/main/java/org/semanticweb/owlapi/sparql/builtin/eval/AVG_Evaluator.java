@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -40,8 +41,9 @@ public class AVG_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
 
     }
 
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         return EvaluationResult.getError();
     }
 }

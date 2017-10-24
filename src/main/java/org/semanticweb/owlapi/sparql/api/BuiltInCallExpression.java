@@ -6,11 +6,13 @@ import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInAggregateCallEvaluator;
 import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInCallEvaluator;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
@@ -25,9 +27,10 @@ public class BuiltInCallExpression implements Expression {
 
     private final ImmutableList<Expression> args;
 
-    public BuiltInCallExpression(BuiltInCall builtInCall, ImmutableList<Expression> args) {
-        this.builtInCall = builtInCall;
-        this.args = args;
+    public BuiltInCallExpression(@Nonnull BuiltInCall builtInCall,
+                                 @Nonnull ImmutableList<Expression> args) {
+        this.builtInCall = checkNotNull(builtInCall);
+        this.args = checkNotNull(args);
     }
 
 

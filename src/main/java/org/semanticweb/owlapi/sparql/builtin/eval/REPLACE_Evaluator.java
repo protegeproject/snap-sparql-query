@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -23,8 +24,9 @@ public class REPLACE_Evaluator implements BuiltInCallEvaluator {
      * @return
      */
 
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         if(args.size() < 3 || args.size() > 4) {
             return EvaluationResult.getError();
         }

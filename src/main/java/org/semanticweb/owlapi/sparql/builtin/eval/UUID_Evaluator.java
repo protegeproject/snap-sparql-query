@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,8 +15,9 @@ import java.util.UUID;
  */
 public class UUID_Evaluator implements BuiltInCallEvaluator {
 
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         UUID uuid = UUID.randomUUID();
         IRI uuidIri = IRI.create("urn:uuid:" + uuid.toString());
         return EvaluationResult.getResult(new AtomicIRI(uuidIri));

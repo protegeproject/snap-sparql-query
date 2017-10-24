@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -24,8 +25,9 @@ public class SAMPLE_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateC
         return arg.evaluate(solutionSequence.get(0));
     }
 
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         return EvaluationResult.getError();
     }
 }

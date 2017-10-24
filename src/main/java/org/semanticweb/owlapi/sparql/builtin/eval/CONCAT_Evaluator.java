@@ -2,6 +2,7 @@ package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.api.*;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -17,8 +18,9 @@ public class CONCAT_Evaluator implements BuiltInCallEvaluator {
      * xsd:string, if all input literals are plain literals with identical language tag, then the returned literal
      * is a plain literal with the same language tag, in all other cases, the returned literal is a simple literal.
      */
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         StringBuilder concatenatedLexicalForm = new StringBuilder();
         boolean xsdString = true;
         String prevLangTag = "";

@@ -4,6 +4,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -11,8 +12,9 @@ import java.util.List;
  */
 public class IF_Evaluator implements BuiltInCallEvaluator {
 
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         if(args.size() != 3) {
             return EvaluationResult.getError();
         }

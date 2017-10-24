@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -24,8 +25,9 @@ public class SUBSTR_Evaluator implements BuiltInCallEvaluator {
     private static final int LENGTH_ARG_INDEX = 2;
 
 
+    @Nonnull
     @Override
-    public EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         if(args.size() < MIN_ARGS_LENGTH || args.size() > MAX_ARGS_LENGTH) {
             return EvaluationResult.getError();
         }

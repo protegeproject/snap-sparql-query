@@ -4,6 +4,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -13,8 +14,9 @@ import java.util.List;
  */
 public abstract class AbstractUnaryBuiltInCallEvaluator implements BuiltInCallEvaluator {
 
+    @Nonnull
     @Override
-    public final EvaluationResult evaluate(List<Expression> args, SolutionMapping sm) {
+    public final EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
         if(args.size() != 1) {
             return EvaluationResult.getError();
         }
