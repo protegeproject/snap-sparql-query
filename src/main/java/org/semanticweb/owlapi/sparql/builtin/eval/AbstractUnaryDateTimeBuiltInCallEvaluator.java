@@ -6,7 +6,7 @@ import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.builtin.DateTime;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 06/06/15
@@ -14,7 +14,7 @@ import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 public abstract class AbstractUnaryDateTimeBuiltInCallEvaluator extends AbstractUnaryLiteralBuiltInCallEvaluator {
 
     @Override
-    protected EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm, EvaluationContext evaluationContext) {
+    protected EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<DateTime> ts = DateTime.parseDateTime(literal.getLexicalForm());
         if(ts.isPresent()) {
             return evaluate(ts.get(), arg, sm);

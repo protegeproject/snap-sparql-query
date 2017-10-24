@@ -22,8 +22,8 @@ public class Project extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        SolutionSequence sequence = algebra.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = algebra.evaluate(context);
         if(sequence.getVariableList().equals(projectVariables)) {
             return sequence;
         }

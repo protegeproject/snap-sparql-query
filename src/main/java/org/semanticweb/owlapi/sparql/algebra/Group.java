@@ -43,11 +43,11 @@ public class Group extends GraphPatternAlgebraExpression<GroupEvaluation> {
     }
 
     @Override
-    public GroupEvaluation evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+    public GroupEvaluation evaluate(AlgebraEvaluationContext context) {
         if(lastEvaluation.isPresent()) {
             return lastEvaluation.get();
         }
-        SolutionSequence sequence = pattern.evaluate(context, evaluationContext);
+        SolutionSequence sequence = pattern.evaluate(context);
         if(expressionList.isEmpty()) {
             return new GroupEvaluation(ImmutableMap.of(GroupKey.empty(), sequence));
         }
@@ -56,7 +56,7 @@ public class Group extends GraphPatternAlgebraExpression<GroupEvaluation> {
             for (SolutionMapping sm : sequence.getSolutionMappings()) {
                 ImmutableList.Builder<EvaluationResult> groupKeyBuilder = ImmutableList.builder();
                 for(GroupCondition condition : expressionList) {
-                    EvaluationResult eval = condition.asExpression().evaluate(sm, evaluationContext);
+                    EvaluationResult eval = condition.asExpression().evaluate(sm, context);
                     groupKeyBuilder.add(eval);
                 }
                 GroupKey key = new GroupKey(groupKeyBuilder.build());

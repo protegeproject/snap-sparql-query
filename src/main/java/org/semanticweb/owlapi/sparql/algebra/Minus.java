@@ -45,9 +45,9 @@ public class Minus extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        SolutionSequence leftSeq = left.evaluate(context, evaluationContext);
-        SolutionSequence rightSeq = right.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence leftSeq = left.evaluate(context);
+        SolutionSequence rightSeq = right.evaluate(context);
         Set<Variable> sharedVariables = left.getSharedVariables(right);
         MinusEvaluator minusEvaluator = new MinusEvaluator(leftSeq.getSolutionMappings(), rightSeq.getSolutionMappings(), sharedVariables);
         ImmutableList<SolutionMapping> minusResult = minusEvaluator.getMinus();

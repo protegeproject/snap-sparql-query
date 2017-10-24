@@ -53,9 +53,9 @@ public class LeftJoin extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        SolutionSequence leftSeq = left.evaluate(context, evaluationContext);
-        SolutionSequence rightSeq = right.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence leftSeq = left.evaluate(context);
+        SolutionSequence rightSeq = right.evaluate(context);
         List<Variable> unionVariables = new ArrayList<>();
         unionVariables.addAll(leftSeq.getVariableList());
         for(Variable variable : rightSeq.getVariableList()) {
@@ -68,7 +68,7 @@ public class LeftJoin extends GraphPatternAlgebraExpression<SolutionSequence> {
             for(Iterator<SolutionMapping> it = leftJoin.iterator(); it.hasNext(); ) {
                 SolutionMapping next = it.next();
                 for(Expression exp : expression) {
-                    if(exp.evaluateAsEffectiveBooleanValue(next, evaluationContext).isFalse()) {
+                    if(exp.evaluateAsEffectiveBooleanValue(next, context).isFalse()) {
                         it.remove();
                         break;
                     }

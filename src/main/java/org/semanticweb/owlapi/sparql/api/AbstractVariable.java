@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import java.util.Optional;
 
@@ -79,7 +79,7 @@ public abstract class AbstractVariable extends Variable {
         return new IRIVariable(getName());
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
@@ -91,7 +91,7 @@ public abstract class AbstractVariable extends Variable {
 //        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsBoolean(sm);
 //    }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
@@ -103,7 +103,7 @@ public abstract class AbstractVariable extends Variable {
 //        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsStringLiteral(sm);
 //    }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
@@ -111,7 +111,7 @@ public abstract class AbstractVariable extends Variable {
         return term.get().evaluateAsStringLiteral(sm, evaluationContext);
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
@@ -119,7 +119,7 @@ public abstract class AbstractVariable extends Variable {
         return term.get().evaluateAsSimpleLiteral(sm, evaluationContext);
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
@@ -127,7 +127,7 @@ public abstract class AbstractVariable extends Variable {
         return term.get().evaluateAsNumeric(sm, evaluationContext);
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
@@ -136,7 +136,7 @@ public abstract class AbstractVariable extends Variable {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
@@ -145,7 +145,7 @@ public abstract class AbstractVariable extends Variable {
     }
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();

@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 06/06/15
@@ -9,7 +9,7 @@ import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 public class ABS_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
 
     @Override
-    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, EvaluationContext evaluationContext) {
+    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         EvaluationResult eval = arg.evaluateAsNumeric(sm, evaluationContext);
         if(eval.isError()) {
             return eval;

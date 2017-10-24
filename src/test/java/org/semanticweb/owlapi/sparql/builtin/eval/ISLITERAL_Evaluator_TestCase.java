@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,28 +28,28 @@ public class ISLITERAL_Evaluator_TestCase {
 
     @Test
     public void shouldEvaluateIRIAsFalse() {
-        EvaluationResult result = evaluator.evaluate(Collections.singletonList(new AtomicIRI(IRI.create("http://stuff.com"))), SolutionMapping.emptyMapping(), mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(Collections.singletonList(new AtomicIRI(IRI.create("http://stuff.com"))), SolutionMapping.emptyMapping(), mock(AlgebraEvaluationContext.class));
         assertThat(result.isError(), is(false));
         assertThat(result.isTrue(), is(false));
     }
 
     @Test
     public void shouldEvaluateLiteralAsTrue() {
-        EvaluationResult result = evaluator.evaluate(Collections.singletonList(Literal.createString("Lit")), SolutionMapping.emptyMapping(), mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(Collections.singletonList(Literal.createString("Lit")), SolutionMapping.emptyMapping(), mock(AlgebraEvaluationContext.class));
         assertThat(result.isError(), is(false));
         assertThat(result.isTrue(), is(true));
     }
 
     @Test
     public void shouldEvaluateAnonymousIndividualAsFalse() {
-        EvaluationResult result = evaluator.evaluate(Collections.singletonList(new AnonymousIndividual("TheId")), SolutionMapping.emptyMapping(), mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(Collections.singletonList(new AnonymousIndividual("TheId")), SolutionMapping.emptyMapping(), mock(AlgebraEvaluationContext.class));
         assertThat(result.isError(), is(false));
         assertThat(result.isTrue(), is(false));
     }
 
     @Test
     public void shouldEvaluateMultiArgsAsError() {
-        EvaluationResult result = evaluator.evaluate(Arrays.asList(Literal.createString("A"), Literal.createString("B")), SolutionMapping.emptyMapping(), mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(Arrays.asList(Literal.createString("A"), Literal.createString("B")), SolutionMapping.emptyMapping(), mock(AlgebraEvaluationContext.class));
         assertThat(result.isError(), is(true));
     }
 }

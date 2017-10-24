@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 /**
  * Author: Matthew Horridge<br>
@@ -10,7 +10,7 @@ import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
  */
 public interface HasEvaluation {
 
-    EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext);
+    EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
 
 
@@ -37,18 +37,18 @@ public interface HasEvaluation {
      * represented as a typed literal with a datatype of xsd:boolean and a lexical value of "true"; an EBV of false is
      * represented as a typed literal with a datatype of xsd:boolean and a lexical value of "false".
      */
-    EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext);
+    EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext);
+    EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext);
+    EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext);
+    EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext);
+    EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext);
+    EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext);
+    EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
 }

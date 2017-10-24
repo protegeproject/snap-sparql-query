@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -25,14 +25,14 @@ public class MD5_Evaluator_TestCase {
 
     @Test
     public void shouldEvaluateMd5OfSimpleLiteral() {
-        EvaluationResult result = evaluator.evaluate(Literal.createSimpleLiteral("abc"), SolutionMapping.emptyMapping(), mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(Literal.createSimpleLiteral("abc"), SolutionMapping.emptyMapping(), mock(AlgebraEvaluationContext.class));
         assertThat(result.isError(), is(false));
         assertThat(result.asSimpleLiteral(), is("900150983cd24fb0d6963f7d28e17f72"));
     }
 
     @Test
     public void shouldEvaluateMd5OfStringLiteral() {
-        EvaluationResult result = evaluator.evaluate(Literal.createString("abc"), SolutionMapping.emptyMapping(), mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(Literal.createString("abc"), SolutionMapping.emptyMapping(), mock(AlgebraEvaluationContext.class));
         assertThat(result.isError(), is(false));
         assertThat(result.asSimpleLiteral(), is("900150983cd24fb0d6963f7d28e17f72"));
     }

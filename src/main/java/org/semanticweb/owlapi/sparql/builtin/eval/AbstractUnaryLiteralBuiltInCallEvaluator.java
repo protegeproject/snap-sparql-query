@@ -4,7 +4,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 06/06/15
@@ -12,7 +12,7 @@ import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 public abstract class AbstractUnaryLiteralBuiltInCallEvaluator extends AbstractUnaryBuiltInCallEvaluator {
 
     @Override
-    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, EvaluationContext evaluationContext) {
+    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         EvaluationResult eval = arg.evaluateAsLiteral(sm, evaluationContext);
         if(eval.isError()) {
             return EvaluationResult.getError();
@@ -22,5 +22,5 @@ public abstract class AbstractUnaryLiteralBuiltInCallEvaluator extends AbstractU
         }
     }
 
-    protected abstract EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm, EvaluationContext evaluationContext);
+    protected abstract EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 }

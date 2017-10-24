@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -13,7 +13,7 @@ public class STRLANG_Evaluator implements BuiltInCallEvaluator {
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         if(args.size() != 2) {
             return EvaluationResult.getError();
         }

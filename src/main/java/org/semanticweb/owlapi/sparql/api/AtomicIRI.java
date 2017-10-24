@@ -3,7 +3,7 @@ package org.semanticweb.owlapi.sparql.api;
 import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -43,27 +43,27 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
         return iri.toString();
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(Literal.createString(iri.toString()));
     }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getSimpleLiteral(iri.toString());
     }
 
@@ -113,12 +113,12 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getSimpleLiteral(iri.toString());
     }
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }
 

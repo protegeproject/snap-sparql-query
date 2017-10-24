@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 /**
  * Author: Matthew Horridge<br>
@@ -15,7 +15,7 @@ public class AndExpression extends BinaryExpression implements Expression {
         super(left, right);
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return evaluateAsEffectiveBooleanValue(sm, evaluationContext);
     }
 
@@ -23,7 +23,7 @@ public class AndExpression extends BinaryExpression implements Expression {
         return true;
     }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         EvaluationResult leftEval = getLeft().evaluateAsEffectiveBooleanValue(sm, evaluationContext);
         if(leftEval.isError()) {
             return leftEval;
@@ -39,7 +39,7 @@ public class AndExpression extends BinaryExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -47,7 +47,7 @@ public class AndExpression extends BinaryExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -55,7 +55,7 @@ public class AndExpression extends BinaryExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -63,7 +63,7 @@ public class AndExpression extends BinaryExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -89,13 +89,13 @@ public class AndExpression extends BinaryExpression implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 

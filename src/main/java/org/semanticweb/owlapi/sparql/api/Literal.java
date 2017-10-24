@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import javax.annotation.Nonnull;
@@ -203,7 +203,7 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     }
 
     @Override
-    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }
 
@@ -232,7 +232,7 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
      * @param evaluationContext
      */
     @Override
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         if(getDatatype().isXSDBoolean()) {
             // The EBV of any literal whose type is xsd:boolean
             // is false if the lexical form is not valid
@@ -282,7 +282,7 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
         }
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(Literal.createString(lexicalForm));
 //        if(isStringLiteral()) {
 //            return EvaluationResult.getResult(this);
@@ -292,7 +292,7 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
 //        }
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(Literal.createRDFPlainLiteral(lexicalForm, langTag));
 //        if(isSimpleLiteral()) {
 //            return EvaluationResult.getResult(this);
@@ -302,7 +302,7 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
 //        }
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         if(isDatatypeNumeric()) {
             if (isInNumericLexicalSpace()) {
                 return EvaluationResult.getResult(this);
@@ -328,7 +328,7 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
         return OWL2Datatype.XSD_DATE_TIME.getPattern().matcher(lexicalForm).matches();
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         if(isDatatypeDateTime() && isInDateTimeLexicalSpace()) {
             return EvaluationResult.getResult(this);
         }
@@ -338,12 +338,12 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     }
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(new AtomicIRI(IRI.create(lexicalForm)));
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }
 

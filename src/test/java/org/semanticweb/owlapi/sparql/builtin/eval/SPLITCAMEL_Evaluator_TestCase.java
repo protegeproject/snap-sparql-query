@@ -8,7 +8,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -49,7 +49,7 @@ public class SPLITCAMEL_Evaluator_TestCase {
 
     private void assertSplitCamelCaseIs(String input, String expected) {
         Literal camelCaseLiteral = Literal.createSimpleLiteral(input);
-        EvaluationResult result = evaluator.evaluate(camelCaseLiteral, camelCaseLiteral, sm, mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(camelCaseLiteral, camelCaseLiteral, sm, mock(AlgebraEvaluationContext.class));
         assertThat(result.isError(), is(false));
         assertThat(result.asLiteral().getLexicalForm(), is(expected));
     }

@@ -4,7 +4,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 /**
  * Matthew Horridge
@@ -14,7 +14,7 @@ import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 public abstract class AbstractUnaryStringLiteralBuiltInCallEvaluator extends AbstractUnaryBuiltInCallEvaluator {
 
     @Override
-    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, EvaluationContext evaluationContext) {
+    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         EvaluationResult literalResult = arg.evaluateAsStringLiteral(sm, evaluationContext);
         if(literalResult.isError()) {
             return literalResult;

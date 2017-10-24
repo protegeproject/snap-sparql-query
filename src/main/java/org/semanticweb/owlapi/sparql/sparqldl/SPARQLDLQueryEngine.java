@@ -73,11 +73,10 @@ public class SPARQLDLQueryEngine {
 
     public SPARQLQueryResult ask(SelectQuery query) {
         AlgebraExpression<SolutionSequence> algebraExpression = query.translate();
-        EvaluationContext evaluationContext = new EvaluationContext(ZonedDateTime.now());
         AlgebraEvaluationContext context = new AlgebraEvaluationContext(
                 new BgpEvaluator(dataFactory, cache, queryEngine),
                 ZonedDateTime.now());
-        SolutionSequence solutionSequence = algebraExpression.evaluate(context, evaluationContext);
+        SolutionSequence solutionSequence = algebraExpression.evaluate(context);
         return new SPARQLQueryResult(query, solutionSequence);
     }
 

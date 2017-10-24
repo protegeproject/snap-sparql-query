@@ -40,13 +40,13 @@ public class Filter extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        SolutionSequence sequence = algebraExpression.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = algebraExpression.evaluate(context);
         List<SolutionMapping> filteredList = new ArrayList<>();
         for(SolutionMapping sm : sequence.getSolutionMappings()) {
             boolean passedFilter = true;
             for(Expression expression : expressions) {
-                EvaluationResult evaluate = expression.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
+                EvaluationResult evaluate = expression.evaluateAsEffectiveBooleanValue(sm, context);
                 if(evaluate.isFalse() || evaluate.isError()) {
                     passedFilter = false;
                     break;

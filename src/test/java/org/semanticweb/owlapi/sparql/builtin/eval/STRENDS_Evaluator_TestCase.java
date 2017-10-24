@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class STRENDS_Evaluator_TestCase {
     private SolutionMapping sm;
 
     @Mock
-    private EvaluationContext evaluationContext;
+    private AlgebraEvaluationContext evaluationContext;
 
     @Before
     public void setUp() {

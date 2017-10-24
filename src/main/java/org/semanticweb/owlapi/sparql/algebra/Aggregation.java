@@ -46,12 +46,12 @@ public class Aggregation extends GraphPatternAlgebraExpression<ImmutableList<Agg
     }
 
     @Override
-    public ImmutableList<AggregationEvaluation> evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        GroupEvaluation groupEvaluation = algebraExpression.evaluate(context, evaluationContext);
+    public ImmutableList<AggregationEvaluation> evaluate(AlgebraEvaluationContext context) {
+        GroupEvaluation groupEvaluation = algebraExpression.evaluate(context);
         ImmutableList.Builder<AggregationEvaluation> resultBuilder = ImmutableList.builder();
         for(GroupKey groupKey : groupEvaluation.getGroupKeys()) {
             SolutionSequence groupSequence = groupEvaluation.getSolutionSequence(groupKey);
-            EvaluationResult result = expression.evaluateAsAggregate(groupSequence, evaluationContext);
+            EvaluationResult result = expression.evaluateAsAggregate(groupSequence, context);
             AggregationEvaluation aggregationEvaluation = new AggregationEvaluation(groupKey, variable, result);
             resultBuilder.add(aggregationEvaluation);
         }

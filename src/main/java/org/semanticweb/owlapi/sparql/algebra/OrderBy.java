@@ -30,8 +30,8 @@ public class OrderBy extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        SolutionSequence sequence = algebraExpression.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = algebraExpression.evaluate(context);
         List<SolutionMapping> sortedList = new ArrayList<>(sequence.getSolutionMappings());
         sortedList.sort(comparator);
         return new SolutionSequence(sequence.getVariableList(), ImmutableList.copyOf(sortedList));

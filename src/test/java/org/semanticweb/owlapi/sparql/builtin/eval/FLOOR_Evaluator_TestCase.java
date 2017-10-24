@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -25,19 +25,19 @@ public class FLOOR_Evaluator_TestCase {
 
     @Test
     public void shouldGetPositiveFlooring() {
-        EvaluationResult result = evaluator.evaluate(Literal.createDecimal(10.5), SolutionMapping.emptyMapping(), mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(Literal.createDecimal(10.5), SolutionMapping.emptyMapping(), mock(AlgebraEvaluationContext.class));
         assertThat(result.getResult(), is(Literal.createDecimal(10)));
     }
 
     @Test
     public void shouldGetNegativeFlooring() {
-        EvaluationResult result = evaluator.evaluate(Literal.createDecimal(-10.5), SolutionMapping.emptyMapping(), mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(Literal.createDecimal(-10.5), SolutionMapping.emptyMapping(), mock(AlgebraEvaluationContext.class));
         assertThat(result.getResult(), is(Literal.createDecimal(-11)));
     }
 
     @Test
     public void shouldProduceError() {
-        EvaluationResult result = evaluator.evaluate(Literal.createString("Hello"), SolutionMapping.emptyMapping(), mock(EvaluationContext.class));
+        EvaluationResult result = evaluator.evaluate(Literal.createString("Hello"), SolutionMapping.emptyMapping(), mock(AlgebraEvaluationContext.class));
         assertThat(result.isError(), is(true));
     }
 }

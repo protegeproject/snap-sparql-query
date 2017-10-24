@@ -38,11 +38,11 @@ public class AggregateJoin extends GraphPatternAlgebraExpression<SolutionSequenc
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
         Set<Variable> variables = new HashSet<>();
         Table<GroupKey, Variable, EvaluationResult> table = HashBasedTable.create();
         for(Aggregation aggregation : aggregations) {
-            ImmutableList<AggregationEvaluation> solutionSequence = aggregation.evaluate(context, evaluationContext);
+            ImmutableList<AggregationEvaluation> solutionSequence = aggregation.evaluate(context);
             for(AggregationEvaluation evaluation : solutionSequence) {
                 table.put(evaluation.getGroupKey(), evaluation.getVariable(), evaluation.getEvaluationResult());
                 variables.add(evaluation.getVariable());

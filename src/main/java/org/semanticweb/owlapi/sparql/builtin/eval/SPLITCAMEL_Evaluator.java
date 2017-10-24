@@ -5,7 +5,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import static com.google.common.base.CaseFormat.LOWER_UNDERSCORE;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
@@ -18,7 +18,7 @@ import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 public class SPLITCAMEL_Evaluator extends AbstractUnaryLiteralBuiltInCallEvaluator {
 
     @Override
-    protected EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm, EvaluationContext evaluationContext) {
+    protected EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         String lexicalForm = literal.getLexicalForm();
         String nullString = Character.toString((char) 0);
         String withoutUnderscores = lexicalForm.replace("_", nullString);

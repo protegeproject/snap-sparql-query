@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import java.util.Collections;
 
@@ -89,36 +89,36 @@ public class NamedClass_TestCase {
 
     @Test
     public void should_evaluateAsEffectiveBooleanValue() {
-        assertThat(namedClass.evaluateAsEffectiveBooleanValue(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getError()));
+        assertThat(namedClass.evaluateAsEffectiveBooleanValue(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(namedClass.evaluateAsSimpleLiteral(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(namedClass.getIRI().toString()))));
+        assertThat(namedClass.evaluateAsSimpleLiteral(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(namedClass.getIRI().toString()))));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        assertThat(namedClass.evaluateAsStringLiteral(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(namedClass.getIRI().toString()))));
+        assertThat(namedClass.evaluateAsStringLiteral(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(namedClass.getIRI().toString()))));
     }
 
     @Test
     public void shouldReturn_Error_When_evaluateAsNumeric() {
-        assertThat(namedClass.evaluateAsNumeric(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getError()));
+        assertThat(namedClass.evaluateAsNumeric(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void shouldReturn_Error_When_evaluateAsDateTime() {
-        assertThat(namedClass.evaluateAsDateTime(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getError()));
+        assertThat(namedClass.evaluateAsDateTime(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void should_evaluateAsLiteral() {
-        assertThat(namedClass.evaluateAsLiteral(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
+        assertThat(namedClass.evaluateAsLiteral(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }
 
     @Test
     public void should_evaluateAsIRI() {
-        assertThat(namedClass.evaluateAsIRI(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(namedClass.getIRI()))));
+        assertThat(namedClass.evaluateAsIRI(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(namedClass.getIRI()))));
     }
 }

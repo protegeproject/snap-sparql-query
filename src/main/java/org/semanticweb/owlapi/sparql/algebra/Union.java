@@ -44,9 +44,9 @@ public class Union extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        SolutionSequence leftSeq = left.evaluate(context, evaluationContext);
-        SolutionSequence rightSeq = right.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence leftSeq = left.evaluate(context);
+        SolutionSequence rightSeq = right.evaluate(context);
         List<Variable> variables = new ArrayList<>();
         variables.addAll(leftSeq.getVariableList());
         variables.addAll(rightSeq.getVariableList());

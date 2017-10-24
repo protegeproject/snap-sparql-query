@@ -12,8 +12,8 @@ public class ToList extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        return algebraExpression.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        return algebraExpression.evaluate(context);
     }
 
     public GraphPatternAlgebraExpression<SolutionSequence> getAlgebraExpression() {

@@ -3,7 +3,7 @@ package org.semanticweb.owlapi.sparql.builtin.eval;
 import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public interface BuiltInAggregateCallEvaluator {
 
-    EvaluationResult evaluateAsAggregate(List<Expression> args, SolutionSequence solutionSequence, EvaluationContext evaluationContext);
+    EvaluationResult evaluateAsAggregate(List<Expression> args, SolutionSequence solutionSequence, AlgebraEvaluationContext evaluationContext);
 
     default Set<String> getScalars() {
         return Collections.emptySet();

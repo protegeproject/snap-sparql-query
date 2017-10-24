@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import java.util.Collections;
 
@@ -91,36 +91,36 @@ public class ObjectProperty_TestCase {
 
     @Test
     public void should_evaluateAsEffectiveBooleanValue() {
-        assertThat(objectProperty.evaluateAsEffectiveBooleanValue(sm, mock(EvaluationContext.class)), is(EvaluationResult.getError()));
+        assertThat(objectProperty.evaluateAsEffectiveBooleanValue(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(objectProperty.evaluateAsSimpleLiteral(sm, mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(objectProperty.getIRI().toString()))));
+        assertThat(objectProperty.evaluateAsSimpleLiteral(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(objectProperty.getIRI().toString()))));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        assertThat(objectProperty.evaluateAsStringLiteral(sm, mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(objectProperty.getIRI().toString()))));
+        assertThat(objectProperty.evaluateAsStringLiteral(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(objectProperty.getIRI().toString()))));
     }
 
     @Test
     public void shouldReturn_Error_When_evaluateAsNumeric() {
-        assertThat(objectProperty.evaluateAsNumeric(sm, mock(EvaluationContext.class)), is(EvaluationResult.getError()));
+        assertThat(objectProperty.evaluateAsNumeric(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void shouldReturn_Error_When_evaluateAsDateTime() {
-        assertThat(objectProperty.evaluateAsDateTime(sm, mock(EvaluationContext.class)), is(EvaluationResult.getError()));
+        assertThat(objectProperty.evaluateAsDateTime(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void should_evaluateAsLiteral() {
-        assertThat(objectProperty.evaluateAsLiteral(sm, mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
+        assertThat(objectProperty.evaluateAsLiteral(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }
 
     @Test
     public void should_evaluateAsIRI() {
-        assertThat(objectProperty.evaluateAsIRI(sm, mock(EvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(objectProperty.getIRI()))));
+        assertThat(objectProperty.evaluateAsIRI(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(objectProperty.getIRI()))));
     }
 }

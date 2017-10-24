@@ -46,11 +46,11 @@ public class Extend extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        SolutionSequence sequence = algebraExpression.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = algebraExpression.evaluate(context);
         ImmutableList.Builder<SolutionMapping> extendedSequence = ImmutableList.builder();
         for(SolutionMapping sm : sequence.getSolutionMappings()) {
-            EvaluationResult result = expression.evaluate(sm, evaluationContext);
+            EvaluationResult result = expression.evaluate(sm, context);
             if(!result.isError()) {
                 ImmutableMap<Variable, RDFTerm> variableTermMap = sm.asMap();
                 ImmutableMap<Variable, RDFTerm> extended = ImmutableMap.<Variable, RDFTerm>builder().putAll(variableTermMap).put(variable, result.getResult()).build();

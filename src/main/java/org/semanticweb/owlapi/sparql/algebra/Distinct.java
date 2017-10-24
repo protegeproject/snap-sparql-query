@@ -22,8 +22,8 @@ public class Distinct extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        SolutionSequence sequence = expression.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence sequence = expression.evaluate(context);
         Set<SolutionMapping> distinctSolutions = new LinkedHashSet<>(sequence.getSolutionMappings());
         return new SolutionSequence(sequence.getVariableList(), ImmutableList.copyOf(distinctSolutions));
     }

@@ -60,9 +60,9 @@ public class Join extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
-        SolutionSequence leftSeq = left.evaluate(context, evaluationContext);
-        SolutionSequence rightSeq = right.evaluate(context, evaluationContext);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+        SolutionSequence leftSeq = left.evaluate(context);
+        SolutionSequence rightSeq = right.evaluate(context);
         Joiner joiner = new Joiner(leftSeq.getSolutionMappings(), rightSeq.getSolutionMappings(), left.getSharedVariables(right));
         List<Variable> unionVariables = new ArrayList<>();
         unionVariables.addAll(leftSeq.getVariableList());

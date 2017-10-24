@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 /**
  * Author: Matthew Horridge<br>
@@ -32,7 +32,7 @@ public enum Relation {
         return symbolicForm;
     }
 
-    public EvaluationResult evaluate(Expression left, Expression right, SolutionMapping sm, EvaluationContext evaluationContext) {
+    public EvaluationResult evaluate(Expression left, Expression right, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         EvaluationResult leftEval = left.evaluateAsNumeric(sm, evaluationContext);
         EvaluationResult rightEval = right.evaluateAsNumeric(sm, evaluationContext);
         if(!leftEval.isError() && !rightEval.isError()) {

@@ -25,7 +25,7 @@ public class Empty extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
         return SolutionSequence.getEmptySolutionSequence();
     }
 

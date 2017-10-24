@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import java.util.Arrays;
 
@@ -43,21 +43,21 @@ public class SUBSTR_Evaluator_TestCase {
 
     @Test
     public void shouldGenerateSubStringFromStartIndex() {
-        EvaluationResult eval = evaluator.evaluate(Arrays.asList(literal, startIndex), sm, mock(EvaluationContext.class));
+        EvaluationResult eval = evaluator.evaluate(Arrays.asList(literal, startIndex), sm, mock(AlgebraEvaluationContext.class));
         assertThat(eval.isError(), is(false));
         assertThat(eval.asSimpleLiteral(), is(THE_LEXICAL_FORM.substring(START_INDEX)));
     }
 
     @Test
     public void shouldGenerateSubStringFromStartIndexToLength() {
-        EvaluationResult eval = evaluator.evaluate(Arrays.asList(literal, startIndex, length), sm, mock(EvaluationContext.class));
+        EvaluationResult eval = evaluator.evaluate(Arrays.asList(literal, startIndex, length), sm, mock(AlgebraEvaluationContext.class));
         assertThat(eval.isError(), is(false));
         assertThat(eval.asSimpleLiteral(), is(THE_LEXICAL_FORM.substring(START_INDEX, START_INDEX + 5)));
     }
 
     @Test
     public void shouldGenerateErrorForInvalidLength() {
-        EvaluationResult eval = evaluator.evaluate(Arrays.asList(literal, startIndex, Literal.createInteger(30)), sm, mock(EvaluationContext.class));
+        EvaluationResult eval = evaluator.evaluate(Arrays.asList(literal, startIndex, Literal.createInteger(30)), sm, mock(AlgebraEvaluationContext.class));
         assertThat(eval.isError(), is(true));
     }
 }
