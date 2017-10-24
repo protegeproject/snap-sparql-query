@@ -16,7 +16,8 @@ public class AlgebraEvaluationContext {
 
     private final ZonedDateTime evaluationTime;
 
-    public AlgebraEvaluationContext(BgpEvaluator bgpEvaluator, ZonedDateTime evaluationTime) {
+    public AlgebraEvaluationContext(@Nonnull BgpEvaluator bgpEvaluator,
+                                    @Nonnull ZonedDateTime evaluationTime) {
         this.bgpEvaluator = checkNotNull(bgpEvaluator);
         this.evaluationTime = checkNotNull(evaluationTime);
     }
@@ -26,6 +27,9 @@ public class AlgebraEvaluationContext {
     }
 
 
+    /**
+     * Gets the time of the current evaluation.
+     */
     @Nonnull
     public ZonedDateTime getEvaluationTime() {
         return evaluationTime;

@@ -48,6 +48,7 @@ import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 
 import javax.annotation.Nonnull;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
 
@@ -75,7 +76,7 @@ public class SPARQLDLQueryEngine {
         AlgebraExpression<SolutionSequence> algebraExpression = query.translate();
         AlgebraEvaluationContext context = new AlgebraEvaluationContext(
                 new BgpEvaluator(dataFactory, cache, queryEngine),
-                ZonedDateTime.now());
+                ZonedDateTime.now(ZoneId.systemDefault()));
         SolutionSequence solutionSequence = algebraExpression.evaluate(context);
         return new SPARQLQueryResult(query, solutionSequence);
     }
