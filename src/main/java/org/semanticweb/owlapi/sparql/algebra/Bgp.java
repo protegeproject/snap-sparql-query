@@ -4,7 +4,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import java.util.*;
 

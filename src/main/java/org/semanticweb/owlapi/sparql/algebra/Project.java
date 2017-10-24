@@ -3,7 +3,6 @@ package org.semanticweb.owlapi.sparql.algebra;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import java.util.ArrayList;
 import java.util.List;

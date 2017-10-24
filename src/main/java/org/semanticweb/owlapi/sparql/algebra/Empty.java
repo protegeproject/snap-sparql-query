@@ -2,7 +2,6 @@ package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 

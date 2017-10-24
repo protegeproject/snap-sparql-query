@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 

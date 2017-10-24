@@ -4,7 +4,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 10/06/15

@@ -3,7 +3,7 @@ package org.semanticweb.owlapi.sparql.builtin.eval;
 import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 
 import java.util.Collections;
 import java.util.List;

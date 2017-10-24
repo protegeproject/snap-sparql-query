@@ -2,7 +2,7 @@ package org.semanticweb.owlapi.sparql.api;
 
 
 import org.semanticweb.owlapi.sparql.builtin.BasicNumericType;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 
 /**
  * Author: Matthew Horridge<br>

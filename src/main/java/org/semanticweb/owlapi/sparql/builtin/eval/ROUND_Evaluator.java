@@ -1,7 +1,7 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 06/06/15

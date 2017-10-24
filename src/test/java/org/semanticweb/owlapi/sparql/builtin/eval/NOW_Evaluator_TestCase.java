@@ -3,10 +3,9 @@ package org.semanticweb.owlapi.sparql.builtin.eval;
 import org.junit.Test;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 
 import java.time.ZonedDateTime;
-import java.util.Collections;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;

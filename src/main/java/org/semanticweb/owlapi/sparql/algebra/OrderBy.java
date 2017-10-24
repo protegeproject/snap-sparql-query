@@ -2,7 +2,6 @@ package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 import org.semanticweb.owlapi.sparql.sparqldl.OrderByComparator;
 
 import java.util.ArrayList;

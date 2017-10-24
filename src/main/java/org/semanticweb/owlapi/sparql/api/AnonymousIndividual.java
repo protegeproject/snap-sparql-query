@@ -3,7 +3,7 @@ package org.semanticweb.owlapi.sparql.api;
 import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;

@@ -1,15 +1,13 @@
 
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.semanticweb.owlapi.sparql.api.*;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 
-import javax.xml.ws.soap.MTOM;
 import java.util.ArrayList;
 import java.util.List;
 

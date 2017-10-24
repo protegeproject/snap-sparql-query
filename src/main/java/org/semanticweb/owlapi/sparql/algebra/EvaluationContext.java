@@ -1,4 +1,4 @@
-package org.semanticweb.owlapi.sparql.sparqldl;
+package org.semanticweb.owlapi.sparql.algebra;
 
 import javax.annotation.Nonnull;
 import java.time.ZonedDateTime;

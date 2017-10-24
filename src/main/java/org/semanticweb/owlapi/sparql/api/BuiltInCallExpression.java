@@ -5,7 +5,7 @@ import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInAggregateCallEvaluator;
 import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInCallEvaluator;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;

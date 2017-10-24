@@ -2,10 +2,9 @@ package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.builtin.DateTime;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+import org.semanticweb.owlapi.sparql.algebra.EvaluationContext;
 
 import javax.annotation.Nonnull;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 /**

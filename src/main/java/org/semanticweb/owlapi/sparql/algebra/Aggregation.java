@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.BuiltInCallExpression;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Variable;
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 22/06/15

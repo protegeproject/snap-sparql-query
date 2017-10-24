@@ -43,10 +43,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import de.derivo.sparqldlapi.QueryEngine;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
-import org.semanticweb.owlapi.sparql.algebra.AlgebraExpression;
-import org.semanticweb.owlapi.sparql.algebra.Bgp;
-import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
+import org.semanticweb.owlapi.sparql.algebra.*;
 import org.semanticweb.owlapi.sparql.api.SPARQLQueryResult;
 import org.semanticweb.owlapi.sparql.syntax.SelectQuery;
 

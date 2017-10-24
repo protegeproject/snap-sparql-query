@@ -1,7 +1,5 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
-
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15
  */
