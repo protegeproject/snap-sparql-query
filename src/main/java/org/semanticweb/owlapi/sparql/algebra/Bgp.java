@@ -1,10 +1,10 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import java.util.*;
 
@@ -51,7 +51,7 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
         return context.evaluateBgp(this);
     }
 

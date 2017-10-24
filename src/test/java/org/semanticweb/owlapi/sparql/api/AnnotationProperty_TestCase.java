@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import java.util.Collections;
 
@@ -102,36 +103,36 @@ public class AnnotationProperty_TestCase {
 
     @Test
     public void should_evaluateAsEffectiveBooleanValue() {
-        assertThat(annotationProperty.evaluateAsEffectiveBooleanValue(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+        assertThat(annotationProperty.evaluateAsEffectiveBooleanValue(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(annotationProperty.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(annotationProperty.getIRI().toString()))));
+        assertThat(annotationProperty.evaluateAsSimpleLiteral(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(annotationProperty.getIRI().toString()))));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        assertThat(annotationProperty.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(annotationProperty.getIRI().toString()))));
+        assertThat(annotationProperty.evaluateAsStringLiteral(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(annotationProperty.getIRI().toString()))));
     }
 
     @Test
     public void shouldReturn_Error_When_evaluateAsNumeric() {
-        assertThat(annotationProperty.evaluateAsNumeric(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+        assertThat(annotationProperty.evaluateAsNumeric(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void shouldReturn_Error_When_evaluateAsDateTime() {
-        assertThat(annotationProperty.evaluateAsDateTime(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+        assertThat(annotationProperty.evaluateAsDateTime(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void should_evaluateAsLiteral() {
-        assertThat(annotationProperty.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
+        assertThat(annotationProperty.evaluateAsLiteral(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }
 
     @Test
     public void should_evaluateAsIRI() {
-        assertThat(annotationProperty.evaluateAsIRI(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new AtomicIRI(annotationProperty.getIRI()))));
+        assertThat(annotationProperty.evaluateAsIRI(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(annotationProperty.getIRI()))));
     }
 }

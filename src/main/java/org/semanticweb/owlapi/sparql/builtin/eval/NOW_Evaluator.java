@@ -2,6 +2,7 @@ package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.builtin.DateTime;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.time.ZonedDateTime;
@@ -14,9 +15,9 @@ public class NOW_Evaluator implements BuiltInCallEvaluator {
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
         // NOW() must return the same value in a given query execution
-        DateTime ts = new DateTime(ZonedDateTime.now());
+        DateTime ts = new DateTime(evaluationContext.getEvaluationTime());
         return EvaluationResult.getResult(new Literal(Datatype.getXSDDateTime(), ts.getFormattedDateTime(), ""));
     }
 }

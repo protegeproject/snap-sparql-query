@@ -3,8 +3,8 @@ package org.semanticweb.owlapi.sparql.algebra;
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +23,8 @@ public class Project extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
-        SolutionSequence sequence = algebra.evaluate(context);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+        SolutionSequence sequence = algebra.evaluate(context, evaluationContext);
         if(sequence.getVariableList().equals(projectVariables)) {
             return sequence;
         }

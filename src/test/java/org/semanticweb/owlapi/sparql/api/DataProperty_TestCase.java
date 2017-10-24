@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import java.util.Collections;
 
@@ -102,36 +103,36 @@ public class DataProperty_TestCase {
 
     @Test
     public void should_evaluateAsEffectiveBooleanValue() {
-        assertThat(dataProperty.evaluateAsEffectiveBooleanValue(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+        assertThat(dataProperty.evaluateAsEffectiveBooleanValue(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(dataProperty.evaluateAsSimpleLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(dataProperty.getIRI().toString()))));
+        assertThat(dataProperty.evaluateAsSimpleLiteral(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(dataProperty.getIRI().toString()))));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        assertThat(dataProperty.evaluateAsStringLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(dataProperty.getIRI().toString()))));
+        assertThat(dataProperty.evaluateAsStringLiteral(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(dataProperty.getIRI().toString()))));
     }
 
     @Test
     public void shouldReturn_Error_When_evaluateAsNumeric() {
-        assertThat(dataProperty.evaluateAsNumeric(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+        assertThat(dataProperty.evaluateAsNumeric(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void shouldReturn_Error_When_evaluateAsDateTime() {
-        assertThat(dataProperty.evaluateAsDateTime(mock(SolutionMapping.class)), is(EvaluationResult.getError()));
+        assertThat(dataProperty.evaluateAsDateTime(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getError()));
     }
 
     @Test
     public void should_evaluateAsLiteral() {
-        assertThat(dataProperty.evaluateAsLiteral(mock(SolutionMapping.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
+        assertThat(dataProperty.evaluateAsLiteral(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }
 
     @Test
     public void should_evaluateAsIRI() {
-        assertThat(dataProperty.evaluateAsIRI(mock(SolutionMapping.class)), is(EvaluationResult.getResult(new AtomicIRI(dataProperty.getIRI()))));
+        assertThat(dataProperty.evaluateAsIRI(mock(SolutionMapping.class), mock(EvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(dataProperty.getIRI()))));
     }
 }

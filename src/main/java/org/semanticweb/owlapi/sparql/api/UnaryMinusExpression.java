@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+
 import java.util.Set;
 
 /**
@@ -29,15 +31,15 @@ public class UnaryMinusExpression implements Expression {
         return "Expression(- " + expression + ")";
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm) {
-        return evaluateAsNumeric(sm);
+    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
+        return evaluateAsNumeric(sm, evaluationContext);
     }
 
     public boolean canEvaluateAsBoolean(SolutionMapping sm) {
         return false;
     }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -45,7 +47,7 @@ public class UnaryMinusExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -53,7 +55,7 @@ public class UnaryMinusExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -61,8 +63,8 @@ public class UnaryMinusExpression implements Expression {
         return true;
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
-        EvaluationResult eval = expression.evaluateAsNumeric(sm);
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
+        EvaluationResult eval = expression.evaluateAsNumeric(sm, evaluationContext);
         if(eval.isError()) {
             return eval;
         }
@@ -73,7 +75,7 @@ public class UnaryMinusExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -82,13 +84,13 @@ public class UnaryMinusExpression implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 

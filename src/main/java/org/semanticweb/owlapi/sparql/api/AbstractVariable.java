@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -77,78 +79,78 @@ public abstract class AbstractVariable extends Variable {
         return new IRIVariable(getName());
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm) {
+    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return term.get().evaluate(sm);
+        return term.get().evaluate(sm, evaluationContext);
     }
 
 //    public boolean canEvaluateAsBoolean(SolutionMapping sm) {
 //        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsBoolean(sm);
 //    }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return term.get().evaluateAsEffectiveBooleanValue(sm);
+        return term.get().evaluateAsEffectiveBooleanValue(sm, evaluationContext);
     }
 
 //    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
 //        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsStringLiteral(sm);
 //    }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return term.get().evaluateAsStringLiteral(sm);
+        return term.get().evaluateAsStringLiteral(sm, evaluationContext);
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return term.get().evaluateAsSimpleLiteral(sm);
+        return term.get().evaluateAsSimpleLiteral(sm, evaluationContext);
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return term.get().evaluateAsNumeric(sm);
+        return term.get().evaluateAsNumeric(sm, evaluationContext);
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return term.get().evaluateAsDateTime(sm);
-    }
-
-    @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
-        Optional<RDFTerm> term = sm.getTermForVariable(this);
-        if(!term.isPresent()) {
-            return EvaluationResult.getError();
-        }
-        return term.get().evaluateAsLiteral(sm);
+        return term.get().evaluateAsDateTime(sm, evaluationContext);
     }
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {
             return EvaluationResult.getError();
         }
-        return term.get().evaluateAsIRI(sm);
+        return term.get().evaluateAsLiteral(sm, evaluationContext);
+    }
+
+    @Override
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
+        Optional<RDFTerm> term = sm.getTermForVariable(this);
+        if(!term.isPresent()) {
+            return EvaluationResult.getError();
+        }
+        return term.get().evaluateAsIRI(sm, evaluationContext);
     }
 
     @Nonnull

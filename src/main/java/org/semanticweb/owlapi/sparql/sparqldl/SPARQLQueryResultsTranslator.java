@@ -174,7 +174,7 @@ public class SPARQLQueryResultsTranslator {
 
     private boolean matches(List<Expression> filterConditions, SolutionMapping solutionMapping) {
         for(Expression condition : filterConditions) {
-            EvaluationResult evaluationResult = condition.evaluateAsEffectiveBooleanValue(solutionMapping);
+            EvaluationResult evaluationResult = condition.evaluateAsEffectiveBooleanValue(solutionMapping, null);
             if(evaluationResult.isError()) {
                 return false;
             }

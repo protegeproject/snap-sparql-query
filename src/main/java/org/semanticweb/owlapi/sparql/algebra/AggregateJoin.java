@@ -5,9 +5,8 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.RDFTerm;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
-import javax.swing.*;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,11 +39,11 @@ public class AggregateJoin extends GraphPatternAlgebraExpression<SolutionSequenc
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
         Set<Variable> variables = new HashSet<>();
         Table<GroupKey, Variable, EvaluationResult> table = HashBasedTable.create();
         for(Aggregation aggregation : aggregations) {
-            ImmutableList<AggregationEvaluation> solutionSequence = aggregation.evaluate(context);
+            ImmutableList<AggregationEvaluation> solutionSequence = aggregation.evaluate(context, evaluationContext);
             for(AggregationEvaluation evaluation : solutionSequence) {
                 table.put(evaluation.getGroupKey(), evaluation.getVariable(), evaluation.getEvaluationResult());
                 variables.add(evaluation.getVariable());

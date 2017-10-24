@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -49,23 +50,23 @@ public class RelationExpression implements Expression {
         return result;
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm) {
-        return evaluateAsEffectiveBooleanValue(sm);
+    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
+        return evaluateAsEffectiveBooleanValue(sm, evaluationContext);
     }
 
     public boolean canEvaluateAsBoolean(SolutionMapping sm) {
         return true;
     }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
-        return relation.evaluate(left, right, sm);
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
+        return relation.evaluate(left, right, sm, evaluationContext);
     }
 
     public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
         return false;
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -73,7 +74,7 @@ public class RelationExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -81,7 +82,7 @@ public class RelationExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -89,7 +90,7 @@ public class RelationExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -98,13 +99,13 @@ public class RelationExpression implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 

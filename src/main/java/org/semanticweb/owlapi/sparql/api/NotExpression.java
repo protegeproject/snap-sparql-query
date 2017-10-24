@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+
 import java.util.Set;
 
 /**
@@ -34,15 +36,15 @@ public class NotExpression implements Expression {
     }
 
 
-    public EvaluationResult evaluate(SolutionMapping sm) {
-        return evaluateAsEffectiveBooleanValue(sm);
+    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
+        return evaluateAsEffectiveBooleanValue(sm, evaluationContext);
     }
 
     public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
         return false;
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -50,7 +52,7 @@ public class NotExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -58,8 +60,8 @@ public class NotExpression implements Expression {
         return true;
     }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
-        EvaluationResult evalResult = expression.evaluateAsEffectiveBooleanValue(sm);
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
+        EvaluationResult evalResult = expression.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
         if(evalResult.isError()) {
             return evalResult;
         }
@@ -70,7 +72,7 @@ public class NotExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -78,7 +80,7 @@ public class NotExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -108,13 +110,13 @@ public class NotExpression implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 

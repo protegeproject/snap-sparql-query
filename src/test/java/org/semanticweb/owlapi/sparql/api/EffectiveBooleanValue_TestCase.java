@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -180,7 +181,7 @@ public class EffectiveBooleanValue_TestCase {
     }
 
     private void assertThatEffectiveBooleanValueIsTrue() {
-        assertThat(literal.evaluateAsEffectiveBooleanValue(sm), isTrue());
+        assertThat(literal.evaluateAsEffectiveBooleanValue(sm, mock(EvaluationContext.class)), isTrue());
     }
 
     /**
@@ -212,11 +213,11 @@ public class EffectiveBooleanValue_TestCase {
         when(datatype.isXSDString()).thenReturn(false);
         when(datatype.isRDFPlainLiteral()).thenReturn(false);
         literal = new Literal(datatype, "Some Lexical Form", "");
-        assertThat(literal.evaluateAsEffectiveBooleanValue(sm), isError());
+        assertThat(literal.evaluateAsEffectiveBooleanValue(sm, mock(EvaluationContext.class)), isError());
     }
 
     private void assertThatEffectiveBooleanValueIsFalse() {
-        assertThat(literal.evaluateAsEffectiveBooleanValue(sm), isFalse());
+        assertThat(literal.evaluateAsEffectiveBooleanValue(sm, mock(EvaluationContext.class)), isFalse());
     }
 
 

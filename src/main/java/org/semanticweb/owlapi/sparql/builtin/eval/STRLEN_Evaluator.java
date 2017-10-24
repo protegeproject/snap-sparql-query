@@ -3,6 +3,7 @@ package org.semanticweb.owlapi.sparql.builtin.eval;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -16,8 +17,8 @@ public class STRLEN_Evaluator implements BuiltInCallEvaluator {
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
-        EvaluationResult eval = args.get(0).evaluateAsStringLiteral(sm);
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
+        EvaluationResult eval = args.get(0).evaluateAsStringLiteral(sm, evaluationContext);
         if(eval.isError()) {
             return eval;
         }

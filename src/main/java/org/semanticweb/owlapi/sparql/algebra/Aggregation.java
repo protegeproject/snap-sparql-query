@@ -5,8 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.BuiltInCallExpression;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Variable;
-
-import java.io.PrintWriter;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 22/06/15
@@ -48,12 +47,12 @@ public class Aggregation extends GraphPatternAlgebraExpression<ImmutableList<Agg
     }
 
     @Override
-    public ImmutableList<AggregationEvaluation> evaluate(AlgebraEvaluationContext context) {
-        GroupEvaluation groupEvaluation = algebraExpression.evaluate(context);
+    public ImmutableList<AggregationEvaluation> evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+        GroupEvaluation groupEvaluation = algebraExpression.evaluate(context, evaluationContext);
         ImmutableList.Builder<AggregationEvaluation> resultBuilder = ImmutableList.builder();
         for(GroupKey groupKey : groupEvaluation.getGroupKeys()) {
             SolutionSequence groupSequence = groupEvaluation.getSolutionSequence(groupKey);
-            EvaluationResult result = expression.evaluateAsAggregate(groupSequence);
+            EvaluationResult result = expression.evaluateAsAggregate(groupSequence, evaluationContext);
             AggregationEvaluation aggregationEvaluation = new AggregationEvaluation(groupKey, variable, result);
             resultBuilder.add(aggregationEvaluation);
         }

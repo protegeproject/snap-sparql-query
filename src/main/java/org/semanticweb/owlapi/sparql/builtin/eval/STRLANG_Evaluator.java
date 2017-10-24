@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -12,15 +13,15 @@ public class STRLANG_Evaluator implements BuiltInCallEvaluator {
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
         if(args.size() != 2) {
             return EvaluationResult.getError();
         }
-        EvaluationResult lexicalFormEval = args.get(0).evaluateAsSimpleLiteral(sm);
+        EvaluationResult lexicalFormEval = args.get(0).evaluateAsSimpleLiteral(sm, evaluationContext);
         if(lexicalFormEval.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult langTagEval = args.get(1).evaluateAsSimpleLiteral(sm);
+        EvaluationResult langTagEval = args.get(1).evaluateAsSimpleLiteral(sm, evaluationContext);
         if(langTagEval.isError()) {
             return EvaluationResult.getError();
         }

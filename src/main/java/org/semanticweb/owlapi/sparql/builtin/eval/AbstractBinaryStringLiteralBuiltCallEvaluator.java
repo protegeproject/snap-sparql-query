@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.builtin.LiteralCompatibilityChecker;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -18,15 +19,15 @@ public abstract class AbstractBinaryStringLiteralBuiltCallEvaluator implements B
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
         if(args.size() != 2) {
             return EvaluationResult.getError();
         }
-        EvaluationResult evalLeft = args.get(0).evaluateAsLiteral(sm);
+        EvaluationResult evalLeft = args.get(0).evaluateAsLiteral(sm, evaluationContext);
         if(evalLeft.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult evalRight = args.get(1).evaluateAsLiteral(sm);
+        EvaluationResult evalRight = args.get(1).evaluateAsLiteral(sm, evaluationContext);
         if(evalRight.isError()) {
             return EvaluationResult.getError();
         }

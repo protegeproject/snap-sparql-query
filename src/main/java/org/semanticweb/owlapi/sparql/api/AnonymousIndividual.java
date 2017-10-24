@@ -1,10 +1,9 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.Objects;
 import java.util.Optional;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -53,7 +52,7 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm) {
+    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }
 
@@ -61,7 +60,7 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -69,7 +68,7 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return true;
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -77,7 +76,7 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -85,7 +84,7 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -93,7 +92,7 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -119,13 +118,13 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 

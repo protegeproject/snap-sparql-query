@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -15,15 +16,15 @@ public class STRENDS_Evaluator implements BuiltInCallEvaluator {
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
         if(args.size() != 2) {
             return EvaluationResult.getError();
         }
-        EvaluationResult arg0 = args.get(0).evaluateAsStringLiteral(sm);
+        EvaluationResult arg0 = args.get(0).evaluateAsStringLiteral(sm, evaluationContext);
         if(arg0.isError()) {
             return arg0;
         }
-        EvaluationResult arg1 = args.get(1).evaluateAsStringLiteral(sm);
+        EvaluationResult arg1 = args.get(1).evaluateAsStringLiteral(sm, evaluationContext);
         if(arg1.isError()) {
             return EvaluationResult.getError();
         }

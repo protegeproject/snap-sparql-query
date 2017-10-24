@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.GroupCondition;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import java.util.Optional;
 
@@ -43,11 +44,11 @@ public class Group extends GraphPatternAlgebraExpression<GroupEvaluation> {
     }
 
     @Override
-    public GroupEvaluation evaluate(AlgebraEvaluationContext context) {
+    public GroupEvaluation evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
         if(lastEvaluation.isPresent()) {
             return lastEvaluation.get();
         }
-        SolutionSequence sequence = pattern.evaluate(context);
+        SolutionSequence sequence = pattern.evaluate(context, evaluationContext);
         if(expressionList.isEmpty()) {
             return new GroupEvaluation(ImmutableMap.of(GroupKey.empty(), sequence));
         }
@@ -56,7 +57,7 @@ public class Group extends GraphPatternAlgebraExpression<GroupEvaluation> {
             for (SolutionMapping sm : sequence.getSolutionMappings()) {
                 ImmutableList.Builder<EvaluationResult> groupKeyBuilder = ImmutableList.builder();
                 for(GroupCondition condition : expressionList) {
-                    EvaluationResult eval = condition.asExpression().evaluate(sm);
+                    EvaluationResult eval = condition.asExpression().evaluate(sm, evaluationContext);
                     groupKeyBuilder.add(eval);
                 }
                 GroupKey key = new GroupKey(groupKeyBuilder.build());

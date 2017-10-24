@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import static com.google.common.base.Objects.toStringHelper;
 
@@ -28,8 +29,8 @@ public class Bind {
         return variable;
     }
 
-    public void evaluate(SolutionMapping solutionMapping) {
-        EvaluationResult eval = expression.evaluate(solutionMapping);
+    public void evaluate(SolutionMapping solutionMapping, EvaluationContext evaluationContext) {
+        EvaluationResult eval = expression.evaluate(solutionMapping, evaluationContext);
         if (!eval.isError()) {
             solutionMapping.bind(variable, eval.getResult());
         }

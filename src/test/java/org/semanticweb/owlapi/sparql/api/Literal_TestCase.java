@@ -1,14 +1,13 @@
 
 package org.semanticweb.owlapi.sparql.api;
 
-import jpaul.Constraints.Var;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
@@ -21,6 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.mock;
 
 @RunWith(org.mockito.runners.MockitoJUnitRunner.class)
 public class Literal_TestCase {
@@ -179,14 +179,14 @@ public class Literal_TestCase {
 
     @Test
     public void should_evaluateAsSelf() {
-        EvaluationResult eval = literal.evaluate(sm);
+        EvaluationResult eval = literal.evaluate(sm, mock(EvaluationContext.class));
         assertThat(eval.isError(), is(false));
         assertThat(eval.getResult(), Matchers.<RDFTerm>is(literal));
     }
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        EvaluationResult eval = literal.evaluateAsStringLiteral(sm);
+        EvaluationResult eval = literal.evaluateAsStringLiteral(sm, mock(EvaluationContext.class));
         assertThat(eval.isError(), is(false));
         assertThat(eval.getResult(), is(instanceOf(Literal.class)));
         Literal evalLiteral = (Literal) eval.getResult();
@@ -197,7 +197,7 @@ public class Literal_TestCase {
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        EvaluationResult eval = literal.evaluateAsSimpleLiteral(sm);
+        EvaluationResult eval = literal.evaluateAsSimpleLiteral(sm, mock(EvaluationContext.class));
         assertThat(eval.isError(), is(false));
         assertThat(eval.getResult(), is(instanceOf(Literal.class)));
         Literal evalLiteral = (Literal) eval.getResult();
@@ -208,17 +208,17 @@ public class Literal_TestCase {
 
     @Test
     public void should_evaluateAsNumeric() {
-        assertThat(literal.evaluateAsNumeric(sm).isError(), is(true));
+        assertThat(literal.evaluateAsNumeric(sm, mock(EvaluationContext.class)).isError(), is(true));
     }
 
     @Test
     public void should_evaluateAsDateTime() {
-        MatcherAssert.assertThat(literal.evaluateAsDateTime(sm).isError(), is(true));
+        MatcherAssert.assertThat(literal.evaluateAsDateTime(sm, mock(EvaluationContext.class)).isError(), is(true));
     }
 
     @Test
     public void should_evaluateAsIRI() {
-        EvaluationResult eval = literal.evaluateAsIRI(sm);
+        EvaluationResult eval = literal.evaluateAsIRI(sm, mock(EvaluationContext.class));
         assertThat(eval.isError(), is(false));
         assertThat(eval.getResult(), is(instanceOf(AtomicIRI.class)));
         AtomicIRI evalIRI = (AtomicIRI) eval.getResult();
@@ -227,7 +227,7 @@ public class Literal_TestCase {
 
     @Test
     public void should_evaluateAsLiteral() {
-        EvaluationResult eval = literal.evaluateAsLiteral(sm);
+        EvaluationResult eval = literal.evaluateAsLiteral(sm, mock(EvaluationContext.class));
         assertThat(eval.isError(), is(false));
         assertThat(eval.getResult(), is(instanceOf(Literal.class)));
         Literal evalLiteral = (Literal) eval.getResult();

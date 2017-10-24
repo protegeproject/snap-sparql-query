@@ -1,11 +1,8 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.Variable;
-
-import java.io.PrintWriter;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -29,7 +26,7 @@ public class Empty extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
         return SolutionSequence.getEmptySolutionSequence();
     }
 

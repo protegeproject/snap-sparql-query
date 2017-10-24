@@ -1,13 +1,11 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,11 +47,11 @@ public class Extend extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
-        SolutionSequence sequence = algebraExpression.evaluate(context);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+        SolutionSequence sequence = algebraExpression.evaluate(context, evaluationContext);
         ImmutableList.Builder<SolutionMapping> extendedSequence = ImmutableList.builder();
         for(SolutionMapping sm : sequence.getSolutionMappings()) {
-            EvaluationResult result = expression.evaluate(sm);
+            EvaluationResult result = expression.evaluate(sm, evaluationContext);
             if(!result.isError()) {
                 ImmutableMap<Variable, RDFTerm> variableTermMap = sm.asMap();
                 ImmutableMap<Variable, RDFTerm> extended = ImmutableMap.<Variable, RDFTerm>builder().putAll(variableTermMap).put(variable, result.getResult()).build();

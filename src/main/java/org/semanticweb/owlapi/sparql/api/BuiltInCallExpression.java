@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.builtin.BuiltInCall;
 import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInAggregateCallEvaluator;
 import org.semanticweb.owlapi.sparql.builtin.eval.BuiltInCallEvaluator;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;
@@ -67,28 +68,28 @@ public class BuiltInCallExpression implements Expression {
         return result;
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm) {
-        return builtInCall.getEvaluator().evaluate(args, sm);
+    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
+        return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
     }
 
-    public EvaluationResult evaluateAsAggregate(SolutionSequence solutionSequence) {
+    public EvaluationResult evaluateAsAggregate(SolutionSequence solutionSequence, EvaluationContext evaluationContext) {
         BuiltInCallEvaluator evaluator = builtInCall.getEvaluator();
         if(!(evaluator instanceof BuiltInAggregateCallEvaluator)) {
             throw new RuntimeException("Expected an aggregate builtin call evaluator");
         }
-        return ((BuiltInAggregateCallEvaluator) evaluator).evaluateAsAggregate(args, solutionSequence);
+        return ((BuiltInAggregateCallEvaluator) evaluator).evaluateAsAggregate(args, solutionSequence, evaluationContext);
     }
 
     public boolean canEvaluateAsBoolean(SolutionMapping sm) {
         return true;
     }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
         if(!builtInCall.getReturnType().isBoolean()) {
             return EvaluationResult.getError();
         }
         else {
-            return builtInCall.getEvaluator().evaluate(args, sm);
+            return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
         }
     }
 
@@ -97,12 +98,12 @@ public class BuiltInCallExpression implements Expression {
         return builtInCall.getReturnType().isSimpleLiteral();
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         if(!builtInCall.getReturnType().isSimpleLiteral()) {
             return EvaluationResult.getError();
         }
         else {
-            return builtInCall.getEvaluator().evaluate(args, sm);
+            return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
         }
     }
 
@@ -110,20 +111,20 @@ public class BuiltInCallExpression implements Expression {
         return builtInCall.getReturnType().isStringLiteral();
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
-        return builtInCall.getEvaluator().evaluate(args, sm);
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
+        return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
     }
 
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {
         return builtInCall.getReturnType().isNumeric();
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
         if(!builtInCall.getReturnType().isNumeric()) {
             return EvaluationResult.getError();
         }
         else {
-            return builtInCall.getEvaluator().evaluate(args, sm);
+            return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
         }
     }
 
@@ -131,7 +132,7 @@ public class BuiltInCallExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -140,20 +141,20 @@ public class BuiltInCallExpression implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         if(!builtInCall.getReturnType().isLiteral()) {
             return EvaluationResult.getError();
         }
-        return builtInCall.getEvaluator().evaluate(args, sm);
+        return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
     }
 
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
         if(!builtInCall.getReturnType().isIRI()) {
             return EvaluationResult.getError();
         }
-        return builtInCall.getEvaluator().evaluate(args, sm);
+        return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
     }
 
     @Override

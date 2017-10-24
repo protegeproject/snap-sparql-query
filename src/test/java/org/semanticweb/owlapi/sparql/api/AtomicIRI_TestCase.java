@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.mock;
 
 @RunWith(org.mockito.runners.MockitoJUnitRunner.class)
 public class AtomicIRI_TestCase {
@@ -84,7 +86,7 @@ public class AtomicIRI_TestCase {
 
     @Test
     public void should_evaluateAsStringLiteral() {
-        EvaluationResult eval = atomicIRI.evaluateAsStringLiteral(sm);
+        EvaluationResult eval = atomicIRI.evaluateAsStringLiteral(sm, mock(EvaluationContext.class));
         assertThat(eval.getResult(), is(instanceOf(Literal.class)));
         Literal literalEval = (Literal) eval.getResult();
         assertThat(literalEval.getDatatype().getIRI(), is(XSDVocabulary.STRING.getIRI()));
@@ -99,17 +101,17 @@ public class AtomicIRI_TestCase {
 
     @Test
     public void should_Not_evaluateAsNumeric() {
-        assertThat(atomicIRI.evaluateAsNumeric(sm).isError(), is(true));
+        assertThat(atomicIRI.evaluateAsNumeric(sm, mock(EvaluationContext.class)).isError(), is(true));
     }
 
     @Test
     public void should_Not_evaluateAsDateTime() {
-        assertThat(atomicIRI.evaluateAsDateTime(sm).isError(), is(true));
+        assertThat(atomicIRI.evaluateAsDateTime(sm, mock(EvaluationContext.class)).isError(), is(true));
     }
 
     @Test
     public void should_evaluateAsSimpleLiteral() {
-        assertThat(atomicIRI.evaluateAsSimpleLiteral(sm).isError(), is(false));
+        assertThat(atomicIRI.evaluateAsSimpleLiteral(sm, mock(EvaluationContext.class)).isError(), is(false));
     }
 
     @Test
@@ -129,7 +131,7 @@ public class AtomicIRI_TestCase {
 
     @Test
     public void should_evaluateAsLiteral() {
-        EvaluationResult eval = atomicIRI.evaluateAsStringLiteral(sm);
+        EvaluationResult eval = atomicIRI.evaluateAsStringLiteral(sm, mock(EvaluationContext.class));
         assertThat(eval.getResult(), is(instanceOf(Literal.class)));
         Literal literalEval = (Literal) eval.getResult();
         assertThat(literalEval.getDatatype().getIRI(), is(XSDVocabulary.STRING.getIRI()));
@@ -139,7 +141,7 @@ public class AtomicIRI_TestCase {
 
     @Test
     public void should_evaluateAsIRI() {
-        EvaluationResult eval = atomicIRI.evaluateAsIRI(sm);
+        EvaluationResult eval = atomicIRI.evaluateAsIRI(sm, mock(EvaluationContext.class));
         assertThat(eval.isError(), is(false));
         assertThat(eval.getResult(), Matchers.<RDFTerm>is(atomicIRI));
     }

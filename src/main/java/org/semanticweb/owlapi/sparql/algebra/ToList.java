@@ -1,6 +1,6 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import java.io.PrintWriter;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 09/06/15
@@ -14,8 +14,8 @@ public class ToList extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
-        return algebraExpression.evaluate(context);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+        return algebraExpression.evaluate(context, evaluationContext);
     }
 
     public GraphPatternAlgebraExpression<SolutionSequence> getAlgebraExpression() {

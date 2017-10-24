@@ -1,12 +1,15 @@
 
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
+import javax.xml.ws.soap.MTOM;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,9 @@ public class STRENDS_Evaluator_TestCase {
 
     @Mock
     private SolutionMapping sm;
+
+    @Mock
+    private EvaluationContext evaluationContext;
 
     @Before
     public void setUp() {
@@ -73,18 +79,18 @@ public class STRENDS_Evaluator_TestCase {
     private void setUpArgs(String ... argValues) {
         for (String argValue : argValues) {
             Expression arg = mock(Expression.class);
-            when(arg.evaluateAsStringLiteral(sm)).thenReturn(EvaluationResult.getResult(Literal.createString(argValue)));
+            when(arg.evaluateAsStringLiteral(sm, evaluationContext)).thenReturn(EvaluationResult.getResult(Literal.createString(argValue)));
             args.add(arg);
         }
     }
 
     private void assertThatResultIsError() {
-        EvaluationResult eval = evaluator.evaluate(args, sm);
+        EvaluationResult eval = evaluator.evaluate(args, sm, evaluationContext);
         assertThat(eval.isError(), is(true));
     }
 
     private void verifyExpectedResultIs(boolean expectedResult) {
-        EvaluationResult eval = evaluator.evaluate(args, sm);
+        EvaluationResult eval = evaluator.evaluate(args, sm, evaluationContext);
         assertThat(eval.isError(), is(false));
         RDFTerm result = eval.getResult();
         assertThat(result, is(instanceOf(Literal.class)));

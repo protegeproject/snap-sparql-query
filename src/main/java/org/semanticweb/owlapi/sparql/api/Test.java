@@ -1,5 +1,9 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+
+import java.time.ZonedDateTime;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -17,28 +21,29 @@ public class Test {
         Literal literalF = Literal.createString("X");
 
         SolutionMapping sm = SolutionMapping.emptyMapping();
+        EvaluationContext evaluationContext = new EvaluationContext(ZonedDateTime.now());
 //        System.out.println(literalA.ca(sm));
 //        System.out.println(literalB.canEvaluateAsBoolean(sm));
 
-        System.out.println("      A: " + literalA.evaluateAsEffectiveBooleanValue(sm));
-        System.out.println("      B: " + literalB.evaluateAsEffectiveBooleanValue(sm));
-        System.out.println("AND A B: " + new AndExpression(literalA, literalB).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" OR A B: " + new OrExpression(literalA, literalB).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println("  NOT A: " + new NotExpression(literalA).evaluateAsEffectiveBooleanValue(sm));
+        System.out.println("      A: " + literalA.evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println("      B: " + literalB.evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println("AND A B: " + new AndExpression(literalA, literalB).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" OR A B: " + new OrExpression(literalA, literalB).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println("  NOT A: " + new NotExpression(literalA).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
 
-        System.out.println("!A || B: " + new OrExpression(new NotExpression(literalA), literalB).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println("!A || !B: " + new OrExpression(new NotExpression(literalA), new NotExpression(literalB)).evaluateAsEffectiveBooleanValue(sm));
+        System.out.println("!A || B: " + new OrExpression(new NotExpression(literalA), literalB).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println("!A || !B: " + new OrExpression(new NotExpression(literalA), new NotExpression(literalB)).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
 
 
-        System.out.println(" C < D :" + new RelationExpression(literalC, literalD, Relation.LESS_THAN).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" C > D :" + new RelationExpression(literalC, literalD, Relation.GREATER_THAN).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" C < E :" + new RelationExpression(literalC, literalE, Relation.LESS_THAN).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" C <= E :" + new RelationExpression(literalC, literalE, Relation.LESS_THAN_OR_EQUAL).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" C != E :" + new RelationExpression(literalC, literalE, Relation.NOT_EQUAL).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" C = E :" + new RelationExpression(literalC, literalE, Relation.EQUAL).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" C != D :" + new RelationExpression(literalC, literalD, Relation.NOT_EQUAL).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" C = F :" + new RelationExpression(literalC, literalF, Relation.EQUAL).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" C != F :" + new RelationExpression(literalC, literalF, Relation.NOT_EQUAL).evaluateAsEffectiveBooleanValue(sm));
-        System.out.println(" C < F :" + new RelationExpression(literalC, literalF, Relation.LESS_THAN).evaluateAsEffectiveBooleanValue(sm));
+        System.out.println(" C < D :" + new RelationExpression(literalC, literalD, Relation.LESS_THAN).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" C > D :" + new RelationExpression(literalC, literalD, Relation.GREATER_THAN).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" C < E :" + new RelationExpression(literalC, literalE, Relation.LESS_THAN).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" C <= E :" + new RelationExpression(literalC, literalE, Relation.LESS_THAN_OR_EQUAL).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" C != E :" + new RelationExpression(literalC, literalE, Relation.NOT_EQUAL).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" C = E :" + new RelationExpression(literalC, literalE, Relation.EQUAL).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" C != D :" + new RelationExpression(literalC, literalD, Relation.NOT_EQUAL).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" C = F :" + new RelationExpression(literalC, literalF, Relation.EQUAL).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" C != F :" + new RelationExpression(literalC, literalF, Relation.NOT_EQUAL).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
+        System.out.println(" C < F :" + new RelationExpression(literalC, literalF, Relation.LESS_THAN).evaluateAsEffectiveBooleanValue(sm, evaluationContext));
     }
 }

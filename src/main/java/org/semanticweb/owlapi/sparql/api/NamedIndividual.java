@@ -2,10 +2,10 @@ package org.semanticweb.owlapi.sparql.api;
 
 import java.util.Optional;
 
-import com.google.common.base.MoreObjects;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 
@@ -54,17 +54,17 @@ public class NamedIndividual extends AbstractEntity implements Entity, AtomicInd
     }
 
     @Override
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getSimpleLiteral(getIRI().toString());
     }
 
     @Override
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getSimpleLiteral(getIRI().toString());
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getSimpleLiteral(getIRI().toString());
     }
 

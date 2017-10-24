@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -23,9 +24,9 @@ public class MD5_Evaluator extends AbstractUnaryLiteralBuiltInCallEvaluator {
 
 
     @Override
-    protected EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm) {
+    protected EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm, EvaluationContext evaluationContext) {
         try {
-            EvaluationResult evaluationResult = literal.evaluateAsSimpleLiteral(sm);
+            EvaluationResult evaluationResult = literal.evaluateAsSimpleLiteral(sm, evaluationContext);
             if(evaluationResult.isError()) {
                 return evaluationResult;
             }

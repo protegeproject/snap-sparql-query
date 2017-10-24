@@ -1,11 +1,10 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.collect.ImmutableList;
-import org.semanticweb.owlapi.sparql.api.OrderCondition;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 import org.semanticweb.owlapi.sparql.sparqldl.OrderByComparator;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +31,8 @@ public class OrderBy extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
-        SolutionSequence sequence = algebraExpression.evaluate(context);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+        SolutionSequence sequence = algebraExpression.evaluate(context, evaluationContext);
         List<SolutionMapping> sortedList = new ArrayList<>(sequence.getSolutionMappings());
         sortedList.sort(comparator);
         return new SolutionSequence(sequence.getVariableList(), ImmutableList.copyOf(sortedList));

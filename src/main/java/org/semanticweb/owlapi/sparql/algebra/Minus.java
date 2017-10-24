@@ -1,11 +1,11 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 import org.semanticweb.owlapi.sparql.sparqldl.MinusEvaluator;
 
 import java.util.Set;
@@ -46,9 +46,9 @@ public class Minus extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
-        SolutionSequence leftSeq = left.evaluate(context);
-        SolutionSequence rightSeq = right.evaluate(context);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+        SolutionSequence leftSeq = left.evaluate(context, evaluationContext);
+        SolutionSequence rightSeq = right.evaluate(context, evaluationContext);
         Set<Variable> sharedVariables = left.getSharedVariables(right);
         MinusEvaluator minusEvaluator = new MinusEvaluator(leftSeq.getSolutionMappings(), rightSeq.getSolutionMappings(), sharedVariables);
         ImmutableList<SolutionMapping> minusResult = minusEvaluator.getMinus();

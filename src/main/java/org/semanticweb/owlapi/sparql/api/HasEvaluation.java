@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -8,7 +10,7 @@ package org.semanticweb.owlapi.sparql.api;
  */
 public interface HasEvaluation {
 
-    EvaluationResult evaluate(SolutionMapping sm);
+    EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext);
 
 
 
@@ -35,18 +37,18 @@ public interface HasEvaluation {
      * represented as a typed literal with a datatype of xsd:boolean and a lexical value of "true"; an EBV of false is
      * represented as a typed literal with a datatype of xsd:boolean and a lexical value of "false".
      */
-    EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm);
+    EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsLiteral(SolutionMapping sm);
+    EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm);
+    EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsStringLiteral(SolutionMapping sm);
+    EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsNumeric(SolutionMapping sm);
+    EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsDateTime(SolutionMapping sm);
+    EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsIRI(SolutionMapping sm);
+    EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext);
 
 }

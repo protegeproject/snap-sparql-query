@@ -4,6 +4,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -21,30 +22,31 @@ public class REPLACE_Evaluator implements BuiltInCallEvaluator {
      *
      * @param args
      * @param sm
+     * @param evaluationContext
      * @return
      */
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
         if(args.size() < 3 || args.size() > 4) {
             return EvaluationResult.getError();
         }
-        EvaluationResult eval0 = args.get(0).evaluateAsLiteral(sm);
+        EvaluationResult eval0 = args.get(0).evaluateAsLiteral(sm, evaluationContext);
         if(eval0.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult eval1 = args.get(1).evaluateAsSimpleLiteral(sm);
+        EvaluationResult eval1 = args.get(1).evaluateAsSimpleLiteral(sm, evaluationContext);
         if(eval1.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult eval2 = args.get(2).evaluateAsSimpleLiteral(sm);
+        EvaluationResult eval2 = args.get(2).evaluateAsSimpleLiteral(sm, evaluationContext);
         if(eval2.isError()) {
             return EvaluationResult.getError();
         }
         String flags = "";
         if(args.size() == 4) {
-            EvaluationResult eval4 = args.get(3).evaluateAsSimpleLiteral(sm);
+            EvaluationResult eval4 = args.get(3).evaluateAsSimpleLiteral(sm, evaluationContext);
             if(eval4.isError()) {
                 return EvaluationResult.getError();
             }

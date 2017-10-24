@@ -3,6 +3,7 @@ package org.semanticweb.owlapi.sparql.builtin.eval;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -20,17 +21,17 @@ public class REGEX_Evaluator implements BuiltInCallEvaluator {
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
         if(args.size() != 2 && args.size() != 3) {
             return EvaluationResult.getError();
         }
         Expression string = args.get(0);
-        EvaluationResult matchResult = string.evaluateAsStringLiteral(sm);
+        EvaluationResult matchResult = string.evaluateAsStringLiteral(sm, evaluationContext);
         if(matchResult.isError()) {
             return matchResult;
         }
         Expression pattern = args.get(1);
-        EvaluationResult patternResult = pattern.evaluateAsSimpleLiteral(sm);
+        EvaluationResult patternResult = pattern.evaluateAsSimpleLiteral(sm, evaluationContext);
         if(patternResult.isError()) {
             return patternResult;
         }

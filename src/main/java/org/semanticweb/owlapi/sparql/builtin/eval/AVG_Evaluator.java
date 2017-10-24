@@ -4,6 +4,7 @@ import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public class AVG_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCallEvaluator {
 
     @Override
-    public EvaluationResult evaluateAsAggregate(List<Expression> args, SolutionSequence solutionSequence) {
+    public EvaluationResult evaluateAsAggregate(List<Expression> args, SolutionSequence solutionSequence, EvaluationContext evaluationContext) {
         if(args.size() != 1) {
             return EvaluationResult.getError();
         }
@@ -25,7 +26,7 @@ public class AVG_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
         int count = 0;
         double sum = 0;
         for(SolutionMapping sm : solutionSequence.getSolutionMappings()) {
-            EvaluationResult eval = arg.evaluateAsNumeric(sm);
+            EvaluationResult eval = arg.evaluateAsNumeric(sm, evaluationContext);
             if(!eval.isError()) {
                 double numeric = eval.asNumeric();
                 sum += numeric;
@@ -43,7 +44,7 @@ public class AVG_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 }

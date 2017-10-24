@@ -4,6 +4,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.Literal;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -27,16 +28,16 @@ public class SUBSTR_Evaluator implements BuiltInCallEvaluator {
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
         if(args.size() < MIN_ARGS_LENGTH || args.size() > MAX_ARGS_LENGTH) {
             return EvaluationResult.getError();
         }
-        final EvaluationResult stringArgEval = args.get(STRING_ARG_INDEX).evaluateAsLiteral(sm);
+        final EvaluationResult stringArgEval = args.get(STRING_ARG_INDEX).evaluateAsLiteral(sm, evaluationContext);
         if(stringArgEval.isError()) {
             return EvaluationResult.getError();
         }
 
-        final EvaluationResult startIndexArgEval = args.get(START_INDEX_INDEX).evaluateAsNumeric(sm);
+        final EvaluationResult startIndexArgEval = args.get(START_INDEX_INDEX).evaluateAsNumeric(sm, evaluationContext);
         if(startIndexArgEval.isError()) {
             return EvaluationResult.getError();
         }
@@ -47,7 +48,7 @@ public class SUBSTR_Evaluator implements BuiltInCallEvaluator {
         int startIndex = (int) startIndexArgEval.asNumeric();
         final String substring;
         if(argsContainsLengthArg(args)) {
-            EvaluationResult lengthArgEval = args.get(LENGTH_ARG_INDEX).evaluateAsNumeric(sm);
+            EvaluationResult lengthArgEval = args.get(LENGTH_ARG_INDEX).evaluateAsNumeric(sm, evaluationContext);
             if(lengthArgEval.isError()) {
                 return EvaluationResult.getError();
             }

@@ -1,5 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -30,19 +32,19 @@ public enum Relation {
         return symbolicForm;
     }
 
-    public EvaluationResult evaluate(Expression left, Expression right, SolutionMapping sm) {
-        EvaluationResult leftEval = left.evaluateAsNumeric(sm);
-        EvaluationResult rightEval = right.evaluateAsNumeric(sm);
+    public EvaluationResult evaluate(Expression left, Expression right, SolutionMapping sm, EvaluationContext evaluationContext) {
+        EvaluationResult leftEval = left.evaluateAsNumeric(sm, evaluationContext);
+        EvaluationResult rightEval = right.evaluateAsNumeric(sm, evaluationContext);
         if(!leftEval.isError() && !rightEval.isError()) {
             return evaluateNumeric(leftEval, rightEval);
         }
-        EvaluationResult litLeft = left.evaluateAsSimpleLiteral(sm);
-        EvaluationResult litRight = right.evaluateAsSimpleLiteral(sm);
+        EvaluationResult litLeft = left.evaluateAsSimpleLiteral(sm, evaluationContext);
+        EvaluationResult litRight = right.evaluateAsSimpleLiteral(sm, evaluationContext);
         if(!litLeft.isError() && !litRight.isError()) {
             return evaluateSimpleLiteral(litLeft, litRight);
         }
-        EvaluationResult boolLeft = left.evaluateAsEffectiveBooleanValue(sm);
-        EvaluationResult boolRight = right.evaluateAsEffectiveBooleanValue(sm);
+        EvaluationResult boolLeft = left.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
+        EvaluationResult boolRight = right.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
         if(!boolLeft.isError() && !boolRight.isError()) {
             return evaluateBoolean(boolLeft, boolRight);
         }

@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.builtin.BasicNumericType;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -17,12 +18,12 @@ public class SUM_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
 
     @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm) {
+    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
     @Override
-    public EvaluationResult evaluateAsAggregate(List<Expression> args, SolutionSequence solutionSequence) {
+    public EvaluationResult evaluateAsAggregate(List<Expression> args, SolutionSequence solutionSequence, EvaluationContext evaluationContext) {
         if(args.size() != 1) {
             return EvaluationResult.getError();
         }
@@ -30,7 +31,7 @@ public class SUM_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
         double sum = 0;
         Datatype mostSpecificBasicType = Datatype.getXSDInteger();
         for(SolutionMapping sm : solutionSequence.getSolutionMappings()) {
-            EvaluationResult argEval = arg.evaluateAsNumeric(sm);
+            EvaluationResult argEval = arg.evaluateAsNumeric(sm, evaluationContext);
             if(!argEval.isError()) {
                 mostSpecificBasicType = BasicNumericType.getMostSpecificBasicNumericType(mostSpecificBasicType, argEval.asLiteral().getDatatype());
                 sum += argEval.asNumeric();

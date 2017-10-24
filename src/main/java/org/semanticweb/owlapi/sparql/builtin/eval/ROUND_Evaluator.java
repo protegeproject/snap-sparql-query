@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.api.*;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 06/06/15
@@ -8,8 +9,8 @@ import org.semanticweb.owlapi.sparql.api.*;
 public class ROUND_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
 
     @Override
-    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm) {
-        EvaluationResult eval = arg.evaluateAsNumeric(sm);
+    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, EvaluationContext evaluationContext) {
+        EvaluationResult eval = arg.evaluateAsNumeric(sm, evaluationContext);
         if(eval.isError()) {
             return eval;
         }

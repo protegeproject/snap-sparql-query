@@ -1,14 +1,12 @@
 package org.semanticweb.owlapi.sparql.algebra;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.sparql.api.Axiom;
 import org.semanticweb.owlapi.sparql.api.Variable;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 import org.semanticweb.owlapi.sparql.sparqldl.Joiner;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,9 +61,9 @@ public class Join extends GraphPatternAlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
-        SolutionSequence leftSeq = left.evaluate(context);
-        SolutionSequence rightSeq = right.evaluate(context);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+        SolutionSequence leftSeq = left.evaluate(context, evaluationContext);
+        SolutionSequence rightSeq = right.evaluate(context, evaluationContext);
         Joiner joiner = new Joiner(leftSeq.getSolutionMappings(), rightSeq.getSolutionMappings(), left.getSharedVariables(right));
         List<Variable> unionVariables = new ArrayList<>();
         unionVariables.addAll(leftSeq.getVariableList());

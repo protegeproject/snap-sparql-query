@@ -2,6 +2,7 @@ package org.semanticweb.owlapi.sparql.api;
 
 
 import org.semanticweb.owlapi.sparql.builtin.BasicNumericType;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 /**
  * Author: Matthew Horridge<br>
@@ -16,15 +17,15 @@ public class PlusExpression extends BinaryExpression implements Expression {
         super(left, right);
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm) {
-        return evaluateAsNumeric(sm);
+    public EvaluationResult evaluate(SolutionMapping sm, EvaluationContext evaluationContext) {
+        return evaluateAsNumeric(sm, evaluationContext);
     }
 
     public boolean canEvaluateAsBoolean(SolutionMapping sm) {
         return false;
     }
 
-    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm) {
+    public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -32,7 +33,7 @@ public class PlusExpression extends BinaryExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -40,7 +41,7 @@ public class PlusExpression extends BinaryExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -48,12 +49,12 @@ public class PlusExpression extends BinaryExpression implements Expression {
         return true;
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm) {
-        EvaluationResult leftEval = getLeft().evaluateAsNumeric(sm);
+    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, EvaluationContext evaluationContext) {
+        EvaluationResult leftEval = getLeft().evaluateAsNumeric(sm, evaluationContext);
         if(leftEval.isError()) {
             return leftEval;
         }
-        EvaluationResult rightEval = getRight().evaluateAsNumeric(sm);
+        EvaluationResult rightEval = getRight().evaluateAsNumeric(sm, evaluationContext);
         if(rightEval.isError()) {
             return rightEval;
         }
@@ -69,7 +70,7 @@ public class PlusExpression extends BinaryExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm) {
+    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -78,12 +79,12 @@ public class PlusExpression extends BinaryExpression implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm) {
+    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm) {
+    public EvaluationResult evaluateAsIRI(SolutionMapping sm, EvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 

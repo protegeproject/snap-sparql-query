@@ -2,8 +2,8 @@ package org.semanticweb.owlapi.sparql.algebra;
 
 import com.google.common.collect.ImmutableList;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
-import java.io.PrintWriter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -23,8 +23,8 @@ public class Distinct extends AlgebraExpression<SolutionSequence> {
     }
 
     @Override
-    public SolutionSequence evaluate(AlgebraEvaluationContext context) {
-        SolutionSequence sequence = expression.evaluate(context);
+    public SolutionSequence evaluate(AlgebraEvaluationContext context, EvaluationContext evaluationContext) {
+        SolutionSequence sequence = expression.evaluate(context, evaluationContext);
         Set<SolutionMapping> distinctSolutions = new LinkedHashSet<>(sequence.getSolutionMappings());
         return new SolutionSequence(sequence.getVariableList(), ImmutableList.copyOf(distinctSolutions));
     }

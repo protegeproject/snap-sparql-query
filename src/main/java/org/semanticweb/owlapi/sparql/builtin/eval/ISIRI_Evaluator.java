@@ -1,8 +1,7 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import org.semanticweb.owlapi.sparql.api.*;
-
-import java.util.List;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 16 Oct 2017
@@ -10,8 +9,8 @@ import java.util.List;
 public class ISIRI_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
 
     @Override
-    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm) {
-        EvaluationResult result = arg.evaluate(sm);
+    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, EvaluationContext evaluationContext) {
+        EvaluationResult result = arg.evaluate(sm, evaluationContext);
         if(result.isError()) {
             return result;
         }

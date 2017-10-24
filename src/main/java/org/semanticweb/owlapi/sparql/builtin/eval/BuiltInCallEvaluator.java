@@ -3,6 +3,7 @@ package org.semanticweb.owlapi.sparql.builtin.eval;
 import org.semanticweb.owlapi.sparql.api.EvaluationResult;
 import org.semanticweb.owlapi.sparql.api.Expression;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.sparqldl.EvaluationContext;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -15,5 +16,5 @@ import java.util.List;
 public interface BuiltInCallEvaluator {
 
     @Nonnull
-    EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm);
+    EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, EvaluationContext evaluationContext);
 }
