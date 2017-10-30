@@ -42,4 +42,8 @@ public class ReturnType {
     public boolean isIRI() {
         return sparqlType == SparqlType.IRI;
     }
+
+    public boolean isDateTime() {
+        return sparqlType == SparqlType.XSD_DATE_TIME;
+    }
 }

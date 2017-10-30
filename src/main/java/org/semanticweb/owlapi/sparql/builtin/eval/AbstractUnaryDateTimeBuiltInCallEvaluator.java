@@ -11,11 +11,15 @@ import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 06/06/15
  */
-public abstract class AbstractUnaryDateTimeBuiltInCallEvaluator extends AbstractUnaryLiteralBuiltInCallEvaluator {
+public abstract class AbstractUnaryDateTimeBuiltInCallEvaluator extends AbstractUnaryBuiltInCallEvaluator {
 
     @Override
-    protected EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        Optional<DateTime> ts = DateTime.parseDateTime(literal.getLexicalForm());
+    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
+        EvaluationResult result = arg.evaluateAsDateTime(sm, evaluationContext);
+        if(result.isError()) {
+            return EvaluationResult.getError();
+        }
+        Optional<DateTime> ts = DateTime.parseDateTime(result.asSimpleLiteral());
         if(ts.isPresent()) {
             return evaluate(ts.get(), arg, sm);
         }

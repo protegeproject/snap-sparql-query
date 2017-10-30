@@ -133,7 +133,10 @@ public class BuiltInCallExpression implements Expression {
     }
 
     public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
+        if(!builtInCall.getReturnType().isDateTime()) {
+            return EvaluationResult.getError();
+        }
+        return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
     }
 
     public boolean canEvaluateAsIRI(SolutionMapping sm) {

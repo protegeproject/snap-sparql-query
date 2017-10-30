@@ -1,9 +1,14 @@
 package org.semanticweb.owlapi.sparql.builtin;
 
+import com.google.common.base.MoreObjects;
+
 import javax.annotation.Nonnull;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
+
+import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 06/06/15
@@ -25,6 +30,7 @@ public class DateTime {
             ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTime);
             return Optional.of(new DateTime(zonedDateTime));
         } catch (DateTimeParseException e) {
+            e.printStackTrace();
             return Optional.empty();
         }
     }
@@ -65,5 +71,13 @@ public class DateTime {
 
     public String getTz() {
         return zonedDateTime.getZone().getId();
+    }
+
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper("DateTime")
+                .addValue(zonedDateTime)
+                .toString();
     }
 }

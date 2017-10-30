@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
+import org.semanticweb.owlapi.sparql.builtin.DateTime;
 
 /**
  * Author: Matthew Horridge<br>
@@ -33,26 +34,46 @@ public enum Relation {
     }
 
     public EvaluationResult evaluate(Expression left, Expression right, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
+        // Numeric - Numeric
+        // xsd:dateTime - xsd:dateTime
+        // SimpleLiteral - SimpleLiteral
+        // xsd:string - xsd:string
+        // xsd:boolean - xsd:boolean
+
+
         EvaluationResult leftEval = left.evaluateAsNumeric(sm, evaluationContext);
-        EvaluationResult rightEval = right.evaluateAsNumeric(sm, evaluationContext);
-        if(!leftEval.isError() && !rightEval.isError()) {
-            return evaluateNumeric(leftEval, rightEval);
+        if(!leftEval.isError()) {
+            EvaluationResult rightEval = right.evaluateAsNumeric(sm, evaluationContext);
+            if (!rightEval.isError()) {
+                return evaluateNumeric(leftEval, rightEval);
+            }
+        }
+        EvaluationResult dtLeft = left.evaluateAsDateTime(sm, evaluationContext);
+        if (!dtLeft.isError()) {
+            EvaluationResult dtRight = right.evaluateAsDateTime(sm, evaluationContext);
+            if (!dtRight.isError()) {
+                return evaluateDateTime(dtLeft, dtRight);
+            }
         }
         EvaluationResult litLeft = left.evaluateAsSimpleLiteral(sm, evaluationContext);
-        EvaluationResult litRight = right.evaluateAsSimpleLiteral(sm, evaluationContext);
-        if(!litLeft.isError() && !litRight.isError()) {
-            return evaluateSimpleLiteral(litLeft, litRight);
+        if (!litLeft.isError()) {
+            EvaluationResult litRight = right.evaluateAsSimpleLiteral(sm, evaluationContext);
+            if (!litRight.isError()) {
+                return evaluateSimpleLiteral(litLeft, litRight);
+            }
         }
         EvaluationResult boolLeft = left.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
-        EvaluationResult boolRight = right.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
-        if(!boolLeft.isError() && !boolRight.isError()) {
-            return evaluateBoolean(boolLeft, boolRight);
+        if (!boolLeft.isError()) {
+            EvaluationResult boolRight = right.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
+            if (!boolRight.isError()) {
+                return evaluateBoolean(boolLeft, boolRight);
+            }
         }
         return EvaluationResult.getError();
     }
 
     private EvaluationResult evaluateNumeric(EvaluationResult leftEval, EvaluationResult rightEval) {
-        double leftValue = leftEval.asNumeric();
+        double leftValue = leftEval.    asNumeric();
         double rightValue = rightEval.asNumeric();
 
         switch (this) {
@@ -68,6 +89,28 @@ public enum Relation {
                 return EvaluationResult.getBoolean(leftValue > rightValue);
             case GREATER_THAN_OR_EQUAL:
                 return EvaluationResult.getBoolean(leftValue >= rightValue);
+            default:
+                throw new RuntimeException("Unknown enum value");
+        }
+    }
+
+    private EvaluationResult evaluateDateTime(EvaluationResult leftEval, EvaluationResult rightEval) {
+        DateTime leftValue = leftEval.asDateTime();
+        DateTime rightValue = rightEval.asDateTime();
+
+        switch (this) {
+            case EQUAL:
+                return EvaluationResult.getBoolean(leftValue.getEpochMilli() == rightValue.getEpochMilli());
+            case NOT_EQUAL:
+                return EvaluationResult.getBoolean(leftValue.getEpochMilli() != rightValue.getEpochMilli());
+            case LESS_THAN:
+                return EvaluationResult.getBoolean(leftValue.getEpochMilli() < rightValue.getEpochMilli());
+            case LESS_THAN_OR_EQUAL:
+                return EvaluationResult.getBoolean(leftValue.getEpochMilli() <= rightValue.getEpochMilli());
+            case GREATER_THAN:
+                return EvaluationResult.getBoolean(leftValue.getEpochMilli() > rightValue.getEpochMilli());
+            case GREATER_THAN_OR_EQUAL:
+                return EvaluationResult.getBoolean(leftValue.getEpochMilli() >= rightValue.getEpochMilli());
             default:
                 throw new RuntimeException("Unknown enum value");
         }
@@ -105,13 +148,13 @@ public enum Relation {
             case NOT_EQUAL:
                 return EvaluationResult.getBoolean(left != right);
             case LESS_THAN:
-                return EvaluationResult.getError();
+                return EvaluationResult.getBoolean(!left && right);
             case LESS_THAN_OR_EQUAL:
-                return EvaluationResult.getError();
+                return EvaluationResult.getBoolean(!(left && !right));
             case GREATER_THAN:
-                return EvaluationResult.getError();
+                return EvaluationResult.getBoolean(left && !right);
             case GREATER_THAN_OR_EQUAL:
-                return EvaluationResult.getError();
+                return EvaluationResult.getBoolean(!(!left && right));
             default:
                 throw new RuntimeException("Unknown enum value");
         }

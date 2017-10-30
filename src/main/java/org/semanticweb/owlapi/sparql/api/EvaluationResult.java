@@ -1,6 +1,7 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
+import org.semanticweb.owlapi.sparql.builtin.DateTime;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -109,6 +110,15 @@ public class EvaluationResult {
     public String asSimpleLiteral() {
         if(result instanceof Literal) {
             return ((Literal) result).getLexicalForm();
+        }
+        else {
+            throw new RuntimeException("Not a literal");
+        }
+    }
+
+    public DateTime asDateTime() {
+        if(result instanceof Literal) {
+            return DateTime.parseDateTime(((Literal) result).getLexicalForm()).orElseThrow(() -> new RuntimeException("Could not parse datetime"));
         }
         else {
             throw new RuntimeException("Not a literal");
