@@ -90,10 +90,6 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
         return EvaluationResult.getSimpleLiteral(getIRI().toString());
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
     @Override
     public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getSimpleLiteral(getIRI().toString());

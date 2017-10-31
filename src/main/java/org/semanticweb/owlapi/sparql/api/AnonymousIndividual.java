@@ -49,6 +49,11 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
+    @Override
+    public boolean isXSDDateTime() {
+        return false;
+    }
+
     public boolean isEntityIRI() {
         return false;
     }
@@ -91,10 +96,6 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
 
     public boolean canEvaluateAsDateTime(SolutionMapping sm) {
         return false;
-    }
-
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
     }
 
     public boolean canEvaluateAsIRI(SolutionMapping sm) {

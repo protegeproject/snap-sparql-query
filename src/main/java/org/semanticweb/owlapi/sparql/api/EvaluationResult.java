@@ -111,10 +111,22 @@ public final class EvaluationResult {
     }
 
     /**
-     * Gets this result as a numeric result or else as an error
+     * Check this result and returns it if it is numeric, otherwise returns an error.
      */
     public EvaluationResult asNumericOrElseError() {
         if(result != null && result.isNumeric()) {
+            return this;
+        }
+        else {
+            return EvaluationResult.getError();
+        }
+    }
+
+    /**
+     * Check this result and returns it if it is a dateTime, otherwise returns an error.
+     */
+    public EvaluationResult asDateTimeOrElseError() {
+        if(result != null && result.isXSDDateTime()) {
             return this;
         }
         else {

@@ -66,10 +66,6 @@ public class PlusExpression extends BinaryExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
     public boolean canEvaluateAsIRI(SolutionMapping sm) {
         return false;
     }

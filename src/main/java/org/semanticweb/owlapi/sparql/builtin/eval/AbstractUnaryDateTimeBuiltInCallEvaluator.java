@@ -15,7 +15,7 @@ public abstract class AbstractUnaryDateTimeBuiltInCallEvaluator extends Abstract
 
     @Override
     protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult result = arg.evaluateAsDateTime(sm, evaluationContext);
+        EvaluationResult result = arg.evaluate(sm, evaluationContext).asDateTimeOrElseError();
         if(result.isError()) {
             return EvaluationResult.getError();
         }

@@ -48,9 +48,9 @@ public enum Relation {
                 return evaluateNumeric(leftEval, rightEval);
             }
         }
-        EvaluationResult dtLeft = left.evaluateAsDateTime(sm, evaluationContext);
+        EvaluationResult dtLeft = left.evaluate(sm, evaluationContext).asDateTimeOrElseError();
         if (!dtLeft.isError()) {
-            EvaluationResult dtRight = right.evaluateAsDateTime(sm, evaluationContext);
+            EvaluationResult dtRight = right.evaluate(sm, evaluationContext).asDateTimeOrElseError();
             if (!dtRight.isError()) {
                 return evaluateDateTime(dtLeft, dtRight);
             }

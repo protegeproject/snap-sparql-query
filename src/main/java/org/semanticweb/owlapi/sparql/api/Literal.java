@@ -195,6 +195,11 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     }
 
     @Override
+    public boolean isXSDDateTime() {
+        return datatype.isXSDDateTime() && datatype.isInLexicalSpace(lexicalForm);
+    }
+
+    @Override
     public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }
@@ -303,14 +308,6 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
 
     private boolean isInDateTimeLexicalSpace() {
         return OWL2Datatype.XSD_DATE_TIME.getPattern().matcher(lexicalForm).matches();
-    }
-
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        if (isDatatypeDateTime() && isInDateTimeLexicalSpace()) {
-            return EvaluationResult.getResult(this);
-        } else {
-            return castToXSDDateTime().map(EvaluationResult::getResult).orElse(EvaluationResult.getError());
-        }
     }
 
     @Override

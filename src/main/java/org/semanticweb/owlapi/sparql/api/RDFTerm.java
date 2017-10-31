@@ -6,8 +6,15 @@ package org.semanticweb.owlapi.sparql.api;
 public interface RDFTerm extends HasEvaluation, AnnotationValue, HasCastTo {
 
     /**
-     * Determines if this term is numeric.  To be numeric the term should be a {@link Literal} and
-     * Literal{@link #isNumeric()} must be true.
+     * Determines if this term is numeric.  To be numeric the term should be a {@link Literal} with
+     * a numeric datatype and a value that is in the lexical space of the datatype.
      */
     boolean isNumeric();
+
+    /**
+     * Determines if this term is a dateTime.  To be a dateTime the term should be a {@link Literal} with
+     * a datatype of xsd:dateTime and a value that is in the lexical space of this datatype.
+     */
+    boolean isXSDDateTime();
+
 }

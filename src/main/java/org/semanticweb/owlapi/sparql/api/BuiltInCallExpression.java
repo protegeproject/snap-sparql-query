@@ -132,13 +132,6 @@ public class BuiltInCallExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        if(!builtInCall.getReturnType().isDateTime()) {
-            return EvaluationResult.getError();
-        }
-        return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
-    }
-
     public boolean canEvaluateAsIRI(SolutionMapping sm) {
         return false;
     }

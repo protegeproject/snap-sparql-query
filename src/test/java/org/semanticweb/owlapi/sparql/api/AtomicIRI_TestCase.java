@@ -100,11 +100,6 @@ public class AtomicIRI_TestCase {
     }
 
     @Test
-    public void should_Not_evaluateAsDateTime() {
-        assertThat(atomicIRI.evaluateAsDateTime(sm, mock(AlgebraEvaluationContext.class)).isError(), is(true));
-    }
-
-    @Test
     public void should_evaluateAsSimpleLiteral() {
         assertThat(atomicIRI.evaluateAsSimpleLiteral(sm, mock(AlgebraEvaluationContext.class)).isError(), is(false));
     }

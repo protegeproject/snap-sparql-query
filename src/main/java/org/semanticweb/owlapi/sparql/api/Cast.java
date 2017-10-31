@@ -94,16 +94,6 @@ public class Cast implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        if (castTo.isXSDDateTime()) {
-            return evaluate(sm, evaluationContext);
-        }
-        else {
-            return EvaluationResult.getError();
-        }
-    }
-
-    @Override
     public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
