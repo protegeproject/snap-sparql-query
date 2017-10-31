@@ -20,7 +20,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  */
 public class AnnotationProperty extends AbstractEntity implements AtomicAnnotationProperty, Entity {
 
-    public AnnotationProperty(@Nonnull IRI iri) {
+    public AnnotationProperty(IRI iri) {
         super(iri);
     }
 

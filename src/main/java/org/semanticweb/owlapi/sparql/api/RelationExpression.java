@@ -66,10 +66,6 @@ public class RelationExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
     public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
         return false;
     }

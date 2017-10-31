@@ -156,12 +156,12 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
 
     /**
      * Determines if this literal is a string literal.  A string literal is a literal that has a datatype of
-     * xsd:string.
+     * xsd:string, or has a datatype of plain literal.
      *
      * @return {@code true} if this literal is a string literal, otherwise {@code false}.
      */
     public boolean isStringLiteral() {
-        return datatype.isXSDString();
+        return datatype.isXSDString() || datatype.isRDFPlainLiteral();
     }
 
     /**
@@ -197,6 +197,11 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     @Override
     public boolean isXSDDateTime() {
         return datatype.isXSDDateTime() && datatype.isInLexicalSpace(lexicalForm);
+    }
+
+    @Override
+    public boolean isXSDString() {
+        return datatype.isXSDString();
     }
 
     @Override
@@ -272,35 +277,9 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
         }
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getResult(Literal.createString(lexicalForm));
-    }
-
     public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(Literal.createRDFPlainLiteral(lexicalForm, langTag));
     }
-
-//    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-//        if (isNumeric()) {
-//            return EvaluationResult.getResult(this);
-//        } else if (isStringLiteral() || isSimpleLiteral()) {
-//            try {
-//                double value = Double.parseDouble(lexicalForm);
-//                if (value % 1 == 0) {
-//                    return EvaluationResult.getInteger((int) value);
-//                } else if(Double.isNaN(value)) {
-//                    return EvaluationResult.getDouble(value);
-//                }
-//                else {
-//                    return EvaluationResult.getDecimal(value);
-//                }
-//            } catch (NumberFormatException e2) {
-//                return EvaluationResult.getError();
-//            }
-//        } else {
-//            return EvaluationResult.getError();
-//        }
-//    }
 
     private boolean isDatatypeDateTime() {
         return datatype.isXSDDateTime();

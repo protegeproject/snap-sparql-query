@@ -111,10 +111,6 @@ public class BuiltInCallExpression implements Expression {
         return builtInCall.getReturnType().isStringLiteral();
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
-    }
-
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {
         return builtInCall.getReturnType().isNumeric();
     }

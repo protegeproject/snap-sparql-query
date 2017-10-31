@@ -112,11 +112,6 @@ public class DataProperty_TestCase {
     }
 
     @Test
-    public void should_evaluateAsStringLiteral() {
-        assertThat(dataProperty.evaluateAsStringLiteral(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(dataProperty.getIRI().toString()))));
-    }
-
-    @Test
     public void should_evaluateAsLiteral() {
         assertThat(dataProperty.evaluateAsLiteral(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }

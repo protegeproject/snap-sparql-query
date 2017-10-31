@@ -26,7 +26,7 @@ public class REGEX_Evaluator implements BuiltInCallEvaluator {
             return EvaluationResult.getError();
         }
         Expression string = args.get(0);
-        EvaluationResult matchResult = string.evaluateAsStringLiteral(sm, evaluationContext);
+        EvaluationResult matchResult = string.evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(matchResult.isError()) {
             return matchResult;
         }

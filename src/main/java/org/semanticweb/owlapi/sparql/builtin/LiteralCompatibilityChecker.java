@@ -24,13 +24,13 @@ public class LiteralCompatibilityChecker {
      * @return true of the literals are argument compatible, otherwise false.
      */
     public boolean isCompatibleWith(Literal left, Literal right) {
-        if((left.isSimpleLiteral() || left.isStringLiteral()) && (right.isSimpleLiteral() || right.isStringLiteral())) {
+        if((left.isSimpleLiteral() || left.isXSDString()) && (right.isSimpleLiteral() || right.isXSDString())) {
             return true;
         }
         if(left.isRDFPlainLiteral() && right.isRDFPlainLiteral() && left.getLang().equals(right.getLang())) {
             return true;
         }
-        if(left.isRDFPlainLiteral() && (right.isSimpleLiteral() || right.isStringLiteral())) {
+        if(left.isRDFPlainLiteral() && (right.isSimpleLiteral() || right.isXSDString())) {
             return true;
         }
         return false;

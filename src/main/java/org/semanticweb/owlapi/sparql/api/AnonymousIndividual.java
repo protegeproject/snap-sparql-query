@@ -54,6 +54,16 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
+    @Override
+    public boolean isXSDString() {
+        return false;
+    }
+
+    @Override
+    public boolean isStringLiteral() {
+        return false;
+    }
+
     public boolean isEntityIRI() {
         return false;
     }
@@ -76,10 +86,6 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
 
     public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
         return true;
-    }
-
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
     }
 
     public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {

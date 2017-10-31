@@ -18,7 +18,7 @@ public class STRLEN_Evaluator implements BuiltInCallEvaluator {
     @Nonnull
     @Override
     public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult eval = args.get(0).evaluateAsStringLiteral(sm, evaluationContext);
+        EvaluationResult eval = args.get(0).evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(eval.isError()) {
             return eval;
         }

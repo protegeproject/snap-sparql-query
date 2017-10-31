@@ -99,18 +99,6 @@ public abstract class AbstractVariable extends Variable {
         return term.get().evaluateAsEffectiveBooleanValue(sm, evaluationContext);
     }
 
-//    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
-//        return sm.isMapped(this) && sm.getTermForVariable(this).canEvaluateAsStringLiteral(sm);
-//    }
-
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        Optional<RDFTerm> term = sm.getTermForVariable(this);
-        if(!term.isPresent()) {
-            return EvaluationResult.getError();
-        }
-        return term.get().evaluateAsStringLiteral(sm, evaluationContext);
-    }
-
     public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);
         if(!term.isPresent()) {

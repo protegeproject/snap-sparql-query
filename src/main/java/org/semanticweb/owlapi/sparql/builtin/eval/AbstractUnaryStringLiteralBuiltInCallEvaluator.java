@@ -15,7 +15,7 @@ public abstract class AbstractUnaryStringLiteralBuiltInCallEvaluator extends Abs
 
     @Override
     protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult literalResult = arg.evaluateAsStringLiteral(sm, evaluationContext);
+        EvaluationResult literalResult = arg.evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(literalResult.isError()) {
             return literalResult;
         }

@@ -1,12 +1,9 @@
 package org.semanticweb.owlapi.sparql.api;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import java.util.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.annotation.Nonnull;
 
@@ -20,7 +17,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  */
 public class DataProperty extends AbstractEntity implements DataPropertyExpression, AtomicDataProperty {
 
-    public DataProperty(@Nonnull IRI iri) {
+    public DataProperty(IRI iri) {
         super(iri);
     }
 

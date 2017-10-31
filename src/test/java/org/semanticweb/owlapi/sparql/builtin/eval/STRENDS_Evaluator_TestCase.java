@@ -77,7 +77,7 @@ public class STRENDS_Evaluator_TestCase {
     private void setUpArgs(String ... argValues) {
         for (String argValue : argValues) {
             Expression arg = mock(Expression.class);
-            when(arg.evaluateAsStringLiteral(sm, evaluationContext)).thenReturn(EvaluationResult.getResult(Literal.createString(argValue)));
+            when(arg.evaluate(sm, evaluationContext)).thenReturn(EvaluationResult.getResult(Literal.createString(argValue)));
             args.add(arg);
         }
     }

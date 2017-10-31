@@ -59,11 +59,6 @@ public class NamedIndividual extends AbstractEntity implements Entity, AtomicInd
     }
 
     @Override
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getSimpleLiteral(getIRI().toString());
-    }
-
-    @Override
     public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getSimpleLiteral(getIRI().toString());
     }

@@ -53,12 +53,18 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
         return false;
     }
 
-    public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getResult(this);
+    @Override
+    public boolean isXSDString() {
+        return false;
     }
 
-    public EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getResult(Literal.createString(iri.toString()));
+    @Override
+    public boolean isStringLiteral() {
+        return false;
+    }
+
+    public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
+        return EvaluationResult.getResult(this);
     }
 
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {

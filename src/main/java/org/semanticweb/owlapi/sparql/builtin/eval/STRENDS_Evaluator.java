@@ -20,11 +20,11 @@ public class STRENDS_Evaluator implements BuiltInCallEvaluator {
         if(args.size() != 2) {
             return EvaluationResult.getError();
         }
-        EvaluationResult arg0 = args.get(0).evaluateAsStringLiteral(sm, evaluationContext);
+        EvaluationResult arg0 = args.get(0).evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(arg0.isError()) {
             return arg0;
         }
-        EvaluationResult arg1 = args.get(1).evaluateAsStringLiteral(sm, evaluationContext);
+        EvaluationResult arg1 = args.get(1).evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(arg1.isError()) {
             return EvaluationResult.getError();
         }

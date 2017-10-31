@@ -22,7 +22,7 @@ public class UCASE_Evaluator implements BuiltInCallEvaluator {
         if(args.size() != 1) {
             return EvaluationResult.getError();
         }
-        EvaluationResult result1 = args.get(0).evaluateAsStringLiteral(sm, evaluationContext);
+        EvaluationResult result1 = args.get(0).evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(result1.isError()) {
             return EvaluationResult.getError();
         }

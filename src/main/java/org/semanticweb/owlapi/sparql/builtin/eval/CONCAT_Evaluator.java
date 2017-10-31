@@ -27,7 +27,7 @@ public class CONCAT_Evaluator implements BuiltInCallEvaluator {
         String prevLangTag = "";
         String resultLang = "";
         for(Expression arg : args) {
-            EvaluationResult argEval = arg.evaluateAsStringLiteral(sm, evaluationContext);
+            EvaluationResult argEval = arg.evaluate(sm, evaluationContext).asStringLiteralOrElseError();
             if(argEval.isError()) {
                 return EvaluationResult.getError();
             }

@@ -14,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Bio-Medical Informatics Research Group<br>
  * Date: 01/08/2012
  */
-public final class EvaluationResult {
+public class EvaluationResult {
 
     private static final EvaluationResult ERROR_RESULT = new EvaluationResult();
 
@@ -28,7 +28,7 @@ public final class EvaluationResult {
     private boolean error;
 
 
-    public EvaluationResult(@Nonnull RDFTerm result) {
+    public EvaluationResult(RDFTerm result) {
         this.result = checkNotNull(result);
         this.error = false;
     }
@@ -140,6 +140,18 @@ public final class EvaluationResult {
      */
     public EvaluationResult asIriOrElseError() {
         if(result instanceof AtomicIRI) {
+            return this;
+        }
+        else {
+            return EvaluationResult.getError();
+        }
+    }
+
+    /**
+     * Check this result and returns it if it is a string literal, otherwise returns an error.
+     */
+    public EvaluationResult asStringLiteralOrElseError() {
+        if(result != null && result.isStringLiteral()) {
             return this;
         }
         else {

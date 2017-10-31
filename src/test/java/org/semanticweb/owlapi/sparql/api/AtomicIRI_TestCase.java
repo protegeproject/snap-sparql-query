@@ -85,16 +85,6 @@ public class AtomicIRI_TestCase {
     }
 
     @Test
-    public void should_evaluateAsStringLiteral() {
-        EvaluationResult eval = atomicIRI.evaluateAsStringLiteral(sm, mock(AlgebraEvaluationContext.class));
-        assertThat(eval.getResult(), is(instanceOf(Literal.class)));
-        Literal literalEval = (Literal) eval.getResult();
-        assertThat(literalEval.getDatatype().getIRI(), is(XSDVocabulary.STRING.getIRI()));
-        assertThat(literalEval.getLexicalForm(), is(iri.toString()));
-        assertThat(literalEval.getLang(), isEmptyOrNullString());
-    }
-
-    @Test
     public void should_evaluateAsEffectiveBooleanValue() {
         // See EffectiveBooleanValue_TestCase
     }
@@ -117,16 +107,6 @@ public class AtomicIRI_TestCase {
     @Test
     public void shouldReturn_True_For_isUntypedIRI() {
         assertThat(atomicIRI.isUntypedIRI(), is(true));
-    }
-
-    @Test
-    public void should_evaluateAsLiteral() {
-        EvaluationResult eval = atomicIRI.evaluateAsStringLiteral(sm, mock(AlgebraEvaluationContext.class));
-        assertThat(eval.getResult(), is(instanceOf(Literal.class)));
-        Literal literalEval = (Literal) eval.getResult();
-        assertThat(literalEval.getDatatype().getIRI(), is(XSDVocabulary.STRING.getIRI()));
-        assertThat(literalEval.getLexicalForm(), is(iri.toString()));
-        assertThat(literalEval.getLang(), isEmptyOrNullString());
     }
 
     @Test
