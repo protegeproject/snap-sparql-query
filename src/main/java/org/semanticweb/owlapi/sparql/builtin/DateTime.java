@@ -30,7 +30,6 @@ public class DateTime {
             ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTime);
             return Optional.of(new DateTime(zonedDateTime));
         } catch (DateTimeParseException e) {
-            e.printStackTrace();
             return Optional.empty();
         }
     }
