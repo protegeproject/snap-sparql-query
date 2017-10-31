@@ -238,7 +238,6 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
      * represented as a typed literal with a datatype of xsd:boolean and a lexical value of "false".
      *
      * @param sm                The solution mapping
-     * @param evaluationContext
      */
     @Override
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
@@ -289,14 +288,6 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
             // All other arguments, including unbound arguments, produce a type error.
             return EvaluationResult.getError();
         }
-    }
-
-    private boolean isDatatypeDateTime() {
-        return datatype.isXSDDateTime();
-    }
-
-    private boolean isInDateTimeLexicalSpace() {
-        return OWL2Datatype.XSD_DATE_TIME.getPattern().matcher(lexicalForm).matches();
     }
 
     @Override
@@ -377,7 +368,7 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
         }
         else if (datatype.isXSDString()) {
             try {
-                float value = (float) Float.parseFloat(lexicalForm);
+                float value = Float.parseFloat(lexicalForm);
                 return Optional.of(Literal.createFloat(value));
             } catch (NumberFormatException e) {
                 return Optional.empty();
