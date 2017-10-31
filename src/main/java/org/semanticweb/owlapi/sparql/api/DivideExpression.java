@@ -57,11 +57,6 @@ public class DivideExpression extends BinaryExpression implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
-    @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);
     }

@@ -32,7 +32,7 @@ public class REPLACE_Evaluator implements BuiltInCallEvaluator {
         if(args.size() < 3 || args.size() > 4) {
             return EvaluationResult.getError();
         }
-        EvaluationResult eval0 = args.get(0).evaluateAsLiteral(sm, evaluationContext);
+        EvaluationResult eval0 = args.get(0).evaluate(sm, evaluationContext).asLiteralOrElseError();
         if(eval0.isError()) {
             return EvaluationResult.getError();
         }

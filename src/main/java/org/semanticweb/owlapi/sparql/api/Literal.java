@@ -286,12 +286,6 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getResult(this);
-    }
-
-
-    @Override
     public int hashCode() {
         return Objects.hashCode(datatype.hashCode(), lexicalForm.hashCode(), langTag.hashCode());
     }

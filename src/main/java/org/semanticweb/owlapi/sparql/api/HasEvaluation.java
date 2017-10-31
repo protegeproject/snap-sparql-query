@@ -38,6 +38,4 @@ public interface HasEvaluation {
      * represented as a typed literal with a datatype of xsd:boolean and a lexical value of "false".
      */
     EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
-
-    EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 }

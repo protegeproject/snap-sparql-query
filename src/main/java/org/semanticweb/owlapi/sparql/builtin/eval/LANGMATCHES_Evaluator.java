@@ -21,7 +21,7 @@ public class LANGMATCHES_Evaluator implements BuiltInCallEvaluator {
         if(args.size() != 2) {
             return EvaluationResult.getError();
         }
-        EvaluationResult result0 = args.get(0).evaluateAsLiteral(sm, evaluationContext);
+        EvaluationResult result0 = args.get(0).evaluate(sm, evaluationContext).asLiteralOrElseError();
         if(result0.isError()) {
             return result0;
         }

@@ -15,7 +15,7 @@ public class LANG_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
 
     @Override
     protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult result = arg.evaluateAsLiteral(sm, evaluationContext);
+        EvaluationResult result = arg.evaluate(sm, evaluationContext).asLiteralOrElseError();
         if(result.isError()) {
             return result;
         }

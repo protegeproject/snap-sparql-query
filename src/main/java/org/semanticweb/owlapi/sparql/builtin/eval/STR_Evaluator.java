@@ -14,7 +14,7 @@ import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 public class STR_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
     @Override
     protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult literalEval = arg.evaluateAsLiteral(sm, evaluationContext);
+        EvaluationResult literalEval = arg.evaluate(sm, evaluationContext).asLiteralOrElseError();
         if(literalEval.isError()) {
             return literalEval;
         }

@@ -54,11 +54,6 @@ public class NamedIndividual extends AbstractEntity implements Entity, AtomicInd
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getSimpleLiteral(getIRI().toString());
-    }
-
-    @Override
     public <R, E extends Throwable, C> R accept(ExpressionVisitor<R, E, C> visitor, C context) throws E {
         return visitor.visit(this, context);
     }

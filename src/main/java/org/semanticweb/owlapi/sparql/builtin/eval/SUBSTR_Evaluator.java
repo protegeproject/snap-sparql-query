@@ -32,7 +32,7 @@ public class SUBSTR_Evaluator implements BuiltInCallEvaluator {
         if(args.size() < MIN_ARGS_LENGTH || args.size() > MAX_ARGS_LENGTH) {
             return EvaluationResult.getError();
         }
-        final EvaluationResult stringArgEval = args.get(STRING_ARG_INDEX).evaluateAsLiteral(sm, evaluationContext);
+        final EvaluationResult stringArgEval = args.get(STRING_ARG_INDEX).evaluate(sm, evaluationContext).asLiteralOrElseError();
         if(stringArgEval.isError()) {
             return EvaluationResult.getError();
         }

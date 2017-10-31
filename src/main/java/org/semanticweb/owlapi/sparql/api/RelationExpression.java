@@ -83,11 +83,6 @@ public class RelationExpression implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
-    @Override
     public String toString() {
         return Objects.toStringHelper("RelationExpression")
                 .addValue(relation)

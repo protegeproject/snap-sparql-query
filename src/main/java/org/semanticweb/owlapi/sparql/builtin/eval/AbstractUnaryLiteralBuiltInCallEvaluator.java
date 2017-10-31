@@ -13,7 +13,7 @@ public abstract class AbstractUnaryLiteralBuiltInCallEvaluator extends AbstractU
 
     @Override
     protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult eval = arg.evaluateAsLiteral(sm, evaluationContext);
+        EvaluationResult eval = arg.evaluate(sm, evaluationContext).asLiteralOrElseError();
         if(eval.isError()) {
             return EvaluationResult.getError();
         }

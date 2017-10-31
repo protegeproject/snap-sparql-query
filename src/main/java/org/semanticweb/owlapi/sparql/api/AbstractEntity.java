@@ -83,11 +83,6 @@ public abstract class AbstractEntity implements HasIRI, Term, Entity {
     }
 
     @Override
-    public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getSimpleLiteral(getIRI().toString());
-    }
-
-    @Override
     public void collectVariables(Collection<Variable> variables) {}
 
 

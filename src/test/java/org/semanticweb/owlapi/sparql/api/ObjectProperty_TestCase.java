@@ -95,11 +95,6 @@ public class ObjectProperty_TestCase {
     }
 
     @Test
-    public void should_evaluateAsLiteral() {
-        assertThat(objectProperty.evaluateAsLiteral(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
-    }
-
-    @Test
     public void should_evaluateAsIRI() {
         assertThat(objectProperty.evaluate(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(objectProperty.getIRI()))));
     }

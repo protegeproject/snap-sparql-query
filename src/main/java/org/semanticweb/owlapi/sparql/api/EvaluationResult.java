@@ -171,6 +171,18 @@ public class EvaluationResult {
         }
     }
 
+    /**
+     * Check this result and returns it if it is a literal, otherwise returns an error.
+     */
+    public EvaluationResult asLiteralOrElseError() {
+        if(result instanceof Literal) {
+            return this;
+        }
+        else {
+            return EvaluationResult.getError();
+        }
+    }
+
 
 
     public boolean isTrue() {
