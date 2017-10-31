@@ -12,6 +12,9 @@ public class STR_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
     @Override
     protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         EvaluationResult literalEval = arg.evaluate(sm, evaluationContext);
+        if(literalEval.isError()) {
+            return EvaluationResult.getError();
+        }
         RDFTerm term = literalEval.getResult();
         if(term instanceof Literal) {
             return EvaluationResult.getSimpleLiteral(literalEval.asSimpleLiteral());
