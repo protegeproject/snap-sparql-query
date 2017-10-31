@@ -1,8 +1,6 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
-import org.semanticweb.owlapi.sparql.api.EvaluationResult;
-import org.semanticweb.owlapi.sparql.api.Expression;
-import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import javax.annotation.Nonnull;
@@ -15,6 +13,20 @@ public class IRI_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
 
     @Override
     protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return arg.evaluate(sm, evaluationContext).asIriOrElseError();
+        EvaluationResult result = arg.evaluate(sm, evaluationContext);
+        if(result.isError()) {
+            return EvaluationResult.getError();
+        }
+        RDFTerm term = result.getResult();
+        if(term instanceof AtomicIRI) {
+            return result;
+        }
+        if(term instanceof Literal) {
+            Literal literal = (Literal) term;
+            if (literal.isSimpleLiteral() || literal.isXSDString()) {
+                return EvaluationResult.getResult(AtomicIRI.create(literal.getLexicalForm()));
+            }
+        }
+        return EvaluationResult.getError();
     }
 }

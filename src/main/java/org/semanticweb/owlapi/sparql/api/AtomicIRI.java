@@ -194,4 +194,8 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     public Optional<Literal> castToXSDBoolean() {
         return Optional.empty();
     }
+
+    public static AtomicIRI create(String string) {
+        return new AtomicIRI(IRI.create(string));
+    }
 }
