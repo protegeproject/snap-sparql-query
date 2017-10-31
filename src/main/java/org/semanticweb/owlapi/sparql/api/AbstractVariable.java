@@ -128,15 +128,6 @@ public abstract class AbstractVariable extends Variable {
         return term.get().evaluateAsLiteral(sm, evaluationContext);
     }
 
-    @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        Optional<RDFTerm> term = sm.getTermForVariable(this);
-        if(!term.isPresent()) {
-            return EvaluationResult.getError();
-        }
-        return term.get().evaluateAsIRI(sm, evaluationContext);
-    }
-
     @Nonnull
     @Override
     public final java.util.Optional<Variable> asVariable() {

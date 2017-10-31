@@ -21,7 +21,7 @@ public class STRDT_Evaluator implements BuiltInCallEvaluator {
         if(eval0.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult eval1 = args.get(1).evaluateAsIRI(sm, evaluationContext);
+        EvaluationResult eval1 = args.get(1).evaluate(sm, evaluationContext).asIriOrElseError();
         if(eval1.isError()) {
             return EvaluationResult.getError();
         }

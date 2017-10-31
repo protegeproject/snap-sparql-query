@@ -124,12 +124,6 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return EvaluationResult.getError();
     }
 
-
-    @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
     @Override
     public void collectVariables(Collection<Variable> variables) {
 

@@ -94,11 +94,6 @@ public class Cast implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
-    @Override
     public Set<Variable> getVariables() {
         return Collections.emptySet();
     }

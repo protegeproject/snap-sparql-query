@@ -111,6 +111,6 @@ public class ObjectProperty_TestCase {
 
     @Test
     public void should_evaluateAsIRI() {
-        assertThat(objectProperty.evaluateAsIRI(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(objectProperty.getIRI()))));
+        assertThat(objectProperty.evaluate(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(objectProperty.getIRI()))));
     }
 }

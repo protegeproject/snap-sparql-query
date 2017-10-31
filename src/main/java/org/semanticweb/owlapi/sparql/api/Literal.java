@@ -311,11 +311,6 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     }
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getResult(new AtomicIRI(IRI.create(lexicalForm)));
-    }
-
-    @Override
     public EvaluationResult evaluateAsLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }

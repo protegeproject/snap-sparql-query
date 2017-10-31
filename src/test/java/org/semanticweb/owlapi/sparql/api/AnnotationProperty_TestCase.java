@@ -123,6 +123,6 @@ public class AnnotationProperty_TestCase {
 
     @Test
     public void should_evaluateAsIRI() {
-        assertThat(annotationProperty.evaluateAsIRI(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(annotationProperty.getIRI()))));
+        assertThat(annotationProperty.evaluate(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(annotationProperty.getIRI()))));
     }
 }

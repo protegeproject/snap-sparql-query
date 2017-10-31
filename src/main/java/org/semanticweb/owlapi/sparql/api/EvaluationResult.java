@@ -134,6 +134,21 @@ public final class EvaluationResult {
         }
     }
 
+
+    /**
+     * Check this result and returns it if it is an IRI, otherwise returns an error.
+     */
+    public EvaluationResult asIriOrElseError() {
+        if(result instanceof AtomicIRI) {
+            return this;
+        }
+        else {
+            return EvaluationResult.getError();
+        }
+    }
+
+
+
     public boolean isTrue() {
         return this.equals(TRUE);
     }

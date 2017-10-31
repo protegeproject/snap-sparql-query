@@ -11,15 +11,10 @@ import java.util.List;
 /**
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 26/03/15
  */
-public class IRI_Evaluator implements BuiltInCallEvaluator {
+public class IRI_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
 
-    @Nonnull
     @Override
-    public EvaluationResult evaluate(@Nonnull List<Expression> args, @Nonnull SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        if(args.size() != 1) {
-           return EvaluationResult.getError();
-        }
-        Expression expression = args.get(0);
-        return expression.evaluateAsIRI(sm, evaluationContext);
+    protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
+        return arg.evaluate(sm, evaluationContext).asIriOrElseError();
     }
 }

@@ -109,6 +109,6 @@ public class NamedClass_TestCase {
 
     @Test
     public void should_evaluateAsIRI() {
-        assertThat(namedClass.evaluateAsIRI(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(namedClass.getIRI()))));
+        assertThat(namedClass.evaluate(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(namedClass.getIRI()))));
     }
 }

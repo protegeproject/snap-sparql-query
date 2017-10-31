@@ -207,15 +207,6 @@ public class Literal_TestCase {
     }
 
     @Test
-    public void should_evaluateAsIRI() {
-        EvaluationResult eval = literal.evaluateAsIRI(sm, mock(AlgebraEvaluationContext.class));
-        assertThat(eval.isError(), is(false));
-        assertThat(eval.getResult(), is(instanceOf(AtomicIRI.class)));
-        AtomicIRI evalIRI = (AtomicIRI) eval.getResult();
-        assertThat(evalIRI.getIRI().toString(), is(lexicalForm));
-    }
-
-    @Test
     public void should_evaluateAsLiteral() {
         EvaluationResult eval = literal.evaluateAsLiteral(sm, mock(AlgebraEvaluationContext.class));
         assertThat(eval.isError(), is(false));

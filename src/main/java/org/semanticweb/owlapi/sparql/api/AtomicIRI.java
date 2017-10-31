@@ -120,11 +120,6 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     }
 
     @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getResult(this);
-    }
-
-    @Override
     public void collectVariables(Collection<Variable> variables) {
 
     }

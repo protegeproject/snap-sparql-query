@@ -95,13 +95,6 @@ public class RelationExpression implements Expression {
         return EvaluationResult.getError();
     }
 
-
-    @Override
-    public EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
-
     @Override
     public String toString() {
         return Objects.toStringHelper("RelationExpression")

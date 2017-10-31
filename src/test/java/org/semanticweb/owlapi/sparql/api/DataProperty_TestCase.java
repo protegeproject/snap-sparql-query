@@ -123,6 +123,6 @@ public class DataProperty_TestCase {
 
     @Test
     public void should_evaluateAsIRI() {
-        assertThat(dataProperty.evaluateAsIRI(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(dataProperty.getIRI()))));
+        assertThat(dataProperty.evaluate(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(dataProperty.getIRI()))));
     }
 }

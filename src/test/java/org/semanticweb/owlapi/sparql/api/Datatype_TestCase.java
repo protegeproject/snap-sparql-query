@@ -280,7 +280,7 @@ public class Datatype_TestCase {
 
     @Test
     public void should_evaluateAsIRI() {
-        assertThat(datatype.evaluateAsIRI(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(datatype.getIRI()))));
+        assertThat(datatype.evaluate(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(new AtomicIRI(datatype.getIRI()))));
     }
 
     @Test

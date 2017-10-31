@@ -18,7 +18,7 @@ public class STR_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
         if(literalEval.isError()) {
             return literalEval;
         }
-        EvaluationResult iriEval = arg.evaluateAsIRI(sm, evaluationContext);
+        EvaluationResult iriEval = arg.evaluate(sm, evaluationContext).asIriOrElseError();
         if(!iriEval.isError()) {
             EvaluationResult.getResult(Literal.createRDFPlainLiteral(iriEval.asIRI().getIRI().toString(), ""));
         }
