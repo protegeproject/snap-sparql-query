@@ -34,32 +34,8 @@ public class PlusExpression extends BinaryExpression implements Expression {
         return EvaluationResult.getResult(BasicNumericType.getLiteralOfBasicNumericType(leftValue + rightValue, returnType));
     }
 
-    public boolean canEvaluateAsBoolean(SolutionMapping sm) {
-        return false;
-    }
-
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
-    }
-
-    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsNumeric(SolutionMapping sm) {
-        return true;
-    }
-
-    public boolean canEvaluateAsDateTime(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsIRI(SolutionMapping sm) {
-        return false;
     }
 
     @Override

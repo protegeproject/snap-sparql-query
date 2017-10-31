@@ -80,10 +80,6 @@ public class BuiltInCallExpression implements Expression {
         return ((BuiltInAggregateCallEvaluator) evaluator).evaluateAsAggregate(args, solutionSequence, evaluationContext);
     }
 
-    public boolean canEvaluateAsBoolean(SolutionMapping sm) {
-        return true;
-    }
-
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         if(!builtInCall.getReturnType().isBoolean()) {
             return EvaluationResult.getError();
@@ -91,27 +87,6 @@ public class BuiltInCallExpression implements Expression {
         else {
             return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
         }
-    }
-
-
-    public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
-        return builtInCall.getReturnType().isSimpleLiteral();
-    }
-
-    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
-        return builtInCall.getReturnType().isStringLiteral();
-    }
-
-    public boolean canEvaluateAsNumeric(SolutionMapping sm) {
-        return builtInCall.getReturnType().isNumeric();
-    }
-
-    public boolean canEvaluateAsDateTime(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsIRI(SolutionMapping sm) {
-        return false;
     }
 
     @Override

@@ -40,18 +40,6 @@ public class NotExpression implements Expression {
         return evaluateAsEffectiveBooleanValue(sm, evaluationContext);
     }
 
-    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsBoolean(SolutionMapping sm) {
-        return true;
-    }
-
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         EvaluationResult evalResult = expression.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
         if(evalResult.isError()) {
@@ -59,22 +47,6 @@ public class NotExpression implements Expression {
         }
         return EvaluationResult.getBoolean(!evalResult.isTrue());
     }
-
-    public boolean canEvaluateAsNumeric(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsDateTime(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsIRI(SolutionMapping sm) {
-        return false;
-    }
-
-
-
-
 
     @Override
     public int hashCode() {

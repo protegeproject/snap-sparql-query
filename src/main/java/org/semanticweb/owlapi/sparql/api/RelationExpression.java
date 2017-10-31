@@ -54,32 +54,8 @@ public class RelationExpression implements Expression {
         return evaluateAsEffectiveBooleanValue(sm, evaluationContext);
     }
 
-    public boolean canEvaluateAsBoolean(SolutionMapping sm) {
-        return true;
-    }
-
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return relation.evaluate(left, right, sm, evaluationContext);
-    }
-
-    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsNumeric(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsDateTime(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsIRI(SolutionMapping sm) {
-        return false;
     }
 
     @Override

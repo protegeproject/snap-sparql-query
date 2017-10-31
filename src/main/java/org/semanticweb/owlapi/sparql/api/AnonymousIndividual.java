@@ -81,32 +81,8 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return EvaluationResult.getResult(this);
     }
 
-    public boolean canEvaluateAsBoolean(SolutionMapping sm) {
-        return false;
-    }
-
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
-    }
-
-    public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
-        return true;
-    }
-
-    public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsNumeric(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsDateTime(SolutionMapping sm) {
-        return false;
-    }
-
-    public boolean canEvaluateAsIRI(SolutionMapping sm) {
-        return false;
     }
 
     @Override
