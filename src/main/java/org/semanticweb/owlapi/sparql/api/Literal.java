@@ -277,10 +277,6 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
         }
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getResult(Literal.createRDFPlainLiteral(lexicalForm, langTag));
-    }
-
     private boolean isDatatypeDateTime() {
         return datatype.isXSDDateTime();
     }

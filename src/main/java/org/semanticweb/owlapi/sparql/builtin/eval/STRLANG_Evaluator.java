@@ -17,11 +17,11 @@ public class STRLANG_Evaluator implements BuiltInCallEvaluator {
         if(args.size() != 2) {
             return EvaluationResult.getError();
         }
-        EvaluationResult lexicalFormEval = args.get(0).evaluateAsSimpleLiteral(sm, evaluationContext);
+        EvaluationResult lexicalFormEval = args.get(0).evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
         if(lexicalFormEval.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult langTagEval = args.get(1).evaluateAsSimpleLiteral(sm, evaluationContext);
+        EvaluationResult langTagEval = args.get(1).evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
         if(langTagEval.isError()) {
             return EvaluationResult.getError();
         }

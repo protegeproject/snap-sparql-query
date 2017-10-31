@@ -185,17 +185,6 @@ public class Literal_TestCase {
     }
 
     @Test
-    public void should_evaluateAsSimpleLiteral() {
-        EvaluationResult eval = literal.evaluateAsSimpleLiteral(sm, mock(AlgebraEvaluationContext.class));
-        assertThat(eval.isError(), is(false));
-        assertThat(eval.getResult(), is(instanceOf(Literal.class)));
-        Literal evalLiteral = (Literal) eval.getResult();
-        assertThat(evalLiteral.getLexicalForm(), is(lexicalForm));
-        assertThat(evalLiteral.getLang(), is(langTag));
-        assertThat(evalLiteral.getDatatype().getIRI(), is(OWLRDFVocabulary.RDF_PLAIN_LITERAL.getIRI()));
-    }
-
-    @Test
     public void should_evaluateAsLiteral() {
         EvaluationResult eval = literal.evaluateAsLiteral(sm, mock(AlgebraEvaluationContext.class));
         assertThat(eval.isError(), is(false));

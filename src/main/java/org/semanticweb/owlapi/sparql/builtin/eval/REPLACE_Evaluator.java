@@ -36,17 +36,17 @@ public class REPLACE_Evaluator implements BuiltInCallEvaluator {
         if(eval0.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult eval1 = args.get(1).evaluateAsSimpleLiteral(sm, evaluationContext);
+        EvaluationResult eval1 = args.get(1).evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
         if(eval1.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult eval2 = args.get(2).evaluateAsSimpleLiteral(sm, evaluationContext);
+        EvaluationResult eval2 = args.get(2).evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(eval2.isError()) {
             return EvaluationResult.getError();
         }
         String flags = "";
         if(args.size() == 4) {
-            EvaluationResult eval4 = args.get(3).evaluateAsSimpleLiteral(sm, evaluationContext);
+            EvaluationResult eval4 = args.get(3).evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
             if(eval4.isError()) {
                 return EvaluationResult.getError();
             }

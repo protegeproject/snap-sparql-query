@@ -38,10 +38,6 @@ public class OrExpression extends BinaryExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {
         return false;
     }

@@ -98,15 +98,6 @@ public class BuiltInCallExpression implements Expression {
         return builtInCall.getReturnType().isSimpleLiteral();
     }
 
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        if(!builtInCall.getReturnType().isSimpleLiteral()) {
-            return EvaluationResult.getError();
-        }
-        else {
-            return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
-        }
-    }
-
     public boolean canEvaluateAsStringLiteral(SolutionMapping sm) {
         return builtInCall.getReturnType().isStringLiteral();
     }
@@ -114,15 +105,6 @@ public class BuiltInCallExpression implements Expression {
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {
         return builtInCall.getReturnType().isNumeric();
     }
-
-//    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-//        if(!builtInCall.getReturnType().isNumeric()) {
-//            return EvaluationResult.getError();
-//        }
-//        else {
-//            return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
-//        }
-//    }
 
     public boolean canEvaluateAsDateTime(SolutionMapping sm) {
         return false;

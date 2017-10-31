@@ -1,10 +1,7 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
 import com.google.common.io.BaseEncoding;
-import org.semanticweb.owlapi.sparql.api.EvaluationResult;
-import org.semanticweb.owlapi.sparql.api.Expression;
-import org.semanticweb.owlapi.sparql.api.Literal;
-import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import java.nio.charset.Charset;
@@ -26,13 +23,12 @@ public class MD5_Evaluator extends AbstractUnaryLiteralBuiltInCallEvaluator {
     @Override
     protected EvaluationResult evaluate(Literal literal, Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         try {
-            EvaluationResult evaluationResult = literal.evaluateAsSimpleLiteral(sm, evaluationContext);
-            if(evaluationResult.isError()) {
-                return evaluationResult;
+            if(!(literal.isSimpleLiteral() || literal.isXSDString())) {
+                return EvaluationResult.getError();
             }
-            String simpleLiteral = evaluationResult.asSimpleLiteral();
+            String lexicalForm = literal.getLexicalForm();
             MessageDigest messageDigest = MessageDigest.getInstance(MD5);
-            messageDigest.update(simpleLiteral.getBytes(UTF_8));
+            messageDigest.update(lexicalForm.getBytes(UTF_8));
             byte [] digest = messageDigest.digest();
             String hexEncoding = HEX_ENCODER.encode(digest);
             return EvaluationResult.getSimpleLiteral(hexEncoding);

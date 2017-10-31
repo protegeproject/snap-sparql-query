@@ -84,11 +84,6 @@ public class Cast implements Expression {
     }
 
     @Override
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
-    @Override
     public Set<Variable> getVariables() {
         return Collections.emptySet();
     }

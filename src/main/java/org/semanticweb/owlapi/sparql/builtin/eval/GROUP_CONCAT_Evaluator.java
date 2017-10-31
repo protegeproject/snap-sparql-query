@@ -27,7 +27,7 @@ public class GROUP_CONCAT_Evaluator implements BuiltInCallEvaluator, BuiltInAggr
         } else if (args.size() == 2) {
             arg0 = args.get(0);
             Expression arg1 = args.get(1);
-            EvaluationResult separatorEval = arg1.evaluateAsSimpleLiteral(SolutionMapping.emptyMapping(), evaluationContext);
+            EvaluationResult separatorEval = arg1.evaluate(SolutionMapping.emptyMapping(), evaluationContext).asSimpleLiteralOrElseError();
             if (separatorEval.isError()) {
                 return EvaluationResult.getError();
             }
@@ -36,7 +36,7 @@ public class GROUP_CONCAT_Evaluator implements BuiltInCallEvaluator, BuiltInAggr
             return EvaluationResult.getError();
         }
         String concat = solutionSequence.getSolutionMappings().stream()
-                .map(sm -> arg0.evaluateAsSimpleLiteral(sm, evaluationContext))
+                .map(sm -> arg0.evaluate(sm, evaluationContext).asStringLiteralOrElseError())
                 .filter(eval -> !eval.isError())
                 .map(EvaluationResult::asSimpleLiteral)
                 .collect(joining(separator));

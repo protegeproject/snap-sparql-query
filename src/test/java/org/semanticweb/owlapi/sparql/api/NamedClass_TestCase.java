@@ -93,11 +93,6 @@ public class NamedClass_TestCase {
     }
 
     @Test
-    public void should_evaluateAsSimpleLiteral() {
-        assertThat(namedClass.evaluateAsSimpleLiteral(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(namedClass.getIRI().toString()))));
-    }
-
-    @Test
     public void should_evaluateAsLiteral() {
         assertThat(namedClass.evaluateAsLiteral(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getResult(Literal.createRDFPlainLiteralNoLang(iri.toString()))));
     }

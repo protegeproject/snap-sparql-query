@@ -63,16 +63,17 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
         return false;
     }
 
+    @Override
+    public boolean isSimpleLiteral() {
+        return false;
+    }
+
     public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }
 
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
-    }
-
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getSimpleLiteral(iri.toString());
     }
 
     @Override

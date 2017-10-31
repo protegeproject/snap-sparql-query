@@ -64,6 +64,11 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
+    @Override
+    public boolean isSimpleLiteral() {
+        return false;
+    }
+
     public boolean isEntityIRI() {
         return false;
     }
@@ -90,10 +95,6 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
 
     public boolean canEvaluateAsSimpleLiteral(SolutionMapping sm) {
         return false;
-    }
-
-    public EvaluationResult evaluateAsSimpleLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
     }
 
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {

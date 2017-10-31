@@ -30,4 +30,11 @@ public interface RDFTerm extends HasEvaluation, AnnotationValue, HasCastTo {
     boolean isStringLiteral();
 
 
+    /**
+     * Determines if this term is a simple literal.  A simple literal is a {@link Literal} with a datatype of
+     * rdf:PlainLiteral and without a language tag.
+     */
+    boolean isSimpleLiteral();
+
+
 }

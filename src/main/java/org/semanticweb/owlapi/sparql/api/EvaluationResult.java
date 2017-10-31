@@ -159,6 +159,18 @@ public class EvaluationResult {
         }
     }
 
+    /**
+     * Check this result and returns it if it is a string literal, otherwise returns an error.
+     */
+    public EvaluationResult asSimpleLiteralOrElseError() {
+        if(result != null && result.isSimpleLiteral()) {
+            return this;
+        }
+        else {
+            return EvaluationResult.getError();
+        }
+    }
+
 
 
     public boolean isTrue() {

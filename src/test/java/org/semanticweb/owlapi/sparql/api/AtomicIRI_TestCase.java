@@ -90,11 +90,6 @@ public class AtomicIRI_TestCase {
     }
 
     @Test
-    public void should_evaluateAsSimpleLiteral() {
-        assertThat(atomicIRI.evaluateAsSimpleLiteral(sm, mock(AlgebraEvaluationContext.class)).isError(), is(false));
-    }
-
-    @Test
     public void shouldReturn_False_For_isLiteral() {
         assertThat(atomicIRI.isLiteral(), is(false));
     }

@@ -55,9 +55,9 @@ public enum Relation {
                 return evaluateDateTime(dtLeft, dtRight);
             }
         }
-        EvaluationResult litLeft = left.evaluateAsSimpleLiteral(sm, evaluationContext);
+        EvaluationResult litLeft = left.evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
         if (!litLeft.isError()) {
-            EvaluationResult litRight = right.evaluateAsSimpleLiteral(sm, evaluationContext);
+            EvaluationResult litRight = right.evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
             if (!litRight.isError()) {
                 return evaluateSimpleLiteral(litLeft, litRight);
             }
