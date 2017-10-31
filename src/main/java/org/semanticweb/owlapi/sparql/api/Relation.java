@@ -40,40 +40,42 @@ public enum Relation {
         // xsd:string - xsd:string
         // xsd:boolean - xsd:boolean
 
+        EvaluationResult leftEval = left.evaluate(sm, evaluationContext);
+        if(leftEval.isError()) {
+            return EvaluationResult.getError();
+        }
+        EvaluationResult rightEval = right.evaluate(sm, evaluationContext);
+        if(rightEval.isError()) {
+            return EvaluationResult.getError();
+        }
 
-        EvaluationResult leftEval = left.evaluate(sm, evaluationContext).asNumericOrElseError();
-        if(!leftEval.isError()) {
-            EvaluationResult rightEval = right.evaluate(sm, evaluationContext).asNumericOrElseError();
-            if (!rightEval.isError()) {
-                return evaluateNumeric(leftEval, rightEval);
-            }
+        RDFTerm leftTerm = leftEval.getResult();
+        RDFTerm rightTerm = rightEval.getResult();
+
+        if(leftTerm.isNumeric() && rightTerm.isNumeric()) {
+            return evaluateNumeric(leftEval, rightEval);
         }
-        EvaluationResult dtLeft = left.evaluate(sm, evaluationContext).asDateTimeOrElseError();
-        if (!dtLeft.isError()) {
-            EvaluationResult dtRight = right.evaluate(sm, evaluationContext).asDateTimeOrElseError();
-            if (!dtRight.isError()) {
-                return evaluateDateTime(dtLeft, dtRight);
-            }
+
+        if(leftTerm.isXSDDateTime() && rightTerm.isXSDDateTime()) {
+            return evaluateDateTime(leftEval, rightEval);
         }
-        EvaluationResult litLeft = left.evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
-        if (!litLeft.isError()) {
-            EvaluationResult litRight = right.evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
-            if (!litRight.isError()) {
-                return evaluateSimpleLiteral(litLeft, litRight);
-            }
+
+        if(leftTerm.isSimpleLiteral() && rightTerm.isSimpleLiteral()) {
+            return evaluateStringLiteral(leftEval.asSimpleLiteral(), rightEval.asSimpleLiteral());
         }
-        EvaluationResult boolLeft = left.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
-        if (!boolLeft.isError()) {
-            EvaluationResult boolRight = right.evaluateAsEffectiveBooleanValue(sm, evaluationContext);
-            if (!boolRight.isError()) {
-                return evaluateBoolean(boolLeft, boolRight);
-            }
+
+        if(leftTerm.isXSDString() && rightTerm.isXSDString()) {
+            return evaluateStringLiteral(leftEval.asSimpleLiteral(), rightEval.asSimpleLiteral());
+        }
+
+        if(leftTerm.isXSDBoolean() && rightTerm.isXSDBoolean()) {
+            evaluateBoolean(leftEval, rightEval);
         }
         return EvaluationResult.getError();
     }
 
     private EvaluationResult evaluateNumeric(EvaluationResult leftEval, EvaluationResult rightEval) {
-        double leftValue = leftEval.    asNumeric();
+        double leftValue = leftEval.asNumeric();
         double rightValue = rightEval.asNumeric();
 
         switch (this) {
@@ -116,10 +118,7 @@ public enum Relation {
         }
     }
 
-    private EvaluationResult evaluateSimpleLiteral(EvaluationResult leftEval, EvaluationResult rightEval) {
-        String leftValue = leftEval.asSimpleLiteral();
-        String rightValue = rightEval.asSimpleLiteral();
-
+    private EvaluationResult evaluateStringLiteral(String leftValue, String rightValue) {
         switch (this) {
             case EQUAL:
                 return EvaluationResult.getBoolean(leftValue.equals(rightValue));

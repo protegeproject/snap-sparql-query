@@ -205,6 +205,11 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     }
 
     @Override
+    public boolean isXSDBoolean() {
+        return datatype.isXSDBoolean();
+    }
+
+    @Override
     public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }

@@ -68,6 +68,11 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
         return false;
     }
 
+    @Override
+    public boolean isXSDBoolean() {
+        return false;
+    }
+
     public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }

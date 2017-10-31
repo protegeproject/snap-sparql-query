@@ -24,6 +24,12 @@ public interface RDFTerm extends HasEvaluation, AnnotationValue, HasCastTo {
     boolean isXSDString();
 
     /**
+     * Determines if this term is an xsd:boolean.  To be an xsd:boolean the term should be a {@link Literal} with
+     * a datatype of xsd:boolean.
+     */
+    boolean isXSDBoolean();
+
+    /**
      * Determines if this term is a string literal.  A string literal is a {@link Literal} with a datatype of
      * xsd:string, a plain literal with a language tag, or a plain literal without a language tag (simple literal)
      */

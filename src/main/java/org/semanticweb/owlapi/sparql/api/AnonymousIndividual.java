@@ -69,6 +69,11 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
+    @Override
+    public boolean isXSDBoolean() {
+        return false;
+    }
+
     public boolean isEntityIRI() {
         return false;
     }
