@@ -377,7 +377,7 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
         }
         else if (datatype.isXSDString()) {
             try {
-                float value = (float) Double.parseDouble(lexicalForm);
+                float value = (float) Float.parseFloat(lexicalForm);
                 return Optional.of(Literal.createFloat(value));
             } catch (NumberFormatException e) {
                 return Optional.empty();
