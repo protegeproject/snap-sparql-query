@@ -26,7 +26,7 @@ public class MAX_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
         double max = Double.MIN_VALUE;
         int count = 0;
         for(SolutionMapping sm : solutionSequence.getSolutionMappings()) {
-            EvaluationResult eval = arg.evaluateAsNumeric(sm, evaluationContext);
+            EvaluationResult eval = arg.evaluate(sm, evaluationContext).asNumericOrElseError();
             if(!eval.isError()) {
                 double numeric = eval.asNumeric();
                 if(numeric > max) {

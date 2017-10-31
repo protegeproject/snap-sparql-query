@@ -207,11 +207,6 @@ public class Literal_TestCase {
     }
 
     @Test
-    public void should_evaluateAsNumeric() {
-        assertThat(literal.evaluateAsNumeric(sm, mock(AlgebraEvaluationContext.class)).isError(), is(true));
-    }
-
-    @Test
     public void should_evaluateAsDateTime() {
         MatcherAssert.assertThat(literal.evaluateAsDateTime(sm, mock(AlgebraEvaluationContext.class)).isError(), is(true));
     }

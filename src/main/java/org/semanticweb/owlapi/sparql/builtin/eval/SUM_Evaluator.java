@@ -31,7 +31,7 @@ public class SUM_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
         double sum = 0;
         Datatype mostSpecificBasicType = Datatype.getXSDInteger();
         for(SolutionMapping sm : solutionSequence.getSolutionMappings()) {
-            EvaluationResult argEval = arg.evaluateAsNumeric(sm, evaluationContext);
+            EvaluationResult argEval = arg.evaluate(sm, evaluationContext).asNumericOrElseError();
             if(!argEval.isError()) {
                 mostSpecificBasicType = BasicNumericType.getMostSpecificBasicNumericType(mostSpecificBasicType, argEval.asLiteral().getDatatype());
                 sum += argEval.asNumeric();

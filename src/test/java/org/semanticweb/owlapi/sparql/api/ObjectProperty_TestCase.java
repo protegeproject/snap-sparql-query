@@ -105,11 +105,6 @@ public class ObjectProperty_TestCase {
     }
 
     @Test
-    public void shouldReturn_Error_When_evaluateAsNumeric() {
-        assertThat(objectProperty.evaluateAsNumeric(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
-    }
-
-    @Test
     public void shouldReturn_Error_When_evaluateAsDateTime() {
         assertThat(objectProperty.evaluateAsDateTime(sm, mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }

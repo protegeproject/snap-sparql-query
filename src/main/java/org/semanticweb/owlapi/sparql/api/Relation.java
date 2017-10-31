@@ -41,9 +41,9 @@ public enum Relation {
         // xsd:boolean - xsd:boolean
 
 
-        EvaluationResult leftEval = left.evaluateAsNumeric(sm, evaluationContext);
+        EvaluationResult leftEval = left.evaluate(sm, evaluationContext).asNumericOrElseError();
         if(!leftEval.isError()) {
-            EvaluationResult rightEval = right.evaluateAsNumeric(sm, evaluationContext);
+            EvaluationResult rightEval = right.evaluate(sm, evaluationContext).asNumericOrElseError();
             if (!rightEval.isError()) {
                 return evaluateNumeric(leftEval, rightEval);
             }

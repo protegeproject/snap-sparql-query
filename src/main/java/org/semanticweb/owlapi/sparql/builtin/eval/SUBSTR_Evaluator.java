@@ -37,7 +37,7 @@ public class SUBSTR_Evaluator implements BuiltInCallEvaluator {
             return EvaluationResult.getError();
         }
 
-        final EvaluationResult startIndexArgEval = args.get(START_INDEX_INDEX).evaluateAsNumeric(sm, evaluationContext);
+        final EvaluationResult startIndexArgEval = args.get(START_INDEX_INDEX).evaluate(sm, evaluationContext).asNumericOrElseError();
         if(startIndexArgEval.isError()) {
             return EvaluationResult.getError();
         }
@@ -48,7 +48,7 @@ public class SUBSTR_Evaluator implements BuiltInCallEvaluator {
         int startIndex = (int) startIndexArgEval.asNumeric();
         final String substring;
         if(argsContainsLengthArg(args)) {
-            EvaluationResult lengthArgEval = args.get(LENGTH_ARG_INDEX).evaluateAsNumeric(sm, evaluationContext);
+            EvaluationResult lengthArgEval = args.get(LENGTH_ARG_INDEX).evaluate(sm, evaluationContext).asNumericOrElseError();
             if(lengthArgEval.isError()) {
                 return EvaluationResult.getError();
             }

@@ -118,14 +118,14 @@ public abstract class AbstractVariable extends Variable {
         }
         return term.get().evaluateAsSimpleLiteral(sm, evaluationContext);
     }
-
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        Optional<RDFTerm> term = sm.getTermForVariable(this);
-        if(!term.isPresent()) {
-            return EvaluationResult.getError();
-        }
-        return term.get().evaluateAsNumeric(sm, evaluationContext);
-    }
+//
+//    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
+//        Optional<RDFTerm> term = sm.getTermForVariable(this);
+//        if(!term.isPresent()) {
+//            return EvaluationResult.getError();
+//        }
+//        return term.get().evaluateAsNumeric(sm, evaluationContext);
+//    }
 
     public EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         Optional<RDFTerm> term = sm.getTermForVariable(this);

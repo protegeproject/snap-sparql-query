@@ -119,14 +119,14 @@ public class BuiltInCallExpression implements Expression {
         return builtInCall.getReturnType().isNumeric();
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        if(!builtInCall.getReturnType().isNumeric()) {
-            return EvaluationResult.getError();
-        }
-        else {
-            return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
-        }
-    }
+//    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
+//        if(!builtInCall.getReturnType().isNumeric()) {
+//            return EvaluationResult.getError();
+//        }
+//        else {
+//            return builtInCall.getEvaluator().evaluate(args, sm, evaluationContext);
+//        }
+//    }
 
     public boolean canEvaluateAsDateTime(SolutionMapping sm) {
         return false;

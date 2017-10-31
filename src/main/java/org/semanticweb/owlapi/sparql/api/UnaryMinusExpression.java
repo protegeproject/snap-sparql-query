@@ -32,7 +32,11 @@ public class UnaryMinusExpression implements Expression {
     }
 
     public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return evaluateAsNumeric(sm, evaluationContext);
+        EvaluationResult eval = expression.evaluate(sm, evaluationContext).asNumericOrElseError();
+        if(eval.isError()) {
+            return eval;
+        }
+        return EvaluationResult.getDouble(-eval.asNumeric());
     }
 
     public boolean canEvaluateAsBoolean(SolutionMapping sm) {
@@ -61,14 +65,6 @@ public class UnaryMinusExpression implements Expression {
 
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {
         return true;
-    }
-
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult eval = expression.evaluateAsNumeric(sm, evaluationContext);
-        if(eval.isError()) {
-            return eval;
-        }
-        return EvaluationResult.getDouble(-eval.asNumeric());
     }
 
     public boolean canEvaluateAsDateTime(SolutionMapping sm) {

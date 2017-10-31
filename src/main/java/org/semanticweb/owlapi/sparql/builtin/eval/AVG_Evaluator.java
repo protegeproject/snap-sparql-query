@@ -26,7 +26,7 @@ public class AVG_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
         int count = 0;
         double sum = 0;
         for(SolutionMapping sm : solutionSequence.getSolutionMappings()) {
-            EvaluationResult eval = arg.evaluateAsNumeric(sm, evaluationContext);
+            EvaluationResult eval = arg.evaluate(sm, evaluationContext).asNumericOrElseError();
             if(!eval.isError()) {
                 double numeric = eval.asNumeric();
                 sum += numeric;

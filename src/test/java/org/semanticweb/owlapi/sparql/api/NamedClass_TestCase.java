@@ -103,11 +103,6 @@ public class NamedClass_TestCase {
     }
 
     @Test
-    public void shouldReturn_Error_When_evaluateAsNumeric() {
-        assertThat(namedClass.evaluateAsNumeric(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
-    }
-
-    @Test
     public void shouldReturn_Error_When_evaluateAsDateTime() {
         assertThat(namedClass.evaluateAsDateTime(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }

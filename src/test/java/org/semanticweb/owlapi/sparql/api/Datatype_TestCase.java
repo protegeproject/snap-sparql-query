@@ -274,11 +274,6 @@ public class Datatype_TestCase {
     }
 
     @Test
-    public void shouldReturn_Error_When_evaluateAsNumeric() {
-        assertThat(datatype.evaluateAsNumeric(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
-    }
-
-    @Test
     public void shouldReturn_Error_When_evaluateAsDateTime() {
         assertThat(datatype.evaluateAsDateTime(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }

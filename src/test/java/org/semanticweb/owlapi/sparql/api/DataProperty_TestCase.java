@@ -117,11 +117,6 @@ public class DataProperty_TestCase {
     }
 
     @Test
-    public void shouldReturn_Error_When_evaluateAsNumeric() {
-        assertThat(dataProperty.evaluateAsNumeric(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
-    }
-
-    @Test
     public void shouldReturn_Error_When_evaluateAsDateTime() {
         assertThat(dataProperty.evaluateAsDateTime(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }

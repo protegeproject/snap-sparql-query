@@ -117,11 +117,6 @@ public class AnnotationProperty_TestCase {
     }
 
     @Test
-    public void shouldReturn_Error_When_evaluateAsNumeric() {
-        assertThat(annotationProperty.evaluateAsNumeric(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
-    }
-
-    @Test
     public void shouldReturn_Error_When_evaluateAsDateTime() {
         assertThat(annotationProperty.evaluateAsDateTime(mock(SolutionMapping.class), mock(AlgebraEvaluationContext.class)), is(EvaluationResult.getError()));
     }

@@ -172,6 +172,11 @@ public class AggregateBuiltInReplacer {
         public Expression visit(UnaryMinusExpression unaryMinusExpression, ReplacementContext context) throws RuntimeException {
             return unaryMinusExpression;
         }
+
+        @Override
+        public Expression visit(Cast cast, ReplacementContext context) throws RuntimeException {
+            return cast;
+        }
     }
 
     public static final class ReplacementContext {

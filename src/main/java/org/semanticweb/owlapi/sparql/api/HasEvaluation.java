@@ -45,8 +45,6 @@ public interface HasEvaluation {
 
     EvaluationResult evaluateAsStringLiteral(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
-    EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
-
     EvaluationResult evaluateAsDateTime(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);
 
     EvaluationResult evaluateAsIRI(SolutionMapping sm, AlgebraEvaluationContext evaluationContext);

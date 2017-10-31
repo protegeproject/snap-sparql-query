@@ -1880,7 +1880,27 @@ public class SPARQLParserImpl {
             expression = new NamedClass(getIRIFromToken(tokenizer.consume(ClassIRITokenType.get())));
         }
         else if (peek(DatatypeIRITokenType.get())) {
-            expression =  Datatype.get(getIRIFromToken(tokenizer.consume(DatatypeIRITokenType.get())));
+            // Need to think about casts here.  The valid casts are:
+            // xsd:boolean, xsd:double, xsd:float, xsd:decimal, xsd:integer, xsd:dateTime, xsd:string
+            Datatype datatype = Datatype.get(getIRIFromToken(tokenizer.consume(DatatypeIRITokenType.get())));
+            if(datatype.isXSDBoolean()
+                    || datatype.isXSDDouble()
+                    || datatype.isXSDFloat()
+                    || datatype.isXSDDecimal()
+                    || datatype.isXSDInteger()
+                    || datatype.isXSDDateTime()
+                    || datatype.isXSDString()) {
+                // Used as a function
+                if(peek(OPEN_PAR)) {
+                    tokenizer.consume(OPEN_PAR);
+                    Expression argToCast = parseExpression();
+                    tokenizer.consume(CLOSE_PAR);
+                    expression = new Cast(datatype, argToCast);
+                }
+            }
+            else {
+                expression = datatype;
+            }
         }
         else if (peek(ObjectPropertyIRITokenType.get())) {
             expression = new ObjectProperty(getIRIFromToken(tokenizer.consume(ObjectPropertyIRITokenType.get())));

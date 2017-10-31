@@ -44,6 +44,11 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
         return false;
     }
 
+    @Override
+    public boolean isNumeric() {
+        return false;
+    }
+
     public boolean isEntityIRI() {
         return false;
     }
@@ -82,10 +87,6 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
 
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {
         return false;
-    }
-
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
     }
 
     public boolean canEvaluateAsDateTime(SolutionMapping sm) {
@@ -162,5 +163,40 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
     @Override
     public java.util.Optional<Variable> asVariable() {
         return java.util.Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDString() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDFloat() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDDouble() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDDecimal() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDInteger() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDDateTime() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDBoolean() {
+        return Optional.empty();
     }
 }

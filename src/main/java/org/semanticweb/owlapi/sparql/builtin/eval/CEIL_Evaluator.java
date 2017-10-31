@@ -13,7 +13,7 @@ public class CEIL_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
 
     @Override
     protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult eval = arg.evaluateAsNumeric(sm, evaluationContext);
+        EvaluationResult eval = arg.evaluate(sm, evaluationContext).asNumericOrElseError();
         if(eval.isError()) {
             return EvaluationResult.getError();
         }

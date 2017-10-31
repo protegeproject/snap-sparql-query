@@ -43,6 +43,11 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
         return iri.toString();
     }
 
+    @Override
+    public boolean isNumeric() {
+        return false;
+    }
+
     public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getResult(this);
     }
@@ -52,10 +57,6 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     }
 
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
         return EvaluationResult.getError();
     }
 
@@ -154,5 +155,40 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     @Override
     public java.util.Optional<Variable> asVariable() {
         return java.util.Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDString() {
+        return Optional.of(Literal.createString(iri.toString()));
+    }
+
+    @Override
+    public Optional<Literal> castToXSDFloat() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDDouble() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDDecimal() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDInteger() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDDateTime() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Literal> castToXSDBoolean() {
+        return Optional.empty();
     }
 }

@@ -18,7 +18,20 @@ public class PlusExpression extends BinaryExpression implements Expression {
     }
 
     public EvaluationResult evaluate(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return evaluateAsNumeric(sm, evaluationContext);
+        EvaluationResult leftEval = getLeft().evaluate(sm, evaluationContext).asNumericOrElseError();
+        if(leftEval.isError()) {
+            return leftEval;
+        }
+        EvaluationResult rightEval = getRight().evaluate(sm, evaluationContext).asNumericOrElseError();
+        if(rightEval.isError()) {
+            return rightEval;
+        }
+        double leftValue = leftEval.asNumeric();
+        double rightValue = rightEval.asNumeric();
+        Literal leftLiteral = leftEval.asLiteral();
+        Literal rightLiteral = rightEval.asLiteral();
+        Datatype returnType = BasicNumericType.getMostSpecificBasicNumericType(leftLiteral.getDatatype(), rightLiteral.getDatatype());
+        return EvaluationResult.getResult(BasicNumericType.getLiteralOfBasicNumericType(leftValue + rightValue, returnType));
     }
 
     public boolean canEvaluateAsBoolean(SolutionMapping sm) {
@@ -47,23 +60,6 @@ public class PlusExpression extends BinaryExpression implements Expression {
 
     public boolean canEvaluateAsNumeric(SolutionMapping sm) {
         return true;
-    }
-
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult leftEval = getLeft().evaluateAsNumeric(sm, evaluationContext);
-        if(leftEval.isError()) {
-            return leftEval;
-        }
-        EvaluationResult rightEval = getRight().evaluateAsNumeric(sm, evaluationContext);
-        if(rightEval.isError()) {
-            return rightEval;
-        }
-        double leftValue = leftEval.asNumeric();
-        double rightValue = rightEval.asNumeric();
-        Literal leftLiteral = leftEval.asLiteral();
-        Literal rightLiteral = rightEval.asLiteral();
-        Datatype returnType = BasicNumericType.getMostSpecificBasicNumericType(leftLiteral.getDatatype(), rightLiteral.getDatatype());
-        return EvaluationResult.getResult(BasicNumericType.getLiteralOfBasicNumericType(leftValue + rightValue, returnType));
     }
 
     public boolean canEvaluateAsDateTime(SolutionMapping sm) {

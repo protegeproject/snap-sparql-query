@@ -63,5 +63,6 @@ public interface ExpressionVisitor<R, E extends Throwable, C> {
 
     R visit(UnaryMinusExpression unaryMinusExpression, C context) throws E;
 
+    R visit(Cast cast, C context) throws E;
 
 }

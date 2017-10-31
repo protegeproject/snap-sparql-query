@@ -82,10 +82,6 @@ public class RelationExpression implements Expression {
         return false;
     }
 
-    public EvaluationResult evaluateAsNumeric(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
-    }
-
     public boolean canEvaluateAsDateTime(SolutionMapping sm) {
         return false;
     }

@@ -194,6 +194,11 @@ public class UnaggregatedVariableReplacer {
             Expression replacementExpression = unaryMinusExpression.getExpression().accept(this, context);
             return new UnaryMinusExpression(replacementExpression);
         }
+
+        @Override
+        public Expression visit(Cast cast, ReplacementContext context) throws RuntimeException {
+            return new Cast(cast.getCastTo(), cast.getArg().accept(this, context));
+        }
     }
 
 

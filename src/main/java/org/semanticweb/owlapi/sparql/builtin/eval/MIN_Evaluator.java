@@ -26,7 +26,7 @@ public class MIN_Evaluator implements BuiltInCallEvaluator, BuiltInAggregateCall
         double min = Double.MAX_VALUE;
         int count = 0;
         for(SolutionMapping sm : solutionSequence.getSolutionMappings()) {
-            EvaluationResult eval = arg.evaluateAsNumeric(sm, evaluationContext);
+            EvaluationResult eval = arg.evaluate(sm, evaluationContext).asNumericOrElseError();
             if(!eval.isError()) {
                 double numeric = eval.asNumeric();
                 if(numeric < min) {
