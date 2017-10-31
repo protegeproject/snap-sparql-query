@@ -1,9 +1,6 @@
 package org.semanticweb.owlapi.sparql.builtin.eval;
 
-import org.semanticweb.owlapi.sparql.api.EvaluationResult;
-import org.semanticweb.owlapi.sparql.api.Expression;
-import org.semanticweb.owlapi.sparql.api.Literal;
-import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.semanticweb.owlapi.sparql.api.*;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 /**
@@ -14,15 +11,17 @@ import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 public class STR_Evaluator extends AbstractUnaryBuiltInCallEvaluator {
     @Override
     protected EvaluationResult evaluate(Expression arg, SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        EvaluationResult literalEval = arg.evaluate(sm, evaluationContext).asLiteralOrElseError();
-        if(literalEval.isError()) {
-            return literalEval;
+        EvaluationResult literalEval = arg.evaluate(sm, evaluationContext);
+        RDFTerm term = literalEval.getResult();
+        if(term instanceof Literal) {
+            return EvaluationResult.getSimpleLiteral(literalEval.asSimpleLiteral());
         }
-        EvaluationResult iriEval = arg.evaluate(sm, evaluationContext).asIriOrElseError();
-        if(!iriEval.isError()) {
-            EvaluationResult.getResult(Literal.createRDFPlainLiteral(iriEval.asIRI().getIRI().toString(), ""));
+        else if(term instanceof AtomicIRI) {
+            return EvaluationResult.getSimpleLiteral(((AtomicIRI) term).getIdentifier());
         }
-        return EvaluationResult.getResult(Literal.createRDFPlainLiteral(literalEval.asLiteral().getLexicalForm(), ""));
+        else {
+            return EvaluationResult.getError();
+        }
     }
 
 }

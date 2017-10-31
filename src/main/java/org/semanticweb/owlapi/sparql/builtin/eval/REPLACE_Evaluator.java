@@ -36,7 +36,7 @@ public class REPLACE_Evaluator implements BuiltInCallEvaluator {
         if(eval0.isError()) {
             return EvaluationResult.getError();
         }
-        EvaluationResult eval1 = args.get(1).evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
+        EvaluationResult eval1 = args.get(1).evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(eval1.isError()) {
             return EvaluationResult.getError();
         }
@@ -46,7 +46,7 @@ public class REPLACE_Evaluator implements BuiltInCallEvaluator {
         }
         String flags = "";
         if(args.size() == 4) {
-            EvaluationResult eval4 = args.get(3).evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
+            EvaluationResult eval4 = args.get(3).evaluate(sm, evaluationContext).asStringLiteralOrElseError();
             if(eval4.isError()) {
                 return EvaluationResult.getError();
             }

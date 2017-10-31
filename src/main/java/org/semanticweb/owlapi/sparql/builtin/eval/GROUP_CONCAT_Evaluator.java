@@ -27,7 +27,7 @@ public class GROUP_CONCAT_Evaluator implements BuiltInCallEvaluator, BuiltInAggr
         } else if (args.size() == 2) {
             arg0 = args.get(0);
             Expression arg1 = args.get(1);
-            EvaluationResult separatorEval = arg1.evaluate(SolutionMapping.emptyMapping(), evaluationContext).asSimpleLiteralOrElseError();
+            EvaluationResult separatorEval = arg1.evaluate(SolutionMapping.emptyMapping(), evaluationContext).asStringLiteralOrElseError();
             if (separatorEval.isError()) {
                 return EvaluationResult.getError();
             }

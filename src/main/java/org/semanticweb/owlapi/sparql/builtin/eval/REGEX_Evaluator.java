@@ -31,7 +31,7 @@ public class REGEX_Evaluator implements BuiltInCallEvaluator {
             return matchResult;
         }
         Expression pattern = args.get(1);
-        EvaluationResult patternResult = pattern.evaluate(sm, evaluationContext).asSimpleLiteralOrElseError();
+        EvaluationResult patternResult = pattern.evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(patternResult.isError()) {
             return patternResult;
         }
