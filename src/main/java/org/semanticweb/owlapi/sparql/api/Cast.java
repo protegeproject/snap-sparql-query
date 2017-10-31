@@ -75,7 +75,12 @@ public class Cast implements Expression {
 
     @Override
     public EvaluationResult evaluateAsEffectiveBooleanValue(SolutionMapping sm, AlgebraEvaluationContext evaluationContext) {
-        return EvaluationResult.getError();
+        EvaluationResult result = arg.evaluate(sm, evaluationContext);
+        if(result.isError()) {
+            return EvaluationResult.getFalse();
+        }
+        RDFTerm term = result.getResult();
+        return term.castToXSDBoolean().map(EvaluationResult::getResult).orElse(EvaluationResult.getError());
     }
 
     @Override

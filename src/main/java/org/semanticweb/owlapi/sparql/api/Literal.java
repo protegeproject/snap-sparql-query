@@ -1,7 +1,6 @@
 package org.semanticweb.owlapi.sparql.api;
 
 import com.google.common.base.Objects;
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
@@ -44,7 +43,8 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     public static Literal createBoolean(boolean value) {
         if (value) {
             return TRUE;
-        } else {
+        }
+        else {
             return FALSE;
         }
     }
@@ -142,9 +142,11 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     public String toString() {
         if (datatype.equals(Datatype.getXSDInteger())) {
             return lexicalForm.trim();
-        } else if (datatype.equals(Datatype.getXSDDouble())) {
+        }
+        else if (datatype.equals(Datatype.getXSDDouble())) {
             return lexicalForm;
-        } else if (datatype.isRDFPlainLiteral()) {
+        }
+        else if (datatype.isRDFPlainLiteral()) {
             return "\"" + lexicalForm + "\"";
         }
         return "Literal(\"" + lexicalForm + "\" ^^" + datatype + " @" + langTag + ")";
@@ -155,8 +157,8 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     }
 
     /**
-     * Determines if this literal is a string literal.  A string literal is a literal that has a datatype of
-     * xsd:string, or has a datatype of plain literal.
+     * Determines if this literal is a string literal.  A string literal is a literal that has a datatype of xsd:string,
+     * or has a datatype of plain literal.
      *
      * @return {@code true} if this literal is a string literal, otherwise {@code false}.
      */
@@ -247,10 +249,12 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
                 // If the argument is a typed literal with a datatype of xsd:boolean, and it has
                 // a valid lexical form, the EBV is the value of that argument.
                 return EvaluationResult.getResult(this);
-            } else {
+            }
+            else {
                 return EvaluationResult.getFalse();
             }
-        } else if (isDatatypeNumeric()) {
+        }
+        else if (isDatatypeNumeric()) {
             // The EBV of any literal whose type is numeric
             // is false if the lexical form is not valid
             if (isNumeric()) {
@@ -259,24 +263,29 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
                     // return false if the value is NaN or is numerically equal to zero
                     if (value == 0) {
                         return EvaluationResult.getFalse();
-                    } else if (Double.isNaN(value)) {
+                    }
+                    else if (Double.isNaN(value)) {
                         return EvaluationResult.getFalse();
-                    } else {
+                    }
+                    else {
                         // Otherwise return true
                         return EvaluationResult.getTrue();
                     }
                 } catch (NumberFormatException e) {
                     return EvaluationResult.getFalse();
                 }
-            } else {
+            }
+            else {
                 return EvaluationResult.getFalse();
             }
-        } else if (isRDFPlainLiteral() || isStringLiteral()) {
+        }
+        else if (isRDFPlainLiteral() || isStringLiteral()) {
             // If the argument is a plain literal or a typed
             // literal with a datatype of xsd:string, the EBV is false if the operand
             // value has zero length; otherwise the EBV is true.
             return EvaluationResult.getBoolean(lexicalForm.length() > 0);
-        } else {
+        }
+        else {
             // All other arguments, including unbound arguments, produce a type error.
             return EvaluationResult.getError();
         }
@@ -348,7 +357,8 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     public Optional<Literal> castToXSDString() {
         if (datatype.isXSDString()) {
             return Optional.of(this);
-        } else {
+        }
+        else {
             return Optional.of(Literal.createString(lexicalForm));
         }
     }
@@ -357,19 +367,26 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     public Optional<Literal> castToXSDFloat() {
         if (datatype.isXSDFloat()) {
             return Optional.of(this);
-        } else if (isNumeric()) {
+        }
+        else if(isSimpleLiteral()) {
+            return Optional.of(new Literal(Datatype.getXSDFloat(), lexicalForm, ""));
+        }
+        else if (isNumeric()) {
             int value = (int) Double.parseDouble(lexicalForm);
             return Optional.of(Literal.createInteger(value));
-        } else if (datatype.isXSDString()) {
+        }
+        else if (datatype.isXSDString()) {
             try {
                 float value = (float) Double.parseDouble(lexicalForm);
                 return Optional.of(Literal.createFloat(value));
             } catch (NumberFormatException e) {
                 return Optional.empty();
             }
-        } else if (datatype.isXSDBoolean() && (lexicalForm.equalsIgnoreCase("true") || lexicalForm.equals("1"))) {
+        }
+        else if (datatype.isXSDBoolean() && (lexicalForm.equalsIgnoreCase("true") || lexicalForm.equals("1"))) {
             return Optional.of(Literal.createFloat(1));
-        } else {
+        }
+        else {
             return Optional.empty();
         }
     }
@@ -378,19 +395,26 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     public Optional<Literal> castToXSDDouble() {
         if (datatype.isXSDDouble()) {
             return Optional.of(this);
-        } else if (isNumeric()) {
+        }
+        else if(isSimpleLiteral()) {
+            return Optional.of(new Literal(Datatype.getXSDDouble(), lexicalForm, ""));
+        }
+        else if (isNumeric()) {
             int value = (int) Double.parseDouble(lexicalForm);
             return Optional.of(Literal.createDouble(value));
-        } else if (datatype.isXSDString()) {
+        }
+        else if (datatype.isXSDString()) {
             try {
                 double value = Double.parseDouble(lexicalForm);
                 return Optional.of(Literal.createDouble(value));
             } catch (NumberFormatException e) {
                 return Optional.empty();
             }
-        } else if (datatype.isXSDBoolean() && (lexicalForm.equalsIgnoreCase("true") || lexicalForm.equals("1"))) {
+        }
+        else if (datatype.isXSDBoolean() && (lexicalForm.equalsIgnoreCase("true") || lexicalForm.equals("1"))) {
             return Optional.of(Literal.createDouble(1));
-        } else {
+        }
+        else {
             return Optional.empty();
         }
     }
@@ -399,10 +423,15 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     public Optional<Literal> castToXSDDecimal() {
         if (datatype.isXSDDecimal()) {
             return Optional.of(this);
-        } else if (isNumeric()) {
+        }
+        else if(isSimpleLiteral()) {
+            return Optional.of(new Literal(Datatype.getXSDDecimal(), lexicalForm, ""));
+        }
+        else if (isNumeric()) {
             int value = (int) Double.parseDouble(lexicalForm);
             return Optional.of(Literal.createDecimal(value));
-        } else if (datatype.isXSDString()) {
+        }
+        else if (datatype.isXSDString()) {
             try {
                 double value = Double.parseDouble(lexicalForm);
                 if (!Double.isNaN(value)) {
@@ -414,9 +443,11 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
             } catch (NumberFormatException e) {
                 return Optional.empty();
             }
-        } else if (datatype.isXSDBoolean() && (lexicalForm.equalsIgnoreCase("true") || lexicalForm.equals("1"))) {
+        }
+        else if (datatype.isXSDBoolean() && (lexicalForm.equalsIgnoreCase("true") || lexicalForm.equals("1"))) {
             return Optional.of(Literal.createDouble(1));
-        } else {
+        }
+        else {
             return Optional.empty();
         }
     }
@@ -425,19 +456,26 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     public Optional<Literal> castToXSDInteger() {
         if (datatype.isXSDInteger()) {
             return Optional.of(this);
-        } else if (isNumeric()) {
+        }
+        else if(isSimpleLiteral()) {
+            return Optional.of(new Literal(Datatype.getXSDInteger(), lexicalForm, ""));
+        }
+        else if (isNumeric()) {
             int value = (int) Double.parseDouble(lexicalForm);
             return Optional.of(Literal.createInteger(value));
-        } else if (datatype.isXSDString()) {
+        }
+        else if (datatype.isXSDString()) {
             try {
                 int value = (int) Double.parseDouble(lexicalForm);
                 return Optional.of(Literal.createInteger(value));
             } catch (NumberFormatException e) {
                 return Optional.empty();
             }
-        } else if (datatype.isXSDBoolean() && (lexicalForm.equalsIgnoreCase("true") || lexicalForm.equals("1"))) {
+        }
+        else if (datatype.isXSDBoolean() && (lexicalForm.equalsIgnoreCase("true") || lexicalForm.equals("1"))) {
             return Optional.of(Literal.createInteger(1));
-        } else {
+        }
+        else {
             return Optional.empty();
         }
     }
@@ -446,13 +484,23 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     public Optional<Literal> castToXSDDateTime() {
         if (datatype.isXSDDateTime()) {
             return Optional.of(this);
-        } else {
+        }
+        else {
             return DateTime.parseDateTime(lexicalForm).map(Literal::createDateTime);
         }
     }
 
     @Override
     public Optional<Literal> castToXSDBoolean() {
-        return null;
+        if (datatype.isXSDBoolean()) {
+            return Optional.of(this);
+        }
+        if ("true".equalsIgnoreCase(lexicalForm)) {
+            return Optional.of(Literal.getTrue());
+        }
+        if ("1".equalsIgnoreCase(lexicalForm)) {
+            return Optional.of(Literal.getTrue());
+        }
+        return Optional.of(Literal.getFalse());
     }
 }
