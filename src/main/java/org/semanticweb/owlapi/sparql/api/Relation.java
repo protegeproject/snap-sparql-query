@@ -69,7 +69,7 @@ public enum Relation {
         }
 
         if(leftTerm.isXSDBoolean() && rightTerm.isXSDBoolean()) {
-            evaluateBoolean(leftEval, rightEval);
+            return evaluateBoolean(leftEval, rightEval);
         }
         return EvaluationResult.getError();
     }
