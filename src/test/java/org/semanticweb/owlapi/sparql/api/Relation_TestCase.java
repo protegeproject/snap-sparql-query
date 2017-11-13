@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -175,6 +176,69 @@ public class Relation_TestCase {
         Literal left = Literal.createBoolean(true);
         Literal right = Literal.createBoolean(true);
         eval(GREATER_THAN_OR_EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeEqualIris() {
+        AtomicIRI left = AtomicIRI.create("http://stuff.com/A");
+        AtomicIRI right = AtomicIRI.create("http://stuff.com/A");
+        eval(EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeNotEqualIris() {
+        AtomicIRI left = AtomicIRI.create("http://stuff.com/A");
+        AtomicIRI right = AtomicIRI.create("http://stuff.com/B");
+        eval(NOT_EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeEqualBlankNodes() {
+        AnonymousIndividual left = new AnonymousIndividual("_:x");
+        AnonymousIndividual right = new AnonymousIndividual("_:x");
+        eval(EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeNotEqualBlankNodes() {
+        AnonymousIndividual left = new AnonymousIndividual("_:x");
+        AnonymousIndividual right = new AnonymousIndividual("_:y");
+        eval(NOT_EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeEqualLiterals() {
+        Literal left = new Literal(Datatype.get(IRI.create("http://the.datatype")), "Lexical Form", "");
+        Literal right = new Literal(Datatype.get(IRI.create("http://the.datatype")), "Lexical Form", "");
+        eval(EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeNotEqualLiteralsDueToLexicalFormButSameLangs() {
+        Literal left = Literal.createRDFPlainLiteral("The lexical form", "en");
+        Literal right = Literal.createRDFPlainLiteral("Another lexical form", "en");
+        eval(NOT_EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeNotEqualLiteralsDueLangs() {
+        Literal left = Literal.createRDFPlainLiteral("The lexical form", "en");
+        Literal right = Literal.createRDFPlainLiteral("The lexical form", "es");
+        eval(NOT_EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeNotEqualLiteralsDueToLexicalForm() {
+        Literal left = new Literal(Datatype.get(IRI.create("http://the.datatype")), "Lexical Form", "");
+        Literal right = new Literal(Datatype.get(IRI.create("http://the.datatype")), "Another Lexical Form", "");
+        eval(NOT_EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeNotEqualLiteralsDueToDatatype() {
+        Literal left = new Literal(Datatype.get(IRI.create("http://the.datatype/X")), "Lexical Form", "");
+        Literal right = new Literal(Datatype.get(IRI.create("http://the.datatype/Y")), "Lexical Form", "");
+        eval(NOT_EQUAL, left, right);
     }
 
     private void eval(Relation relation, Expression left, Expression right) {

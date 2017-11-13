@@ -61,17 +61,104 @@ public enum Relation {
         }
 
         if(leftTerm.isSimpleLiteral() && rightTerm.isSimpleLiteral()) {
+            // Neither have a language tag
             return evaluateStringLiteral(leftEval.asSimpleLiteral(), rightEval.asSimpleLiteral());
         }
 
         if(leftTerm.isXSDString() && rightTerm.isXSDString()) {
+            // Same datatype of xsd:string
             return evaluateStringLiteral(leftEval.asSimpleLiteral(), rightEval.asSimpleLiteral());
         }
 
         if(leftTerm.isXSDBoolean() && rightTerm.isXSDBoolean()) {
             return evaluateBoolean(leftEval, rightEval);
         }
+
+        if(leftTerm instanceof AtomicIRI && rightTerm instanceof AtomicIRI) {
+            return evaluateIri((AtomicIRI) leftTerm, (AtomicIRI) rightTerm);
+        }
+
+        if(leftTerm instanceof AnonymousIndividual && rightTerm instanceof AnonymousIndividual) {
+            return evaluateAnonymousIndividual((AnonymousIndividual) leftTerm, (AnonymousIndividual) rightTerm);
+        }
+
+        if(leftTerm instanceof Literal && rightTerm instanceof Literal) {
+            return evaluateLiteral((Literal) leftTerm, (Literal) rightTerm);
+        }
         return EvaluationResult.getError();
+    }
+
+    private EvaluationResult evaluateLiteral(Literal left, Literal right) {
+
+        switch (this) {
+            case EQUAL:
+                return EvaluationResult.getBoolean(equalLiterals(left, right));
+            case NOT_EQUAL:
+                return EvaluationResult.getBoolean(!equalLiterals(left, right));
+            case LESS_THAN:
+                return EvaluationResult.getError();
+            case LESS_THAN_OR_EQUAL:
+                return EvaluationResult.getError();
+            case GREATER_THAN:
+                return EvaluationResult.getError();
+            case GREATER_THAN_OR_EQUAL:
+                return EvaluationResult.getError();
+            default:
+                throw new RuntimeException("Unknown enum value");
+        }
+    }
+
+    private boolean equalLiterals(Literal left, Literal right) {
+        // The strings of the two lexical forms compare equal, character by character.
+        if(!left.getLexicalForm().equals(right.getLexicalForm())) {
+            return false;
+        }
+        // Either both or neither have language tags.
+        // The language tags, if any, compare equal.
+        if(!left.getLang().equals(right.getLang())) {
+            return false;
+        }
+        // Either both or neither have datatype URIs.
+        // The two datatype URIs, if any, compare equal, character by character.
+        return left.getDatatype().equals(right.getDatatype());
+    }
+
+    private EvaluationResult evaluateAnonymousIndividual(AnonymousIndividual left, AnonymousIndividual right) {
+        switch (this) {
+            case EQUAL:
+                return EvaluationResult.getBoolean(left.getIdentifier().equals(right.getIdentifier()));
+            case NOT_EQUAL:
+                return EvaluationResult.getBoolean(!left.getIdentifier().equals(right.getIdentifier()));
+            case LESS_THAN:
+                return EvaluationResult.getError();
+            case LESS_THAN_OR_EQUAL:
+                return EvaluationResult.getError();
+            case GREATER_THAN:
+                return EvaluationResult.getError();
+            case GREATER_THAN_OR_EQUAL:
+                return EvaluationResult.getError();
+            default:
+                throw new RuntimeException("Unknown enum value");
+        }
+    }
+
+    private EvaluationResult evaluateIri(AtomicIRI left, AtomicIRI right) {
+        switch (this) {
+            case EQUAL:
+                return EvaluationResult.getBoolean(left.equals(right));
+            case NOT_EQUAL:
+                return EvaluationResult.getBoolean(!left.equals(right));
+            case LESS_THAN:
+                return EvaluationResult.getError();
+            case LESS_THAN_OR_EQUAL:
+                return EvaluationResult.getError();
+            case GREATER_THAN:
+                return EvaluationResult.getError();
+            case GREATER_THAN_OR_EQUAL:
+                return EvaluationResult.getError();
+            default:
+                throw new RuntimeException("Unknown enum value");
+        }
     }
 
     private EvaluationResult evaluateNumeric(EvaluationResult leftEval, EvaluationResult rightEval) {
