@@ -15,6 +15,8 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.sparql.algebra.Bgp;
 import org.semanticweb.owlapi.sparql.algebra.SolutionSequence;
 import org.semanticweb.owlapi.sparql.api.SolutionMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Matthew Horridge Stanford Center for Biomedical Informatics Research 11/06/15
  */
 public class BgpEvaluator {
+
+    private static final Logger logger = LoggerFactory.getLogger(BgpEvaluator.class);
 
     private Cache<Bgp, SolutionSequence> cache;
 
@@ -44,23 +48,25 @@ public class BgpEvaluator {
     public SolutionSequence evaluate(Bgp originalBgp) {
         Bgp simplifiedBgp = originalBgp.getSimplified();
         Stopwatch stopwatch = Stopwatch.createStarted();
-        SolutionSequence cached = cache.getIfPresent(simplifiedBgp);
-        if(cached != null) {
-            return cached;
-        }
+//        SolutionSequence cached = cache.getIfPresent(simplifiedBgp);
+//        if(cached != null) {
+//            logger.info("[Snap SPARQL Bgp Evaluator] Using cached results for BGP: {}", simplifiedBgp);
+//            return cached;
+//        }
         try {
             BgpTranslator bgpTranslator = new BgpTranslator(dataFactory);
             Query query = bgpTranslator.translate(simplifiedBgp);
+            logger.info("[Snap SPARQL Bgp Evaluator] Evaluating BGP: {}", simplifiedBgp);
             ((QueryEngineImpl) queryEngine).setPerformArgumentChecking(false);
             QueryResult result = queryEngine.execute(query);
             ResultTranslator resultTranslator = new ResultTranslator(new SolutionMappingTranslator(), simplifiedBgp.getVariables());
             ImmutableList<SolutionMapping> solutionMappings = resultTranslator.translateResult(result);
             SolutionSequence sequence = new SolutionSequence(new ArrayList<>(simplifiedBgp.getVariables()), solutionMappings);
-            System.out.println("Evaluated BGP in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
+            logger.info("[Snap SPARQL Bgp Evaluator] Evaluated BGP in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
             cache.put(simplifiedBgp, sequence);
             return sequence;
         } catch (QueryEngineException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         } finally {
             stopwatch.stop();
 
