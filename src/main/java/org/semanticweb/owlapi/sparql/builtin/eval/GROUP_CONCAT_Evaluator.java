@@ -31,7 +31,8 @@ public class GROUP_CONCAT_Evaluator implements BuiltInCallEvaluator, BuiltInAggr
             if (separatorEval.isError()) {
                 return EvaluationResult.getError();
             }
-            separator = separatorEval.asSimpleLiteral();
+            String quotedSeparator = separatorEval.asSimpleLiteral().substring("SEPARATOR=".length());
+            separator = quotedSeparator.substring(1, quotedSeparator.length() - 1);
         } else {
             return EvaluationResult.getError();
         }

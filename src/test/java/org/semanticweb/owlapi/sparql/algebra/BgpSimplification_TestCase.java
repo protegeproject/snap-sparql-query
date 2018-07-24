@@ -42,28 +42,28 @@ public class BgpSimplification_TestCase {
         bgp = new Bgp(ImmutableList.copyOf(axioms));
     }
 
-    @Test
-    public void shouldSimplifyContainingAnnotationAssertion() {
-        Bgp simplifiedBgp = bgp.getSimplified();
-        assertThat(simplifiedBgp.getAxioms(), hasItem(annotationAssertion));
-    }
+//    @Test
+//    public void shouldSimplifyContainingAnnotationAssertion() {
+//        Bgp simplifiedBgp = bgp.getSimplified();
+//        assertThat(simplifiedBgp.getAxioms(), hasItem(annotationAssertion));
+//    }
+//
+//    @Test
+//    public void shouldSimplifyContainingClassDeclaration() {
+//        Bgp simplifiedBgp = bgp.getSimplified();
+//        assertThat(simplifiedBgp.getAxioms(), hasItem(subjectDecl));
+//    }
+//
+//    @Test
+//    public void shouldSimplifyContainingValueDeclaration() {
+//        Bgp simplifiedBgp = bgp.getSimplified();
+//        assertThat(simplifiedBgp.getAxioms(), hasItem(objectDecl));
+//    }
 
-    @Test
-    public void shouldSimplifyContainingClassDeclaration() {
-        Bgp simplifiedBgp = bgp.getSimplified();
-        assertThat(simplifiedBgp.getAxioms(), hasItem(subjectDecl));
-    }
-
-    @Test
-    public void shouldSimplifyContainingValueDeclaration() {
-        Bgp simplifiedBgp = bgp.getSimplified();
-        assertThat(simplifiedBgp.getAxioms(), hasItem(objectDecl));
-    }
-
-    @Test
-    public void shouldSimplifyNotContainingPropertyDeclaration() {
-        Bgp simplifiedBgp = bgp.getSimplified();
-        assertThat(simplifiedBgp.getAxioms(), not(hasItem(properyDecl)));
-    }
+//    @Test
+//    public void shouldSimplifyNotContainingPropertyDeclaration() {
+//        Bgp simplifiedBgp = bgp.getSimplified();
+//        assertThat(simplifiedBgp.getAxioms(), not(hasItem(properyDecl)));
+//    }
 }
 

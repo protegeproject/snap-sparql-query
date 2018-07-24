@@ -2033,9 +2033,12 @@ public class SPARQLParserImpl {
                         SPARQLToken nextToken = tokenizer.peek(ScalarKeyTokenType.get());
                         if(nextToken != null && !parsedScalars.contains(nextToken.getImage())) {
                             SPARQLToken scalarNameToken = tokenizer.consume(ScalarKeyTokenType.get());
-                            parsedScalars.add(scalarNameToken.getImage());
+                            String scalarName = scalarNameToken.getImage();
+                            parsedScalars.add(scalarName);
                             tokenizer.consume(EQUAL);
                             SPARQLToken scalarValueToken = tokenizer.consume(StringTokenType.get());
+                            String value = scalarValueToken.getImage();
+                            args.add(Literal.createRDFPlainLiteralNoLang(scalarName + "=" + value));
                         }
 
                     }

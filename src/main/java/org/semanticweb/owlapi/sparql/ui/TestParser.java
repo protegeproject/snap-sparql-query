@@ -125,8 +125,8 @@ public class TestParser {
             System.out.println("Loaded ontology: " + rootOntology);
             System.out.println("Creating reasoner...");
             Configuration configuration = new Configuration();
-//            reasoner = new Reasoner(configuration, rootOntology);
-            reasoner = new SPARQLAssertedReasoner(rootOntology);
+            reasoner = new Reasoner(configuration, rootOntology);
+//            reasoner = new SPARQLAssertedReasoner(rootOntology);
             System.out.println("    .... done");
             System.out.println("Precomputing class hierarchy...");
             reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);

@@ -26,7 +26,7 @@ public class Bgp extends GraphPatternAlgebraExpression<SolutionSequence> {
 
     @Override
     public Bgp getSimplified() {
-        return new Bgp(this.removeRedundantAxiomsTemplates());
+        return this;//new Bgp(this.removeRedundantAxiomsTemplates());
     }
 
     public ImmutableSet<Variable> getVariables() {
