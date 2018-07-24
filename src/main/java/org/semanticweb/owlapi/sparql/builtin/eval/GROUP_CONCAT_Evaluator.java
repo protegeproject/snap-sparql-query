@@ -40,6 +40,7 @@ public class GROUP_CONCAT_Evaluator implements BuiltInCallEvaluator, BuiltInAggr
                 .map(sm -> arg0.evaluate(sm, evaluationContext).asStringLiteralOrElseError())
                 .filter(eval -> !eval.isError())
                 .map(EvaluationResult::asSimpleLiteral)
+                                        .sorted()
                 .collect(joining(separator));
         return EvaluationResult.getSimpleLiteral(concat);
     }
