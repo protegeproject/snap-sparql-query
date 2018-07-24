@@ -6,7 +6,9 @@ import org.semanticweb.owlapi.sparql.api.SolutionMapping;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Matthew Horridge
@@ -21,7 +23,7 @@ public class LANGMATCHES_Evaluator implements BuiltInCallEvaluator {
         if(args.size() != 2) {
             return EvaluationResult.getError();
         }
-        EvaluationResult result0 = args.get(0).evaluate(sm, evaluationContext).asLiteralOrElseError();
+        EvaluationResult result0 = args.get(0).evaluate(sm, evaluationContext).asStringLiteralOrElseError();
         if(result0.isError()) {
             return result0;
         }
@@ -29,6 +31,21 @@ public class LANGMATCHES_Evaluator implements BuiltInCallEvaluator {
         if(result1.isError()) {
             return result1;
         }
-        return EvaluationResult.getBoolean(result0.asLiteral().getLang().equalsIgnoreCase(result1.asSimpleLiteral()));
+        String lang = result0.asSimpleLiteral();
+        if(lang.isEmpty()) {
+            return EvaluationResult.getFalse();
+        }
+        String pattern = result1.asSimpleLiteral();
+        boolean matches = !Locale.filterTags(getRangeFromPattern(pattern), Collections.singleton(lang)).isEmpty();
+        return EvaluationResult.getBoolean(matches);
+    }
+
+
+    public static List<Locale.LanguageRange> getRangeFromPattern(@Nonnull String pattern) {
+        try {
+            return Locale.LanguageRange.parse(pattern);
+        } catch (IllegalArgumentException e) {
+            return Collections.emptyList();
+        }
     }
 }
