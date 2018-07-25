@@ -60,7 +60,11 @@ public enum Relation {
             return evaluateDateTime(leftEval, rightEval);
         }
 
-        // This case covers <simple literal, simple literal> and <xsd:string, xsd:string>
+        // This case covers
+        //     simple literal, simple literal
+        //     xsd:string, xsd:string
+        //     xsd:anyURI, xsd:anyURI (since this is promotable to xsd:string according to the XPath spec)
+        //     subtype of xsd:string, subtype of xsd:string  (not clear to me whether this is correct!)
         if(leftTerm.isLiteralWithoutLangTagOrWithEmptyLangTag()
                 && leftTerm.isSubTypeOfOrPromotableToRdfPlainLiteral()
                 && rightTerm.isLiteralWithoutLangTagOrWithEmptyLangTag()
