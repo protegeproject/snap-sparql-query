@@ -60,6 +60,16 @@ public class AnonymousIndividual implements AtomicIndividual, HasIdentifier, Ann
     }
 
     @Override
+    public boolean isLiteralWithoutLangTagOrWithEmptyLangTag() {
+        return false;
+    }
+
+    @Override
+    public boolean isSubTypeOfOrPromotableToRdfPlainLiteral() {
+        return false;
+    }
+
+    @Override
     public boolean isStringLiteral() {
         return false;
     }

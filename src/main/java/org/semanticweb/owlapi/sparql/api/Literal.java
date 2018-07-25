@@ -6,6 +6,8 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
 import org.semanticweb.owlapi.sparql.builtin.DateTime;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import javax.annotation.Nonnull;
 import java.math.BigDecimal;
@@ -204,6 +206,29 @@ public class Literal implements AtomicLiteral, RDFTerm, HasAsRDFTerm {
     @Override
     public boolean isXSDString() {
         return datatype.isXSDString();
+    }
+
+    @Override
+    public boolean isLiteralWithoutLangTagOrWithEmptyLangTag() {
+        return langTag.isEmpty();
+    }
+
+    @Override
+    public boolean isSubTypeOfOrPromotableToRdfPlainLiteral() {
+        return (datatype.isRDFPlainLiteral())
+                // Subtypes of rdf:PlainLiteral
+                || datatype.isXSDString()
+                || datatype.getIRI().equals(XSDVocabulary.NORMALIZED_STRING.getIRI())
+                || datatype.getIRI().equals(XSDVocabulary.TOKEN.getIRI())
+                || datatype.getIRI().equals(XSDVocabulary.LANGUAGE.getIRI())
+                || datatype.getIRI().equals(XSDVocabulary.NAME.getIRI())
+                || datatype.getIRI().equals(XSDVocabulary.NMTOKEN.getIRI())
+                || datatype.getIRI().equals(XSDVocabulary.NCNAME.getIRI())
+                // xsd:anyURI is promotable to string according to xpath
+                || datatype.getIRI().equals(XSDVocabulary.ANY_URI.getIRI())
+                // rdf:langString are in the value space of rdf:PlainLiteral.  Note that
+                // as opposed to rdf:PlainLiteral, rdf:langString requires a non empty language tag
+                || datatype.getIRI().equals(OWLRDFVocabulary.RDF_LANG_STRING.getIRI());
     }
 
     @Override

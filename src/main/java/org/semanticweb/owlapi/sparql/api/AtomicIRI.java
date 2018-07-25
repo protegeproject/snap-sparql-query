@@ -59,6 +59,16 @@ public class AtomicIRI implements Atomic, HasIRI, AnnotationSubject, AnnotationV
     }
 
     @Override
+    public boolean isLiteralWithoutLangTagOrWithEmptyLangTag() {
+        return false;
+    }
+
+    @Override
+    public boolean isSubTypeOfOrPromotableToRdfPlainLiteral() {
+        return false;
+    }
+
+    @Override
     public boolean isStringLiteral() {
         return false;
     }

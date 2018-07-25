@@ -1,14 +1,12 @@
 
 package org.semanticweb.owlapi.sparql.api;
 
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import java.math.BigDecimal;
@@ -18,7 +16,6 @@ import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 
@@ -191,4 +188,32 @@ public class Literal_TestCase {
         assertThat(variables, is(empty()));
     }
 
+    @Test
+    public void shouldBeSubtypeOrPromotableToRdfPlainLiteral_rdf_PlainLiteral_No_Lang_Tag() {
+        assertPromotableOrSubtypeOfRdfPlainLiteral(Literal.createRDFPlainLiteralNoLang("Hello"));
+    }
+
+    @Test
+    public void shouldBeSubtypeOrPromotableToRdfPlainLiteral_rdf_PlainLiteral_With_Lang_Tag() {
+        assertPromotableOrSubtypeOfRdfPlainLiteral(Literal.createRDFPlainLiteral("Hello", "en"));
+    }
+
+    @Test
+    public void shouldBeSubtypeOrPromotableRdfPlainLiteral_xsd_string() {
+        assertPromotableOrSubtypeOfRdfPlainLiteral(Literal.createString("Hello"));
+    }
+
+    @Test
+    public void shouldBeSubtypeOrPromotableToRdfPlainLiteral_xsd_anyURI() {
+        assertPromotableOrSubtypeOfRdfPlainLiteral(new Literal(Datatype.get(XSDVocabulary.ANY_URI.getIRI()), "http://stuff", ""));
+    }
+
+    @Test
+    public void shouldBeSubtypeOrPromotableToRdfPlainLiteral_xsd_Token() {
+        assertPromotableOrSubtypeOfRdfPlainLiteral(new Literal(Datatype.get(XSDVocabulary.TOKEN.getIRI()), "Hello", ""));
+    }
+
+    private void assertPromotableOrSubtypeOfRdfPlainLiteral(Literal literal) {
+        assertThat(literal.isSubTypeOfOrPromotableToRdfPlainLiteral(), is(true));
+    }
 }

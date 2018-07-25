@@ -6,6 +6,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.sparql.algebra.AlgebraEvaluationContext;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -26,6 +28,20 @@ public class Relation_TestCase {
     @Test
     public void shouldBeEqualDecimals() {
         Literal left = Literal.createDecimal(3.0);
+        Literal right = Literal.createDecimal(3.0);
+        eval(EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeEqualIntegerAndDecimalByTypeSubstitution() {
+        Literal left = Literal.createInteger(3);
+        Literal right = Literal.createDecimal(3.0);
+        eval(EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeEqualDoubleAndDecimalByTypePromotion() {
+        Literal left = Literal.createDouble(3.0);
         Literal right = Literal.createDecimal(3.0);
         eval(EQUAL, left, right);
     }
@@ -79,6 +95,19 @@ public class Relation_TestCase {
         eval(GREATER_THAN_OR_EQUAL, left, right);
     }
 
+    @Test
+    public void shouldBeEqualPlainLiteralAndStringByTypeSubsitution() {
+        Literal left = Literal.createRDFPlainLiteralNoLang("Hello");
+        Literal right = Literal.createString("Hello");
+        eval(EQUAL, left, right);
+    }
+
+    @Test
+    public void shouldBeEqualTokenAndStringByTypeSubsitution() {
+        Literal left = new Literal(Datatype.get(XSDVocabulary.TOKEN.getIRI()), "Hello", "");
+        Literal right = Literal.createString("Hello");
+        eval(EQUAL, left, right);
+    }
 
     @Test
     public void shouldBeEqualDateTime() {

@@ -60,13 +60,11 @@ public enum Relation {
             return evaluateDateTime(leftEval, rightEval);
         }
 
-        if(leftTerm.isSimpleLiteral() && rightTerm.isSimpleLiteral()) {
-            // Neither have a language tag
-            return evaluateStringLiteral(leftEval.asSimpleLiteral(), rightEval.asSimpleLiteral());
-        }
-
-        if(leftTerm.isXSDString() && rightTerm.isXSDString()) {
-            // Same datatype of xsd:string
+        // This case covers <simple literal, simple literal> and <xsd:string, xsd:string>
+        if(leftTerm.isLiteralWithoutLangTagOrWithEmptyLangTag()
+                && leftTerm.isSubTypeOfOrPromotableToRdfPlainLiteral()
+                && rightTerm.isLiteralWithoutLangTagOrWithEmptyLangTag()
+                && rightTerm.isSubTypeOfOrPromotableToRdfPlainLiteral()) {
             return evaluateStringLiteral(leftEval.asSimpleLiteral(), rightEval.asSimpleLiteral());
         }
 
